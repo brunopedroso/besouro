@@ -19,8 +19,6 @@ import sensor.Sensor;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO - is the buffer size calculation correct?
-
 //TODO - Junit listeners
 //TODO - do we register compilation?
 //TODO - do we register executions? (i'd like)
