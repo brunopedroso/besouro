@@ -97,16 +97,16 @@ public class ResourceChangeListener implements IResourceChangeListener,
 			
 		} else if ((kind == IResourceDelta.CHANGED) && resource instanceof IFile && flag == IResourceDelta.CONTENT) {
 				
-			IFile changedFile = (IFile) resource;
-
-			Map<String, String> event = new HashMap<String, String>();
-
-			event.put(ISensor.UNIT_TYPE, ISensor.FILE);
-			event.put("Class-Name", getFullyQualifedClassName(changedFile));
-			event.put("Current-Size", String.valueOf(WindowListener.getActiveBufferSize()));
-			event.put(ISensor.SUBTYPE, "Save");
-
 			if (resource.getLocation().toString().endsWith(ISensor.JAVA_EXT)) {
+				
+				IFile changedFile = (IFile) resource;
+				
+				Map<String, String> event = new HashMap<String, String>();
+				
+				event.put(ISensor.UNIT_TYPE, ISensor.FILE);
+				event.put("Class-Name", getFullyQualifedClassName(changedFile));
+				event.put("Current-Size", String.valueOf(WindowListener.getActiveBufferSize()));
+				event.put(ISensor.SUBTYPE, "Save");
 				
 				event.put("Language", "java");
 				
@@ -121,11 +121,12 @@ public class ResourceChangeListener implements IResourceChangeListener,
 					event.put("Current-Test-Assertions",String.valueOf(testCounter.getNumOfTestAssertions()));
 				}
 				
+				URI fileResource = changedFile.getLocationURI();
+				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,event, "Save File : " + extractFileName(fileResource));
+				
 			}
 
-			URI fileResource = changedFile.getLocationURI();
 
-			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,event, "Save File : " + extractFileName(fileResource));
 			
 		}
 		

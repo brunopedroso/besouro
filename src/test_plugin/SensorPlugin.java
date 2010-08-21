@@ -26,9 +26,8 @@ import sensor.Sensor;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO [log] do we register compilation?
-//TODO [log] do we register executions? (i'd like)
-//TODO [log] are we collecting timestamps?
+//TODO [log] organize the launchListener
+//TODO [log] should we collect timestamps?
 
 //TODO [int] unify projects: plugin and analyser
 //TODO [int] rename project
@@ -70,17 +69,14 @@ public class SensorPlugin implements IStartup {
 		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new ILaunchesListener2() {
 			
 			public void launchesRemoved(ILaunch[] launches) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			public void launchesChanged(ILaunch[] launches) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			public void launchesAdded(ILaunch[] launches) {
-				// TODO Auto-generated method stub
 				
 			}
 			
