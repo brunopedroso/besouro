@@ -32,9 +32,11 @@ public class ResourceChangeListener implements IResourceChangeListener,
 		IResourceDeltaVisitor {
 
 	private ISensor sensor;
+	private BuildErrorSensor buildErrorSensor;
 
 	public ResourceChangeListener(ISensor s) {
 		this.sensor = s;
+		buildErrorSensor = new BuildErrorSensor(sensor);
 	}
 	
 	public void resourceChanged(IResourceChangeEvent event) {
@@ -60,11 +62,11 @@ public class ResourceChangeListener implements IResourceChangeListener,
 		int flag = delta.getFlags();
 		int kind = delta.getKind();
 
-		// TODO [log] compilation errors
+		// FIXME [build errors] do not catch errors caused in another editor...
 		// If there is compilation problem with the current java file then send out the activity data.
-		// if ((flag & IResourceDelta.MARKERS) != 0 && EclipseSensor.this.buildErrorSensor != null) {
-		// 	  EclipseSensor.this.buildErrorSensor.findBuildProblem(delta);
-		// }
+		 if ((flag & IResourceDelta.MARKERS) != 0) {
+			buildErrorSensor.findBuildProblem(delta);
+		 }
 
 		// :RESOLVED: 26 May 2003
 		// Note that the 147456 enumeration type is not listed in the IResourceDelta static filed.
@@ -141,6 +143,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 	 *            File name path.
 	 * @return File name.
 	 */
+	//TODO extract to utils
 	public static String extractFileName(URI fileResource) {
 		
 		String fileStirng = fileResource.toString();

@@ -17,7 +17,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
-
+import org.eclipse.core.commands.CommandEvent;
+import org.eclipse.core.commands.ICommandListener;
 import sensor.ISensor;
 import test_plugin.Activator;
 
@@ -32,12 +33,22 @@ import test_plugin.Activator;
 public class WindowListener implements IWindowListener, IPartListener,
 		IDocumentListener {
 
+	//class
+	
 	private static int activeBufferSize;
+	private static ITextEditor activeTextEditor;
+	
+	public static ITextEditor getActiveTextEditor() {
+		return activeTextEditor;
+	}
 
 	public static int getActiveBufferSize() {
 		return activeBufferSize;
 	}
 
+	
+	// object
+	
 	private ISensor sensor;
 
 	public WindowListener(ISensor sensor) {
@@ -50,7 +61,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 		if (activeEditorPart instanceof ITextEditor) {
 
-			ITextEditor activeTextEditor = (ITextEditor) activeEditorPart;
+			activeTextEditor = (ITextEditor) activeEditorPart;
 
 			activeTextEditor.getDocumentProvider()
 					.getDocument(activeTextEditor.getEditorInput())
@@ -106,11 +117,11 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 		if (part instanceof ITextEditor) {
 
-			ITextEditor activeTextEditor = (ITextEditor) part;
+			activeTextEditor = (ITextEditor) part;
 
-			IDocumentProvider provider = activeTextEditor.getDocumentProvider();
-			provider.getDocument(activeTextEditor.getEditorInput()).addDocumentListener(this);
-			activeBufferSize = provider.getDocument(activeTextEditor.getEditorInput()).getLength();
+			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
+			activeBufferSize = document.getLength();
+			document.addDocumentListener(this);
 
 		}
 	}

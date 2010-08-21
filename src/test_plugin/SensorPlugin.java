@@ -6,6 +6,11 @@ import listeners.WindowListener;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchListener;
+import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.debug.internal.core.LaunchManager;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.ui.IStartup;
@@ -60,6 +65,34 @@ public class SensorPlugin implements IStartup {
 		
 		// makes the installation of the windows' listeners
 		windowListener.windowOpened(null);
+		
+		
+		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new ILaunchesListener2() {
+			
+			public void launchesRemoved(ILaunch[] launches) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void launchesChanged(ILaunch[] launches) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void launchesAdded(ILaunch[] launches) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void launchesTerminated(ILaunch[] launches) {
+				
+				for (ILaunch launch: launches) {
+					System.out.println("LAUNCH TERMINATED!" + launch.getLaunchConfiguration().getName());
+				}				
+			}
+			
+		});
+		
 		
 	}
 
