@@ -1,5 +1,8 @@
 package test_plugin;
 
+import listeners.JUnitListener;
+
+import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
