@@ -1,7 +1,7 @@
 package test_plugin;
 import listeners.JavaStructureChangeListener;
 import listeners.ResourceChangeListener;
-import listeners.windows.WindowListener;
+import listeners.WindowListener;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -19,16 +19,14 @@ import sensor.Sensor;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
+//TODO - is the buffer size calculation correct?
+
 //TODO - Junit listeners
 //TODO - do we register compilation?
 //TODO - do we register executions? (i'd like)
 //TODO - compilation errors (not to much descriptions, i think)
 
-//TODO - is the buffer size calculation correct?
-
 //TODO - unify projects: plugin and analyser
-
-
 //TODO - rename project
 
 public class SensorPlugin implements IStartup {

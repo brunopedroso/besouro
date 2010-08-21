@@ -1,11 +1,10 @@
-package listeners.windows;
+package listeners;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import listeners.ResourceChangeListener;
 
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;

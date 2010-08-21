@@ -3,7 +3,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import listeners.windows.WindowListener;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
