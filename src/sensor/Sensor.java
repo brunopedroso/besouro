@@ -3,7 +3,7 @@ import java.net.URI;
 import java.util.Map;
 
 
-//TODO rename sensor to ... printer? sender? register?
+//TODO [rec] rename sensor to ... printer? sender? register?
 public class Sensor implements ISensor {
 
 	public void addDevEvent(String name, URI resource,

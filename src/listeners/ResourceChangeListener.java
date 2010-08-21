@@ -60,22 +60,19 @@ public class ResourceChangeListener implements IResourceChangeListener,
 		int flag = delta.getFlags();
 		int kind = delta.getKind();
 
-		// TODO z lots of dependencies here
-		// If there is compilation problem with the current java file then send
-		// out the activity data.
-		// if ((flag & IResourceDelta.MARKERS) != 0 &&
-		// EclipseSensor.this.buildErrorSensor != null) {
-		// EclipseSensor.this.buildErrorSensor.findBuildProblem(delta);
+		// TODO [log] compilation errors
+		// If there is compilation problem with the current java file then send out the activity data.
+		// if ((flag & IResourceDelta.MARKERS) != 0 && EclipseSensor.this.buildErrorSensor != null) {
+		// 	  EclipseSensor.this.buildErrorSensor.findBuildProblem(delta);
 		// }
 
 		// :RESOLVED: 26 May 2003
-		// Note that the 147456 enumeration type is not listed in the
-		// IResourceDelta static filed.
+		// Note that the 147456 enumeration type is not listed in the IResourceDelta static filed.
 		// However, its number is generated when Project is either opened or
-		// closed so that
-		// it is checked in the logical condition.
-		if (resource instanceof IProject
-				&& ((flag == IResourceDelta.OPEN) || (flag == 147456))) {
+		// closed so that it is checked in the logical condition.
+		int ANOTHER_OPEN_CLOSE_FLAG = 147456;
+		
+		if (resource instanceof IProject && ((flag == IResourceDelta.OPEN) || (flag == ANOTHER_OPEN_CLOSE_FLAG))) {
 			
 			IProject project = resource.getProject();
 			String projectName = project.getName();
@@ -86,87 +83,56 @@ public class ResourceChangeListener implements IResourceChangeListener,
 			keyValueMap.put(ISensor.UNIT_NAME, projectName);
 
 			if (((IProject) resource).isOpen()) {
-				
 				keyValueMap.put(ISensor.SUBTYPE, "Open");
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
-				
 			} else {
-				
 				keyValueMap.put(ISensor.SUBTYPE, "Close");
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
-				
 			}
-			return false;
-		}
-		
-		
-		//TODO analyse and simplify
-		
-		if ((kind == IResourceDelta.CHANGED)
-				&& (flag == IResourceDelta.CONTENT)
-				&& resource instanceof IFile) {
 			
+			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
+			
+			// do not visit the children
+			return false;
+			
+		} else if ((kind == IResourceDelta.CHANGED) && resource instanceof IFile && flag == IResourceDelta.CONTENT) {
+				
+			IFile changedFile = (IFile) resource;
+
+			Map<String, String> event = new HashMap<String, String>();
+
+			event.put(ISensor.UNIT_TYPE, ISensor.FILE);
+			event.put("Class-Name", getFullyQualifedClassName(changedFile));
+			event.put("Current-Size", String.valueOf(WindowListener.getActiveBufferSize()));
+			event.put(ISensor.SUBTYPE, "Save");
+
 			if (resource.getLocation().toString().endsWith(ISensor.JAVA_EXT)) {
-				IFile file = (IFile) resource;
-
-				Map<String, String> keyValueMap = new HashMap<String, String>();
-
-				keyValueMap.put("Language", "java");
-				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-
-				// Fully qualified class path
-				String className = getFullyQualifedClassName(file);
-				keyValueMap.put("Class-Name", className);
-
-				// Size of the file in buffer
-				String bufferSize = String.valueOf(WindowListener.getActiveBufferSize());
-				keyValueMap.put("Current-Size", bufferSize);
-
+				
+				event.put("Language", "java");
+				
 				// Measure java file.
-				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(file);
+				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
+				event.put("Current-Methods", String.valueOf(testCounter.getNumOfMethods()));
+				event.put("Current-Statements", String.valueOf(testCounter.getNumOfStatements()));
 				
-				//TODO test: two times?
-//				testCounter = measureJavaFile(file);
-				
-				
-				//TODO is it countins test methods corectly?
-				
-				String methodCount = String.valueOf(testCounter.getNumOfMethods());
-				keyValueMap.put("Current-Methods", methodCount);
-
-				String statementCount = String.valueOf(testCounter.getNumOfStatements());
-				keyValueMap.put("Current-Statements", statementCount);
-
 				// Number of test method and assertion statements.
 				if (testCounter.hasTest()) {
-					String testMethodCount = String.valueOf(testCounter.getNumOfTestMethods());
-					keyValueMap.put("Current-Test-Methods", testMethodCount);
-
-					String testAssertionCount = String.valueOf(testCounter.getNumOfTestAssertions());
-					keyValueMap.put("Current-Test-Assertions",testAssertionCount);
+					event.put("Current-Test-Methods", String.valueOf(testCounter.getNumOfTestMethods()));
+					event.put("Current-Test-Assertions",String.valueOf(testCounter.getNumOfTestAssertions()));
 				}
-
-				// EclipseSensor.this.eclipseSensorShell.doCommand("Activity",
-				// activityData);
-				// Construct message to display on Eclipse status bar.
-				URI fileResource = file.getLocationURI();
-
-				StringBuffer message = new StringBuffer("Save File");
-				message.append(" : ").append(extractFileName(fileResource));
-
-				keyValueMap.put(ISensor.SUBTYPE, "Save");
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,keyValueMap, message.toString());
+				
 			}
 
-			// Visit the children because it is not necessary for the saving
-			// file to be only one file.
-			return true;
+			URI fileResource = changedFile.getLocationURI();
+
+			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,event, "Save File : " + extractFileName(fileResource));
+			
 		}
-		return true; // visit the children
+		
+		// visit the children
+		return true; 
+
 	}
 
 
-	//TODO extract utilities
 
 	/**
 	 * Extracts file name from a file resource URI.
@@ -198,7 +164,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 	 *            Get fully qualified class file.
 	 * @return The fully qualified class name. For example,foo.bar.Baz.
 	 */
-	public static String getFullyQualifedClassName(IFile file) {
+	private static String getFullyQualifedClassName(IFile file) {
 		String fullClassName = "";
 		if (file.exists() && file.getName().endsWith(ISensor.JAVA_EXT)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore.create(file);

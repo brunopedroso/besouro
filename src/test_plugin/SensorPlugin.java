@@ -19,13 +19,15 @@ import sensor.Sensor;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO - Junit listeners
-//TODO - do we register compilation?
-//TODO - do we register executions? (i'd like)
-//TODO - compilation errors (not to much descriptions, i think)
+//TODO [log] Junit listeners
+//TODO [log] do we register compilation?
+//TODO [log] do we register executions? (i'd like)
+//TODO [log] compilation errors
 
-//TODO - unify projects: plugin and analyser
-//TODO - rename project
+//TODO [data] are we collecting timestamps?
+
+//TODO [pub] unify projects: plugin and analyser
+//TODO [pub] rename project
 
 public class SensorPlugin implements IStartup {
 	

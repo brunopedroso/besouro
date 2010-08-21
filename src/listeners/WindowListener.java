@@ -68,8 +68,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 	public void windowOpened(IWorkbenchWindow window) {
 
-		IWorkbenchWindow[] activeWindows = Activator.getDefault()
-				.getWorkbench().getWorkbenchWindows();
+		IWorkbenchWindow[] activeWindows = Activator.getDefault().getWorkbench().getWorkbenchWindows();
 
 		for (int i = 0; i < activeWindows.length; i++) {
 
@@ -78,37 +77,26 @@ public class WindowListener implements IWindowListener, IPartListener,
 			IEditorPart activeEditorPart = activePage.getActiveEditor();
 			if (activeEditorPart instanceof ITextEditor) {
 
-				// --- Sets activeTextEditor. Otherwise a first activated file
-				// would not be recorded.
 				ITextEditor activeTextEditor = (ITextEditor) activeEditorPart;
-				String fileResource = activeTextEditor.getEditorInput()
-						.getName();
+				String fileResource = activeTextEditor.getEditorInput().getName();
+				IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeEditorPart.getEditorInput());
+				
+				activeBufferSize = document.getLength();
+				
+				// install listeners
+				document.addDocumentListener(this);
+				activePage.addPartListener(this);
 
-				// Register window open event
-				// TODO: do we realy need an URI?! :-(
-				URI uri;
-				try {
-					uri = new URI(fileResource);
-				} catch (URISyntaxException e) {
-					throw new RuntimeException(e);
-				}
+				
+				URI uri = newUri(fileResource);
 
-				// TODO simplify event register API
+				// TODO [rec] simplify event register API
 				Map<String, String> keyValueMap = new HashMap<String, String>();
 				keyValueMap.put(ISensor.SUBTYPE, "Open");
 				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
 				keyValueMap.put(ISensor.UNIT_NAME, fileResource);
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, uri, keyValueMap,
-						"Opened " + fileResource.toString());
+				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, uri, keyValueMap, "Opened " + fileResource.toString());
 
-				IDocument document = activeTextEditor.getDocumentProvider()
-						.getDocument(activeEditorPart.getEditorInput());
-
-				activeBufferSize = document.getLength();
-
-				// add listeners
-				document.addDocumentListener(this);
-				activePage.addPartListener(this);
 
 			}
 		}
@@ -121,10 +109,8 @@ public class WindowListener implements IWindowListener, IPartListener,
 			ITextEditor activeTextEditor = (ITextEditor) part;
 
 			IDocumentProvider provider = activeTextEditor.getDocumentProvider();
-			provider.getDocument(activeTextEditor.getEditorInput())
-					.addDocumentListener(this);
-			activeBufferSize = provider.getDocument(
-					activeTextEditor.getEditorInput()).getLength();
+			provider.getDocument(activeTextEditor.getEditorInput()).addDocumentListener(this);
+			activeBufferSize = provider.getDocument(activeTextEditor.getEditorInput()).getLength();
 
 		}
 	}
@@ -134,36 +120,41 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 	public void partClosed(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
+			
+			String name = ((ITextEditor) part).getEditorInput().getName();
 
-			// Does it work?
-			// URI fileResource =
-			// EclipseSensor.this.getFileResource((ITextEditor) part);
-			URI fileResource;
-
-			try {
-				fileResource = new URI(((ITextEditor) part).getEditorInput()
-						.getName());
-			} catch (URISyntaxException e) {
-				throw new RuntimeException(e);
-			}
-
-			Map<String, String> keyValueMap = new HashMap<String, String>();
-			keyValueMap.put(ISensor.SUBTYPE, "Close");
-			if (fileResource != null
-					&& fileResource.toString().endsWith(ISensor.JAVA_EXT)) {
-				keyValueMap.put("Language", "java");
-			}
-			if (fileResource != null) {
+			if (name != null) {
+				
+				// Does it work?
+				// URI fileResource =
+				// EclipseSensor.this.getFileResource((ITextEditor) part);
+				URI fileResource = newUri(name);
+				
+				Map<String, String> keyValueMap = new HashMap<String, String>();
+				keyValueMap.put(ISensor.SUBTYPE, "Close");
+				
+				if (fileResource.toString().endsWith(ISensor.JAVA_EXT)) {
+					keyValueMap.put("Language", "java");
+				}
+				
 				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-
-				keyValueMap.put(ISensor.UNIT_NAME,
-						ResourceChangeListener.extractFileName(fileResource));
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,
-						keyValueMap, fileResource.toString());
+				keyValueMap.put(ISensor.UNIT_NAME, ResourceChangeListener.extractFileName(fileResource));
+				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
 
 			}
 
 		}
+	}
+
+	private URI newUri(String name) {
+		URI fileResource;
+		
+		try {
+			fileResource = new URI(name);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		return fileResource;
 	}
 
 	public void partDeactivated(IWorkbenchPart part) {
@@ -174,25 +165,16 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 		if (part instanceof ITextEditor) {
 
-			ITextEditor activeTextEditor = (ITextEditor) part;
-
-			// TODO: do we realy need an URI?! :-(
+			// TODO [data] do we realy need an URI?! :-(
 			// Does it work?
 			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
-			URI fileResource;
-			try {
-				fileResource = new URI(activeTextEditor.getEditorInput().getName());
-			} catch (URISyntaxException e) {
-				throw new RuntimeException(e);
-			}
+			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
 
 			Map<String, String> keyValueMap = new HashMap<String, String>();
 			keyValueMap.put(ISensor.SUBTYPE, "Open");
 			keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-			keyValueMap.put(ISensor.UNIT_NAME,
-					ResourceChangeListener.extractFileName(fileResource));
-			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,
-					keyValueMap, fileResource.toString());
+			keyValueMap.put(ISensor.UNIT_NAME, ResourceChangeListener.extractFileName(fileResource));
+			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
 
 		}
 	}
