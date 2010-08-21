@@ -3,6 +3,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import listeners.windows.WindowListener;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -118,7 +120,7 @@ public class ResourceChangeAdapter implements IResourceChangeListener,
 				keyValueMap.put("Class-Name", className);
 
 				// Size of the file in buffer
-				String bufferSize = String.valueOf(WindowListenerAdapter.activeBufferSize);
+				String bufferSize = String.valueOf(WindowListener.getActiveBufferSize());
 				keyValueMap.put("Current-Size", bufferSize);
 
 				// Measure java file.

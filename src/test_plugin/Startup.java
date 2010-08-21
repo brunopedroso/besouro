@@ -1,7 +1,7 @@
 package test_plugin;
 import listeners.JavaStructureChangeDetector;
 import listeners.ResourceChangeAdapter;
-import listeners.WindowListenerAdapter;
+import listeners.windows.WindowListener;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -59,7 +59,7 @@ public class Startup implements IStartup {
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeAdapter(sensor), IResourceChangeEvent.POST_CHANGE);
 		JavaCore.addElementChangedListener(new JavaStructureChangeDetector(sensor));
 
-		WindowListenerAdapter windowListener = new WindowListenerAdapter(sensor);
+		WindowListener windowListener = new WindowListener(sensor);
 		Activator.getDefault().getWorkbench().addWindowListener(windowListener);
 		
 		// makes the installation of the windows' listeners
