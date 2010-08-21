@@ -29,12 +29,12 @@ import sensor.ISensor;
  * @author Takuya Yamashita
  * @version $Id: EclipseSensor.java,v 1.1.1.1 2005/10/20 23:56:56 johnson Exp $
  */
-public class ResourceChangeAdapter implements IResourceChangeListener,
+public class ResourceChangeListener implements IResourceChangeListener,
 		IResourceDeltaVisitor {
 
 	private ISensor sensor;
 
-	public ResourceChangeAdapter(ISensor s) {
+	public ResourceChangeListener(ISensor s) {
 		this.sensor = s;
 	}
 	

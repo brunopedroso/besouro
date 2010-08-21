@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import listeners.ResourceChangeAdapter;
+import listeners.ResourceChangeListener;
 
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -158,7 +158,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
 
 				keyValueMap.put(ISensor.UNIT_NAME,
-						ResourceChangeAdapter.extractFileName(fileResource));
+						ResourceChangeListener.extractFileName(fileResource));
 				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,
 						keyValueMap, fileResource.toString());
 
@@ -177,13 +177,12 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 			ITextEditor activeTextEditor = (ITextEditor) part;
 
+			// TODO: do we realy need an URI?! :-(
 			// Does it work?
-			// URI fileResource =
-			// EclipseSensor.this.getFileResource((ITextEditor) part);
+			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
 			URI fileResource;
 			try {
-				fileResource = new URI(((ITextEditor) part).getEditorInput()
-						.getName());
+				fileResource = new URI(activeTextEditor.getEditorInput().getName());
 			} catch (URISyntaxException e) {
 				throw new RuntimeException(e);
 			}
@@ -192,7 +191,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 			keyValueMap.put(ISensor.SUBTYPE, "Open");
 			keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
 			keyValueMap.put(ISensor.UNIT_NAME,
-					ResourceChangeAdapter.extractFileName(fileResource));
+					ResourceChangeListener.extractFileName(fileResource));
 			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,
 					keyValueMap, fileResource.toString());
 

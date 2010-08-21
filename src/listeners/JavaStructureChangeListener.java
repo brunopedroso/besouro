@@ -24,7 +24,7 @@ import sensor.ISensor;
  * @author Hongbing Kou
  * @version $Id$
  */
-public class JavaStructureChangeDetector implements IElementChangedListener {
+public class JavaStructureChangeListener implements IElementChangedListener {
 
   /** Literals of java. */
   public static final String JAVA = "java";
@@ -45,7 +45,7 @@ public class JavaStructureChangeDetector implements IElementChangedListener {
    * 
    * @param sensor Eclipse sensor.
    */
-  public JavaStructureChangeDetector(ISensor sensor) {
+  public JavaStructureChangeListener(ISensor sensor) {
     this.sensor = sensor;
   }
 

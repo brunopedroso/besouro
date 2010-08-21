@@ -29,7 +29,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="test_plugin.Startup">
+            class="test_plugin.SensorPlugin">
       </startup>
    </extension>
 

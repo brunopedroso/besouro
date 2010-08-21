@@ -1,6 +1,6 @@
 package test_plugin;
-import listeners.JavaStructureChangeDetector;
-import listeners.ResourceChangeAdapter;
+import listeners.JavaStructureChangeListener;
+import listeners.ResourceChangeListener;
 import listeners.windows.WindowListener;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -23,30 +23,27 @@ import sensor.Sensor;
 //TODO - do we register compilation?
 //TODO - do we register executions? (i'd like)
 //TODO - compilation errors (not to much descriptions, i think)
+
 //TODO - is the buffer size calculation correct?
 
-
-//TODO - what window and part listeners get?
-//TODO - rename of listeners
 //TODO - unify projects: plugin and analyser
 
 
 //TODO - rename project
-//TODO - rename startup to plugin
 
-public class Startup implements IStartup {
+public class SensorPlugin implements IStartup {
 	
-	public static Startup plugin;
-	public static Startup getInstance() {
+	public static SensorPlugin plugin;
+	public static SensorPlugin getInstance() {
 		return plugin;
 	}
 	
 
 	private ISensor sensor = new Sensor();
 	
-	public Startup() {
+	public SensorPlugin() {
 		super();
-		Startup.plugin = this;
+		SensorPlugin.plugin = this;
 		// Note that this is a non-standard way to initialize a singleton
 		// instance due to Eclipse's auto startup nature.
 	}
@@ -56,8 +53,8 @@ public class Startup implements IStartup {
 
 		System.out.println("Registering first-time listeners...");
 		
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeAdapter(sensor), IResourceChangeEvent.POST_CHANGE);
-		JavaCore.addElementChangedListener(new JavaStructureChangeDetector(sensor));
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(sensor), IResourceChangeEvent.POST_CHANGE);
+		JavaCore.addElementChangedListener(new JavaStructureChangeListener(sensor));
 
 		WindowListener windowListener = new WindowListener(sensor);
 		Activator.getDefault().getWorkbench().addWindowListener(windowListener);
