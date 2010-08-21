@@ -22,9 +22,7 @@ import sensor.Sensor;
 //TODO [log] Junit listeners
 //TODO [log] do we register compilation?
 //TODO [log] do we register executions? (i'd like)
-//TODO [log] compilation errors
-
-//TODO [data] are we collecting timestamps?
+//TODO [log] are we collecting timestamps?
 
 //TODO [pub] unify projects: plugin and analyser
 //TODO [pub] rename project

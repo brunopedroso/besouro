@@ -165,7 +165,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 		if (part instanceof ITextEditor) {
 
-			// TODO [data] do we realy need an URI?! :-(
+			// TODO [rec] do we realy need an URI?! :-(
 			// Does it work?
 			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
 			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
