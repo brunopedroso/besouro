@@ -18,6 +18,7 @@ import athos.listeners.ResourceChangeListener;
 import athos.listeners.WindowListener;
 import athos.stream.ActionOutputStream;
 import athos.stream.ConsoleStream;
+import athos.stream.EpisodeClassifierStream;
 
 
 
@@ -36,11 +37,18 @@ public class SensorPlugin implements IStartup {
 		return plugin;
 	}
 
-	private static ActionOutputStream stream = new ConsoleStream();
+	private static ActionOutputStream stream;
 	
 	public SensorPlugin() {
 		super();
 		SensorPlugin.plugin = this;
+		
+		try {
+			stream = new EpisodeClassifierStream();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
 		// Note that this is a non-standard way to initialize a singleton
 		// instance due to Eclipse's auto startup nature.
 	}
