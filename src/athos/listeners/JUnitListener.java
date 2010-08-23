@@ -11,7 +11,7 @@ import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
 public class JUnitListener extends TestRunListener {
 
-	//TODO [int] que dados precisamos do junit?
+	//TODO [int] adapt junitListener to stream interface
 	
 	@Override
 	public void sessionFinished(ITestRunSession session) {

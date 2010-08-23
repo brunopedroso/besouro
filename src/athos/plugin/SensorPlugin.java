@@ -16,7 +16,7 @@ import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.ResourceChangeListener;
 import athos.listeners.WindowListener;
 import athos.stream.ActionOutputStream;
-import athos.stream.ConsoleLogger;
+import athos.stream.ConsoleStream;
 
 
 
@@ -27,11 +27,10 @@ import athos.stream.ConsoleLogger;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO [int] adapt launchListener to writer interface
-//TODO [int] should we collect timestamps?
+//TODO [int]  change stream interface
+//TODO [int] adapt launchListener to stream interface
 
-//TODO [int] define projects names
-//TODO [int] unify projects: plugin and analyser
+//TODO [data] shouldn't we collect timestamps?
 
 
 //
@@ -44,7 +43,7 @@ public class SensorPlugin implements IStartup {
 	}
 	
 
-	private ActionOutputStream sensor = new ConsoleLogger();
+	private ActionOutputStream sensor = new ConsoleStream();
 	
 	public SensorPlugin() {
 		super();

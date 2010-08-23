@@ -103,7 +103,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 				
 				URI uri = newUri(fileResource);
 
-				// TODO [int] simplify event register API
+				// TODO [int] adapt windowListener to stream interface
 				Map<String, String> keyValueMap = new HashMap<String, String>();
 				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
 				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
@@ -178,7 +178,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 		if (part instanceof ITextEditor) {
 
-			// TODO [int] do we realy need an URI?! :-(
+			// TODO [data] do we realy need an URI?! :-(
 			// Does it work?
 			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
 			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
