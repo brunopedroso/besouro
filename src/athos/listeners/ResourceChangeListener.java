@@ -1,4 +1,4 @@
-package listeners;
+package athos.listeners;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,8 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
-import sensor.ISensor;
+import athos.stream.ActionOutputStream;
+
 
 /**
  * Provides "Open Project, "Close Project", and "Save File" events. Note that
@@ -31,10 +32,10 @@ import sensor.ISensor;
 public class ResourceChangeListener implements IResourceChangeListener,
 		IResourceDeltaVisitor {
 
-	private ISensor sensor;
+	private ActionOutputStream sensor;
 	private BuildErrorSensor buildErrorSensor;
 
-	public ResourceChangeListener(ISensor s) {
+	public ResourceChangeListener(ActionOutputStream s) {
 		this.sensor = s;
 		buildErrorSensor = new BuildErrorSensor(sensor);
 	}
@@ -81,32 +82,32 @@ public class ResourceChangeListener implements IResourceChangeListener,
 			URI projectResoruce = project.getFile(".project").getLocationURI();
 
 			Map<String, String> keyValueMap = new HashMap<String, String>();
-			keyValueMap.put(ISensor.UNIT_TYPE, "project");
-			keyValueMap.put(ISensor.UNIT_NAME, projectName);
+			keyValueMap.put(ActionOutputStream.UNIT_TYPE, "project");
+			keyValueMap.put(ActionOutputStream.UNIT_NAME, projectName);
 
 			if (((IProject) resource).isOpen()) {
-				keyValueMap.put(ISensor.SUBTYPE, "Open");
+				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
 			} else {
-				keyValueMap.put(ISensor.SUBTYPE, "Close");
+				keyValueMap.put(ActionOutputStream.SUBTYPE, "Close");
 			}
 			
-			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
+			sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
 			
 			// do not visit the children
 			return false;
 			
 		} else if ((kind == IResourceDelta.CHANGED) && resource instanceof IFile && flag == IResourceDelta.CONTENT) {
 				
-			if (resource.getLocation().toString().endsWith(ISensor.JAVA_EXT)) {
+			if (resource.getLocation().toString().endsWith(ActionOutputStream.JAVA_EXT)) {
 				
 				IFile changedFile = (IFile) resource;
 				
 				Map<String, String> event = new HashMap<String, String>();
 				
-				event.put(ISensor.UNIT_TYPE, ISensor.FILE);
+				event.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
 				event.put("Class-Name", Utils.getFullyQualifedClassName(changedFile));
 				event.put("Current-Size", String.valueOf(WindowListener.getActiveBufferSize()));
-				event.put(ISensor.SUBTYPE, "Save");
+				event.put(ActionOutputStream.SUBTYPE, "Save");
 				
 				event.put("Language", "java");
 				
@@ -122,7 +123,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				}
 				
 				URI fileResource = changedFile.getLocationURI();
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,event, "Save File : " + Utils.extractFileName(fileResource));
+				sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, fileResource,event, "Save File : " + Utils.extractFileName(fileResource));
 				
 			}
 

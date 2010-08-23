@@ -1,8 +1,4 @@
-package test_plugin;
-import listeners.JavaStructureChangeListener;
-import listeners.ResourceChangeListener;
-import listeners.JUnitListener;
-import listeners.WindowListener;
+package athos.plugin;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -15,8 +11,13 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.ui.IStartup;
 
-import sensor.ISensor;
-import sensor.Sensor;
+import athos.listeners.JUnitListener;
+import athos.listeners.JavaStructureChangeListener;
+import athos.listeners.ResourceChangeListener;
+import athos.listeners.WindowListener;
+import athos.stream.ActionOutputStream;
+import athos.stream.ConsoleLogger;
+
 
 
 
@@ -26,11 +27,14 @@ import sensor.Sensor;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO [log] organize the launchListener
+//TODO [int] adapt launchListener to writer interface
 //TODO [int] should we collect timestamps?
 
+//TODO [int] define projects names
 //TODO [int] unify projects: plugin and analyser
-//TODO [int] rename project
+
+
+//
 
 public class SensorPlugin implements IStartup {
 	
@@ -40,7 +44,7 @@ public class SensorPlugin implements IStartup {
 	}
 	
 
-	private ISensor sensor = new Sensor();
+	private ActionOutputStream sensor = new ConsoleLogger();
 	
 	public SensorPlugin() {
 		super();

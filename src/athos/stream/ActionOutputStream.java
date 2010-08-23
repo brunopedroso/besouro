@@ -1,9 +1,9 @@
-package sensor;
+package athos.stream;
 import java.net.URI;
 import java.util.Map;
 
 
-public interface ISensor {
+public interface ActionOutputStream {
 
   static String DEVEVENT_EDIT = "Edit";
   static String SUBTYPE = "Subtype";

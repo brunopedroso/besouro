@@ -1,4 +1,4 @@
-package listeners;
+package athos.listeners;
 
 import java.net.URI;
 
@@ -8,7 +8,8 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
-import sensor.ISensor;
+import athos.stream.ActionOutputStream;
+
 
 public class Utils {
 
@@ -46,10 +47,10 @@ public class Utils {
 	 */
 	public static String getFullyQualifedClassName(IFile file) {
 		String fullClassName = "";
-		if (file.exists() && file.getName().endsWith(ISensor.JAVA_EXT)) {
+		if (file.exists() && file.getName().endsWith(ActionOutputStream.JAVA_EXT)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore.create(file);
 			String className = compilationUnit.getElementName();
-			if (className.endsWith(ISensor.JAVA_EXT)) {
+			if (className.endsWith(ActionOutputStream.JAVA_EXT)) {
 				className = className.substring(0, className.length() - 5);
 			}
 

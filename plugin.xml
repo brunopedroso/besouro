@@ -3,7 +3,7 @@
 <plugin>
 
    <extension point="org.eclipse.ui.startup">
-      <startup class="test_plugin.SensorPlugin">
+      <startup class="athos.plugin.SensorPlugin">
       </startup>
    </extension>
    

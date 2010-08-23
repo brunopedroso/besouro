@@ -1,4 +1,4 @@
-package listeners;
+package athos.listeners;
 
 
 import java.net.URI;
@@ -14,7 +14,8 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
-import sensor.ISensor;
+import athos.stream.ActionOutputStream;
+
 
 /**
  * Listens to the java element change events to get incremental work on java objects and collect 
@@ -38,14 +39,14 @@ public class JavaStructureChangeListener implements IElementChangedListener {
   protected static final String PROP_CURRENT_TEST_METHODS = "Current-Test-Methods";
   protected static final String PROP_CURRENT_TEST_ASSERTIONS = "Current-Test-Assertions";
   
-  private ISensor sensor;
+  private ActionOutputStream sensor;
 
 /**
    * Instantiates the JavaStructureDetector instance with Eclipse sensor.
    * 
    * @param sensor Eclipse sensor.
    */
-  public JavaStructureChangeListener(ISensor sensor) {
+  public JavaStructureChangeListener(ActionOutputStream sensor) {
     this.sensor = sensor;
   }
 

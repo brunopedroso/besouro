@@ -1,10 +1,10 @@
-package sensor;
+package athos.stream;
 import java.net.URI;
 import java.util.Map;
 
 
 //TODO [int] rename sensor to ... printer? sender? register?
-public class Sensor implements ISensor {
+public class ConsoleLogger implements ActionOutputStream {
 
 	public void addDevEvent(String name, URI resource,
 			Map<String, String> map, String string2) {

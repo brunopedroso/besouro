@@ -1,4 +1,4 @@
-package listeners;
+package athos.listeners;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,8 +19,10 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.core.commands.CommandEvent;
 import org.eclipse.core.commands.ICommandListener;
-import sensor.ISensor;
-import test_plugin.Activator;
+
+import athos.plugin.Activator;
+import athos.stream.ActionOutputStream;
+
 
 /**
  * Provides the IWindowListener-implemented class to catch the
@@ -49,9 +51,9 @@ public class WindowListener implements IWindowListener, IPartListener,
 	
 	// object
 	
-	private ISensor sensor;
+	private ActionOutputStream sensor;
 
-	public WindowListener(ISensor sensor) {
+	public WindowListener(ActionOutputStream sensor) {
 		this.sensor = sensor;
 	}
 
@@ -103,10 +105,10 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 				// TODO [int] simplify event register API
 				Map<String, String> keyValueMap = new HashMap<String, String>();
-				keyValueMap.put(ISensor.SUBTYPE, "Open");
-				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-				keyValueMap.put(ISensor.UNIT_NAME, fileResource);
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, uri, keyValueMap, "Opened " + fileResource.toString());
+				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
+				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
+				keyValueMap.put(ActionOutputStream.UNIT_NAME, fileResource);
+				sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, uri, keyValueMap, "Opened " + fileResource.toString());
 
 
 			}
@@ -142,15 +144,15 @@ public class WindowListener implements IWindowListener, IPartListener,
 				URI fileResource = newUri(name);
 				
 				Map<String, String> keyValueMap = new HashMap<String, String>();
-				keyValueMap.put(ISensor.SUBTYPE, "Close");
+				keyValueMap.put(ActionOutputStream.SUBTYPE, "Close");
 				
-				if (fileResource.toString().endsWith(ISensor.JAVA_EXT)) {
+				if (fileResource.toString().endsWith(ActionOutputStream.JAVA_EXT)) {
 					keyValueMap.put("Language", "java");
 				}
 				
-				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-				keyValueMap.put(ISensor.UNIT_NAME, Utils.extractFileName(fileResource));
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
+				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
+				keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
+				sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
 
 			}
 
@@ -182,10 +184,10 @@ public class WindowListener implements IWindowListener, IPartListener,
 			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
 
 			Map<String, String> keyValueMap = new HashMap<String, String>();
-			keyValueMap.put(ISensor.SUBTYPE, "Open");
-			keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-			keyValueMap.put(ISensor.UNIT_NAME, Utils.extractFileName(fileResource));
-			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
+			keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
+			keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
+			keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
+			sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
 
 		}
 	}

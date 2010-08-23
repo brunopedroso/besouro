@@ -1,4 +1,4 @@
-package listeners;
+package athos.listeners;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -15,7 +15,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import org.eclipse.ui.IFileEditorInput;
 
-import sensor.ISensor;
+import athos.stream.ActionOutputStream;
+
 
 /**
  * Provides an approach to find build error using problem markers.
@@ -25,9 +26,9 @@ import sensor.ISensor;
  */
 public class BuildErrorSensor {
 
-	private ISensor sensor;
+	private ActionOutputStream sensor;
   
-  public BuildErrorSensor(ISensor sensor) {
+  public BuildErrorSensor(ActionOutputStream sensor) {
     this.sensor = sensor;
   }
   
