@@ -33,8 +33,7 @@ import athos.stream.ActionOutputStream;
  * @author Takuya Yamashita
  * @version $Id: EclipseSensor.java,v 1.1.1.1 2005/10/20 23:56:56 johnson Exp $
  */
-public class ResourceChangeListener implements IResourceChangeListener,
-		IResourceDeltaVisitor {
+public class ResourceChangeListener implements IResourceChangeListener, IResourceDeltaVisitor {
 
 	private ActionOutputStream sensor;
 	private BuildErrorSensor buildErrorSensor;
@@ -122,11 +121,11 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				if (testCounter.hasTest()) {
 					
 					// TODO shouldnt the measures be in another class?
-					action.setCurrentSize(String.valueOf(WindowListener.getActiveBufferSize()));
-					action.setCurrentMethods(String.valueOf(testCounter.getNumOfMethods()));
-					action.setCurrentStatements(String.valueOf(testCounter.getNumOfStatements()));
-					action.setCurrentTestMethods(String.valueOf(testCounter.getNumOfTestMethods()));
-					action.setCurrentTestAssertions(String.valueOf(testCounter.getNumOfTestMethods()));
+					action.setCurrentSize(WindowListener.getActiveBufferSize());
+					action.setCurrentMethods(testCounter.getNumOfMethods());
+					action.setCurrentStatements(testCounter.getNumOfStatements());
+					action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
+					action.setCurrentTestAssertions(testCounter.getNumOfTestMethods());
 				}
 				
 				sensor.addAction(action);

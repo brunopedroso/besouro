@@ -13,6 +13,7 @@ import org.eclipse.ui.IStartup;
 
 import athos.listeners.JUnitListener;
 import athos.listeners.JavaStructureChangeListener;
+import athos.listeners.LaunchListener;
 import athos.listeners.ResourceChangeListener;
 import athos.listeners.WindowListener;
 import athos.stream.ActionOutputStream;
@@ -27,13 +28,6 @@ import athos.stream.ConsoleStream;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO [int]  change stream interface
-//TODO [int] adapt launchListener to stream interface
-
-//TODO z[data] shouldn't we collect timestamps?
-
-
-//
 
 public class SensorPlugin implements IStartup {
 	
@@ -58,38 +52,16 @@ public class SensorPlugin implements IStartup {
 		
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(stream), IResourceChangeEvent.POST_CHANGE);
 		JavaCore.addElementChangedListener(new JavaStructureChangeListener(stream));
+		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
+		JUnitCore.addTestRunListener(new JUnitListener(stream));
 
 		WindowListener windowListener = new WindowListener(stream);
 		Activator.getDefault().getWorkbench().addWindowListener(windowListener);
-		
-		JUnitCore.addTestRunListener(new JUnitListener(stream));
-		
+
 		// makes the installation of the windows' listeners
 		windowListener.windowOpened(null);
 		
 		
-		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new ILaunchesListener2() {
-			
-			public void launchesRemoved(ILaunch[] launches) {
-				
-			}
-			
-			public void launchesChanged(ILaunch[] launches) {
-				
-			}
-			
-			public void launchesAdded(ILaunch[] launches) {
-				
-			}
-			
-			public void launchesTerminated(ILaunch[] launches) {
-				
-				for (ILaunch launch: launches) {
-					System.out.println("LAUNCH TERMINATED!" + launch.getLaunchConfiguration().getName());
-				}				
-			}
-			
-		});
 		
 		
 	}

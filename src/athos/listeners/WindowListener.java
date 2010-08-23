@@ -32,8 +32,7 @@ import athos.stream.ActionOutputStream;
  * @author Takuya Yamashita
  * @version $Id: EclipseSensor.java,v 1.1.1.1 2005/10/20 23:56:56 johnson Exp $
  */
-public class WindowListener implements IWindowListener, IPartListener,
-		IDocumentListener {
+public class WindowListener implements IWindowListener, IPartListener, IDocumentListener {
 
 	//class
 	
@@ -101,7 +100,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 				activePage.addPartListener(this);
 
 				
-//				// TODO [] do we need window open events for TDD?
+//				// TODO [data] do we need window open events for TDD?
 //				URI uri = newUri(fileResource);
 //
 //				Map<String, String> keyValueMap = new HashMap<String, String>();
@@ -133,7 +132,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 	public void partClosed(IWorkbenchPart part) {
 		
-		//TODO [] do we need window closed events for TDD?
+		//TODO [data] do we need window closed events for TDD?
 		
 //		if (part instanceof ITextEditor) {
 //			
@@ -179,7 +178,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 	public void partOpened(IWorkbenchPart part) {
 
-		//TODO [] do we need file open events for TDD?
+		//TODO [data] do we need file open events for TDD?
 		
 //		if (part instanceof ITextEditor) {
 //

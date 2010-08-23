@@ -3,7 +3,9 @@ package athos.listeners;
 import java.io.File;
 import java.util.Date;
 
+import org.eclipse.jdt.internal.junit.model.ITestRunListener2;
 import org.eclipse.jdt.junit.TestRunListener;
+import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 
 import athos.model.Clock;
@@ -22,7 +24,8 @@ public class JUnitListener extends TestRunListener {
 	@Override
 	public void sessionFinished(ITestRunSession session) {
 		UnitTestAction action = new UnitTestAction(new Clock(new Date()), new File(session.getTestRunName()));
-		action.setSuccessValue(session.getTestResult(true).toString());
+		Result testResult = session.getTestResult(true);
+		action.setSuccessValue(testResult.toString().equals("OK"));
 		stream.addAction(action);
 //		print(session);
 	}

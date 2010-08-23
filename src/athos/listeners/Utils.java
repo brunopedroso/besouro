@@ -73,7 +73,7 @@ public class Utils {
 				// Perspective
 				// exits.
 				if (!e.isDoesNotExist()) {
-					// TODO z what to do with exception?
+					// TODO zz what to do with exception?
 					// EclipseSensorPlugin.getDefault().log(file.getName(), e);
 				}
 			}
