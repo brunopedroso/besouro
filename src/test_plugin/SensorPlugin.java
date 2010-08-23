@@ -27,7 +27,7 @@ import sensor.Sensor;
 
 
 //TODO [log] organize the launchListener
-//TODO [log] should we collect timestamps?
+//TODO [int] should we collect timestamps?
 
 //TODO [int] unify projects: plugin and analyser
 //TODO [int] rename project

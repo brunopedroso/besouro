@@ -149,7 +149,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 				}
 				
 				keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-				keyValueMap.put(ISensor.UNIT_NAME, ResourceChangeListener.extractFileName(fileResource));
+				keyValueMap.put(ISensor.UNIT_NAME, Utils.extractFileName(fileResource));
 				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
 
 			}
@@ -184,7 +184,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 			Map<String, String> keyValueMap = new HashMap<String, String>();
 			keyValueMap.put(ISensor.SUBTYPE, "Open");
 			keyValueMap.put(ISensor.UNIT_TYPE, ISensor.FILE);
-			keyValueMap.put(ISensor.UNIT_NAME, ResourceChangeListener.extractFileName(fileResource));
+			keyValueMap.put(ISensor.UNIT_NAME, Utils.extractFileName(fileResource));
 			sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
 
 		}

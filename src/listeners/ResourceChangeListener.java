@@ -104,7 +104,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				Map<String, String> event = new HashMap<String, String>();
 				
 				event.put(ISensor.UNIT_TYPE, ISensor.FILE);
-				event.put("Class-Name", getFullyQualifedClassName(changedFile));
+				event.put("Class-Name", Utils.getFullyQualifedClassName(changedFile));
 				event.put("Current-Size", String.valueOf(WindowListener.getActiveBufferSize()));
 				event.put(ISensor.SUBTYPE, "Save");
 				
@@ -122,7 +122,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				}
 				
 				URI fileResource = changedFile.getLocationURI();
-				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,event, "Save File : " + extractFileName(fileResource));
+				sensor.addDevEvent(ISensor.DEVEVENT_EDIT, fileResource,event, "Save File : " + Utils.extractFileName(fileResource));
 				
 			}
 
@@ -137,72 +137,5 @@ public class ResourceChangeListener implements IResourceChangeListener,
 
 
 
-	/**
-	 * Extracts file name from a file resource URI.
-	 * 
-	 * @param fileResource
-	 *            File name path.
-	 * @return File name.
-	 */
-	//TODO extract to utils
-	public static String extractFileName(URI fileResource) {
-		
-		String fileStirng = fileResource.toString();
-		
-		if (fileStirng != null && fileStirng.indexOf('/') > 0) {
-			
-			return fileStirng.substring(fileStirng.lastIndexOf('/') + 1);
-			
-		} else {
-			
-			return fileStirng;
-			
-		}
-	}
-
-	/**
-	 * Gets the fully qualified class name for an active file. For example, its
-	 * value is foo.bar.Baz.
-	 * 
-	 * @param file
-	 *            Get fully qualified class file.
-	 * @return The fully qualified class name. For example,foo.bar.Baz.
-	 */
-	private static String getFullyQualifedClassName(IFile file) {
-		String fullClassName = "";
-		if (file.exists() && file.getName().endsWith(ISensor.JAVA_EXT)) {
-			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore.create(file);
-			String className = compilationUnit.getElementName();
-			if (className.endsWith(ISensor.JAVA_EXT)) {
-				className = className.substring(0, className.length() - 5);
-			}
-
-			try {
-				
-				IPackageDeclaration[] packageDeclarations = compilationUnit.getPackageDeclarations();
-				// Should only have one package declaration
-				if (packageDeclarations == null || packageDeclarations.length == 0) {
-					fullClassName = className;
-				} else {
-					fullClassName = packageDeclarations[0].getElementName() + '.' + className;
-				}
-				
-			} catch (JavaModelException e) {
-				// This exception will be thrown if user is working on a Java
-				// but did not open
-				// it with "Java Perspective". Thus, the Java Model does not
-				// exist to parse
-				// Java files. So we only log out exception while Eclipse's Java
-				// Perspective
-				// exits.
-				if (!e.isDoesNotExist()) {
-					// TODO z what to do with exception?
-					// EclipseSensorPlugin.getDefault().log(file.getName(), e);
-				}
-			}
-		}
-
-		return fullClassName;
-	}
 
 }

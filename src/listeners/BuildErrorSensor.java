@@ -94,7 +94,7 @@ public class BuildErrorSensor {
         if (!messagePool.contains(data)) {
           StringBuffer displayMessage = new StringBuffer();
           displayMessage.append("Build Error : ")
-                        .append(ResourceChangeListener.extractFileName(fileResource))
+                        .append(Utils.extractFileName(fileResource))
                         .append(" [").append(errorMsg).append(']');
           this.sensor.addDevEvent("Build", fileResource, keyValueMap, displayMessage.toString());
           messagePool.add(data);
