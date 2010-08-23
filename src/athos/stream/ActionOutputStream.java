@@ -2,6 +2,8 @@ package athos.stream;
 import java.net.URI;
 import java.util.Map;
 
+import athos.model.Action;
+
 
 public interface ActionOutputStream {
 
@@ -12,7 +14,7 @@ public interface ActionOutputStream {
   static String JAVA_EXT = ".java";
   static String FILE = "file";
   
-	void addDevEvent(String string, URI resource,
-			Map<String, String> devEventPMap, String string2);
+  	//public void addAction(String string, URI resource, Map<String, String> devEventPMap, String string2);
+	public void addAction(Action action);
 
 }

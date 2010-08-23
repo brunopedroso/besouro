@@ -1,5 +1,7 @@
 package athos.listeners;
+import java.io.File;
 import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,8 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
+import athos.model.Clock;
+import athos.model.EditAction;
 import athos.stream.ActionOutputStream;
 
 
@@ -77,21 +81,26 @@ public class ResourceChangeListener implements IResourceChangeListener,
 		
 		if (resource instanceof IProject && ((flag == IResourceDelta.OPEN) || (flag == ANOTHER_OPEN_CLOSE_FLAG))) {
 			
-			IProject project = resource.getProject();
-			String projectName = project.getName();
-			URI projectResoruce = project.getFile(".project").getLocationURI();
+//			IProject project = resource.getProject();
+//			String projectName = project.getName();
+//			URI projectResoruce = project.getFile(".project").getLocationURI();
+//
+//			Map<String, String> keyValueMap = new HashMap<String, String>();
+//			keyValueMap.put(ActionOutputStream.UNIT_TYPE, "project");
+//			keyValueMap.put(ActionOutputStream.UNIT_NAME, projectName);
+//
+//			if (((IProject) resource).isOpen()) {
+//				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
+//			} else {
+//				keyValueMap.put(ActionOutputStream.SUBTYPE, "Close");
+//			}
+//			
+//			sensor.addAction(ActionOutputStream.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
 
-			Map<String, String> keyValueMap = new HashMap<String, String>();
-			keyValueMap.put(ActionOutputStream.UNIT_TYPE, "project");
-			keyValueMap.put(ActionOutputStream.UNIT_NAME, projectName);
-
-			if (((IProject) resource).isOpen()) {
-				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
-			} else {
-				keyValueMap.put(ActionOutputStream.SUBTYPE, "Close");
-			}
 			
-			sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, projectResoruce, keyValueMap, projectResoruce.toString());
+			//NOTE: We do not register project opens and closes yet
+			// sensor.addAction(new ProjectOpenAction());
+
 			
 			// do not visit the children
 			return false;
@@ -101,32 +110,28 @@ public class ResourceChangeListener implements IResourceChangeListener,
 			if (resource.getLocation().toString().endsWith(ActionOutputStream.JAVA_EXT)) {
 				
 				IFile changedFile = (IFile) resource;
+				URI fileResource = changedFile.getLocationURI();
 				
-				Map<String, String> event = new HashMap<String, String>();
-				
-				event.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
-				event.put("Class-Name", Utils.getFullyQualifedClassName(changedFile));
-				event.put("Current-Size", String.valueOf(WindowListener.getActiveBufferSize()));
-				event.put(ActionOutputStream.SUBTYPE, "Save");
-				
-				event.put("Language", "java");
-				
-				// Measure java file.
-				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
-				event.put("Current-Methods", String.valueOf(testCounter.getNumOfMethods()));
-				event.put("Current-Statements", String.valueOf(testCounter.getNumOfStatements()));
+				//TODO need the duration
+				EditAction action = new EditAction(new Clock(new Date()), new File(fileResource), 0);
+				action.setOperation("Save");
+				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				
 				// Number of test method and assertion statements.
+				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
 				if (testCounter.hasTest()) {
-					event.put("Current-Test-Methods", String.valueOf(testCounter.getNumOfTestMethods()));
-					event.put("Current-Test-Assertions",String.valueOf(testCounter.getNumOfTestAssertions()));
+					
+					// TODO shouldnt the measures be in another class?
+					action.setCurrentSize(String.valueOf(WindowListener.getActiveBufferSize()));
+					action.setCurrentMethods(String.valueOf(testCounter.getNumOfMethods()));
+					action.setCurrentStatements(String.valueOf(testCounter.getNumOfStatements()));
+					action.setCurrentTestMethods(String.valueOf(testCounter.getNumOfTestMethods()));
+					action.setCurrentTestAssertions(String.valueOf(testCounter.getNumOfTestMethods()));
 				}
 				
-				URI fileResource = changedFile.getLocationURI();
-				sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, fileResource,event, "Save File : " + Utils.extractFileName(fileResource));
+				sensor.addAction(action);
 				
 			}
-
 
 			
 		}

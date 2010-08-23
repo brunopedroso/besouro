@@ -101,14 +101,14 @@ public class WindowListener implements IWindowListener, IPartListener,
 				activePage.addPartListener(this);
 
 				
-				URI uri = newUri(fileResource);
-
-				// TODO [int] adapt windowListener to stream interface
-				Map<String, String> keyValueMap = new HashMap<String, String>();
-				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
-				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
-				keyValueMap.put(ActionOutputStream.UNIT_NAME, fileResource);
-				sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, uri, keyValueMap, "Opened " + fileResource.toString());
+//				// TODO [] do we need window open events for TDD?
+//				URI uri = newUri(fileResource);
+//
+//				Map<String, String> keyValueMap = new HashMap<String, String>();
+//				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
+//				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
+//				keyValueMap.put(ActionOutputStream.UNIT_NAME, fileResource);
+//				sensor.addAction(ActionOutputStream.DEVEVENT_EDIT, uri, keyValueMap, "Opened " + fileResource.toString());
 
 
 			}
@@ -132,31 +132,34 @@ public class WindowListener implements IWindowListener, IPartListener,
 	}
 
 	public void partClosed(IWorkbenchPart part) {
-		if (part instanceof ITextEditor) {
-			
-			String name = ((ITextEditor) part).getEditorInput().getName();
-
-			if (name != null) {
-				
-				// Does it work?
-				// URI fileResource =
-				// EclipseSensor.this.getFileResource((ITextEditor) part);
-				URI fileResource = newUri(name);
-				
-				Map<String, String> keyValueMap = new HashMap<String, String>();
-				keyValueMap.put(ActionOutputStream.SUBTYPE, "Close");
-				
-				if (fileResource.toString().endsWith(ActionOutputStream.JAVA_EXT)) {
-					keyValueMap.put("Language", "java");
-				}
-				
-				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
-				keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
-				sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
-
-			}
-
-		}
+		
+		//TODO [] do we need window closed events for TDD?
+		
+//		if (part instanceof ITextEditor) {
+//			
+//			String name = ((ITextEditor) part).getEditorInput().getName();
+//
+//			if (name != null) {
+//				
+//				// Does it work?
+//				// URI fileResource =
+//				// EclipseSensor.this.getFileResource((ITextEditor) part);
+//				URI fileResource = newUri(name);
+//				
+//				Map<String, String> keyValueMap = new HashMap<String, String>();
+//				keyValueMap.put(ActionOutputStream.SUBTYPE, "Close");
+//				
+//				if (fileResource.toString().endsWith(ActionOutputStream.JAVA_EXT)) {
+//					keyValueMap.put("Language", "java");
+//				}
+//				
+//				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
+//				keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
+//				sensor.addAction(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
+//
+//			}
+//
+//		}
 	}
 
 	private URI newUri(String name) {
@@ -176,20 +179,22 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 	public void partOpened(IWorkbenchPart part) {
 
-		if (part instanceof ITextEditor) {
-
-			// TODO [data] do we realy need an URI?! :-(
-			// Does it work?
-			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
-			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
-
-			Map<String, String> keyValueMap = new HashMap<String, String>();
-			keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
-			keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
-			keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
-			sensor.addDevEvent(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
-
-		}
+		//TODO [] do we need file open events for TDD?
+		
+//		if (part instanceof ITextEditor) {
+//
+//			// TODO z[data] do we realy need an URI?! :-(
+//			// Does it work?
+//			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
+//			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
+//
+//			Map<String, String> keyValueMap = new HashMap<String, String>();
+//			keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
+//			keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
+//			keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
+//			sensor.addAction(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
+//
+//		}
 	}
 
 	public void documentAboutToBeChanged(DocumentEvent event) {

@@ -30,7 +30,7 @@ import athos.stream.ConsoleStream;
 //TODO [int]  change stream interface
 //TODO [int] adapt launchListener to stream interface
 
-//TODO [data] shouldn't we collect timestamps?
+//TODO z[data] shouldn't we collect timestamps?
 
 
 //
@@ -41,9 +41,8 @@ public class SensorPlugin implements IStartup {
 	public static SensorPlugin getInstance() {
 		return plugin;
 	}
-	
 
-	private ActionOutputStream sensor = new ConsoleStream();
+	private static ActionOutputStream stream = new ConsoleStream();
 	
 	public SensorPlugin() {
 		super();
@@ -57,13 +56,13 @@ public class SensorPlugin implements IStartup {
 
 		System.out.println("Registering first-time listeners...");
 		
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(sensor), IResourceChangeEvent.POST_CHANGE);
-		JavaCore.addElementChangedListener(new JavaStructureChangeListener(sensor));
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(stream), IResourceChangeEvent.POST_CHANGE);
+		JavaCore.addElementChangedListener(new JavaStructureChangeListener(stream));
 
-		WindowListener windowListener = new WindowListener(sensor);
+		WindowListener windowListener = new WindowListener(stream);
 		Activator.getDefault().getWorkbench().addWindowListener(windowListener);
 		
-		JUnitCore.addTestRunListener(new JUnitListener());
+		JUnitCore.addTestRunListener(new JUnitListener(stream));
 		
 		// makes the installation of the windows' listeners
 		windowListener.windowOpened(null);

@@ -1,0 +1,39 @@
+package org.hackystat.app.sdsa.model.action;
+
+/**
+ * Defines interface for web presentation of actions. All actions can be
+ * represented in 4 table cells in a row.
+ *     
+ * @author Hongbing Kou
+ * @version $Id: ActionHtmlSnippet.java 281 2005-11-10 22:25:19Z hongbing $
+ */
+public interface ActionHtmlSnippet {
+  /**
+   * Gets value of the action. It is file name to a file-type action and command name
+   * to a command-type action.  
+   * 
+   * @return Value of action.
+   */
+  String getActionValue();
+  /**
+   * Gets action type description/ 
+   * 
+   * @return Action type.
+   */
+  String getActionType();
+  
+  /**
+   * Gets action type color encoding. Compilation error is encoded as yellow for warning.
+   * unit test failure is encode as red as blocker.
+   * 
+   * @return Color encoding.
+   */
+  String getActionColorEncoding();
+  
+  /**
+   * Gets action result or its descrition by metric value.
+   *  
+   * @return Action description.
+   */
+  String getActionDesc();
+}

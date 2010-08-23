@@ -1,6 +1,8 @@
 package athos.listeners;
 
+import java.io.File;
 import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,6 +17,8 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import org.eclipse.ui.IFileEditorInput;
 
+import athos.model.BuildErrorAction;
+import athos.model.Clock;
 import athos.stream.ActionOutputStream;
 
 
@@ -88,17 +92,16 @@ public class BuildErrorSensor {
       IMarkerDelta markerDelta = (IMarkerDelta) markerDeltas[i];
       Map<String, String> keyValueMap = processPossibleBuildErrors(fileResource, markerDelta);
       if (!keyValueMap.isEmpty()) {
-        // Only sends out unrepeated data.
+
         String errorMsg = keyValueMap.get("Error");
         String data = file.getLocation().toString() + "#" + errorMsg;
-
+        
+        // dont repeat
         if (!messagePool.contains(data)) {
-          StringBuffer displayMessage = new StringBuffer();
-          displayMessage.append("Build Error : ")
-                        .append(Utils.extractFileName(fileResource))
-                        .append(" [").append(errorMsg).append(']');
-          this.sensor.addDevEvent("Build", fileResource, keyValueMap, displayMessage.toString());
+        	
+          this.sensor.addAction( new BuildErrorAction(new Clock(new Date()), new File(fileResource), errorMsg));
           messagePool.add(data);
+          
         }
       }
     }      

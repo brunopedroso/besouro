@@ -1,8 +1,10 @@
 package athos.listeners;
 
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +16,8 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
+import athos.model.Clock;
+import athos.model.EditAction;
 import athos.stream.ActionOutputStream;
 
 
@@ -150,17 +154,15 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     }
     
     String name = retrieveName(element);
-    //String toName = 
     if (name != null && !"".equals(name)) {
-      Map<String, String> devEventPMap = new HashMap<String, String>();
-      devEventPMap.put("Subtype", "ProgramUnit");
-      devEventPMap.put("Subsubtype", op);
-      devEventPMap.put("Language", JAVA);
-      devEventPMap.put("Unit-Type", type);
-      devEventPMap.put("Unit-Name", name);
       
-      URI resource = element.getResource().getLocationURI();
-      this.sensor.addDevEvent("Edit", resource, devEventPMap, op + " " + name);
+      //TODO need the duration of edit event!
+      EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
+      action.setOperation(op);
+      action.setUnitName(name);
+      
+      this.sensor.addAction(action);
+    		  
     }
   }
 
@@ -193,20 +195,16 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     String toName = retrieveName(toDelta.getElement());
     
     if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
-      StringBuffer msgBuf = new StringBuffer();
-      msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName)
-            .append(" -> ").append(toName);
+            
+//      msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
+      
+      //TODO need the duration of edit event!
+      EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
+      action.setOperation("Rename");
+      action.setUnitName(fromName + " => " + toName);
+      
+      this.sensor.addAction(action);
 
-      Map<String, String> devEventPMap = new HashMap<String, String>();
-      devEventPMap.put("Subtype", "ProgramUnit");
-      devEventPMap.put("Subsubtype", "Rename");
-      devEventPMap.put("Language", JAVA);
-      devEventPMap.put("Unit-Type", typeName);
-      devEventPMap.put("From-Unit-Name", fromName);
-      devEventPMap.put("To-Unit-Name", toName);
-
-      URI resource = fromDelta.getElement().getResource().getLocationURI();
-      this.sensor.addDevEvent("Edit", resource, devEventPMap, msgBuf.toString());
     }
   }
   
@@ -218,37 +216,30 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * @param from Change from element.
    * @param to Change to element.
    */
-  private void processMoveRefactor(IPath javaFile, IJavaElement element, 
-      IJavaElement from, IJavaElement to) {
-    String typeName = retrieveType(element);
-    
+  private void processMoveRefactor(IPath javaFile, IJavaElement element, IJavaElement from, IJavaElement to) {
+	  
     // Only deal with java file.
     if (!JAVA.equals(javaFile.getFileExtension())) {
       return;
     }
     
-    String name = retrieveName(element);
+//    String name = retrieveName(element);
     String fromName = retrieveName(from);
     String toName = retrieveName(to);
     
-    // Put refactor data together with pound sigh separation and send it to Hackystat 
-    // server as activity data.
+    // Put refactor data together with pound sigh separation and send it to Hackystat server as activity data.
     if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
-      StringBuffer msgBuf = new StringBuffer();
-      msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').
-             append(fromName).append(" -> ").append(toName);
+
+//      msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').append(fromName).append(" -> ").append(toName);
       
-      Map<String, String> devEventRenameMap = new HashMap<String, String>();
-      devEventRenameMap.put("Subtype", "ProgramUnit");
-      devEventRenameMap.put("Subsubtype", "Move");
-      devEventRenameMap.put("Language", JAVA);
-      devEventRenameMap.put("Unit-Type", typeName);
-      // return-type not available
-      devEventRenameMap.put("From-Unit-Name", fromName);
-      devEventRenameMap.put("To-Unit-Name", toName);
+      //TODO need the duration of edit event!
+      EditAction action = new EditAction(new Clock(new Date()), javaFile.toFile(), 0);
+      action.setOperation("Move");
+      action.setUnitName(fromName + " => " + toName);
       
-      URI resource = element.getResource().getLocationURI();
-      this.sensor.addDevEvent("Edit", resource, devEventRenameMap, msgBuf.toString());
+      this.sensor.addAction(action);
+
+      
     }    
   }
   

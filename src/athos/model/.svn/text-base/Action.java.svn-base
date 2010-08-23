@@ -1,0 +1,117 @@
+package org.hackystat.app.sdsa.model.action;
+
+import jess.Fact;
+import jess.JessException;
+import jess.Rete;
+
+
+/**
+ * Implements abstract command for build data or cli data. 
+ *  
+ * @author Hongbing Kou
+ * @version $Id: Action.java 281 2005-11-10 22:25:19Z hongbing $
+ */
+public abstract class Action implements Comparable, ActionHtmlSnippet {
+  /** Time stamp of the command. */
+  private Clock clock;
+  /** Some actions have duration. Default value is zero*/  
+  private int duration = 0;
+  
+  /**
+   * Instantiates a command with clock. 
+   * 
+   * @param clock Time stamp for command. 
+   */
+  public Action(Clock clock) {
+    this.clock = clock;
+  }
+  
+  /**
+   * Gets timestamp of the command.
+   * 
+   * @return Command time stamp.
+   */
+  public Clock getClock() {
+    return this.clock;  
+  }
+  
+  
+  /**
+   * Hashcode of the action.
+   * 
+   * @return Action hash code.
+   */
+  public int hashCode() {
+    return this.clock.hashCode();
+  }
+  
+  /**
+   * Compares two actions objects.
+   * 
+   * @param o Other object.
+   * @return Positive if this object is bigger or negative if smaller.
+   */ 
+  public int compareTo(Object o) {
+    return this.clock.compareTo(((Action) o).clock);      
+  }
+  
+  /**
+   * Test whether two commands happened at the same time.
+   * 
+   * @param o Another command object.
+   * @return True if two command objects are equal.
+   */
+  public boolean equals(Object o) {
+    if (o == null || !(o instanceof Action)) {
+      return false;
+    }
+    
+    return this.clock.equals(((Action) o).clock);
+  }
+  
+  /**
+   * Sets duration for this action.
+   * 
+   * @param duration Number of seconds.
+   */
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
+  
+  /**
+   * Gets duration of this action.
+   * 
+   * @return Number of seconds of this action.
+   */
+  public int getDuration() {
+    return this.duration;  
+  }
+  
+  /**
+   * Gets command string.
+   * 
+   * @return Action string. 
+   */
+  public String toString() {
+    return this.clock.toString();
+  }
+  
+  /**
+   * There is no action color encoding in default.
+   * 
+   * @return White.
+   */
+  public String getActionColorEncoding() {
+    return "white";  
+  }
+  
+  /**
+   * Makes Jess facts in the given Jess rete engine.
+   * 
+   * @param index Index if this action in episode.
+   * @param engine Jess rete engine.
+   * @throws JessException If error while constructing jess action.
+   * @return Jess fact of this action.
+   */
+  public abstract Fact assertJessFact(int index, Rete engine) throws JessException;  
+}
