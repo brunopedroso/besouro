@@ -31,9 +31,9 @@ public class LaunchListener implements ILaunchesListener2 {
 	}
 	
 	public void launchesTerminated(ILaunch[] launches) {
-		for (ILaunch launch: launches) {
-			stream.addAction(new ExecutionAction(new Clock(new Date()), new File("dunno yet")));
-		}				
+//		for (ILaunch launch: launches) {
+//			stream.addAction(new ExecutionAction(new Clock(new Date()), new File("dunno yet")));
+//		}				
 	}
 		
 }

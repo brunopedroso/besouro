@@ -2,14 +2,6 @@ package athos.model;
 import java.io.File;
 
 import jess.Rete;
-
-
-import athos.model.Clock;
-import athos.model.CompilationAction;
-import athos.model.EditAction;
-import athos.model.ProductionEditAction;
-import athos.model.UnitTestAction;
-import athos.model.UnitTestEditAction;
 import athos.model.refactor.RefactorOperator;
 import athos.model.refactor.RefactorSubjectType;
 import athos.model.refactor.UnaryRefactorAction;
@@ -29,7 +21,8 @@ public class TestEpisodesFactory {
 	    unaryAction.assertJessFact(1, engine);
 	    
 	    // Edit on test
-	    EditAction editAction = new UnitTestEditAction(clock, testFile, 123);
+	    EditAction editAction = new EditAction(clock, testFile, 123);
+	    editAction.setIsTestEdit(true);
 	    editAction.assertJessFact(2, engine);
 
 	    // Compile error on test
@@ -38,7 +31,8 @@ public class TestEpisodesFactory {
 	    compilationAction.assertJessFact(3, engine);
 
 	    // Work on production code
-	    editAction = new ProductionEditAction(clock, productionFile, 200);
+	    editAction = new EditAction(clock, productionFile, 200);
+	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(10);
 	    editAction.assertJessFact(4, engine);
 
@@ -48,7 +42,8 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(5, engine);
 	 
 	    // Edit on prodction code
-	    editAction = new ProductionEditAction(clock, productionFile, 199);
+	    editAction = new EditAction(clock, productionFile, 199);
+	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(30);
 	    editAction.assertJessFact(6, engine);
 
@@ -66,7 +61,8 @@ public class TestEpisodesFactory {
 	    unaryAction.assertJessFact(1, engine);
 	    
 	    // Edit on test
-	    EditAction editAction = new UnitTestEditAction(clock, testFile, 123);
+	    EditAction editAction = new EditAction(clock, testFile, 123);
+	    editAction.setIsTestEdit(true);
 	    editAction.setFileSizeIncrease(11);
 	    editAction.assertJessFact(2, engine);
 
@@ -76,7 +72,8 @@ public class TestEpisodesFactory {
 	    compilationAction.assertJessFact(3, engine);
 
 	    // Work on production code
-	    editAction = new ProductionEditAction(clock, productionFile, 200);
+	    editAction = new EditAction(clock, productionFile, 200);
+	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(26);
 	    editAction.assertJessFact(4, engine);
 
@@ -94,12 +91,14 @@ public class TestEpisodesFactory {
 	    unaryAction.assertJessFact(1, engine);
 	    
 	    // Edit on test
-	    EditAction editAction = new UnitTestEditAction(clock, testFile, 123);
+	    EditAction editAction = new EditAction(clock, testFile, 123);
+	    editAction.setIsTestEdit(true);
 	    editAction.setFileSizeIncrease(10);
 	    editAction.assertJessFact(2, engine);
 
 	    // Work on production code
-	    editAction = new ProductionEditAction(clock, productionFile, 200);
+	    editAction = new EditAction(clock, productionFile, 200);
+	    editAction.setIsTestEdit(true);
 	    editAction.assertJessFact(4, engine);
 
 	    // Unit test failue
@@ -108,7 +107,8 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(5, engine);
 	 
 	    // Edit on prodction code
-	    editAction = new ProductionEditAction(clock, productionFile, 199);
+	    editAction = new EditAction(clock, productionFile, 199);
+	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(90);
 	    editAction.assertJessFact(6, engine);
 
@@ -119,13 +119,15 @@ public class TestEpisodesFactory {
 	  
 	  public static void addTestCodeRefactoFacts(Rete engine, Clock clock) throws Exception {
 	    // Edit on test code    
-	    UnitTestEditAction action = new UnitTestEditAction(clock, testFile, 300);
+	    EditAction action = new EditAction(clock, testFile, 300);
+	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(27);
 	    action.setMethodIncrease(2);
 	    action.assertJessFact(1, engine);
 	    
 	    // Edit on test code
-	    action = new UnitTestEditAction(clock, testFile, 200);
+	    action = new EditAction(clock, testFile, 200);
+	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(50);
 	    action.setMethodIncrease(2);
 	    action.assertJessFact(2, engine);
@@ -136,7 +138,8 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(3, engine);
 
 	    // Edit on test code
-	    action = new UnitTestEditAction(clock, testFile, 200);
+	    action = new EditAction(clock, testFile, 200);
+	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(13);
 	    action.assertJessFact(2, engine);
 
@@ -147,7 +150,8 @@ public class TestEpisodesFactory {
 	  
 	  public static void addProductionCodeRefactoFacts(Rete engine, Clock clock) throws Exception {
 	    // Edit on production code    
-	    ProductionEditAction action = new ProductionEditAction(clock, productionFile, 300);
+	    EditAction action = new EditAction(clock, productionFile, 300);
+	    action.setIsTestEdit(false);
 	    action.setMethodIncrease(-1);
 	    action.setStatementIncrease(10);
 	    action.setFileSize(122);
@@ -159,7 +163,8 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(2, engine);
 
 	    // Edit on production code
-	    action = new ProductionEditAction(clock, testFile, 200);
+	    action = new EditAction(clock, testFile, 200);
+	    action.setIsTestEdit(false);
 	    action.setMethodIncrease(0);
 	    action.setStatementIncrease(0);
 	    action.setFileSize(89);

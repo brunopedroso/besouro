@@ -17,8 +17,8 @@ public class BuildErrorAction extends FileAction {
 
 	@Override
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
-		throw new RuntimeException("do we need a build error action?");
-//		return null;
+//		throw new RuntimeException("do we need a build error action?");
+		return null;
 	}
 	
 	@Override

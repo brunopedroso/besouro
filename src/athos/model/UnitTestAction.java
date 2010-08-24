@@ -53,7 +53,11 @@ public class UnitTestAction extends FileAction {
   public Fact assertJessFact(int index, Rete engine) throws JessException  {
     Fact f = new Fact("UnitTestAction", engine);
     f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-    f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName(), RU.STRING));
+    
+    //TODO organize the file representation all over the program
+    f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName()+".java", RU.STRING));
+    
+    
     if (!this.isSuccessful()) {
       f.setSlotValue("errmsg", new Value("" + this.success, RU.STRING));
     }

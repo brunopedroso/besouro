@@ -4,7 +4,9 @@ import java.io.File;
 
 import jess.Fact;
 import jess.JessException;
+import jess.RU;
 import jess.Rete;
+import jess.Value;
 
 
 
@@ -16,126 +18,149 @@ import jess.Rete;
  * @version $Id: EditAction.java 281 2005-11-10 22:25:19Z hongbing $
  */
 public class EditAction extends FileAction {
-  /** Duration in seconds. */
+	
+  // seconds
   private int duration;
-  /** File size with this edit. */
-  protected int fileSize = 0;
-  /** File size increase. It could be either positive or negative. */
-  protected int fileSizeIncrease = 0;
+  
+  private int fileSize = 0;
+  //TODO [2] increases
+  private int fileSizeIncrease = 10;
   
   private String operation;
   private String unitName;
-private int currentTestMethods;
-private int currentTestAssertions;
-private int currentStatements;
-private int currentMethods;
-private int currentSize;
   
-  /**
-   * Constructs an edit action on a file.
-   * 
-   * @param clock Time action occurs.
-   * @param workspaceFile Associated file.
-   * @param duration Duration of edit on the given file.
-   */
+  private int methodIncrease = 1;
+  private int statementIncrease = 2;
+  
+  private int testMethodIncrease = 0;
+  private int testAssertionIncrease = 0;
+
+  private int currentTestMethods;
+  private int currentTestAssertions;
+  private int currentStatements;
+  private int currentMethods;
+
+  private boolean isTestEdit;
+  
+
+
   public EditAction(Clock clock, File workspaceFile, int duration) {
     super(clock, workspaceFile);
-    this.duration = duration;
+    this.duration = 3;
   }
+  
+  	  
+  	  public String toString() {
+  	    StringBuffer buf = new StringBuffer();
+  	    buf.append(super.toString());
+  	    
+        if (this.isTestEdit()) {
+        	buf.append(" TEST {");
+        	buf.append(makeMetricPair("TI", this.testMethodIncrease, getCurrentTestMethods())).append(", ");
+        	buf.append(makeMetricPair("AI", this.testAssertionIncrease, getCurrentTestAssertions()));
+        	
+        } else {
+        	buf.append(" PRODUCTION {");
+        }
+  	    
+  	    buf.append(makeMetricPair("MI", getMethodIncrease(), getCurrentMethods())).append(", ");
+  	    buf.append(makeMetricPair("SI", getStatementIncrease(), getCurrentStatements())).append(", ");
+  	    buf.append(", ");
+  	    buf.append(makeMetricPair("FI", getFileSizeIncrease(), getFileSize()));
 
-  /**
-   * Set the size of the file beding edited. 
-   * 
-   * @param fileSize Size of the file being edited.
-   */
+  	    buf.append("}");    
+  	    return  buf.toString();
+  	  }
+
+
+  	  protected String makeMetricPair(String name, int value, int total) {
+	    StringBuffer buf = new StringBuffer();
+	    buf.append(name);
+	    buf.append("=");
+	    if (value > 0) {
+	      buf.append("+");
+	    }
+	    buf.append(value);
+	    
+	    buf.append("(").append(total).append(")");    
+	    return buf.toString();
+	  }
+  	  
+  	  
+  	  public boolean isSubstantial() {
+  		  
+  		  //TODO [2] increases
+  		  return true;
+//  		  return getMethodIncrease() != 0 || getStatementIncrease() != 0 || 
+//  	         this.testMethodIncrease != 0 || this.testAssertionIncrease != 0;  
+  	  }
+
+
+	  //TODO [api] create a classifier interface
+	  
+	  public Fact assertJessFact(int index, Rete engine) throws JessException  {
+	    Fact assertedFact = null;
+	    if (isSubstantial()) {
+	      Fact f;
+	      
+	      if (this.isTestEdit()) {
+	    	  f = new Fact("UnitTestEditAction", engine);
+	          f.setSlotValue("testChange", new Value(this.getTestMethodIncrease(), RU.INTEGER));
+	          f.setSlotValue("assertionChange", new Value(this.getTestAssertionIncrease(), RU.INTEGER));
+
+	      } else {
+	    	  f = new Fact("ProductionEditAction", engine);
+	    	  f.setSlotValue("methodChange", new Value(this.getMethodIncrease(), RU.INTEGER));
+	    	  f.setSlotValue("statementChange", new Value(this.getStatementIncrease(), RU.INTEGER));
+	      }
+	      
+	      f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
+	      f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName(), RU.STRING));
+	      f.setSlotValue("duration", new Value(this.getDuration(), RU.INTEGER));
+	      f.setSlotValue("byteChange", new Value(this.getFileSizeIncrease(), RU.INTEGER));
+	      
+	      assertedFact = engine.assertFact(f);
+	    }
+	    
+	    return assertedFact;
+	  }  
+	  
+	  
+	  private boolean isTestEdit() {
+		return isTestEdit;
+	}
+
+  public void setIsTestEdit(boolean isTestEdit) {
+		this.isTestEdit = isTestEdit;
+	}
+
+	  
+	  
   public void setFileSize(int fileSize) {
     this.fileSize = fileSize;
   }
   
-  /**
-   * Gets edited file size.
-   *  
-   * @return Size of the file is edited.
-   */
   public int getFileSize() {
     return this.fileSize;
   }
   
-  /**
-   * Sets file size increase with this edit action. 
-   * 
-   * @param increase Increase of file size.
-   */
   public void setFileSizeIncrease(int increase) {
     this.fileSizeIncrease = increase; 
   }
   
-  /**
-   * Gets file size increase with this edit action.
-   * 
-   * @return File size increase.
-   */
   public int getFileSizeIncrease() {
     return this.fileSizeIncrease;
   }
   
-  /**
-   * Sets duration of this action. 
-   * 
-   * @param duration Duration of this action in number of seconds.
-   */
   public void setDuration(int duration) {
     this.duration = duration;
   }
 
-  /**
-   * Gets duration of action in seconds.
-   * 
-   * @return Duration in seconds.
-   */
   public int getDuration() {
     return this.duration;
   }
   
-  /**
-   * Gets edit action string.
-   * 
-   * @return Edit action string. 
-   */
-  public String toString() {
-    StringBuffer buf = new StringBuffer();
-    buf.append(super.toString());
-    buf.append(" EDIT ");
-    buf.append(this.duration  + "s ");
-    buf.append(this.operation + " ");
-    buf.append(this.unitName  + " ");
-    return buf.toString();
-  }
-  
-  /**
-   * Gets metric name=value string pair.
-   * @param name Metric name
-   * @param value value of the metric.
-   * @param total Total value of the metric.
-   * @return Metric name=value(total) pair.
-   */
-  protected String makeMetricPair(String name, int value, int total) {
-    StringBuffer buf = new StringBuffer();
-    buf.append(name);
-    buf.append("=");
-    if (value > 0) {
-      buf.append("+");
-    }
-    buf.append(value);
-    
-    buf.append("(").append(total).append(")");    
-    return buf.toString();
-  }
 
-@Override
-public Fact assertJessFact(int index, Rete engine) throws JessException {
-	throw new RuntimeException("implement this");
-}
 
 public void setOperation(String op) {
 	this.operation = op;
@@ -146,6 +171,7 @@ public void setUnitName(String name) {
 	this.unitName = name;
 	
 }
+
 
 
 public void setCurrentTestMethods(int value) {
@@ -167,12 +193,57 @@ public void setCurrentMethods(int value) {
 	
 }
 
-public void setCurrentSize(int value) {
-	currentSize = value;
-	
+
+public int getCurrentTestMethods() {
+	return currentTestMethods;
+}
+
+public int getCurrentTestAssertions() {
+	return currentTestAssertions;
+}
+
+public int getCurrentStatements() {
+	return currentStatements;
+}
+
+public int getCurrentMethods() {
+	return currentMethods;
 }
 
 
+public void setTestMethodIncrease(int value) {
+    this.testMethodIncrease = value;
+  }
+  
+  public int getTestMethodIncrease() {
+    return this.testMethodIncrease;
+  }
+  
+  public void setTestAssertionIncrease(int value) {
+    this.testAssertionIncrease = value;
+  }
+  
+  public int getTestAssertionIncrease() {
+    return this.testAssertionIncrease;
+  }
+
+
+
+public void setMethodIncrease(int methodIncrease) {
+  this.methodIncrease = methodIncrease;    
+}
+
+public int getMethodIncrease() {
+  return this.methodIncrease;
+}
+
+public void setStatementIncrease(int statementIncrease) {
+  this.statementIncrease = statementIncrease;    
+}
+
+public int getStatementIncrease() {
+  return this.statementIncrease; 
+}
 
   /**
    * Checks whether this edit work makes any progress.

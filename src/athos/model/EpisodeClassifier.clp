@@ -40,8 +40,8 @@
 ;;  3   With method increase, and file byte change is significant.
 
 ;; Requires the template definition.
-(require* JessActionTemplates)
-(require* Episode)
+(require JessActionTemplates)
+(require Episode)
 
 (provide TestPassEpisodeClassifier)
 

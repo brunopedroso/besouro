@@ -14,12 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import athos.model.Clock;
-import athos.model.CompilationAction;
-import athos.model.EditAction;
-import athos.model.ProductionEditAction;
-import athos.model.UnitTestAction;
-import athos.model.UnitTestEditAction;
 import athos.model.refactor.RefactorOperator;
 import athos.model.refactor.RefactorSubjectType;
 import athos.model.refactor.UnaryRefactorAction;
@@ -80,7 +74,8 @@ public class TemplatesTest {
 		//TODO z should not run a query here and assert?
 		
 		// Edit on test
-		EditAction editAction = new UnitTestEditAction(this.clock, this.testFile, 123);
+		EditAction editAction = new EditAction(this.clock, this.testFile, 123);
+		editAction.setIsTestEdit(true);
 		editAction.assertJessFact(2, engine);
 
 		// Compile error on test
@@ -89,7 +84,8 @@ public class TemplatesTest {
 		compilationAction.assertJessFact(3, engine);
 
 		// Work on production code
-		editAction = new ProductionEditAction(this.clock, this.productionFile,200);
+		editAction = new EditAction(this.clock, this.productionFile,200);
+		editAction.setIsTestEdit(false);
 		editAction.assertJessFact(4, engine);
 
 		// Unit test failue
@@ -98,7 +94,8 @@ public class TemplatesTest {
 		unitTestAction.assertJessFact(5, engine);
 
 		// Edit on prodction code
-		editAction = new ProductionEditAction(this.clock, this.productionFile, 199);
+		editAction = new EditAction(this.clock, this.productionFile, 199);
+		editAction.setIsTestEdit(false);
 		editAction.assertJessFact(6, engine);
 
 		// Unit test pass

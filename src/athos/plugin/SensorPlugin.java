@@ -20,14 +20,17 @@ import athos.stream.ActionOutputStream;
 import athos.stream.ConsoleStream;
 import athos.stream.EpisodeClassifierStream;
 
-
-
-
 //what do we have so far:
 //- java structure changes
 //- file open
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
+
+//TODO rename project to silver
+
+
+
+//TODO z do we need all that File and URI stuff?
 
 
 public class SensorPlugin implements IStartup {

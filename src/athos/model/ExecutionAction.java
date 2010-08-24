@@ -14,7 +14,9 @@ public class ExecutionAction extends FileAction{
 
 	@Override
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
-		throw new RuntimeException("not implemented yet");
+		System.out.println("canot assert execs yet");
+		return null;
+//		throw new RuntimeException("not implemented yet");
 	}
 
 	

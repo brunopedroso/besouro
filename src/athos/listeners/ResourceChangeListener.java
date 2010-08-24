@@ -2,9 +2,6 @@ package athos.listeners;
 import java.io.File;
 import java.net.URI;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -14,10 +11,6 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IPackageDeclaration;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 
 import athos.model.Clock;
 import athos.model.EditAction;
@@ -111,23 +104,28 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				IFile changedFile = (IFile) resource;
 				URI fileResource = changedFile.getLocationURI();
 				
-				//TODO need the duration
+				
+				//TODO [1] duration
+				
+				// TODO [3] measures and classification be made in another place?
+				
+				//TODO [3] measures -> to the edit action itself
+				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
+//				System.out.println("\t measured " + testCounter);
+				
 				EditAction action = new EditAction(new Clock(new Date()), new File(fileResource), 0);
 				action.setOperation("Save");
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				
-				// Number of test method and assertion statements.
-				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
-				if (testCounter.hasTest()) {
-					
-					// TODO shouldnt the measures be in another class?
-					action.setCurrentSize(WindowListener.getActiveBufferSize());
-					action.setCurrentMethods(testCounter.getNumOfMethods());
-					action.setCurrentStatements(testCounter.getNumOfStatements());
-					action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
-					action.setCurrentTestAssertions(testCounter.getNumOfTestMethods());
-				}
+				//TODO [2] increases... how did hongbing do it?
 				
+				action.setIsTestEdit(testCounter.hasTest());
+				action.setFileSize(WindowListener.getActiveBufferSize());
+				action.setCurrentMethods(testCounter.getNumOfMethods());
+				action.setCurrentStatements(testCounter.getNumOfStatements());
+				action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
+				action.setCurrentTestAssertions(testCounter.getNumOfTestMethods());
+
 				sensor.addAction(action);
 				
 			}

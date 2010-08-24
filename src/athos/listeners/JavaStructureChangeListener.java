@@ -1,15 +1,13 @@
 package athos.listeners;
 
 
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
@@ -156,8 +154,26 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     String name = retrieveName(element);
     if (name != null && !"".equals(name)) {
       
-      //TODO need the duration of edit event!
-      EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
+    	//TODO [1]  this should be a refactor action... unary, binary...
+    	EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
+    	
+    	
+		IFile changedFile = (IFile) element.getResource();
+		
+		// TODO [3] measures and classification be made in another place?
+		JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
+//		System.out.println("\t measured " + testCounter);
+		
+		//TODO classificar edits nos listeners de java structure (extrair classificador pra depois?)
+//		action.setIsTestEdit(testCounter.hasTest());
+		action.setIsTestEdit(name.toLowerCase().contains("test"));
+		
+		action.setFileSize(WindowListener.getActiveBufferSize());
+		action.setCurrentMethods(testCounter.getNumOfMethods());
+		action.setCurrentStatements(testCounter.getNumOfStatements());
+		action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
+		action.setCurrentTestAssertions(testCounter.getNumOfTestMethods());
+    		
       action.setOperation(op);
       action.setUnitName(name);
       
@@ -198,10 +214,12 @@ public class JavaStructureChangeListener implements IElementChangedListener {
             
 //      msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
       
-      //TODO need the duration of edit event!
+      //TODO [1] duration 
       EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
       action.setOperation("Rename");
       action.setUnitName(fromName + " => " + toName);
+      
+      action.setIsTestEdit(classFileName.toString().toLowerCase().contains("test"));
       
       this.sensor.addAction(action);
 
@@ -232,10 +250,12 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 //      msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').append(fromName).append(" -> ").append(toName);
       
-      //TODO need the duration of edit event!
+      //TODO [1] duration
       EditAction action = new EditAction(new Clock(new Date()), javaFile.toFile(), 0);
       action.setOperation("Move");
       action.setUnitName(fromName + " => " + toName);
+      
+      action.setIsTestEdit(javaFile.toString().toLowerCase().contains("test"));
       
       this.sensor.addAction(action);
 

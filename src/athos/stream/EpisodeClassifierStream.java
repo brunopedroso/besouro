@@ -1,16 +1,13 @@
 package athos.stream;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Assert;
-
 import jess.Batch;
-import jess.JessException;
 import jess.QueryResult;
 import jess.Rete;
 import jess.ValueVector;
-
 import athos.model.Action;
 import athos.model.UnitTestAction;
 
@@ -21,8 +18,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	public EpisodeClassifierStream() throws Exception {
 		
 	    this.engine = new Rete();
-	    Batch.batch("athos/model/Episode.clp", this.engine);
 	    Batch.batch("athos/model/Actions.clp", this.engine);
+	    Batch.batch("athos/model/Episode.clp", this.engine);
 	    Batch.batch("athos/model/EpisodeClassifier.clp", this.engine);
 
 	}
@@ -44,9 +41,18 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 				try {
 					
 					engine.reset();
+					
+					int i = 1;
 					for(Action a: actions) {
-						engine.add(a);
+						a.assertJessFact(i++, engine);
 					}
+					
+//					Iterator it = engine.listFacts();
+//					while (it.hasNext()) {
+//						System.out.println(it.next());
+//					}
+					
+					engine.run();
 					
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 					
@@ -56,7 +62,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 						System.out.println("\t" + result.getString("tp"));
 						
 					} else {
-						System.out.println("[episode] could not be classified:");
+						System.out.println("[episode] could not be classified.");
 						
 					}
 					
