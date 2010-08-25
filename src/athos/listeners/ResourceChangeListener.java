@@ -30,6 +30,11 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 	private ActionOutputStream sensor;
 	private BuildErrorSensor buildErrorSensor;
+	private JavaStatementMeter testCounter = new JavaStatementMeter();
+
+	public void setTestCounter(JavaStatementMeter testCounter) {
+		this.testCounter = testCounter;
+	}
 
 	public ResourceChangeListener(ActionOutputStream s) {
 		this.sensor = s;
@@ -55,6 +60,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 
 	public boolean visit(IResourceDelta delta) throws CoreException {
+		
 		IResource resource = delta.getResource();
 		int flag = delta.getFlags();
 		int kind = delta.getKind();
@@ -102,22 +108,23 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 			if (resource.getLocation().toString().endsWith(ActionOutputStream.JAVA_EXT)) {
 				
 				IFile changedFile = (IFile) resource;
-				URI fileResource = changedFile.getLocationURI();
+//				URI fileResource = changedFile.getLocationURI();
 				
 				
 				//TODO [1] duration
 				
 				// TODO [3] measures and classification be made in another place?
 				
-				//TODO [3] measures -> to the edit action itself
-				JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
+				testCounter.reset();
+				testCounter.measureJavaFile(changedFile);
+				
 //				System.out.println("\t measured " + testCounter);
 				
-				EditAction action = new EditAction(new Clock(new Date()), new File(fileResource), 0);
+				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile(), 0);
 				action.setOperation("Save");
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				
-				//TODO [2] increases... how did hongbing do it?
+				//TODO [1] increases... how did hongbing do it?
 				
 				action.setIsTestEdit(testCounter.hasTest());
 				action.setFileSize(WindowListener.getActiveBufferSize());

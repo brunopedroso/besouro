@@ -161,7 +161,9 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		IFile changedFile = (IFile) element.getResource();
 		
 		// TODO [3] measures and classification be made in another place?
-		JavaStatementMeter testCounter = JavaStatementMeter.measureJavaFile(changedFile);
+		JavaStatementMeter testCounter = new JavaStatementMeter();
+		testCounter.measureJavaFile(changedFile);
+		
 //		System.out.println("\t measured " + testCounter);
 		
 		//TODO classificar edits nos listeners de java structure (extrair classificador pra depois?)

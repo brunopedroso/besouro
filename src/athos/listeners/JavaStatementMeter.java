@@ -31,22 +31,21 @@ public class JavaStatementMeter extends ASTVisitor {
   /** Name of this compilation unit. */
   private String name; 
   
-  /** Number of methods. */
   private int numOfMethods = 0;
-  /** Number of invocations. */
   private int numOfStatements = 0;
   
-  /** Saves number of tests if there is any. */
   private int numOfTestMethods = 0;
-  /** Saves number of test assertions in this class if there is any. */
   private int numOfTestAssertions = 0;
   
-  /**
-   * Visit class type declaration to get name of this object.
-   * 
-   * @param td TypeDeclaration such as class definition.
-   * @return True if continute to check child nodes. 
-   */
+  public void reset() {
+	  name = null; 
+	  numOfMethods = 0;
+	  numOfStatements = 0;
+	  numOfTestMethods = 0;
+	  numOfTestAssertions = 0;
+	  
+  }
+  
   public boolean visit(TypeDeclaration td) {
     if (td.getName() != null) {
       this.name = td.getName().getIdentifier();
@@ -56,12 +55,6 @@ public class JavaStatementMeter extends ASTVisitor {
   }
 
   
-  /**
-   * Checks whether the given method is a JUnit 4 unit test.
-   * 
-   * @param md Method declaration.
-   * @return True if it is a unit test of JUnit 4. 
-   */
   private boolean isJUnit4Test(MethodDeclaration md) {
     List modifiers = md.modifiers();
     for (Iterator i = modifiers.iterator(); i.hasNext();) {
@@ -78,12 +71,6 @@ public class JavaStatementMeter extends ASTVisitor {
   }
   
   
-  /**
-   * Visits the method invocation to get number of assertion in this test method.
-   * 
-   * @param md Visit method declaration in source code.
-   * @return False because we don't look into child nodes. 
-   */
   public boolean visit(MethodDeclaration md) {
     if (md.getName() != null) {
       this.numOfMethods++;
@@ -116,11 +103,6 @@ public class JavaStatementMeter extends ASTVisitor {
     return false;
   }
 
-  /**
-   * Check expression statement for test assertions.
-   * 
-   * @param estmt Expression statements.
-   */
   private void checkAssertions(ExpressionStatement estmt) {
     if (estmt.getExpression() instanceof MethodInvocation) {
       MethodInvocation mi = (MethodInvocation) estmt.getExpression();
@@ -130,56 +112,28 @@ public class JavaStatementMeter extends ASTVisitor {
       }
     }
   }
-  /**
-   * Gets number of methods.
-   * 
-   * @return Number of methods.
-   */
+
   public int getNumOfMethods() {
     return this.numOfMethods;
   }
   
-  /**
-   * Gets number of statements.
-   * 
-   * @return Number of statements.
-   */
+
   public int getNumOfStatements() {
     return this.numOfStatements;
   }
   
-  /**
-   * Gets number of tests.
-   * 
-   * @return Number of test.
-   */
   public int getNumOfTestMethods() {
     return this.numOfTestMethods;
   }
   
-  /**
-   * Gets number of test assertion statements.
-   * 
-   * @return Number of assertion statements
-   */
   public int getNumOfTestAssertions() {
     return this.numOfTestAssertions;
   }
   
-  /**
-   * Check whether this compilation unit has test. 
-   * 
-   * @return True if it has any test method or assertion.
-   */
   public boolean hasTest() {
     return this.numOfTestMethods > 0 || this.numOfTestAssertions > 0;   
   }
   
-  /**
-   * Returns meter values in string.
-   * 
-   * @return Metrics value string. 
-   */
   public String toString() {
     StringBuffer buf = new StringBuffer(200);
     buf.append("*****  ").append(this.name).append("   *****\nMethods     : ")
@@ -195,15 +149,7 @@ public class JavaStatementMeter extends ASTVisitor {
   }
   
   
-  /**
-	 * Calculates java file unit test information.
-	 * 
-	 * @param file
-	 *            IFile instance to a java file.
-	 * 
-	 * @return UnitTestCounter instance to this java file.
-	 */
-	public static JavaStatementMeter measureJavaFile(IFile file) {
+	public void measureJavaFile(IFile file) {
 		// Compute number of tests and assertions to this file.
 		ICompilationUnit cu = (ICompilationUnit) JavaCore.create(file);
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
@@ -211,9 +157,6 @@ public class JavaStatementMeter extends ASTVisitor {
 		parser.setResolveBindings(true);
 
 		ASTNode root = parser.createAST(null);
-		JavaStatementMeter counter = new JavaStatementMeter();
-		root.accept(counter);
-
-		return counter;
+		root.accept(this);
 	}
 }

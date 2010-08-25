@@ -23,7 +23,7 @@ public class EditAction extends FileAction {
   private int duration;
   
   private int fileSize = 0;
-  //TODO [2] increases
+  //TODO [1] increases
   private int fileSizeIncrease = 10;
   
   private String operation;
@@ -89,7 +89,7 @@ public class EditAction extends FileAction {
   	  
   	  public boolean isSubstantial() {
   		  
-  		  //TODO [2] increases
+  		  //TODO [1] increases
   		  return true;
 //  		  return getMethodIncrease() != 0 || getStatementIncrease() != 0 || 
 //  	         this.testMethodIncrease != 0 || this.testAssertionIncrease != 0;  
