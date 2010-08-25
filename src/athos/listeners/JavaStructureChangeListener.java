@@ -42,6 +42,11 @@ public class JavaStructureChangeListener implements IElementChangedListener {
   protected static final String PROP_CURRENT_TEST_ASSERTIONS = "Current-Test-Assertions";
   
   private ActionOutputStream sensor;
+  private JavaStatementMeter testCounter = new JavaStatementMeter();
+
+  public void setTestCounter(JavaStatementMeter testCounter) {
+	this.testCounter = testCounter;
+  }
 
 /**
    * Instantiates the JavaStructureDetector instance with Eclipse sensor.
@@ -88,6 +93,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     // Addition, deletion, renaming activity.
     else if (additions.size() == 1 || deletions.size() == 1) {
       if (deletions.isEmpty()) {
+//    	  System.out.println("HERE " + additions.get(0).getElement().getResource().getFileExtension());
         processUnary(javaFile, "Add", (IJavaElementDelta) additions.get(0));        
       }
       else if (additions.isEmpty()) {
@@ -108,6 +114,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     }    
     // Massive addition by copying
     else if (additions.size() > 1) {
+    	
       for (Iterator i = additions.iterator(); i.hasNext();) {
         processUnary(javaFile, "Add", (IJavaElementDelta) i.next());
       }
@@ -148,8 +155,10 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     
     // Only deal with java file.
     if (!JAVA.equals(classFileName.getFileExtension())) {
+    	
       return;
     }
+    
     
     String name = retrieveName(element);
     if (name != null && !"".equals(name)) {
@@ -160,8 +169,6 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     	
 		IFile changedFile = (IFile) element.getResource();
 		
-		// TODO [3] measures and classification be made in another place?
-		JavaStatementMeter testCounter = new JavaStatementMeter();
 		testCounter.measureJavaFile(changedFile);
 		
 //		System.out.println("\t measured " + testCounter);

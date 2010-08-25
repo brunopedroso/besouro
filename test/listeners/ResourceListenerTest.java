@@ -1,9 +1,11 @@
 package listeners;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
@@ -20,7 +22,6 @@ import org.mockito.stubbing.Answer;
 
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.ResourceChangeListener;
-import athos.listeners.Utils;
 import athos.model.Action;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;
@@ -31,13 +32,7 @@ public class ResourceListenerTest {
 	public void shouldRegisterAnEditAction() throws Throwable {
 		
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
-		ActionOutputStream stream = new ActionOutputStream() {
-			
-			public void addAction(Action action) {
-				generatedActions.add(action);
-				
-			}
-		};
+		ActionOutputStream stream = new FakeActionStream(generatedActions);
 		
 		ResourceChangeListener listener = new ResourceChangeListener(stream);
 		
@@ -79,16 +74,21 @@ public class ResourceListenerTest {
 		
 	}
 
-	private IFile createMockResource(String filename) {
+	//TODO [0] move to a factory
+	public static IFile createMockResource(String filename) {
+		
+		String[] split = filename.split("\\.");
+		
 		IFile resource = mock(IFile.class);
 		
 		IPath path = mock(IPath.class);
 		when(path.toString()).thenReturn(filename);
 		when(path.toFile()).thenReturn(new File(filename));
+		when(path.getFileExtension()).thenReturn(split[1]);
+
 		when(resource.getLocation()).thenReturn(path);
 
 		// separates "filename" of ".java"
-		String[] split = filename.split("\\.");
 		when(resource.getName()).thenReturn(split[0]);
 		when(resource.getFileExtension()).thenReturn(split[1]);
 		
