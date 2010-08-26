@@ -84,13 +84,17 @@ public class ResourceListenerTest {
 		IPath path = mock(IPath.class);
 		when(path.toString()).thenReturn(filename);
 		when(path.toFile()).thenReturn(new File(filename));
-		when(path.getFileExtension()).thenReturn(split[1]);
+		
+		if (split.length>1)
+			when(path.getFileExtension()).thenReturn(split[1]);
 
 		when(resource.getLocation()).thenReturn(path);
 
 		// separates "filename" of ".java"
 		when(resource.getName()).thenReturn(split[0]);
-		when(resource.getFileExtension()).thenReturn(split[1]);
+		
+		if (split.length>1)
+			when(resource.getFileExtension()).thenReturn(split[1]);
 		
 		return resource;
 	}

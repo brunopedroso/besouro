@@ -88,28 +88,30 @@ public class JavaStructureChangeListener implements IElementChangedListener {
         
     // No java structure change
     if (additions.isEmpty() && deletions.isEmpty()) {
-      return;      
-    }
-    // Addition, deletion, renaming activity.
-    else if (additions.size() == 1 || deletions.size() == 1) {
+      return;
+     
+   // Addition, deletion, renaming activity.
+    } else if (additions.size() == 1 || deletions.size() == 1) {
+
+    	
       if (deletions.isEmpty()) {
-//    	  System.out.println("HERE " + additions.get(0).getElement().getResource().getFileExtension());
-        processUnary(javaFile, "Add", (IJavaElementDelta) additions.get(0));        
-      }
-      else if (additions.isEmpty()) {
+        processUnary(javaFile, "Add", (IJavaElementDelta) additions.get(0));
+        
+      } else if (additions.isEmpty()) {
         processUnary(javaFile, "Remove", (IJavaElementDelta) deletions.get(0));
-      }
-      else if (deletions.size() == 1) {
-        IJavaElementDelta fromDelta = (IJavaElementDelta) deletions.get(0);
+        
+      } else if (deletions.size() == 1) {
+        
+    	IJavaElementDelta fromDelta = (IJavaElementDelta) deletions.get(0);
         IJavaElementDelta toDelta = (IJavaElementDelta) additions.get(0);
+        
         if (fromDelta.getElement().getParent().equals(toDelta.getElement().getParent())) { 
           processRenameRefactor(javaFile, fromDelta, toDelta); 
+          
+        } else {
+          processMoveRefactor(fromDelta, toDelta);
         }
-        else {
-          javaFile = fromDelta.getElement().getResource().getLocation();
-          processMoveRefactor(javaFile, fromDelta.getElement(), fromDelta.getElement().getParent(), 
-              toDelta.getElement().getParent());
-        }
+        
       }
     }    
     // Massive addition by copying
@@ -160,7 +162,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     }
     
     
-    String name = retrieveName(element);
+    String name = buildElementName(element.toString());
     if (name != null && !"".equals(name)) {
       
     	//TODO [1]  this should be a refactor action... unary, binary...
@@ -170,8 +172,6 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		IFile changedFile = (IFile) element.getResource();
 		
 		testCounter.measureJavaFile(changedFile);
-		
-//		System.out.println("\t measured " + testCounter);
 		
 		//TODO classificar edits nos listeners de java structure (extrair classificador pra depois?)
 //		action.setIsTestEdit(testCounter.hasTest());
@@ -199,15 +199,15 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * @param fromDelta Change from delta.
    * @param toDelta Change to delta.
    */
-  private void processRenameRefactor(IPath javaFile, IJavaElementDelta fromDelta, 
-      IJavaElementDelta toDelta) {
+  private void processRenameRefactor(IPath javaFile, IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
+	  
     String typeName = retrieveType(toDelta.getElement());
     
     IPath classFileName = javaFile;
     if (CLASS.equals(typeName)) {
       classFileName = fromDelta.getElement().getResource().getLocation();
-    }
-    else if ("Package".equals(typeName)) {
+      
+    } else if ("Package".equals(typeName)) {
       classFileName = fromDelta.getElement().getResource().getLocation();
     }
 
@@ -216,8 +216,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       return;
     }
     
-    String fromName = retrieveName(fromDelta.getElement());
-    String toName = retrieveName(toDelta.getElement());
+    String fromName = buildElementName(fromDelta.getElement().toString());
+    String toName = buildElementName(toDelta.getElement().toString());
     
     if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
             
@@ -243,16 +243,24 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * @param from Change from element.
    * @param to Change to element.
    */
-  private void processMoveRefactor(IPath javaFile, IJavaElement element, IJavaElement from, IJavaElement to) {
+  private void processMoveRefactor(IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
+	  
+	  
+	IPath javaFile = fromDelta.getElement().getResource().getLocation();
+    IJavaElement from = fromDelta.getElement();
+    IJavaElement to = toDelta.getElement().getParent();
 	  
     // Only deal with java file.
     if (!JAVA.equals(javaFile.getFileExtension())) {
       return;
     }
     
+    System.out.println("///" + to + "///");
+    
 //    String name = retrieveName(element);
-    String fromName = retrieveName(from);
-    String toName = retrieveName(to);
+    String fromName = buildElementName(from.toString());
+    String toName = buildElementName(to.toString());
+//    System.out.println("--" + fromName + "======" + toName + "|");
     
     // Put refactor data together with pound sigh separation and send it to Hackystat server as activity data.
     if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
@@ -307,8 +315,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * @param element Java element, which could be class, method, field or import.
    * @return Brief element name.
    */
-  private String retrieveName(IJavaElement element) {
-    String name = element.toString();
+  private String buildElementName(String name) {
+    
     try {
       name = name.substring(0, name.indexOf('['));
     }
@@ -335,13 +343,13 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * @param additions Added element holder.
    * @param deletions Deleted element holder.
    */
-  private void traverse(IJavaElementDelta delta, List<IJavaElementDelta> additions, 
-      List<IJavaElementDelta> deletions) {    
+  private void traverse(IJavaElementDelta delta, List<IJavaElementDelta> additions, List<IJavaElementDelta> deletions) {
+	  
     // Saves the addition and deletion.
     if (delta.getKind() == IJavaElementDelta.ADDED) {
        additions.add(delta);
-    }
-    else if (delta.getKind() == IJavaElementDelta.REMOVED) {
+       
+    } else if (delta.getKind() == IJavaElementDelta.REMOVED) {
       deletions.add(delta);
     }
     

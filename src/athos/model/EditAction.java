@@ -27,7 +27,11 @@ public class EditAction extends FileAction {
   private int fileSizeIncrease = 10;
   
   private String operation;
-  private String unitName;
+  public String getOperation() {
+	return operation;
+}
+
+private String unitName;
   
   private int methodIncrease = 1;
   private int statementIncrease = 2;
