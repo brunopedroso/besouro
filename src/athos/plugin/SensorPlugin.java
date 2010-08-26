@@ -26,7 +26,7 @@ import athos.stream.EpisodeClassifierStream;
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
 
-//TODO rename project to silver
+//TODO z rename project to silver
 
 //TODO [0 automate integration tests (listeners -> classification)
 

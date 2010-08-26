@@ -165,7 +165,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     String name = buildElementName(element.toString());
     if (name != null && !"".equals(name)) {
       
-    	//TODO [1]  this should be a refactor action... unary, binary...
+    	//TODO [1] should be a unary
     	EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
     	
     	
@@ -173,7 +173,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		
 		testCounter.measureJavaFile(changedFile);
 		
-		//TODO classificar edits nos listeners de java structure (extrair classificador pra depois?)
+		//TODO [data] recognize test classes by the annotations, not by name (extrair classificador pra depois? action deveria classificar?)
 //		action.setIsTestEdit(testCounter.hasTest());
 		action.setIsTestEdit(name.toLowerCase().contains("test"));
 		
