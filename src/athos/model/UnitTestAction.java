@@ -55,11 +55,11 @@ public class UnitTestAction extends FileAction {
     f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
     
     //TODO [2] organize the file representation all over the program
-    f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName()+".java", RU.STRING));
+    f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName(), RU.STRING));
     
     
     if (!this.isSuccessful()) {
-      f.setSlotValue("errmsg", new Value("" + this.success, RU.STRING));
+      f.setSlotValue("errmsg", new Value("" + (this.success?"true":"failure"), RU.STRING));
     }
     
     Fact assertedFact = engine.assertFact(f);

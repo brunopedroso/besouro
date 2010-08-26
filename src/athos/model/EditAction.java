@@ -24,7 +24,7 @@ public class EditAction extends FileAction {
   
   private int fileSize = 0;
   //TODO [1] increases
-  private int fileSizeIncrease = 10;
+  private int fileSizeIncrease = 0;
   
   private String operation;
   public String getOperation() {
@@ -33,8 +33,8 @@ public class EditAction extends FileAction {
 
 private String unitName;
   
-  private int methodIncrease = 1;
-  private int statementIncrease = 2;
+  private int methodIncrease = 0;
+  private int statementIncrease = 0;
   
   private int testMethodIncrease = 0;
   private int testAssertionIncrease = 0;
@@ -50,7 +50,7 @@ private String unitName;
 
   public EditAction(Clock clock, File workspaceFile, int duration) {
     super(clock, workspaceFile);
-    this.duration = 3;
+    this.duration = duration;
   }
   
   	  
@@ -94,9 +94,24 @@ private String unitName;
   	  public boolean isSubstantial() {
   		  
   		  //TODO [1] increases
-  		  return true;
+//  		  return true;
 //  		  return getMethodIncrease() != 0 || getStatementIncrease() != 0 || 
-//  	         this.testMethodIncrease != 0 || this.testAssertionIncrease != 0;  
+//  	         this.testMethodIncrease != 0 || this.testAssertionIncrease != 0;
+
+  		  if (isTestEdit)
+  			  return this.getDuration() > 0 && 
+  			  	(this.methodIncrease != 0 || this.statementIncrease != 0 || 
+  			  	 this.testMethodIncrease != 0 || this.testAssertionIncrease != 0);
+  			  
+  		  else
+  			  return this.getDuration() > 0 && 
+  			  	(this.getFileSizeIncrease() != 0 || this.methodIncrease != 0 || 
+  			     this.statementIncrease != 0);
+  		   
+  		  
+  		  
+
+  		  
   	  }
 
 
@@ -130,9 +145,9 @@ private String unitName;
 	  }  
 	  
 	  
-	  private boolean isTestEdit() {
-		return isTestEdit;
-	}
+  private boolean isTestEdit() {
+	return isTestEdit;
+  }
 
   public void setIsTestEdit(boolean isTestEdit) {
 		this.isTestEdit = isTestEdit;
