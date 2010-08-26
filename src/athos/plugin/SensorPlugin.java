@@ -28,7 +28,8 @@ import athos.stream.EpisodeClassifierStream;
 
 //TODO z rename project to silver
 
-//TODO [0 automate integration tests (listeners -> classification)
+//TODO [0 unit test of junit listener
+//TODO [0] automate integration tests (listeners -> classification)
 
 //TODO z do we need all that File and URI stuff?
 
