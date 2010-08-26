@@ -23,9 +23,12 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateAnAddEvent() {
 		
-		IJavaElement parentElement = mock(IJavaElement.class);
-		IJavaElementDelta delta = createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED, IJavaElement.CLASS_FILE, ResourceListenerTest.createMockResource("AnyClass.java"));
-		IJavaElementDelta childDelta = createJavaChangeDelta(parentElement,IJavaElementDelta.ADDED, IJavaElement.FIELD, ResourceListenerTest.createMockResource("AnyClass.java"));
+		IJavaElement classElement = createJavaElement(null,"AnyClass.java",IJavaElement.CLASS_FILE);
+		IJavaElement addedElement = createJavaElement(null,"AnyClass.java",IJavaElement.FIELD);
+		
+		IJavaElementDelta childDelta = createJavaChangeDelta(addedElement,IJavaElementDelta.ADDED);
+		
+		IJavaElementDelta delta = createJavaChangeDelta(classElement,IJavaElementDelta.CHANGED);
 		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
 		
 		ElementChangedEvent event = mock(ElementChangedEvent.class);
@@ -53,13 +56,15 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateARemoveEvent() {
 		
-		IJavaElement parentElement = mock(IJavaElement.class);
-		IJavaElementDelta delta = createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED, IJavaElement.CLASS_FILE, ResourceListenerTest.createMockResource("AnyClass.java"));
-		IJavaElementDelta childDelta = createJavaChangeDelta(parentElement,IJavaElementDelta.REMOVED, IJavaElement.FIELD, ResourceListenerTest.createMockResource("AnyClass.java"));
-		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
+		IJavaElement parentElement = createJavaElement(null,"AnyClass.java",IJavaElement.CLASS_FILE);
+		IJavaElement fieldElement = createJavaElement(parentElement,"AnyClass.java",IJavaElement.FIELD);
+
+		IJavaElementDelta childDelta = createJavaChangeDelta(fieldElement,IJavaElementDelta.REMOVED);
+		IJavaElementDelta parentDelta = createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED);
+		when(parentDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
 		
 		ElementChangedEvent event = mock(ElementChangedEvent.class);
-		when(event.getDelta()).thenReturn(delta);
+		when(event.getDelta()).thenReturn(parentDelta);
 		
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
@@ -82,20 +87,20 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateARenameEvent() {
 		
-		IJavaElement parentElement = mock(IJavaElement.class);
-		IJavaElement renamedElement = mock(IJavaElement.class);
-		when(renamedElement.getParent()).thenReturn(parentElement);
+		IJavaElement parentElement = createJavaElement(null,"AnyClass.java", IJavaElement.CLASS_FILE);
+		IJavaElement renamedElement = createJavaElement(parentElement,"AnyClass.java", IJavaElement.FIELD);
 		
+		IJavaElementDelta removedDelta = createJavaChangeDelta(renamedElement, IJavaElementDelta.REMOVED);
+		IJavaElementDelta addedDelta = createJavaChangeDelta(renamedElement, IJavaElementDelta.ADDED);
+
+		IJavaElementDelta classDelta = createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED);
+		when(classDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{removedDelta, addedDelta});
 		
-		IJavaElementDelta delta1 = createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED, IJavaElement.CLASS_FILE, ResourceListenerTest.createMockResource("AnyClass.java"));
-		IJavaElementDelta delta2 = createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED, IJavaElement.CLASS_FILE, ResourceListenerTest.createMockResource("AnyClass.java"));
-		IJavaElementDelta childDelta1 = createJavaChangeDelta(renamedElement, IJavaElementDelta.REMOVED, IJavaElement.FIELD, ResourceListenerTest.createMockResource("aField"));
-		IJavaElementDelta childDelta2 = createJavaChangeDelta(renamedElement, IJavaElementDelta.ADDED, IJavaElement.FIELD, ResourceListenerTest.createMockResource("anotherField"));
-		when(delta1.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{delta2});
-		when(delta2.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta1, childDelta2});
-		
+		IJavaElementDelta parentDelta = createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED);
+		when(parentDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{classDelta});
+
 		ElementChangedEvent event = mock(ElementChangedEvent.class);
-		when(event.getDelta()).thenReturn(delta1);
+		when(event.getDelta()).thenReturn(parentDelta);
 		
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
@@ -118,25 +123,20 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateAMoveEvent() {
 		
-		IJavaElement parentElement = mock(IJavaElement.class);
-		IJavaElement fromElement = mock(IJavaElement.class);
-		IJavaElement toElement = mock(IJavaElement.class);
+		IJavaElement parentElement = createJavaElement(null,"AnyOtherClass.java", IJavaElement.CLASS_FILE);
+		IJavaElement fromElement = createJavaElement(parentElement,"AnyClass.java", IJavaElement.FIELD);
+		IJavaElement toElement = createJavaElement(parentElement,"AnyOtherClass.java", IJavaElement.FIELD);
 		
-		when(fromElement.getParent()).thenReturn(parentElement);
-		when(fromElement.toString()).thenReturn("AnyClass.java");
-		when(toElement.getParent()).thenReturn(parentElement);
-		when(toElement.toString()).thenReturn("AnyOtherClass.java");
+		IJavaElementDelta childDelta1 = createJavaChangeDelta(fromElement, IJavaElementDelta.REMOVED);
+		IJavaElementDelta childDelta2 = createJavaChangeDelta(toElement, IJavaElementDelta.ADDED);
 		
-		IJavaElementDelta classDelta = createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED, IJavaElement.CLASS_FILE, ResourceListenerTest.createMockResource("AnyOtherClass.java"));
-		IJavaElementDelta childDelta1 = createJavaChangeDelta(fromElement, IJavaElementDelta.REMOVED, IJavaElement.FIELD, ResourceListenerTest.createMockResource("AnyClass.java"));
-		IJavaElementDelta childDelta2 = createJavaChangeDelta(toElement, IJavaElementDelta.ADDED, IJavaElement.FIELD, ResourceListenerTest.createMockResource("AnyOtherClass.java"));
-		
+		IJavaElementDelta classDelta  = createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED);
 		when(classDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta1, childDelta2});
 		
-		ElementChangedEvent event = mock(ElementChangedEvent.class);
-		
-		IJavaElementDelta parentDelta = createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED, IJavaElement.CLASS_FILE, ResourceListenerTest.createMockResource("AnyClass.java"));
+		IJavaElementDelta parentDelta = createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED);
 		when(parentDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{classDelta});
+
+		ElementChangedEvent event = mock(ElementChangedEvent.class);
 		when(event.getDelta()).thenReturn(parentDelta);
 		
 		// create listener
@@ -156,20 +156,24 @@ public class JavaStructureListenerTest {
 		Assert.assertEquals("Rename", ((EditAction)action).getOperation());
 		
 	}
+
+	private IJavaElement createJavaElement(IJavaElement parentElement, String resourceName, int type) {
+		IJavaElement fromElement = mock(IJavaElement.class);
+		when(fromElement.getParent()).thenReturn(parentElement);
+		when(fromElement.toString()).thenReturn(resourceName);
+		when(fromElement.getElementType()).thenReturn(type);
+		IFile resource = ResourceListenerTest.createMockResource(resourceName);
+		when(fromElement.getResource()).thenReturn(resource);
+		return fromElement;
+	}
 	
 
 
-	private IJavaElementDelta createJavaChangeDelta(IJavaElement element, int op_type, int element_type, IFile resource) {
-		
+	private IJavaElementDelta createJavaChangeDelta(IJavaElement element, int op_type) {
 		IJavaElementDelta delta = mock(IJavaElementDelta.class);
-		
-		when(element.getResource()).thenReturn(resource);
-		when(element.getElementType()).thenReturn(element_type);
-		
-		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{});
 		when(delta.getElement()).thenReturn(element);
 		when(delta.getKind()).thenReturn(op_type);
-		
+		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{});
 		return delta;
 	}
 	

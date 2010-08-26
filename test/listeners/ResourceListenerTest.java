@@ -74,7 +74,7 @@ public class ResourceListenerTest {
 		
 	}
 
-	//TODO [0] move to a factory
+	//SOMEDAY move to a factory
 	public static IFile createMockResource(String filename) {
 		
 		String[] split = filename.split("\\.");
