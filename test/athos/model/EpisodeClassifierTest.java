@@ -52,13 +52,7 @@ public class EpisodeClassifierTest {
     TestEpisodesFactory.addTDDType1Facts(engine, clock);
     engine.run();
     
-    Iterator it = engine.listFacts();
-    while(it.hasNext()) 
-    	System.out.println(it.next());
-
-    
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
-    
     
     Assert.assertTrue("Type 1 TDD episode can be classified", result.next());
     Assert.assertEquals("Test TDD type 1 episode category name", "test-first", result.getString("cat"));
