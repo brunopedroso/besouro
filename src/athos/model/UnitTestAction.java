@@ -54,7 +54,7 @@ public class UnitTestAction extends FileAction {
     Fact f = new Fact("UnitTestAction", engine);
     f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
     
-    //TODO [2] organize the file representation all over the program
+    //TODO [3] organize the file representation all over the program
     f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName(), RU.STRING));
     
     

@@ -111,8 +111,6 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 //				URI fileResource = changedFile.getLocationURI();
 				
 				
-				//TODO [1] duration
-				
 				// TODO [3] measures and classification be made in another place?
 				
 				testCounter.reset();
@@ -124,7 +122,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				action.setOperation("Save");
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				
-				//TODO [1] increases... how did hongbing do it?
+				//TODO [1]  increases... how did hongbing do it?
 				
 				action.setIsTestEdit(testCounter.hasTest());
 				action.setFileSize(WindowListener.getActiveBufferSize());

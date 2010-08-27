@@ -28,7 +28,7 @@ import athos.model.Action;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;
 
-//TODO [0] unit test buid error sensor
+//TODO [2] unit test buid error sensor
 
 public class ResourceListenerTest {
 
