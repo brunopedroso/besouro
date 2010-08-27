@@ -118,17 +118,18 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateAMoveEvent() {
 		
-		IJavaElement parentElement = JavaElementsFactory.createJavaElement(null,"AnyOtherClass.java", IJavaElement.CLASS_FILE);
-		IJavaElement fromElement = JavaElementsFactory.createJavaElement(parentElement,"AnyClass.java", IJavaElement.FIELD);
-		IJavaElement toElement = JavaElementsFactory.createJavaElement(parentElement,"AnyOtherClass.java", IJavaElement.FIELD);
+		IJavaElement parentElementFrom = JavaElementsFactory.createJavaElement(null,"AnyOtherClass.java", IJavaElement.CLASS_FILE);
+		IJavaElement parentElementTo = JavaElementsFactory.createJavaElement(null,"AnyOtherClass.java", IJavaElement.CLASS_FILE);
+		IJavaElement fromElement = JavaElementsFactory.createJavaElement(parentElementFrom,"AnyClass.java", IJavaElement.FIELD);
+		IJavaElement toElement = JavaElementsFactory.createJavaElement(parentElementTo,"AnyOtherClass.java", IJavaElement.FIELD);
 		
 		IJavaElementDelta childDelta1 = JavaElementsFactory.createJavaChangeDelta(fromElement, IJavaElementDelta.REMOVED);
 		IJavaElementDelta childDelta2 = JavaElementsFactory.createJavaChangeDelta(toElement, IJavaElementDelta.ADDED);
 		
-		IJavaElementDelta classDelta  = JavaElementsFactory.createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED);
+		IJavaElementDelta classDelta  = JavaElementsFactory.createJavaChangeDelta(parentElementFrom, IJavaElementDelta.CHANGED);
 		when(classDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta1, childDelta2});
 		
-		IJavaElementDelta parentDelta = JavaElementsFactory.createJavaChangeDelta(parentElement, IJavaElementDelta.CHANGED);
+		IJavaElementDelta parentDelta = JavaElementsFactory.createJavaChangeDelta(parentElementFrom, IJavaElementDelta.CHANGED);
 		when(parentDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{classDelta});
 
 		ElementChangedEvent event = mock(ElementChangedEvent.class);
@@ -137,7 +138,16 @@ public class JavaStructureListenerTest {
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		JavaStructureChangeListener listener = new JavaStructureChangeListener(new FakeActionStream(generatedActions));
-		listener.setTestCounter(mock(JavaStatementMeter.class));
+		
+		JavaStatementMeter meter = mock(JavaStatementMeter.class);
+		when(meter.getNumOfMethods()).thenReturn(11);
+		when(meter.getNumOfStatements()).thenReturn(22);
+		when(meter.getNumOfTestAssertions()).thenReturn(33);
+		when(meter.getNumOfTestMethods()).thenReturn(44);
+		listener.setTestCounter(meter);
+		
+		int fileSize = 55;
+		WindowListener.setActiveBufferSize(fileSize);
 		
 		// invoke listener
 		listener.elementChanged(event);
@@ -148,8 +158,27 @@ public class JavaStructureListenerTest {
 		//TODO [1] should be a UnaryAction
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof EditAction);
-		Assert.assertEquals("Rename", ((EditAction)action).getOperation());
 		
+		
+		EditAction editAction = (EditAction)action;
+		Assert.assertEquals("Move", editAction.getOperation());
+
+		Assert.assertEquals(meter.getNumOfMethods(), editAction.getCurrentMethods());
+		Assert.assertEquals(meter.getNumOfStatements(), editAction.getCurrentStatements());
+		Assert.assertEquals(meter.getNumOfTestAssertions(), editAction.getCurrentTestAssertions());
+		Assert.assertEquals(meter.getNumOfTestMethods(), editAction.getCurrentTestMethods());
+		
+		Assert.assertEquals(fileSize, editAction.getFileSize());
+		
+		//TODO [0] duration
+		Assert.assertEquals(0, editAction.getDuration());
+		
+		Assert.assertEquals(0, editAction.getFileSizeIncrease());
+		Assert.assertEquals(0, editAction.getMethodIncrease());
+		Assert.assertEquals(0, editAction.getStatementIncrease());
+		Assert.assertEquals(0, editAction.getTestAssertionIncrease());
+		Assert.assertEquals(0, editAction.getTestMethodIncrease());
+//		
 		//TODO [0] should assert java metrics and duration
 		
 	}

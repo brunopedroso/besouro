@@ -1,11 +1,13 @@
 package athos.integration;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
+import athos.listeners.ResourceChangeListener;
 import athos.model.CompilationAction;
 import athos.model.EditAction;
 import athos.model.UnitTestAction;
@@ -22,23 +24,22 @@ public class IntegrationTest {
 		
 		EpisodeClassifierStream stream = new EpisodeClassifierStream();
 		JavaStructureChangeListener javaListener = new JavaStructureChangeListener(stream);
+		ResourceChangeListener resourceListener = new ResourceChangeListener(stream);
 		
-		javaListener.setTestCounter(Mockito.mock(JavaStatementMeter.class));
+		JavaStatementMeter meter = Mockito.mock(JavaStatementMeter.class);
+		javaListener.setTestCounter(meter);
+		resourceListener.setTestCounter(meter);
 		
 		ElementChangedEvent event = JavaElementsFactory.createAddMethodAction();
 		javaListener.elementChanged(event);
 		// unaryAction.setSubjectName("void testEquilateral()");
 
-		// STOPPED HERE !
 		
-		
-		
-		//	    
-//	    // Edit on test
+		IResourceChangeEvent resourceEvent = ResourceFactory.createTestEditAction();
+		resourceListener.resourceChanged(resourceEvent);
 //	    EditAction editAction = new EditAction(clock, testFile, 123);
-//	    editAction.setIsTestEdit(true);
-//	    editAction.assertJessFact(2, engine);
-//
+
+		//
 //	    // Compile error on test
 //	    CompilationAction compilationAction = new CompilationAction(clock, testFile);
 //	    compilationAction.setErrorMessage("Unknown data type");

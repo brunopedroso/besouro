@@ -26,11 +26,15 @@ public abstract class FileAction extends Action implements Comparable {
    * @param clock Clock when action happens.
    * @param workspaceFile Workspace file being worked on.
    */
-  public FileAction(Clock clock, File workspaceFile) {
-    super(clock);
+  public FileAction(Clock clock, File workspaceFile, int duration) {
+    super(clock, duration);
     this.workspaceFile = workspaceFile;
   }
 
+  public FileAction(Clock clock, File workspaceFile) {
+	    super(clock);
+  }
+  
   /**
    * Gets the target file.
    * 

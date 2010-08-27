@@ -99,6 +99,9 @@ public class BuildErrorSensor {
         // dont repeat
         if (!messagePool.contains(data)) {
         	
+        	
+        	// FUI EU QUEM CRIOU O BUILD ERROR ?    ƒ IGUAL AO COMPILATION ?
+        	
           this.sensor.addAction( new BuildErrorAction(new Clock(new Date()), new File(fileResource), errorMsg));
           messagePool.add(data);
           

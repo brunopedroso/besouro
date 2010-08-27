@@ -17,7 +17,7 @@ public class JavaElementsFactory {
 		when(fromElement.getParent()).thenReturn(parentElement);
 		when(fromElement.toString()).thenReturn(resourceName);
 		when(fromElement.getElementType()).thenReturn(type);
-		IFile resource = ResourceListenerTest.createMockResource(resourceName);
+		IFile resource = ResourceFactory.createMockResource(resourceName);
 		when(fromElement.getResource()).thenReturn(resource);
 //		when(resource.toString())
 		return fromElement;

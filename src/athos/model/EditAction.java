@@ -19,9 +19,6 @@ import jess.Value;
  */
 public class EditAction extends FileAction {
 	
-  // seconds
-  private int duration;
-  
   private int fileSize = 0;
   //TODO [1] increases
   private int fileSizeIncrease = 0;
@@ -47,10 +44,8 @@ private String unitName;
   private boolean isTestEdit;
   
 
-
   public EditAction(Clock clock, File workspaceFile, int duration) {
-    super(clock, workspaceFile);
-    this.duration = duration;
+    super(clock, workspaceFile, duration);
   }
   
   	  
@@ -145,7 +140,7 @@ private String unitName;
 	  }  
 	  
 	  
-  private boolean isTestEdit() {
+  public boolean isTestEdit() {
 	return isTestEdit;
   }
 
@@ -171,15 +166,7 @@ private String unitName;
     return this.fileSizeIncrease;
   }
   
-  public void setDuration(int duration) {
-    this.duration = duration;
-  }
-
-  public int getDuration() {
-    return this.duration;
-  }
   
-
 
 public void setOperation(String op) {
 	this.operation = op;

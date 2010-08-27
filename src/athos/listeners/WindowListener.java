@@ -47,6 +47,12 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 		return activeBufferSize;
 	}
 
+	// for test purposes
+	public static void setActiveBufferSize(int i) {
+		activeBufferSize = i;
+		
+	}
+
 	
 	// object
 	
@@ -206,5 +212,6 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	public void windowClosed(IWorkbenchWindow window) {
 
 	}
+
 
 }

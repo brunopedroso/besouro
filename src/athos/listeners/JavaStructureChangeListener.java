@@ -228,6 +228,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       action.setOperation("Rename");
       action.setUnitName(fromName + " => " + toName);
       
+      System.out.println("REN");
+      
       action.setIsTestEdit(classFileName.toString().toLowerCase().contains("test"));
       
       this.stream.addAction(action);
@@ -274,6 +276,13 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       
       action.setIsTestEdit(javaFile.toString().toLowerCase().contains("test"));
       
+      action.setCurrentMethods(testCounter.getNumOfMethods());
+      action.setCurrentStatements(testCounter.getNumOfStatements());
+      action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
+      action.setCurrentTestAssertions(testCounter.getNumOfTestAssertions());
+      
+      action.setFileSize(WindowListener.getActiveBufferSize());
+		
       this.stream.addAction(action);
 
       
