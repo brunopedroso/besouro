@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
+import athos.listeners.mock.FakeActionStream;
 import athos.model.Action;
 import athos.model.EditAction;
 
@@ -154,6 +155,8 @@ public class JavaStructureListenerTest {
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof EditAction);
 		Assert.assertEquals("Rename", ((EditAction)action).getOperation());
+		
+		//TODO [0] should assert java metrics and duration
 		
 	}
 

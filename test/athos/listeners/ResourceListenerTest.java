@@ -22,6 +22,7 @@ import org.mockito.stubbing.Answer;
 
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.ResourceChangeListener;
+import athos.listeners.mock.FakeActionStream;
 import athos.model.Action;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;

@@ -28,7 +28,6 @@ import athos.stream.EpisodeClassifierStream;
 
 //TODO z rename project to silver
 
-//TODO [0 unit test of junit listener
 //TODO [0] automate integration tests (listeners -> classification)
 
 //TODO z do we need all that File and URI stuff?
@@ -60,11 +59,11 @@ public class SensorPlugin implements IStartup {
 	
 	public void earlyStartup() {
 
-		System.out.println("Registering first-time listeners...");
+//		System.out.println("Registering first-time listeners...");
 		
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(stream), IResourceChangeEvent.POST_CHANGE);
 		JavaCore.addElementChangedListener(new JavaStructureChangeListener(stream));
-		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
+//		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
 		JUnitCore.addTestRunListener(new JUnitListener(stream));
 
 		WindowListener windowListener = new WindowListener(stream);
