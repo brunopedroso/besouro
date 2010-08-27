@@ -151,6 +151,7 @@ public class JavaStatementMeter extends ASTVisitor {
   
 	public void measureJavaFile(IFile file) {
 		// Compute number of tests and assertions to this file.
+		
 		ICompilationUnit cu = (ICompilationUnit) JavaCore.create(file);
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(cu);

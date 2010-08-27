@@ -41,7 +41,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
   protected static final String PROP_CURRENT_TEST_METHODS = "Current-Test-Methods";
   protected static final String PROP_CURRENT_TEST_ASSERTIONS = "Current-Test-Assertions";
   
-  private ActionOutputStream sensor;
+  private ActionOutputStream stream;
   private JavaStatementMeter testCounter = new JavaStatementMeter();
 
   public void setTestCounter(JavaStatementMeter testCounter) {
@@ -53,8 +53,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * 
    * @param sensor Eclipse sensor.
    */
-  public JavaStructureChangeListener(ActionOutputStream sensor) {
-    this.sensor = sensor;
+  public JavaStructureChangeListener(ActionOutputStream stream) {
+    this.stream = stream;
   }
 
   /**
@@ -186,7 +186,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       action.setOperation(op);
       action.setUnitName(name);
       
-      this.sensor.addAction(action);
+      this.stream.addAction(action);
     		  
     }
   }
@@ -230,7 +230,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       
       action.setIsTestEdit(classFileName.toString().toLowerCase().contains("test"));
       
-      this.sensor.addAction(action);
+      this.stream.addAction(action);
 
     }
   }
@@ -274,7 +274,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       
       action.setIsTestEdit(javaFile.toString().toLowerCase().contains("test"));
       
-      this.sensor.addAction(action);
+      this.stream.addAction(action);
 
       
     }    
