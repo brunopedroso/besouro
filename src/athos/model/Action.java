@@ -31,11 +31,6 @@ public abstract class Action implements Comparable {
     this.clock = clock;
   }
 
-  public Action(Clock clock, int duration) {
-	  this.clock = clock;
-	  this.duration = duration;
-  }
-  
   /**
    * Gets timestamp of the command.
    * 

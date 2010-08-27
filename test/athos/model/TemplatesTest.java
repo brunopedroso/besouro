@@ -74,7 +74,8 @@ public class TemplatesTest {
 		//TODO z should not run a query here and assert?
 		
 		// Edit on test
-		EditAction editAction = new EditAction(this.clock, this.testFile, 123);
+		EditAction editAction = new EditAction(this.clock, this.testFile);
+		editAction.setDuration(123);
 		editAction.setIsTestEdit(true);
 		editAction.assertJessFact(2, engine);
 
@@ -84,7 +85,8 @@ public class TemplatesTest {
 		compilationAction.assertJessFact(3, engine);
 
 		// Work on production code
-		editAction = new EditAction(this.clock, this.productionFile,200);
+		editAction = new EditAction(this.clock, this.productionFile);
+		editAction.setDuration(200);
 		editAction.setIsTestEdit(false);
 		editAction.assertJessFact(4, engine);
 
@@ -94,7 +96,8 @@ public class TemplatesTest {
 		unitTestAction.assertJessFact(5, engine);
 
 		// Edit on prodction code
-		editAction = new EditAction(this.clock, this.productionFile, 199);
+		editAction = new EditAction(this.clock, this.productionFile);
+		editAction.setDuration(199);
 		editAction.setIsTestEdit(false);
 		editAction.assertJessFact(6, engine);
 

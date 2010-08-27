@@ -120,7 +120,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				
 //				System.out.println("\t measured " + testCounter);
 				
-				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile(), 0);
+				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile());
 				action.setOperation("Save");
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				

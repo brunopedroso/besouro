@@ -44,8 +44,8 @@ private String unitName;
   private boolean isTestEdit;
   
 
-  public EditAction(Clock clock, File workspaceFile, int duration) {
-    super(clock, workspaceFile, duration);
+  public EditAction(Clock clock, File workspaceFile) {
+    super(clock, workspaceFile);
   }
   
   	  

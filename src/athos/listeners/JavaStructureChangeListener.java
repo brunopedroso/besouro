@@ -166,7 +166,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     if (name != null && !"".equals(name)) {
       
     	//TODO [1] should be a unary
-    	EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
+    	EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile());
     	
     	
 		IFile changedFile = (IFile) element.getResource();
@@ -224,7 +224,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 //      msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
       
       //TODO [1] duration 
-      EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile(), 0);
+      EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile());
       action.setOperation("Rename");
       action.setUnitName(fromName + " => " + toName);
       
@@ -270,7 +270,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 //      msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').append(fromName).append(" -> ").append(toName);
       
       //TODO [1] duration
-      EditAction action = new EditAction(new Clock(new Date()), javaFile.toFile(), 0);
+      EditAction action = new EditAction(new Clock(new Date()), javaFile.toFile());
       action.setOperation("Move");
       action.setUnitName(fromName + " => " + toName);
       
