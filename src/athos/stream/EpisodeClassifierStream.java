@@ -1,6 +1,7 @@
 package athos.stream;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,19 +15,24 @@ import athos.model.UnitTestAction;
 public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private Rete engine;
+	List<Action> actions = new ArrayList<Action>();
+	private long previousActionTimestamp;
 
 	public EpisodeClassifierStream() throws Exception {
-		
 	    this.engine = new Rete();
 	    Batch.batch("athos/model/Actions.clp", this.engine);
 	    Batch.batch("athos/model/Episode.clp", this.engine);
 	    Batch.batch("athos/model/EpisodeClassifier.clp", this.engine);
 
+	    // starts to count the duration of the first action when created
+	    previousActionTimestamp = new Date().getTime();
+	    
 	}
 	
-	List<Action> actions = new ArrayList<Action>();
 	
 	public void addAction(Action action) {
+		
+		calculateDuration(action);
 		
 		actions.add(action);
 		
@@ -79,7 +85,18 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		
 	}
 
-	
+	private void calculateDuration(Action action) {
+		long thisActionTimestamp = action.getClock().getDate().getTime();
+		long duration = (thisActionTimestamp - previousActionTimestamp)/1000;
+		
+		action.setDuration((int) duration);
+		previousActionTimestamp = thisActionTimestamp;
+	}
+
+	public List<Action> getActions() {
+		return actions;
+	}
+
 	
 	
 }

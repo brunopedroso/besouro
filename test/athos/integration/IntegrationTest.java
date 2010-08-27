@@ -1,5 +1,13 @@
 package athos.integration;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import junit.framework.Assert;
+
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.junit.Test;
@@ -8,18 +16,43 @@ import org.mockito.Mockito;
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.ResourceChangeListener;
+import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.JavaElementsFactory;
 import athos.listeners.mock.ResourceFactory;
-import athos.model.CompilationAction;
+import athos.model.Action;
+import athos.model.Clock;
 import athos.model.EditAction;
-import athos.model.UnitTestAction;
-import athos.model.refactor.RefactorOperator;
-import athos.model.refactor.RefactorSubjectType;
-import athos.model.refactor.UnaryRefactorAction;
 import athos.stream.EpisodeClassifierStream;
 
 public class IntegrationTest {
 
+	@Test
+	public void shouldCalculateTheDurationOfTheActions() throws Exception {
+		
+		EpisodeClassifierStream stream = new EpisodeClassifierStream();
+		
+		File workspaceFile = new File("afile.java");
+		
+		//should be the duration of the first action
+		Thread.sleep(1000);
+		
+		Date referenceDate = new Date();
+		
+		EditAction action1 = new EditAction(new Clock(referenceDate), workspaceFile);
+		EditAction action2 = new EditAction(new Clock(new Date(referenceDate.getTime()+4000)), workspaceFile);
+		
+		stream.addAction(action1);
+		stream.addAction(action2);
+		
+		List<Action> actions = stream.getActions();
+		Assert.assertEquals(2, actions.size());
+		Assert.assertEquals(1, actions.get(0).getDuration());
+		Assert.assertEquals(4, actions.get(1).getDuration());
+		
+		
+	}
+
+	
 	@Test 
 	public void testTDDEpisodeCategory1() throws Exception {
 	
