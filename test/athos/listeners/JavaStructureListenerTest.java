@@ -13,10 +13,10 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.junit.Test;
 
-import athos.integration.JavaElementsFactory;
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.mock.FakeActionStream;
+import athos.listeners.mock.JavaElementsFactory;
 import athos.model.Action;
 import athos.model.EditAction;
 

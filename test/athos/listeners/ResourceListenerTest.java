@@ -20,10 +20,10 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import athos.integration.ResourceFactory;
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.ResourceChangeListener;
 import athos.listeners.mock.FakeActionStream;
+import athos.listeners.mock.ResourceFactory;
 import athos.model.Action;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;

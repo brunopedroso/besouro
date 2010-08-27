@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.ResourceChangeListener;
+import athos.listeners.mock.JavaElementsFactory;
+import athos.listeners.mock.ResourceFactory;
 import athos.model.CompilationAction;
 import athos.model.EditAction;
 import athos.model.UnitTestAction;

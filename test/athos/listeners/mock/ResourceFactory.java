@@ -1,4 +1,4 @@
-package athos.integration;
+package athos.listeners.mock;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;

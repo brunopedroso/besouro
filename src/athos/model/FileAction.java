@@ -32,7 +32,7 @@ public abstract class FileAction extends Action implements Comparable {
   }
 
   public FileAction(Clock clock, File workspaceFile) {
-	    super(clock);
+	    this(clock, workspaceFile,0);
   }
   
   /**
