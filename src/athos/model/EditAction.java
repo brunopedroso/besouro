@@ -42,9 +42,10 @@ private String unitName;
   private int currentMethods;
 
   private boolean isTestEdit;
+  private EditAction previousAction;
   
 
-  public EditAction(Clock clock, File workspaceFile) {
+public EditAction(Clock clock, File workspaceFile) {
     super(clock, workspaceFile);
   }
   
@@ -163,7 +164,10 @@ private String unitName;
   }
   
   public int getFileSizeIncrease() {
-    return this.fileSizeIncrease;
+	if (previousAction!=null) {
+		return this.fileSize - previousAction.getFileSize();
+	  }
+	  return 0;
   }
   
   
@@ -235,23 +239,33 @@ public void setTestMethodIncrease(int value) {
 
 
 
-public void setMethodIncrease(int methodIncrease) {
-  this.methodIncrease = methodIncrease;    
+	public void setMethodIncrease(int methodIncrease) {
+	  this.methodIncrease = methodIncrease;    
+	}
+	
+	public int getMethodIncrease() {
+	  return this.methodIncrease;
+	}
+	
+	public void setStatementIncrease(int statementIncrease) {
+	  this.statementIncrease = statementIncrease;    
+	}
+	
+	public int getStatementIncrease() {
+	  return this.statementIncrease; 
+	}
+	
+	public EditAction getPreviousAction() {
+	  return previousAction;
+	}
+	
+	
+	public void setPreviousAction(EditAction previousAction) {
+		this.previousAction = previousAction;
 }
 
-public int getMethodIncrease() {
-  return this.methodIncrease;
-}
 
-public void setStatementIncrease(int statementIncrease) {
-  this.statementIncrease = statementIncrease;    
-}
-
-public int getStatementIncrease() {
-  return this.statementIncrease; 
-}
-
-  /**
+/**
    * Checks whether this edit work makes any progress.
    * 
    * @return True if there is any or false otherwise.

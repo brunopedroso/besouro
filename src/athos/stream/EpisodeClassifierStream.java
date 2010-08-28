@@ -10,6 +10,7 @@ import jess.QueryResult;
 import jess.Rete;
 import jess.ValueVector;
 import athos.model.Action;
+import athos.model.EditAction;
 import athos.model.UnitTestAction;
 
 public class EpisodeClassifierStream implements ActionOutputStream {
@@ -17,6 +18,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private Rete engine;
 	List<Action> actions = new ArrayList<Action>();
 	private long previousActionTimestamp;
+	private EditAction previousAction;
 
 	public EpisodeClassifierStream() throws Exception {
 	    this.engine = new Rete();
@@ -33,6 +35,12 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	public void addAction(Action action) {
 		
 		calculateDuration(action);
+		
+		if (action instanceof EditAction) {
+			EditAction edit = (EditAction) action;
+			edit.setPreviousAction(previousAction); // 1st time will be null, I know...
+			previousAction = edit;
+		}
 		
 		actions.add(action);
 		
