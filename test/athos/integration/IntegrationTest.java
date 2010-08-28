@@ -55,7 +55,8 @@ public class IntegrationTest {
 		
 		List<Action> actions = stream.getActions();
 		Assert.assertEquals(2, actions.size());
-		Assert.assertEquals(1, actions.get(0).getDuration());
+		// We'r considering the 1st action with 0 duration
+		Assert.assertEquals(0, actions.get(0).getDuration());
 		Assert.assertEquals(4, actions.get(1).getDuration());
 		
 		

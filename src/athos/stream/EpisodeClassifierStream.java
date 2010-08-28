@@ -17,7 +17,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private Rete engine;
 	List<Action> actions = new ArrayList<Action>();
-	private long previousActionTimestamp;
 	private EditAction previousAction;
 
 	public EpisodeClassifierStream() throws Exception {
@@ -25,17 +24,12 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	    Batch.batch("athos/model/Actions.clp", this.engine);
 	    Batch.batch("athos/model/Episode.clp", this.engine);
 	    Batch.batch("athos/model/EpisodeClassifier.clp", this.engine);
-
-	    // starts to count the duration of the first action when created
-	    previousActionTimestamp = new Date().getTime();
-	    
 	}
 	
 	
 	public void addAction(Action action) {
-		
-		calculateDuration(action);
-		
+
+		//link the list, to calculate the duration and increases
 		if (action instanceof EditAction) {
 			EditAction edit = (EditAction) action;
 			edit.setPreviousAction(previousAction); // 1st time will be null, I know...
@@ -93,13 +87,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		
 	}
 
-	private void calculateDuration(Action action) {
-		long thisActionTimestamp = action.getClock().getDate().getTime();
-		long duration = (thisActionTimestamp - previousActionTimestamp)/1000;
-		
-		action.setDuration((int) duration);
-		previousActionTimestamp = thisActionTimestamp;
-	}
 
 	public List<Action> getActions() {
 		return actions;

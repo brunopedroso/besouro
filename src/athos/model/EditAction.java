@@ -1,6 +1,7 @@
 package athos.model;
 
 import java.io.File;
+import java.util.Date;
 
 import jess.Fact;
 import jess.JessException;
@@ -19,9 +20,11 @@ import jess.Value;
  */
 public class EditAction extends FileAction {
 	
+  private EditAction previousAction;
+  
   private int fileSize = 0;
+
   //TODO [1] increases
-  private int fileSizeIncrease = 0;
   
   private String operation;
   public String getOperation() {
@@ -42,7 +45,10 @@ private String unitName;
   private int currentMethods;
 
   private boolean isTestEdit;
-  private EditAction previousAction;
+
+private int fileSizeIncrease;
+
+private long duration;
   
 
 public EditAction(Clock clock, File workspaceFile) {
@@ -141,6 +147,25 @@ public EditAction(Clock clock, File workspaceFile) {
 	  }  
 	  
 	  
+  @Override
+  public int getDuration(){
+
+	  if (previousAction != null) {
+		  long thisTimestamp = getClock().getDate().getTime();
+		  long previousTimestamp = previousAction.getClock().getDate().getTime();
+		  duration = (thisTimestamp - previousTimestamp)/1000;
+		  previousTimestamp = thisTimestamp;
+	  }
+	  
+	  return (int) duration;
+	  
+  }
+	
+  @Override
+  public void setDuration(int d){
+	  this.duration = d;
+  }
+  
   public boolean isTestEdit() {
 	return isTestEdit;
   }
@@ -159,15 +184,18 @@ public EditAction(Clock clock, File workspaceFile) {
     return this.fileSize;
   }
   
-  public void setFileSizeIncrease(int increase) {
-    this.fileSizeIncrease = increase; 
-  }
-  
   public int getFileSizeIncrease() {
 	if (previousAction!=null) {
 		return this.fileSize - previousAction.getFileSize();
+	  } else {
+		  return fileSizeIncrease;
+		  
 	  }
-	  return 0;
+  }
+
+  // usefull for test
+  public void setFileSizeIncrease(int size) {
+	  fileSizeIncrease = size;
   }
   
   
