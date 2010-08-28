@@ -116,13 +116,9 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				testCounter.reset();
 				testCounter.measureJavaFile(changedFile);
 				
-//				System.out.println("\t measured " + testCounter);
-				
 				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile());
 				action.setOperation("Save");
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
-				
-				//TODO [1]  increases... how did hongbing do it?
 				
 				action.setIsTestEdit(testCounter.hasTest());
 				action.setFileSize(WindowListener.getActiveBufferSize());

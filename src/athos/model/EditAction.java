@@ -21,8 +21,6 @@ public class EditAction extends FileAction {
   
   private int fileSize = 0;
 
-  //TODO [1] increases
-  
   private String operation;
   public String getOperation() {
 	return operation;
@@ -92,11 +90,6 @@ public EditAction(Clock clock, File workspaceFile) {
   	  
   	  public boolean isSubstantial() {
   		  
-  		  //TODO [1] increases
-//  		  return true;
-//  		  return getMethodIncrease() != 0 || getStatementIncrease() != 0 || 
-//  	         this.testMethodIncrease != 0 || this.testAssertionIncrease != 0;
-
   		  if (isTestEdit)
   			  return this.getDuration() > 0 && 
   			  	(this.methodIncrease != 0 || this.statementIncrease != 0 || 
@@ -107,10 +100,6 @@ public EditAction(Clock clock, File workspaceFile) {
   			  	(this.getFileSizeIncrease() != 0 || this.methodIncrease != 0 || 
   			     this.statementIncrease != 0);
   		   
-  		  
-  		  
-
-  		  
   	  }
 
 
