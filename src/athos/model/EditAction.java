@@ -246,12 +246,15 @@ public int getCurrentMethods() {
 }
 
 
-public void setTestMethodIncrease(int value) {
+  public void setTestMethodIncrease(int value) {
     this.testMethodIncrease = value;
   }
   
   public int getTestMethodIncrease() {
-    return this.testMethodIncrease;
+	  if (previousAction!=null) {
+		  return this.getCurrentTestMethods() - previousAction.getCurrentTestMethods();
+	  }
+	  return this.testMethodIncrease;
   }
   
   public void setTestAssertionIncrease(int value) {
@@ -259,7 +262,10 @@ public void setTestMethodIncrease(int value) {
   }
   
   public int getTestAssertionIncrease() {
-    return this.testAssertionIncrease;
+	  if (previousAction!=null) {
+		  return this.getCurrentTestAssertions() - previousAction.getCurrentTestAssertions();
+	  }
+	  return this.testAssertionIncrease;
   }
 
 
@@ -269,6 +275,9 @@ public void setTestMethodIncrease(int value) {
 	}
 	
 	public int getMethodIncrease() {
+	  if (previousAction!=null) {
+		  return this.getCurrentMethods() - previousAction.getCurrentMethods();
+	  }
 	  return this.methodIncrease;
 	}
 	
@@ -277,6 +286,9 @@ public void setTestMethodIncrease(int value) {
 	}
 	
 	public int getStatementIncrease() {
+	  if (previousAction!=null) {
+		  return this.getCurrentStatements() - previousAction.getCurrentStatements();
+	  }
 	  return this.statementIncrease; 
 	}
 	
