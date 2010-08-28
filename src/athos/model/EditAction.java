@@ -9,9 +9,6 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
-
-
-
 /**
  * Implements edit action on files.
  * 
@@ -292,6 +289,9 @@ public void setTestMethodIncrease(int value) {
 		this.previousAction = previousAction;
 }
 
+	public EditAction getPrevisousAction() {
+		return this.previousAction;
+	}
 
 /**
    * Checks whether this edit work makes any progress.

@@ -13,7 +13,7 @@ import athos.model.Action;
 import athos.model.Clock;
 import athos.model.EditAction;
 
-public class ActionStreamTest {
+public class IncreasesCalculationTest {
 	
 	private File file;
 	private EpisodeClassifierStream stream;
@@ -27,11 +27,7 @@ public class ActionStreamTest {
 	}
 	
 	@Test
-	public void shouldCalculateTheDurationOfTheActions() throws Exception {
-		
-		//TODO [in] might be a better way to test it... (and to implement too)
-		//should be the duration of the first action
-		Thread.sleep(1000);
+	public void shouldLinkTheEditActions() throws Exception {
 		
 		Date referenceDate = new Date();
 		
@@ -43,9 +39,24 @@ public class ActionStreamTest {
 		
 		List<Action> actions = stream.getActions();
 		Assert.assertEquals(2, actions.size());
+		Assert.assertEquals(actions.get(0), ((EditAction)actions.get(1)).getPrevisousAction());
+		
+	}
+	
+	
+	@Test
+	public void shouldCalculateTheDurationOfTheActions() throws Exception {
+		
+		Date referenceDate = new Date();
+		
+		EditAction action1 = new EditAction(new Clock(referenceDate), file);
+		EditAction action2 = new EditAction(new Clock(new Date(referenceDate.getTime()+4000)), file);
+		
+		action2.setPreviousAction(action1);
+		
 		// We'r considering the 1st action with 0 duration
-		Assert.assertEquals(0, actions.get(0).getDuration());
-		Assert.assertEquals(4, actions.get(1).getDuration());
+		Assert.assertEquals(0, action1.getDuration());
+		Assert.assertEquals(4, action2.getDuration());
 		
 		
 	}
@@ -59,15 +70,10 @@ public class ActionStreamTest {
 		EditAction action2 = new EditAction(clock, file);
 		action2.setFileSize(150);
 		
-		stream.addAction(action1);
-		stream.addAction(action2);
+		action2.setPreviousAction(action1);
 		
-		List<Action> actions = stream.getActions();
-		Assert.assertEquals(2, actions.size());
-		
-		// We'r considering the 1st action with 0 increase
-		Assert.assertEquals(0, ((EditAction) actions.get(0)).getFileSizeIncrease());
-		Assert.assertEquals(100, ((EditAction) actions.get(1)).getFileSizeIncrease());
+		Assert.assertEquals(0, action1.getFileSizeIncrease());
+		Assert.assertEquals(100, action2.getFileSizeIncrease());
 		
 		
 	}
