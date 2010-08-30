@@ -85,6 +85,10 @@ public class IncreasesCalculationTest {
 		Assert.assertNull(action3.getPrevisousAction());
 	}
 	
+	// stream should link the fileopen
+	
+	// editaction should calculate increases based on a previsou fileOpen
+	
 	
 	//TODO   should calculate the first correctly
 	// link the OpenAction with the original metrics ;-)
