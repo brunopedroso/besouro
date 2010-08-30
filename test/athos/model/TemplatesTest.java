@@ -75,7 +75,11 @@ public class TemplatesTest {
 		
 		// Edit on test
 		EditAction editAction = new EditAction(this.clock, this.testFile);
-		editAction.setDuration(123);
+		
+		
+//		ignoring duration
+//		editAction.setDuration(123);
+		
 		editAction.setIsTestEdit(true);
 		editAction.assertJessFact(2, engine);
 
@@ -86,7 +90,10 @@ public class TemplatesTest {
 
 		// Work on production code
 		editAction = new EditAction(this.clock, this.productionFile);
-		editAction.setDuration(200);
+		
+//		ignoring duration
+//		editAction.setDuration(200);
+		
 		editAction.setIsTestEdit(false);
 		editAction.assertJessFact(4, engine);
 
@@ -97,7 +104,10 @@ public class TemplatesTest {
 
 		// Edit on prodction code
 		editAction = new EditAction(this.clock, this.productionFile);
-		editAction.setDuration(199);
+		
+//		ignoring duration
+//		editAction.setDuration(199);
+		
 		editAction.setIsTestEdit(false);
 		editAction.assertJessFact(6, engine);
 

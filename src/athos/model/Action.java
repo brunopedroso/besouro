@@ -19,8 +19,6 @@ import jess.Rete;
 public abstract class Action implements Comparable {
   /** Time stamp of the command. */
   private Clock clock;
-  /** Some actions have duration. Default value is zero*/  
-  private int duration = 0;
   
   /**
    * Instantiates a command with clock. 
@@ -74,23 +72,6 @@ public abstract class Action implements Comparable {
     return this.clock.equals(((Action) o).clock);
   }
   
-  /**
-   * Sets duration for this action.
-   * 
-   * @param duration Number of seconds.
-   */
-  public void setDuration(int duration) {
-    this.duration = duration;
-  }
-  
-  /**
-   * Gets duration of this action.
-   * 
-   * @return Number of seconds of this action.
-   */
-  public int getDuration() {
-    return this.duration;  
-  }
   
   /**
    * Gets command string.

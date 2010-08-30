@@ -91,13 +91,15 @@ public EditAction(Clock clock, File workspaceFile) {
   	  public boolean isSubstantial() {
   		  
   		  if (isTestEdit)
-  			  return this.getDuration() > 0 && 
-  			  	(this.methodIncrease != 0 || this.statementIncrease != 0 || 
+  			  // ignoring the duration. Look a litle down
+//  			  return this.getDuration() > 0 && 
+  			  return (this.methodIncrease != 0 || this.statementIncrease != 0 || 
   			  	 this.testMethodIncrease != 0 || this.testAssertionIncrease != 0);
   			  
   		  else
-  			  return this.getDuration() > 0 && 
-  			  	(this.getFileSizeIncrease() != 0 || this.methodIncrease != 0 || 
+  			  // ignoring the duration. Look a litle down
+//  			  return this.getDuration() > 0 && 
+  			  return (this.getFileSizeIncrease() != 0 || this.methodIncrease != 0 || 
   			     this.statementIncrease != 0);
   		   
   	  }
@@ -123,7 +125,7 @@ public EditAction(Clock clock, File workspaceFile) {
 	      
 	      f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
 	      f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName(), RU.STRING));
-	      f.setSlotValue("duration", new Value(this.getDuration(), RU.INTEGER));
+//	      f.setSlotValue("duration", new Value(this.getDuration(), RU.INTEGER));
 	      f.setSlotValue("byteChange", new Value(this.getFileSizeIncrease(), RU.INTEGER));
 	      
 	      assertedFact = engine.assertFact(f);
@@ -133,24 +135,30 @@ public EditAction(Clock clock, File workspaceFile) {
 	  }  
 	  
 	  
-  @Override
-  public int getDuration(){
-
-	  if (previousAction != null) {
-		  long thisTimestamp = getClock().getDate().getTime();
-		  long previousTimestamp = previousAction.getClock().getDate().getTime();
-		  duration = (thisTimestamp - previousTimestamp)/1000;
-		  previousTimestamp = thisTimestamp;
-	  }
+// I've droped this concept. Hongbing used it just for classifying an action as substancial...
+// Im gonna consider all durations as substantial...
+	 
 	  
-	  return (int) duration;
+//  @Override
+//  public int getDuration(){
+//
+//	  if (previousAction != null) {
+//		  long thisTimestamp = getClock().getDate().getTime();
+//		  long previousTimestamp = previousAction.getClock().getDate().getTime();
+//		  duration = (thisTimestamp - previousTimestamp)/1000;
+//		  previousTimestamp = thisTimestamp;
+//	  }
+//	  
+//	  return (int) duration;
+//	  
+//  }
+//	
+//  @Override
+//  public void setDuration(int d){
+//	  this.duration = d;
+//  }
 	  
-  }
-	
-  @Override
-  public void setDuration(int d){
-	  this.duration = d;
-  }
+	  
   
   public boolean isTestEdit() {
 	return isTestEdit;

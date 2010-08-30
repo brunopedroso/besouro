@@ -172,7 +172,10 @@ public class JavaStructureListenerTest {
 		
 		// calculated by the EpisodeClassifierStream
 		Assert.assertEquals(null, editAction.getPreviousAction());
-		Assert.assertEquals(0, editAction.getDuration());
+		
+		// ignoring duration
+//		Assert.assertEquals(0, editAction.getDuration());
+		
 		Assert.assertEquals(0, editAction.getFileSizeIncrease());
 		Assert.assertEquals(0, editAction.getMethodIncrease());
 		Assert.assertEquals(0, editAction.getStatementIncrease());
