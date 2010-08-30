@@ -13,17 +13,7 @@ import athos.model.Action;
 import athos.model.Clock;
 import athos.model.EditAction;
 
-// TODO [0]  durations and increases are more complex than that
-
-
-//	duraton 
-//		any actions? 
-//		active time? 
-//		whats the meaning? 
-//		what is it used for?
-
-//	increases - per file!
-//  		  - metricas inicializadas no win-open?
+// TODO [0]  increases - per file + metricas inicializadas no win-open?
 
 
 public class IncreasesCalculationTest {
@@ -50,6 +40,8 @@ public class IncreasesCalculationTest {
 
 	}
 	
+	
+	
 	@Test
 	public void shouldLinkTheEditActions() throws Exception {
 		
@@ -67,6 +59,33 @@ public class IncreasesCalculationTest {
 		Assert.assertEquals(actions.get(0), ((EditAction)actions.get(1)).getPrevisousAction());
 		
 	}
+	
+	
+	@Test
+	public void shouldLinkActionsPerFile() throws Exception {
+		
+		File anotherFile = new File("another.file");
+		
+		action1 = new EditAction(clock, file);
+		action2 = new EditAction(clock, anotherFile);
+		EditAction action3 = new EditAction(clock, file);
+
+		stream.addAction(action1);
+		stream.addAction(action2);
+		stream.addAction(action3);
+		
+		// should link action1 -> action3
+		Assert.assertEquals(action1, action3.getPrevisousAction());
+		
+		// should not link aciton2, because its on other file
+		Assert.assertNull(action2.getPrevisousAction());
+	}
+	
+	
+	//TODO   should calculate the first correctly
+	// link the OpenAction with the original metrics ;-)
+	//		we'll have to link all kinds of actions, i guess..
+	
 	
 	
 //	@Test
@@ -115,5 +134,8 @@ public class IncreasesCalculationTest {
 		Assert.assertEquals(0, action1.getTestMethodIncrease());
 		Assert.assertEquals(8, action2.getTestMethodIncrease());
 	}
+
+
 	
+
 }

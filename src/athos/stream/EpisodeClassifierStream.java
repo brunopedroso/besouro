@@ -1,9 +1,12 @@
 package athos.stream;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import jess.Batch;
 import jess.QueryResult;
@@ -17,7 +20,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private Rete engine;
 	List<Action> actions = new ArrayList<Action>();
-	private EditAction previousAction;
+	
+	private Map<File, EditAction> previousEditActionPerFile = new HashMap<File, EditAction>();
 
 	public EpisodeClassifierStream() throws Exception {
 	    this.engine = new Rete();
@@ -31,9 +35,14 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 		//link the list, to calculate the duration and increases
 		if (action instanceof EditAction) {
+			
 			EditAction edit = (EditAction) action;
-			edit.setPreviousAction(previousAction); // 1st time will be null, I know...
-			previousAction = edit;
+			
+			EditAction previousPerFile = previousEditActionPerFile.get(edit.getFile());
+			edit.setPreviousAction(previousPerFile); // 1st time will be null, I know...
+			
+			previousEditActionPerFile.put(edit.getFile(), edit);
+			
 		}
 		
 		actions.add(action);

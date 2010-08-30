@@ -39,14 +39,6 @@ public abstract class Action implements Comparable {
   }
   
   
-  /**
-   * Hashcode of the action.
-   * 
-   * @return Action hash code.
-   */
-  public int hashCode() {
-    return this.clock.hashCode();
-  }
   
   /**
    * Compares two actions objects.
@@ -58,20 +50,29 @@ public abstract class Action implements Comparable {
     return this.clock.compareTo(((Action) o).clock);      
   }
   
-  /**
-   * Test whether two commands happened at the same time.
-   * 
-   * @param o Another command object.
-   * @return True if two command objects are equal.
-   */
-  public boolean equals(Object o) {
-    if (o == null || !(o instanceof Action)) {
-      return false;
-    }
-    
-    return this.clock.equals(((Action) o).clock);
-  }
+//  /**
+//   * Hashcode of the action.
+//   * 
+//   * @return Action hash code.
+//   */
+//  public int hashCode() {
+//    return this.clock.hashCode();
+//  }
   
+//  /**
+//   * Test whether two commands happened at the same time.
+//   * 
+//   * @param o Another command object.
+//   * @return True if two command objects are equal.
+//   */
+//  public boolean equals(Object o) {
+//    if (o == null || !(o instanceof Action)) {
+//      return false;
+//    }
+//    
+//    return this.clock.equals(((Action) o).clock);
+//  }
+//  
   
   /**
    * Gets command string.
