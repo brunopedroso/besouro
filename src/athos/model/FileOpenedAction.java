@@ -61,7 +61,11 @@ public class FileOpenedAction extends FileAction {
 	
 	@Override
 	public String toString() {
-		return "FileOpened: " + getFile();
+		return "FileOpened: " + getFile()
+			+ "(m: " + numOfMethods + ")"
+			+ "(s: " + numOfStatements + ")"
+			+ "(ta: " + numOfTestAssertions + ")"
+			+ "(ts: " + numOfTestMethods + ")";
 	}
 
 
