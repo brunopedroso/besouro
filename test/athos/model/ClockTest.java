@@ -3,8 +3,6 @@ package athos.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import athos.model.Clock;
-
 import junit.framework.TestCase;
 
 /**

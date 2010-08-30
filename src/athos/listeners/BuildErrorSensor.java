@@ -39,7 +39,7 @@ public class BuildErrorSensor {
 
   public void findBuildProblem(IResourceDelta delta) {
 	
-	  //TODO   do we realy need to use the active editor?
+	  //TODO z[clean] do we realy need to use the active editor?
 	  
     ITextEditor activeEditor = WindowListener.getActiveTextEditor();
     

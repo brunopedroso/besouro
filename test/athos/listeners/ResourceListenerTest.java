@@ -1,7 +1,5 @@
 package athos.listeners;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -10,18 +8,9 @@ import java.util.ArrayList;
 
 import junit.framework.Assert;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import athos.listeners.JavaStatementMeter;
-import athos.listeners.ResourceChangeListener;
 import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.ResourceFactory;
 import athos.model.Action;

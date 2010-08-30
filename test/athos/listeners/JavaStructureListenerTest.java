@@ -7,14 +7,11 @@ import java.util.ArrayList;
 
 import junit.framework.Assert;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.junit.Test;
 
-import athos.listeners.JavaStatementMeter;
-import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.JavaElementsFactory;
 import athos.model.Action;

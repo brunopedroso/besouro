@@ -2,7 +2,6 @@ package athos.model;
 
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 
 import jess.Batch;
 import jess.QueryResult;
@@ -12,8 +11,6 @@ import jess.ValueVector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import athos.model.Clock;
 
 /**
  * Tests test-pass episode classification.

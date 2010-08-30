@@ -1,6 +1,8 @@
 package athos.listeners;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +14,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import athos.listeners.mock.FakeActionStream;
 import athos.model.Action;
@@ -28,26 +29,11 @@ public class WindowEventsTest {
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		ActionOutputStream stream = new FakeActionStream(generatedActions);
 		
+		WindowListener listener = new WindowListener(stream);
+		listener.setJavaMeter(createStubJavaMeter());
 		
 		File file = new File("aFile.java");
-		IPath ipath = mock(IPath.class);
-		when(ipath.toFile()).thenReturn(file);
-		
-		IFile ifile = mock(IFile.class);
-		when(ifile.getFullPath()).thenReturn(ipath);
-		
-		ITextEditor part = createTestEditor(ifile);
-		
-		JavaStatementMeter meter = mock(JavaStatementMeter.class);
-		when(meter.getNumOfMethods()).thenReturn(11);
-		when(meter.getNumOfStatements()).thenReturn(22);
-		when(meter.getNumOfTestAssertions()).thenReturn(33);
-		when(meter.getNumOfTestMethods()).thenReturn(44);
-		
-		WindowListener listener = new WindowListener(stream);
-		listener.setJavaMeter(meter);
-		
-		listener.partOpened(part);
+		listener.partOpened(createTestEditor(file));
 		
 		Assert.assertEquals(1, generatedActions.size());
 		Assert.assertTrue(generatedActions.get(0) instanceof FileOpenedAction);
@@ -59,8 +45,28 @@ public class WindowEventsTest {
 		Assert.assertEquals(33, fileOpenedAction.getNumOfTestAssertions());
 		Assert.assertEquals(44, fileOpenedAction.getNumOfTestMethods());
 		
-		verify(meter).measureJavaFile(ifile);
+	}
+	
+	//TODO   should generate fileOpen at startup, if files are previously opened
+
+	private JavaStatementMeter createStubJavaMeter() {
+		JavaStatementMeter meter = mock(JavaStatementMeter.class);
+		when(meter.getNumOfMethods()).thenReturn(11);
+		when(meter.getNumOfStatements()).thenReturn(22);
+		when(meter.getNumOfTestAssertions()).thenReturn(33);
+		when(meter.getNumOfTestMethods()).thenReturn(44);
+		return meter;
+	}
+
+	private ITextEditor createTestEditor(File file) {
+		IPath ipath = mock(IPath.class);
+		when(ipath.toFile()).thenReturn(file);
 		
+		IFile ifile = mock(IFile.class);
+		when(ifile.getFullPath()).thenReturn(ipath);
+		
+		ITextEditor part = createTestEditor(ifile);
+		return part;
 	}
 
 	private ITextEditor createTestEditor(IFile ifile) {
@@ -77,6 +83,6 @@ public class WindowEventsTest {
 	}
 	
 	
-	//TODO  is there more win events to tests
+	//TODO [data]  is there more window events to test?
 	
 }

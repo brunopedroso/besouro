@@ -107,7 +107,7 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 				
 //				activeBufferSize = document.getLength();
 
-				//TODO   register doc-opened-event to store file metrics
+				//TODO  register doc-opened-event to store file metrics
 
 			}
 			

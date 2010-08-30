@@ -1,22 +1,18 @@
 package athos.listeners;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
 
-import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.junit.Test;
 
 import athos.listeners.mock.FakeActionStream;
 import athos.model.Action;
-import athos.model.EditAction;
 import athos.model.UnitTestAction;
 import athos.stream.ActionOutputStream;
 

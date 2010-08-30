@@ -1,28 +1,16 @@
 package athos.integration;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.Assert;
+import static org.mockito.Mockito.mock;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.ResourceChangeListener;
-import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.JavaElementsFactory;
 import athos.listeners.mock.ResourceFactory;
-import athos.model.Action;
-import athos.model.Clock;
-import athos.model.EditAction;
 import athos.stream.EpisodeClassifierStream;
 
 public class IntegrationTest {

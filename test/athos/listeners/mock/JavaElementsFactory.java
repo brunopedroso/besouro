@@ -8,8 +8,6 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
-import athos.listeners.ResourceListenerTest;
-
 public class JavaElementsFactory {
 
 	public static IJavaElement createJavaElement(IJavaElement parentElement, String resourceName, int type) {
