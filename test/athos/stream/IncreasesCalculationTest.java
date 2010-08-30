@@ -54,7 +54,7 @@ public class IncreasesCalculationTest {
 		
 		List<Action> actions = stream.getActions();
 		Assert.assertEquals(2, actions.size());
-		Assert.assertEquals(actions.get(0), ((EditAction)actions.get(1)).getPrevisousAction());
+		Assert.assertEquals(actions.get(0), ((EditAction)actions.get(1)).getPreviousAction());
 		
 	}
 	
@@ -75,12 +75,12 @@ public class IncreasesCalculationTest {
 		stream.addAction(action4);
 		
 		// should link action1 -> action2
-		Assert.assertEquals(action1, action2.getPrevisousAction());
-		Assert.assertNull(action1.getPrevisousAction());
+		Assert.assertEquals(action1, action2.getPreviousAction());
+		Assert.assertNull(action1.getPreviousAction());
 		
 		// should link action3 -> action4
-		Assert.assertEquals(action3, action4.getPrevisousAction());
-		Assert.assertNull(action3.getPrevisousAction());
+		Assert.assertEquals(action3, action4.getPreviousAction());
+		Assert.assertNull(action3.getPreviousAction());
 	}
 	
 	

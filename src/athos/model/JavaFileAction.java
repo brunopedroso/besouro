@@ -12,7 +12,20 @@ public class JavaFileAction extends FileAction {
 	private int statementsCount;
 	private int testAssertionsCount;
 	private int testMethodsCount;
-	  
+	private JavaFileAction previousAction;
+
+	
+	
+	private int fileSize = 0;
+
+	public void setFileSize(int fileSize) {
+		this.fileSize = fileSize;
+	}
+  
+	public int getFileSize() {
+		return this.fileSize;
+	}
+
 	public int getMethodsCount() {
 		return methodsCount;
 	}
@@ -49,10 +62,21 @@ public class JavaFileAction extends FileAction {
 		super(clock, workspaceFile);
 	}
 
+	public void setPreviousAction(JavaFileAction previousAction) {
+		this.previousAction = previousAction;
+	}
+
+	public JavaFileAction getPreviousAction() {
+		return this.previousAction;
+	}
+
+	
 	@Override
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		return null;
 	}
+	
+	
 	
 	
 

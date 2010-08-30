@@ -16,10 +16,6 @@ import jess.Value;
  */
 public class EditAction extends JavaFileAction {
 	
-  private EditAction previousAction;
-  
-  private int fileSize = 0;
-
   private String operation;
   public String getOperation() {
 	return operation;
@@ -165,18 +161,9 @@ public EditAction(Clock clock, File workspaceFile) {
 	}
 
 	  
-	  
-  public void setFileSize(int fileSize) {
-    this.fileSize = fileSize;
-  }
-  
-  public int getFileSize() {
-    return this.fileSize;
-  }
-  
   public int getFileSizeIncrease() {
-	if (previousAction!=null) {
-		return this.fileSize - previousAction.getFileSize();
+	if (getPreviousAction()!=null) {
+		return this.getFileSize() - getPreviousAction().getFileSize();
 	  } else {
 		  return fileSizeIncrease;
 		  
@@ -207,8 +194,8 @@ public void setUnitName(String name) {
   }
   
   public int getTestMethodIncrease() {
-	  if (previousAction!=null) {
-		  return this.getTestMethodsCount() - previousAction.getTestMethodsCount();
+	  if (getPreviousAction()!=null) {
+		  return this.getTestMethodsCount() - getPreviousAction().getTestMethodsCount();
 	  }
 	  return this.testMethodIncrease;
   }
@@ -218,8 +205,8 @@ public void setUnitName(String name) {
   }
   
   public int getTestAssertionIncrease() {
-	  if (previousAction!=null) {
-		  return this.getTestAssertionsCount() - previousAction.getTestAssertionsCount();
+	  if (getPreviousAction()!=null) {
+		  return this.getTestAssertionsCount() - getPreviousAction().getTestAssertionsCount();
 	  }
 	  return this.testAssertionIncrease;
   }
@@ -231,8 +218,8 @@ public void setUnitName(String name) {
 	}
 	
 	public int getMethodIncrease() {
-	  if (previousAction!=null) {
-		  return this.getMethodsCount() - previousAction.getMethodsCount();
+	  if (getPreviousAction()!=null) {
+		  return this.getMethodsCount() - getPreviousAction().getMethodsCount();
 	  }
 	  return this.methodIncrease;
 	}
@@ -242,24 +229,14 @@ public void setUnitName(String name) {
 	}
 	
 	public int getStatementIncrease() {
-	  if (previousAction!=null) {
-		  return this.getStatementsCount() - previousAction.getStatementsCount();
+	  if (getPreviousAction()!=null) {
+		  return this.getStatementsCount() - getPreviousAction().getStatementsCount();
 	  }
 	  return this.statementIncrease; 
 	}
 	
-	public EditAction getPreviousAction() {
-	  return previousAction;
-	}
 	
 	
-	public void setPreviousAction(EditAction previousAction) {
-		this.previousAction = previousAction;
-}
-
-	public EditAction getPrevisousAction() {
-		return this.previousAction;
-	}
 
 /**
    * Checks whether this edit work makes any progress.
