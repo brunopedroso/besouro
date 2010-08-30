@@ -12,6 +12,7 @@ import org.junit.Test;
 import athos.model.Action;
 import athos.model.Clock;
 import athos.model.EditAction;
+import athos.model.FileOpenedAction;
 
 
 public class IncreasesCalculationTest {
@@ -42,8 +43,6 @@ public class IncreasesCalculationTest {
 	
 	@Test
 	public void shouldLinkTheEditActions() throws Exception {
-		
-		Date referenceDate = new Date();
 		
 		// two brand new *unlinked* actions
 		action1 = new EditAction(clock, file);
@@ -82,16 +81,6 @@ public class IncreasesCalculationTest {
 		Assert.assertEquals(action3, action4.getPreviousAction());
 		Assert.assertNull(action3.getPreviousAction());
 	}
-	
-	
-	// stream should link the fileopen
-	
-	// editaction should calculate increases based on a previsou fileOpen
-	
-	
-	//TODO   should calculate the first correctly
-	// link the OpenAction with the original metrics ;-)
-	//		we'll have to link FileActions, i guess.. open is a fileaction?
 	
 	
 	
@@ -135,6 +124,48 @@ public class IncreasesCalculationTest {
 		action2.setTestMethodsCount(19);
 		Assert.assertEquals(0, action1.getTestMethodIncrease());
 		Assert.assertEquals(8, action2.getTestMethodIncrease());
+	}
+
+	
+	
+	@Test
+	public void shouldLinkEditActionsWithFileOpenActions() throws Exception {
+		
+		FileOpenedAction open = new FileOpenedAction(clock, file);
+		
+		// two brand new *unlinked* actions
+		action1 = new EditAction(clock, file);
+		action2 = new EditAction(clock, file);
+		
+		File anotherFile = new File("another.file");
+		EditAction action3 = new EditAction(clock, anotherFile);
+
+		stream.addAction(open);
+		stream.addAction(action1);
+		stream.addAction(action3); // should not be linked
+		stream.addAction(action2);
+		
+		List<Action> actions = stream.getActions();
+		Assert.assertEquals(4, actions.size());
+		Assert.assertEquals(open, action1.getPreviousAction());
+		Assert.assertEquals(action1, action2.getPreviousAction());
+		
+		Assert.assertNull(action3.getPreviousAction());
+		
+	}
+	
+	@Test
+	public void shouldCalculateFileIncreasesToPreviousFileOpenAction() throws Exception {
+		
+		FileOpenedAction open = new FileOpenedAction(clock, file);
+		open.setFileSize(50);
+		
+		action2 = new EditAction(clock, file);
+		action2.setFileSize(150);
+		
+		action2.setPreviousAction(open);
+		
+		Assert.assertEquals(100, action2.getFileSizeIncrease());
 	}
 
 

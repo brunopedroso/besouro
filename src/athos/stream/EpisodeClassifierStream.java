@@ -2,9 +2,7 @@ package athos.stream;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +11,7 @@ import jess.QueryResult;
 import jess.Rete;
 import jess.ValueVector;
 import athos.model.Action;
-import athos.model.EditAction;
+import athos.model.JavaFileAction;
 import athos.model.UnitTestAction;
 
 public class EpisodeClassifierStream implements ActionOutputStream {
@@ -21,7 +19,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private Rete engine;
 	List<Action> actions = new ArrayList<Action>();
 	
-	private Map<File, EditAction> previousEditActionPerFile = new HashMap<File, EditAction>();
+	private Map<File, JavaFileAction> previousEditActionPerFile = new HashMap<File, JavaFileAction>();
 
 	public EpisodeClassifierStream() throws Exception {
 	    this.engine = new Rete();
@@ -34,14 +32,14 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	public void addAction(Action action) {
 
 		//link the list, to calculate the increases
-		if (action instanceof EditAction) {
+		if (action instanceof JavaFileAction) {
 			
-			EditAction edit = (EditAction) action;
+			JavaFileAction linkedAction = (JavaFileAction) action;
 			
-			EditAction previousPerFile = previousEditActionPerFile.get(edit.getFile());
-			edit.setPreviousAction(previousPerFile); // 1st time will be null, I know...
+			JavaFileAction previousPerFile = previousEditActionPerFile.get(linkedAction.getFile());
+			linkedAction.setPreviousAction(previousPerFile); // 1st time will be null, I know...
 			
-			previousEditActionPerFile.put(edit.getFile(), edit);
+			previousEditActionPerFile.put(linkedAction.getFile(), linkedAction);
 			
 		}
 		
