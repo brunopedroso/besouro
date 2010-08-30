@@ -1,6 +1,4 @@
 package athos.listeners;
-import java.io.File;
-import java.net.URI;
 import java.util.Date;
 
 import org.eclipse.core.resources.IFile;
@@ -124,10 +122,10 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				
 				action.setFileSize( (int) changedFile.getLocation().toFile().length());
 				
-				action.setCurrentMethods(testCounter.getNumOfMethods());
-				action.setCurrentStatements(testCounter.getNumOfStatements());
-				action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
-				action.setCurrentTestAssertions(testCounter.getNumOfTestMethods());
+				action.setMethodsCount(testCounter.getNumOfMethods());
+				action.setStatementsCount(testCounter.getNumOfStatements());
+				action.setTestMethodsCount(testCounter.getNumOfTestMethods());
+				action.setTestAssertionsCount(testCounter.getNumOfTestMethods());
 
 				sensor.addAction(action);
 				

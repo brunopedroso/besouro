@@ -160,10 +160,10 @@ public class JavaStructureListenerTest {
 		EditAction editAction = (EditAction)action;
 		Assert.assertEquals("Move", editAction.getOperation());
 
-		Assert.assertEquals(meter.getNumOfMethods(), editAction.getCurrentMethods());
-		Assert.assertEquals(meter.getNumOfStatements(), editAction.getCurrentStatements());
-		Assert.assertEquals(meter.getNumOfTestAssertions(), editAction.getCurrentTestAssertions());
-		Assert.assertEquals(meter.getNumOfTestMethods(), editAction.getCurrentTestMethods());
+		Assert.assertEquals(meter.getNumOfMethods(), editAction.getMethodsCount());
+		Assert.assertEquals(meter.getNumOfStatements(), editAction.getStatementsCount());
+		Assert.assertEquals(meter.getNumOfTestAssertions(), editAction.getTestAssertionsCount());
+		Assert.assertEquals(meter.getNumOfTestMethods(), editAction.getTestMethodsCount());
 		
 //		Assert.assertEquals(fileSize, editAction.getFileSize());
 		

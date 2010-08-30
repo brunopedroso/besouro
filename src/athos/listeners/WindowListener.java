@@ -131,10 +131,10 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 				
 				javaMeter.reset();
 				javaMeter.measureJavaFile(fileInput.getFile());
-				action.setNumOfMethods(javaMeter.getNumOfMethods());
-				action.setNumOfStatements(javaMeter.getNumOfStatements());
-				action.setNumOfTestAssertions(javaMeter.getNumOfTestAssertions());
-				action.setNumOfTestMethods(javaMeter.getNumOfTestMethods());
+				action.setMethodsCount(javaMeter.getNumOfMethods());
+				action.setStatementsCount(javaMeter.getNumOfStatements());
+				action.setTestAssertionsCount(javaMeter.getNumOfTestAssertions());
+				action.setTestMethodsCount(javaMeter.getNumOfTestMethods());
 				
 				stream.addAction(action);
 			}

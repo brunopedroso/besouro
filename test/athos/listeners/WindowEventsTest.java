@@ -1,7 +1,7 @@
 package athos.listeners;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -12,10 +12,7 @@ import junit.framework.Assert;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -48,10 +45,10 @@ public class WindowEventsTest {
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
 		Assert.assertEquals(file, fileOpenedAction.getFile());
-		Assert.assertEquals(11, fileOpenedAction.getNumOfMethods());
-		Assert.assertEquals(22, fileOpenedAction.getNumOfStatements());
-		Assert.assertEquals(33, fileOpenedAction.getNumOfTestAssertions());
-		Assert.assertEquals(44, fileOpenedAction.getNumOfTestMethods());
+		Assert.assertEquals(11, fileOpenedAction.getMethodsCount());
+		Assert.assertEquals(22, fileOpenedAction.getStatementsCount());
+		Assert.assertEquals(33, fileOpenedAction.getTestAssertionsCount());
+		Assert.assertEquals(44, fileOpenedAction.getTestMethodsCount());
 		
 	}
 	
@@ -76,10 +73,10 @@ public class WindowEventsTest {
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
 		Assert.assertEquals(file, fileOpenedAction.getFile());
-		Assert.assertEquals(11, fileOpenedAction.getNumOfMethods());
-		Assert.assertEquals(22, fileOpenedAction.getNumOfStatements());
-		Assert.assertEquals(33, fileOpenedAction.getNumOfTestAssertions());
-		Assert.assertEquals(44, fileOpenedAction.getNumOfTestMethods());
+		Assert.assertEquals(11, fileOpenedAction.getMethodsCount());
+		Assert.assertEquals(22, fileOpenedAction.getStatementsCount());
+		Assert.assertEquals(33, fileOpenedAction.getTestAssertionsCount());
+		Assert.assertEquals(44, fileOpenedAction.getTestMethodsCount());
 		
 	}
 

@@ -13,8 +13,6 @@ import athos.model.Action;
 import athos.model.Clock;
 import athos.model.EditAction;
 
-// TODO [0]  metricas inicializadas no win-open?
-
 
 public class IncreasesCalculationTest {
 	
@@ -85,6 +83,7 @@ public class IncreasesCalculationTest {
 		Assert.assertNull(action3.getPrevisousAction());
 	}
 	
+	
 	// stream should link the fileopen
 	
 	// editaction should calculate increases based on a previsou fileOpen
@@ -96,12 +95,7 @@ public class IncreasesCalculationTest {
 	
 	
 	
-//	@Test
-//	public void shouldCalculateTheDuration() throws Exception {
-//		// We'r considering the 1st action with 0 duration
-//		Assert.assertEquals(0, action1.getDuration());
-//		Assert.assertEquals(4, action2.getDuration());
-//	}
+	
 	
 	@Test
 	public void shouldCalculateFileIncreases() throws Exception {
@@ -113,32 +107,32 @@ public class IncreasesCalculationTest {
 	
 	@Test
 	public void shouldCalculateMethodsIncreases() throws Exception {
-		action1.setCurrentMethods(5);
-		action2.setCurrentMethods(7);
+		action1.setMethodsCount(5);
+		action2.setMethodsCount(7);
 		Assert.assertEquals(0, action1.getMethodIncrease());
 		Assert.assertEquals(2, action2.getMethodIncrease());
 	}
 
 	@Test
 	public void shouldCalculateStatementsIncreases() throws Exception {
-		action1.setCurrentStatements(5);
-		action2.setCurrentStatements(8);
+		action1.setStatementsCount(5);
+		action2.setStatementsCount(8);
 		Assert.assertEquals(0, action1.getStatementIncrease());
 		Assert.assertEquals(3, action2.getStatementIncrease());
 	}
 	
 	@Test
 	public void shouldCalculateTestAssertionsIncreases() throws Exception {
-		action1.setCurrentTestAssertions(15);
-		action2.setCurrentTestAssertions(19);
+		action1.setTestAssertionsCount(15);
+		action2.setTestAssertionsCount(19);
 		Assert.assertEquals(0, action1.getTestAssertionIncrease());
 		Assert.assertEquals(4, action2.getTestAssertionIncrease());
 	}
 	
 	@Test
 	public void shouldCalculateTestMethodsIncreases() throws Exception {
-		action1.setCurrentTestMethods(11);
-		action2.setCurrentTestMethods(19);
+		action1.setTestMethodsCount(11);
+		action2.setTestMethodsCount(19);
 		Assert.assertEquals(0, action1.getTestMethodIncrease());
 		Assert.assertEquals(8, action2.getTestMethodIncrease());
 	}

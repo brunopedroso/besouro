@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
@@ -180,10 +179,10 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 //		TODO do refactorings need file size?
 //		action.setFileSize(WindowListener.getActiveBufferSize());
 		
-		action.setCurrentMethods(testCounter.getNumOfMethods());
-		action.setCurrentStatements(testCounter.getNumOfStatements());
-		action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
-		action.setCurrentTestAssertions(testCounter.getNumOfTestMethods());
+		action.setMethodsCount(testCounter.getNumOfMethods());
+		action.setStatementsCount(testCounter.getNumOfStatements());
+		action.setTestMethodsCount(testCounter.getNumOfTestMethods());
+		action.setTestAssertionsCount(testCounter.getNumOfTestMethods());
     		
       action.setOperation(op);
       action.setUnitName(name);
@@ -276,10 +275,10 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       
       action.setIsTestEdit(javaFile.toString().toLowerCase().contains("test"));
       
-      action.setCurrentMethods(testCounter.getNumOfMethods());
-      action.setCurrentStatements(testCounter.getNumOfStatements());
-      action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
-      action.setCurrentTestAssertions(testCounter.getNumOfTestAssertions());
+      action.setMethodsCount(testCounter.getNumOfMethods());
+      action.setStatementsCount(testCounter.getNumOfStatements());
+      action.setTestMethodsCount(testCounter.getNumOfTestMethods());
+      action.setTestAssertionsCount(testCounter.getNumOfTestAssertions());
       
 //      action.setFileSize(WindowListener.getActiveBufferSize());
 		

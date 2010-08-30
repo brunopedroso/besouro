@@ -1,7 +1,6 @@
 package athos.model;
 
 import java.io.File;
-import java.util.Date;
 
 import jess.Fact;
 import jess.JessException;
@@ -15,7 +14,7 @@ import jess.Value;
  * @author Hongbing Kou
  * @version $Id: EditAction.java 281 2005-11-10 22:25:19Z hongbing $
  */
-public class EditAction extends FileAction {
+public class EditAction extends JavaFileAction {
 	
   private EditAction previousAction;
   
@@ -34,10 +33,7 @@ private String unitName;
   private int testMethodIncrease = 0;
   private int testAssertionIncrease = 0;
 
-  private int currentTestMethods;
-  private int currentTestAssertions;
-  private int currentStatements;
-  private int currentMethods;
+
 
   private boolean isTestEdit;
 
@@ -57,15 +53,15 @@ public EditAction(Clock clock, File workspaceFile) {
   	    
         if (this.isTestEdit()) {
         	buf.append(" TEST {");
-        	buf.append(makeMetricPair("TI", this.testMethodIncrease, getCurrentTestMethods())).append(", ");
-        	buf.append(makeMetricPair("AI", this.testAssertionIncrease, getCurrentTestAssertions()));
+        	buf.append(makeMetricPair("TI", this.testMethodIncrease, getTestMethodsCount())).append(", ");
+        	buf.append(makeMetricPair("AI", this.testAssertionIncrease, getTestAssertionsCount()));
         	
         } else {
         	buf.append(" PRODUCTION {");
         }
   	    
-  	    buf.append(makeMetricPair("MI", getMethodIncrease(), getCurrentMethods())).append(", ");
-  	    buf.append(makeMetricPair("SI", getStatementIncrease(), getCurrentStatements())).append(", ");
+  	    buf.append(makeMetricPair("MI", getMethodIncrease(), getMethodsCount())).append(", ");
+  	    buf.append(makeMetricPair("SI", getStatementIncrease(), getStatementsCount())).append(", ");
   	    buf.append(", ");
   	    buf.append(makeMetricPair("FI", getFileSizeIncrease(), getFileSize()));
 
@@ -206,50 +202,13 @@ public void setUnitName(String name) {
 
 
 
-public void setCurrentTestMethods(int value) {
-	currentTestMethods = value;
-}
-
-public void setCurrentTestAssertions(int value) {
-	currentTestAssertions = value;
-	
-}
-
-public void setCurrentStatements(int value) {
-	currentStatements = value;
-	
-}
-
-public void setCurrentMethods(int value) {
-	currentMethods = value;
-	
-}
-
-
-public int getCurrentTestMethods() {
-	return currentTestMethods;
-}
-
-public int getCurrentTestAssertions() {
-	return currentTestAssertions;
-}
-
-public int getCurrentStatements() {
-	return currentStatements;
-}
-
-public int getCurrentMethods() {
-	return currentMethods;
-}
-
-
   public void setTestMethodIncrease(int value) {
     this.testMethodIncrease = value;
   }
   
   public int getTestMethodIncrease() {
 	  if (previousAction!=null) {
-		  return this.getCurrentTestMethods() - previousAction.getCurrentTestMethods();
+		  return this.getTestMethodsCount() - previousAction.getTestMethodsCount();
 	  }
 	  return this.testMethodIncrease;
   }
@@ -260,7 +219,7 @@ public int getCurrentMethods() {
   
   public int getTestAssertionIncrease() {
 	  if (previousAction!=null) {
-		  return this.getCurrentTestAssertions() - previousAction.getCurrentTestAssertions();
+		  return this.getTestAssertionsCount() - previousAction.getTestAssertionsCount();
 	  }
 	  return this.testAssertionIncrease;
   }
@@ -273,7 +232,7 @@ public int getCurrentMethods() {
 	
 	public int getMethodIncrease() {
 	  if (previousAction!=null) {
-		  return this.getCurrentMethods() - previousAction.getCurrentMethods();
+		  return this.getMethodsCount() - previousAction.getMethodsCount();
 	  }
 	  return this.methodIncrease;
 	}
@@ -284,7 +243,7 @@ public int getCurrentMethods() {
 	
 	public int getStatementIncrease() {
 	  if (previousAction!=null) {
-		  return this.getCurrentStatements() - previousAction.getCurrentStatements();
+		  return this.getStatementsCount() - previousAction.getStatementsCount();
 	  }
 	  return this.statementIncrease; 
 	}
