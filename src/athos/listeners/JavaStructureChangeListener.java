@@ -177,7 +177,9 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 //		action.setIsTestEdit(testCounter.hasTest());
 		action.setIsTestEdit(name.toLowerCase().contains("test"));
 		
-		action.setFileSize(WindowListener.getActiveBufferSize());
+//		TODO do refactorings need file size?
+//		action.setFileSize(WindowListener.getActiveBufferSize());
+		
 		action.setCurrentMethods(testCounter.getNumOfMethods());
 		action.setCurrentStatements(testCounter.getNumOfStatements());
 		action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
@@ -279,7 +281,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
       action.setCurrentTestMethods(testCounter.getNumOfTestMethods());
       action.setCurrentTestAssertions(testCounter.getNumOfTestAssertions());
       
-      action.setFileSize(WindowListener.getActiveBufferSize());
+//      action.setFileSize(WindowListener.getActiveBufferSize());
 		
       this.stream.addAction(action);
 

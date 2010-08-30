@@ -121,7 +121,9 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				
 				action.setIsTestEdit(testCounter.hasTest());
-				action.setFileSize(WindowListener.getActiveBufferSize());
+				
+				action.setFileSize( (int) changedFile.getLocation().toFile().length());
+				
 				action.setCurrentMethods(testCounter.getNumOfMethods());
 				action.setCurrentStatements(testCounter.getNumOfStatements());
 				action.setCurrentTestMethods(testCounter.getNumOfTestMethods());

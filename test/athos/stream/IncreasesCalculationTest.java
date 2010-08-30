@@ -13,7 +13,7 @@ import athos.model.Action;
 import athos.model.Clock;
 import athos.model.EditAction;
 
-// TODO [0]  increases - per file + metricas inicializadas no win-open?
+// TODO [0]  metricas inicializadas no win-open?
 
 
 public class IncreasesCalculationTest {
@@ -67,24 +67,28 @@ public class IncreasesCalculationTest {
 		File anotherFile = new File("another.file");
 		
 		action1 = new EditAction(clock, file);
-		action2 = new EditAction(clock, anotherFile);
-		EditAction action3 = new EditAction(clock, file);
+		action2 = new EditAction(clock, file);
+		EditAction action3 = new EditAction(clock, anotherFile);
+		EditAction action4 = new EditAction(clock, anotherFile);
 
 		stream.addAction(action1);
-		stream.addAction(action2);
 		stream.addAction(action3);
+		stream.addAction(action2);
+		stream.addAction(action4);
 		
-		// should link action1 -> action3
-		Assert.assertEquals(action1, action3.getPrevisousAction());
+		// should link action1 -> action2
+		Assert.assertEquals(action1, action2.getPrevisousAction());
+		Assert.assertNull(action1.getPrevisousAction());
 		
-		// should not link aciton2, because its on other file
-		Assert.assertNull(action2.getPrevisousAction());
+		// should link action3 -> action4
+		Assert.assertEquals(action3, action4.getPrevisousAction());
+		Assert.assertNull(action3.getPrevisousAction());
 	}
 	
 	
 	//TODO   should calculate the first correctly
 	// link the OpenAction with the original metrics ;-)
-	//		we'll have to link all kinds of actions, i guess..
+	//		we'll have to link FileActions, i guess.. open is a fileaction?
 	
 	
 	

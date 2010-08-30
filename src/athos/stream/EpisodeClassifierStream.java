@@ -33,7 +33,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	
 	public void addAction(Action action) {
 
-		//link the list, to calculate the duration and increases
+		//link the list, to calculate the increases
 		if (action instanceof EditAction) {
 			
 			EditAction edit = (EditAction) action;

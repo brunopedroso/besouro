@@ -1,25 +1,23 @@
 package athos.listeners;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.Date;
 
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWindowListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.core.commands.CommandEvent;
-import org.eclipse.core.commands.ICommandListener;
 
+import athos.model.Clock;
+import athos.model.FileOpenedAction;
 import athos.plugin.Activator;
 import athos.stream.ActionOutputStream;
 
@@ -34,32 +32,38 @@ import athos.stream.ActionOutputStream;
  */
 public class WindowListener implements IWindowListener, IPartListener, IDocumentListener {
 
+	private JavaStatementMeter javaMeter = new JavaStatementMeter();
+
+	public void setJavaMeter(JavaStatementMeter javaMeter) {
+		this.javaMeter = javaMeter;
+	}
+
+	
+	
 	//class
 	
-	private static int activeBufferSize;
+//	private static int activeBufferSize;
 	private static ITextEditor activeTextEditor;
 	
 	public static ITextEditor getActiveTextEditor() {
 		return activeTextEditor;
 	}
-
-	public static int getActiveBufferSize() {
-		return activeBufferSize;
-	}
-
-	// for test purposes
-	public static void setActiveBufferSize(int i) {
-		activeBufferSize = i;
-		
-	}
+//
+//	public static int getActiveBufferSize() {
+//		return activeBufferSize;
+//	}
+//
+//	// for test purposes
+//	public static void setActiveBufferSize(int i) {
+//		activeBufferSize = i;
+//		
+//	}
 
 	
-	// object
-	
-	private ActionOutputStream sensor;
+	private ActionOutputStream stream;
 
-	public WindowListener(ActionOutputStream sensor) {
-		this.sensor = sensor;
+	public WindowListener(ActionOutputStream stream) {
+		this.stream = stream;
 	}
 
 	public void windowActivated(IWorkbenchWindow window) {
@@ -68,14 +72,15 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 		if (activeEditorPart instanceof ITextEditor) {
 
+			
 			activeTextEditor = (ITextEditor) activeEditorPart;
 
 			activeTextEditor.getDocumentProvider()
 					.getDocument(activeTextEditor.getEditorInput())
 					.addDocumentListener(this);
 
-			activeBufferSize = activeTextEditor.getDocumentProvider()
-					.getDocument(activeTextEditor.getEditorInput()).getLength();
+//			activeBufferSize = activeTextEditor.getDocumentProvider()
+//					.getDocument(activeTextEditor.getEditorInput()).getLength();
 
 		}
 	}
@@ -95,28 +100,20 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 			IEditorPart activeEditorPart = activePage.getActiveEditor();
 			if (activeEditorPart instanceof ITextEditor) {
 
-				ITextEditor activeTextEditor = (ITextEditor) activeEditorPart;
-				String fileResource = activeTextEditor.getEditorInput().getName();
-				IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeEditorPart.getEditorInput());
-				
-				activeBufferSize = document.getLength();
-				
-				// install listeners
+				// String fileResource = activeTextEditor.getEditorInput().getName();
+				ITextEditor textEditor = (ITextEditor) activeEditorPart;
+				IDocument document = textEditor.getDocumentProvider().getDocument(activeEditorPart.getEditorInput());
 				document.addDocumentListener(this);
-				activePage.addPartListener(this);
-
 				
-//				// TODO [data] do we need window open events for TDD?
-//				URI uri = newUri(fileResource);
-//
-//				Map<String, String> keyValueMap = new HashMap<String, String>();
-//				keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
-//				keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
-//				keyValueMap.put(ActionOutputStream.UNIT_NAME, fileResource);
-//				sensor.addAction(ActionOutputStream.DEVEVENT_EDIT, uri, keyValueMap, "Opened " + fileResource.toString());
+//				activeBufferSize = document.getLength();
 
+				//TODO   register doc-opened-event to store file metrics
 
 			}
+			
+			// install listeners
+			activePage.addPartListener(this);
+			
 		}
 	}
 
@@ -127,9 +124,12 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 			activeTextEditor = (ITextEditor) part;
 
 			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
-			activeBufferSize = document.getLength();
 			document.addDocumentListener(this);
-
+			
+//			activeBufferSize = document.getLength();
+			
+			
+			
 		}
 	}
 
@@ -137,6 +137,8 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	}
 
 	public void partClosed(IWorkbenchPart part) {
+		
+		System.out.println("****** closed " + part);
 		
 		//TODO [data] do we need window closed events for TDD?
 		
@@ -167,16 +169,16 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 //		}
 	}
 
-	private URI newUri(String name) {
-		URI fileResource;
-		
-		try {
-			fileResource = new URI(name);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
-		return fileResource;
-	}
+//	private URI newUri(String name) {
+//		URI fileResource;
+//		
+//		try {
+//			fileResource = new URI(name);
+//		} catch (URISyntaxException e) {
+//			throw new RuntimeException(e);
+//		}
+//		return fileResource;
+//	}
 
 	public void partDeactivated(IWorkbenchPart part) {
 
@@ -184,29 +186,36 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 	public void partOpened(IWorkbenchPart part) {
 
-		//TODO [data] do we need file open events for TDD?
+		if (part instanceof ITextEditor) {
+
+			// String fileResource = activeTextEditor.getEditorInput().getName();
+			ITextEditor textEditor = (ITextEditor) part;
 		
-//		if (part instanceof ITextEditor) {
-//
-//			// TODO z[data] do we realy need an URI?! :-(
-//			// Does it work?
-//			// URI fileResource = EclipseSensor.this.getFileResource((ITextEditor) part);
-//			URI fileResource = newUri(((ITextEditor) part).getEditorInput().getName());
-//
-//			Map<String, String> keyValueMap = new HashMap<String, String>();
-//			keyValueMap.put(ActionOutputStream.SUBTYPE, "Open");
-//			keyValueMap.put(ActionOutputStream.UNIT_TYPE, ActionOutputStream.FILE);
-//			keyValueMap.put(ActionOutputStream.UNIT_NAME, Utils.extractFileName(fileResource));
-//			sensor.addAction(ActionOutputStream.DEVEVENT_EDIT, fileResource, keyValueMap, fileResource.toString());
-//
-//		}
+			IEditorInput input = textEditor.getEditorInput();
+			if (input instanceof IFileEditorInput) {
+				IFileEditorInput fileInput = (IFileEditorInput) input;
+				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile().getFullPath().toFile());
+				
+				javaMeter.reset();
+				javaMeter.measureJavaFile(fileInput.getFile());
+				action.setNumOfMethods(javaMeter.getNumOfMethods());
+				action.setNumOfStatements(javaMeter.getNumOfStatements());
+				action.setNumOfTestAssertions(javaMeter.getNumOfTestAssertions());
+				action.setNumOfTestMethods(javaMeter.getNumOfTestMethods());
+				
+				stream.addAction(action);
+			}
+			
+		}
+
 	}
 
 	public void documentAboutToBeChanged(DocumentEvent event) {
 	}
 
 	public void documentChanged(DocumentEvent event) {
-		activeBufferSize = event.getDocument().getLength();
+//		activeBufferSize = event.getDocument().getLength();
+//		System.out.println("****** doc changed ");
 	}
 
 	public void windowClosed(IWorkbenchWindow window) {
