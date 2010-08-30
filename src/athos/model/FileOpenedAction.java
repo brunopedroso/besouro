@@ -58,6 +58,11 @@ public class FileOpenedAction extends FileAction {
 	public void setNumOfTestMethods(int numOfTestMethods) {
 		this.numOfTestMethods = numOfTestMethods;
 	}
+	
+	@Override
+	public String toString() {
+		return "FileOpened: " + getFile();
+	}
 
 
 }

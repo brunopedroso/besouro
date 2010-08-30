@@ -10,6 +10,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWindowListener;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -61,10 +62,19 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 	
 	private ActionOutputStream stream;
+	private IWorkbench workbench;
 
 	public WindowListener(ActionOutputStream stream) {
 		this.stream = stream;
 	}
+	
+	/** 
+	 * For testing purposes
+	 */
+	public void setWorkbench(IWorkbench workbench) {
+		this.workbench = workbench;
+	}
+
 
 	public void windowActivated(IWorkbenchWindow window) {
 
@@ -91,7 +101,10 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 	public void windowOpened(IWorkbenchWindow window) {
 
-		IWorkbenchWindow[] activeWindows = Activator.getDefault().getWorkbench().getWorkbenchWindows();
+		if (workbench==null)
+			workbench = Activator.getDefault().getWorkbench();
+		
+		IWorkbenchWindow[] activeWindows = workbench.getWorkbenchWindows();
 
 		for (int i = 0; i < activeWindows.length; i++) {
 
@@ -107,7 +120,7 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 				
 //				activeBufferSize = document.getLength();
 
-				//TODO  register doc-opened-event to store file metrics
+				registerFileOpenAction(textEditor);
 
 			}
 			
@@ -188,26 +201,30 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 		if (part instanceof ITextEditor) {
 
-			// String fileResource = activeTextEditor.getEditorInput().getName();
-			ITextEditor textEditor = (ITextEditor) part;
-		
-			IEditorInput input = textEditor.getEditorInput();
-			if (input instanceof IFileEditorInput) {
-				IFileEditorInput fileInput = (IFileEditorInput) input;
-				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile().getFullPath().toFile());
-				
-				javaMeter.reset();
-				javaMeter.measureJavaFile(fileInput.getFile());
-				action.setNumOfMethods(javaMeter.getNumOfMethods());
-				action.setNumOfStatements(javaMeter.getNumOfStatements());
-				action.setNumOfTestAssertions(javaMeter.getNumOfTestAssertions());
-				action.setNumOfTestMethods(javaMeter.getNumOfTestMethods());
-				
-				stream.addAction(action);
-			}
+			registerFileOpenAction(part);
 			
 		}
 
+	}
+
+	private void registerFileOpenAction(IWorkbenchPart part) {
+		// String fileResource = activeTextEditor.getEditorInput().getName();
+		ITextEditor textEditor = (ITextEditor) part;
+
+		IEditorInput input = textEditor.getEditorInput();
+		if (input instanceof IFileEditorInput) {
+			IFileEditorInput fileInput = (IFileEditorInput) input;
+			FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile().getFullPath().toFile());
+			
+			javaMeter.reset();
+			javaMeter.measureJavaFile(fileInput.getFile());
+			action.setNumOfMethods(javaMeter.getNumOfMethods());
+			action.setNumOfStatements(javaMeter.getNumOfStatements());
+			action.setNumOfTestAssertions(javaMeter.getNumOfTestAssertions());
+			action.setNumOfTestMethods(javaMeter.getNumOfTestMethods());
+			
+			stream.addAction(action);
+		}
 	}
 
 	public void documentAboutToBeChanged(DocumentEvent event) {
