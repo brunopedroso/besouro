@@ -39,6 +39,7 @@ public class WindowEventsTest {
 		
 		File file = mock(File.class);
 		when(file.getName()).thenReturn("aFile.java");
+		
 		when(file.length()).thenReturn((long) 12345);
 		
 		listener.partOpened(createTestEditor(file));
@@ -48,7 +49,9 @@ public class WindowEventsTest {
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
 		Assert.assertEquals(file, fileOpenedAction.getFile());
+		
 		Assert.assertEquals(12345, fileOpenedAction.getFileSize());
+		
 		Assert.assertEquals(11, fileOpenedAction.getMethodsCount());
 		Assert.assertEquals(22, fileOpenedAction.getStatementsCount());
 		Assert.assertEquals(33, fileOpenedAction.getTestAssertionsCount());
@@ -96,7 +99,8 @@ public class WindowEventsTest {
 		when(ipath.toFile()).thenReturn(file);
 		
 		IFile inputFile = mock(IFile.class);
-		when(inputFile.getFullPath()).thenReturn(ipath);
+		
+		when(inputFile.getLocation()).thenReturn(ipath);
 		
 		IFileEditorInput editorInput = mock(IFileEditorInput.class);
 		when(editorInput.getFile()).thenReturn(inputFile);
@@ -130,7 +134,7 @@ public class WindowEventsTest {
 		when(ipath.toFile()).thenReturn(file);
 		
 		IFile ifile = mock(IFile.class);
-		when(ifile.getFullPath()).thenReturn(ipath);
+		when(ifile.getLocation()).thenReturn(ipath);
 		
 		ITextEditor part = createTestEditor(ifile);
 		return part;

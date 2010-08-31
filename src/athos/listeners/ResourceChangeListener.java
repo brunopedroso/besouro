@@ -114,7 +114,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 				testCounter.reset();
 				testCounter.measureJavaFile(changedFile);
 				
-				EditAction action = new EditAction(new Clock(new Date()), changedFile.getFullPath().toFile());
+				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile());
 				action.setOperation("Save");
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 				

@@ -25,6 +25,7 @@ public class FileOpenedAction extends JavaFileAction {
 	@Override
 	public String toString() {
 		return "FileOpened: " + getFile()
+			+ "(size: " + getFileSize() + ")"
 			+ "(m: " + getMethodsCount() + ")"
 			+ "(s: " + getStatementsCount() + ")"
 			+ "(ta: " + getTestAssertionsCount() + ")"

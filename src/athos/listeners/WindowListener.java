@@ -1,5 +1,6 @@
 package athos.listeners;
 
+import java.io.File;
 import java.util.Date;
 
 import org.eclipse.jface.text.DocumentEvent;
@@ -127,7 +128,11 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 			IEditorInput input = textEditor.getEditorInput();
 			if (input instanceof IFileEditorInput) {
 				IFileEditorInput fileInput = (IFileEditorInput) input;
-				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile().getFullPath().toFile());
+				
+				File file = fileInput.getFile().getLocation().toFile();
+				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), file);
+				
+//				action.setFileSize((int) file.length());
 				
 				javaMeter.reset();
 				javaMeter.measureJavaFile(fileInput.getFile());

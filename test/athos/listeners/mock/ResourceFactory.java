@@ -61,9 +61,7 @@ public class ResourceFactory {
 		if (split.length>1)
 			when(path.getFileExtension()).thenReturn(split[1]);
 
-		// TODO unify file represetnation
 		when(resource.getLocation()).thenReturn(path);
-		when(resource.getFullPath()).thenReturn(path);
 
 		// separates "filename" of ".java"
 		when(resource.getName()).thenReturn(split[0]);
