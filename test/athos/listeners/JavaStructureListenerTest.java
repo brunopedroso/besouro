@@ -45,8 +45,6 @@ public class JavaStructureListenerTest {
 		
 	}
 
-
-
 	@Test
 	public void shouldGenerateARemoveEvent() {
 		
@@ -106,6 +104,8 @@ public class JavaStructureListenerTest {
 		
 		// verify event data
 		Assert.assertEquals(1, generatedActions.size());
+		
+		//TODO  do we need to diferentiate unaries from binaries refactorings?
 		
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
