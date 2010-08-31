@@ -11,6 +11,8 @@ public class FileOpenedAction extends JavaFileAction {
 	public FileOpenedAction(Clock clock, File workspaceFile) {
 		super(clock, workspaceFile);
 		
+		setFileSize((int) workspaceFile.length());
+		
 		// should calculate java metrics here?
 		
 	}
