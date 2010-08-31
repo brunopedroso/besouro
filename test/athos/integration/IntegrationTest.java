@@ -24,7 +24,6 @@ public class IntegrationTest {
 		ResourceChangeListener resourceListener = new ResourceChangeListener(stream);
 		
 		JavaStatementMeter meter = mock(JavaStatementMeter.class);
-		javaListener.setTestCounter(meter);
 		resourceListener.setTestCounter(meter);
 		
 		ElementChangedEvent event = JavaElementsFactory.createAddMethodAction();

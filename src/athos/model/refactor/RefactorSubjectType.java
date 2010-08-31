@@ -17,6 +17,7 @@ public class RefactorSubjectType {
   public static final RefactorSubjectType FIELD = new RefactorSubjectType("FIELD");
   /** Refactor on imports. */
   public static final RefactorSubjectType IMPORT = new RefactorSubjectType("IMPORT");
+public static final RefactorSubjectType PACKAGE = new RefactorSubjectType("PACKAGE");
 
   /** Gets the set of refactor subject. */
   private static HashMap<String, RefactorSubjectType> subjects;

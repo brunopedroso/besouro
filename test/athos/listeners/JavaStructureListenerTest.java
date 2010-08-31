@@ -17,6 +17,7 @@ import athos.listeners.mock.JavaElementsFactory;
 import athos.model.Action;
 import athos.model.EditAction;
 import athos.model.refactor.RefactorOperator;
+import athos.model.refactor.RefactorSubjectType;
 import athos.model.refactor.UnaryRefactorAction;
 
 public class JavaStructureListenerTest {
@@ -29,7 +30,6 @@ public class JavaStructureListenerTest {
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		JavaStructureChangeListener listener = new JavaStructureChangeListener(new FakeActionStream(generatedActions));
-		listener.setTestCounter(mock(JavaStatementMeter.class));
 		
 		// invoke listener
 		listener.elementChanged(event);
@@ -40,6 +40,7 @@ public class JavaStructureListenerTest {
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
 		Assert.assertEquals(RefactorOperator.ADD, ((UnaryRefactorAction)action).getOperator());
+		Assert.assertEquals(RefactorSubjectType.METHOD, ((UnaryRefactorAction)action).getSubjectType());
 		Assert.assertEquals("AnyClass/aMethod", ((UnaryRefactorAction)action).getSubjectName());
 		
 	}
@@ -62,7 +63,6 @@ public class JavaStructureListenerTest {
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		JavaStructureChangeListener listener = new JavaStructureChangeListener(new FakeActionStream(generatedActions));
-		listener.setTestCounter(mock(JavaStatementMeter.class));
 		
 		// invoke listener
 		listener.elementChanged(event);
@@ -74,6 +74,7 @@ public class JavaStructureListenerTest {
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
 		Assert.assertEquals(RefactorOperator.REMOVE, ((UnaryRefactorAction)action).getOperator());
 		Assert.assertEquals("AnyClass/aMethod", ((UnaryRefactorAction)action).getSubjectName());
+		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
 
@@ -99,7 +100,6 @@ public class JavaStructureListenerTest {
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		JavaStructureChangeListener listener = new JavaStructureChangeListener(new FakeActionStream(generatedActions));
-		listener.setTestCounter(mock(JavaStatementMeter.class));
 		
 		// invoke listener
 		listener.elementChanged(event);
@@ -111,6 +111,7 @@ public class JavaStructureListenerTest {
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
 		Assert.assertEquals(RefactorOperator.RENAME, ((UnaryRefactorAction)action).getOperator());
 		Assert.assertEquals("AnyClass/aMethod => AnyClass/anotherMethod", ((UnaryRefactorAction)action).getSubjectName());
+		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
 	
@@ -138,9 +139,6 @@ public class JavaStructureListenerTest {
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		JavaStructureChangeListener listener = new JavaStructureChangeListener(new FakeActionStream(generatedActions));
 		
-		JavaStatementMeter meter = mock(JavaStatementMeter.class);
-		listener.setTestCounter(meter);
-		
 		// invoke listener
 		listener.elementChanged(event);
 		
@@ -151,7 +149,7 @@ public class JavaStructureListenerTest {
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
 		UnaryRefactorAction refactorAction = (UnaryRefactorAction)action;
 		Assert.assertEquals(RefactorOperator.MOVE, refactorAction.getOperator());
-
+		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
 
