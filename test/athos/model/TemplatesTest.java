@@ -71,8 +71,6 @@ public class TemplatesTest {
 		unaryAction.setSubjectName("void testEquilateral()");
 		unaryAction.assertJessFact(1, engine);
 		
-		//TODO z should not run a query here and assert?
-		
 		// Edit on test
 		EditAction editAction = new EditAction(this.clock, this.testFile);
 		

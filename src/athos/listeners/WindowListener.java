@@ -24,12 +24,12 @@ import athos.stream.ActionOutputStream;
 public class WindowListener implements IWindowListener, IPartListener,
 		IDocumentListener {
 
-	// TODO z[clean] do we need to maintain the active editor?
-	private static ITextEditor activeTextEditor;
-
-	public static ITextEditor getActiveTextEditor() {
-		return activeTextEditor;
-	}
+//	// TODO z[clean] do we need to maintain the active editor?
+//	private static ITextEditor activeTextEditor;
+//
+//	public static ITextEditor getActiveTextEditor() {
+//		return activeTextEditor;
+//	}
 
 	private ActionOutputStream stream;
 	private IWorkbench workbench;
@@ -108,7 +108,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 	private void installDocumentListener(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
-			activeTextEditor = (ITextEditor) part;
+			ITextEditor activeTextEditor = (ITextEditor) part;
 			IDocument document = activeTextEditor.getDocumentProvider()
 					.getDocument(activeTextEditor.getEditorInput());
 			document.addDocumentListener(this);
