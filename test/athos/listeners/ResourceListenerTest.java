@@ -70,13 +70,16 @@ public class ResourceListenerTest {
 		JavaStatementMeter testMeter = mock(JavaStatementMeter.class);
 		listener.setTestCounter(testMeter);
 		
-		listener.resourceChanged(ResourceFactory.createBuildErrorEvent());
+		String filename = "afile.java";
+		String errorMessage = "any build error message";
+		listener.resourceChanged(ResourceFactory.createBuildErrorEvent(filename, errorMessage));
 		
 		Assert.assertEquals(1, generatedActions.size());
 		Assert.assertTrue(generatedActions.get(0) instanceof BuildErrorAction);
 		BuildErrorAction action = (BuildErrorAction) generatedActions.get(0);
-		// ...
 		
+		Assert.assertEquals(filename, action.getFile().getName());
+		Assert.assertEquals(errorMessage, action.getErrorMessage());
 	}
 
 	

@@ -10,6 +10,10 @@ public class BuildErrorAction extends FileAction {
 
 	private String errorMessage;
 	
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
 	public BuildErrorAction(Clock clock, File workspaceFile, String errorMessage) {
 		super(clock, workspaceFile);
 		this.errorMessage = errorMessage;

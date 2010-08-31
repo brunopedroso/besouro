@@ -52,12 +52,12 @@ public class ResourceFactory {
 	}
 	
 	
-	public static IResourceChangeEvent createBuildErrorEvent() throws CoreException {
+	public static IResourceChangeEvent createBuildErrorEvent(String filename, String errorMessage) throws CoreException {
 		
 		IMarkerDelta marker = mock(IMarkerDelta.class);
 		when(marker.getType()).thenReturn(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER);
 		when(marker.getAttribute("severity")).thenReturn("2");
-		when(marker.getAttribute("message")).thenReturn("any build error message");
+		when(marker.getAttribute("message")).thenReturn(errorMessage);
 		when(marker.getKind()).thenReturn(IResourceDelta.CHANGED);
 
 		IMarkerDelta[] markers = new IMarkerDelta[]{marker};
@@ -76,7 +76,7 @@ public class ResourceFactory {
 		
 		when(delta.getFlags()).thenReturn(IResourceDelta.MARKERS);
 		
-		IFile aresource = createMockResource("anyfile");
+		IFile aresource = createMockResource(filename);
 		when(delta.getResource()).thenReturn(aresource);
 		
 		when(delta.getMarkerDeltas()).thenReturn(markers);
