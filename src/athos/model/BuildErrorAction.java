@@ -23,7 +23,7 @@ public class BuildErrorAction extends FileAction {
 	
 	@Override
 	public String toString() {
-		return super.toString() + " " + errorMessage;
+		return super.toString() + " ERROR: " + errorMessage;
 	}
 
 }

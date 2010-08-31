@@ -8,11 +8,14 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaModelMarker;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -46,6 +49,42 @@ public class ResourceFactory {
 		
 		return delta;
 		
+	}
+	
+	
+	public static IResourceChangeEvent createBuildErrorEvent() throws CoreException {
+		
+		IMarkerDelta marker = mock(IMarkerDelta.class);
+		when(marker.getType()).thenReturn(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER);
+		when(marker.getAttribute("severity")).thenReturn("2");
+		when(marker.getAttribute("message")).thenReturn("any build error message");
+		when(marker.getKind()).thenReturn(IResourceDelta.CHANGED);
+
+		IMarkerDelta[] markers = new IMarkerDelta[]{marker};
+		
+		final IResourceDelta delta = mock(IResourceDelta.class);
+		
+		doAnswer(new Answer() {
+			
+			public Object answer(InvocationOnMock invocation) throws Throwable {
+				IResourceDeltaVisitor visitor = (IResourceDeltaVisitor) invocation.getArguments()[0];
+				visitor.visit(delta);
+				return null;
+			}
+			
+		}).when(delta).accept(any(IResourceDeltaVisitor.class));
+		
+		when(delta.getFlags()).thenReturn(IResourceDelta.MARKERS);
+		
+		IFile aresource = createMockResource("anyfile");
+		when(delta.getResource()).thenReturn(aresource);
+		
+		when(delta.getMarkerDeltas()).thenReturn(markers);
+		
+		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
+		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
+		when(event.getDelta()).thenReturn(delta);
+		return event;
 	}
 	
 	public static IFile createMockResource(String filename) {

@@ -62,9 +62,9 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 		IResource resource = delta.getResource();
 		int flag = delta.getFlags();
 		int kind = delta.getKind();
-
-		// FIXME [build errors] do not catch errors caused in another editor...
+		
 		// If there is compilation problem with the current java file then send out the activity data.
+		// do not catch errors in other files
 		 if ((flag & IResourceDelta.MARKERS) != 0) {
 			buildErrorSensor.findBuildProblem(delta);
 		 }
