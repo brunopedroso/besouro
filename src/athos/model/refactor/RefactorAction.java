@@ -13,7 +13,7 @@ import athos.model.FileAction;
  */
 public abstract class RefactorAction extends FileAction {
 
-	// TODO z[clean] inline these two classes here
+	// TODO [clean] inline these two classes here
 
 	/** Refactoring operator. */
 	private RefactorOperator op;

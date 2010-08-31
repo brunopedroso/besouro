@@ -33,7 +33,7 @@ public class Clock {
 	private static SimpleDateFormat FULL_Format = new SimpleDateFormat(
 			"MM/dd/yyyy HH:mm:ss");
 
-	// TODO z[clean] do we need a clock?
+	// TODO [clean] remove clock
 
 	/**
 	 * Defines a clock instante with date object.

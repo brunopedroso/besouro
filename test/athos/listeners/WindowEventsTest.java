@@ -89,7 +89,7 @@ public class WindowEventsTest {
 		
 	}
 	
-	//TODO [data]  is there more window events to test?
+	//TODO [test] more unit tests for window events?
 	
 	
 }
