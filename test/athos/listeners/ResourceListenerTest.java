@@ -1,7 +1,6 @@
 package athos.listeners;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -9,17 +8,8 @@ import java.util.ArrayList;
 
 import junit.framework.Assert;
 
-import org.eclipse.core.resources.IMarkerDelta;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.core.IJavaModelMarker;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.ResourceFactory;
@@ -28,7 +18,6 @@ import athos.model.BuildErrorAction;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;
 
-//TODO unit test buid error sensor
 
 public class ResourceListenerTest {
 
