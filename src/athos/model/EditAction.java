@@ -96,7 +96,7 @@ public class EditAction extends JavaFileAction {
 
 	}
 
-	// TODO [api] create a classifier interface
+	// TODO [mod] create a classifier interface
 
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		Fact assertedFact = null;

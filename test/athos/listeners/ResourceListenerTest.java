@@ -46,7 +46,7 @@ public class ResourceListenerTest {
 		
 	}
 	
-	// TODO [test] more unit tests for ResourceListener?
+	// TODO  [test] more unit tests for ResourceListener?
 	
 	@Test
 	public void shouldRegisterABuildErrorActon() throws Exception {

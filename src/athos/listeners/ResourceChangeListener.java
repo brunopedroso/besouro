@@ -113,7 +113,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				IFile changedFile = (IFile) resource;
 				// URI fileResource = changedFile.getLocationURI();
 
-				// TODO [api] measures and classification be made in another
+				// TODO [mod] measures and classification be made in another
 				// place?
 
 				testCounter.reset();
