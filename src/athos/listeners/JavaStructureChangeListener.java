@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
@@ -13,7 +12,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
 import athos.model.Clock;
-import athos.model.EditAction;
 import athos.model.refactor.RefactorOperator;
 import athos.model.refactor.RefactorSubjectType;
 import athos.model.refactor.UnaryRefactorAction;

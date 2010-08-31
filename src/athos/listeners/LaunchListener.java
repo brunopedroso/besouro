@@ -1,13 +1,8 @@
 package athos.listeners;
 
-import java.io.File;
-import java.util.Date;
-
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchesListener2;
 
-import athos.model.Clock;
-import athos.model.ExecutionAction;
 import athos.stream.ActionOutputStream;
 
 public class LaunchListener implements ILaunchesListener2 {

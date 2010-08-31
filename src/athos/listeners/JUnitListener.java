@@ -3,7 +3,6 @@ package athos.listeners;
 import java.io.File;
 import java.util.Date;
 
-import org.eclipse.jdt.internal.junit.model.ITestRunListener2;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestRunSession;

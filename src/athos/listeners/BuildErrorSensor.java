@@ -1,21 +1,15 @@
 package athos.listeners;
 
-import java.io.File;
-import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaModelMarker;
-import org.eclipse.ui.texteditor.ITextEditor;
-
-import org.eclipse.ui.IFileEditorInput;
 
 import athos.model.BuildErrorAction;
 import athos.model.Clock;

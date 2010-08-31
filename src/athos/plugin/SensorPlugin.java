@@ -4,13 +4,8 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.junit.JUnitCore;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.texteditor.ITextEditor;
 
 import athos.listeners.JUnitListener;
 import athos.listeners.JavaStructureChangeListener;

@@ -1,8 +1,5 @@
 package athos.stream;
 
-import java.net.URI;
-import java.util.Map;
-
 import athos.model.Action;
 
 public interface ActionOutputStream {

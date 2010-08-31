@@ -7,7 +7,6 @@ import jess.JessException;
 import jess.RU;
 import jess.Rete;
 import jess.Value;
-
 import athos.model.Clock;
 
 /**
