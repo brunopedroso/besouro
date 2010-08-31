@@ -76,6 +76,6 @@ public abstract class RefactorAction extends FileAction {
    * @return  Refactor action string.
    */
   public String toString() {
-    return super.toString() + " REFACTOR " + this.op.getName() + " " + this.subjectType.getName();
+    return super.toString() + " REFACTOR " + this.getOperator() + " " + this.getSubjectType();
   }
 }

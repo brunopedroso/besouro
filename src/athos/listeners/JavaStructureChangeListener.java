@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 
 import athos.model.Clock;
 import athos.model.EditAction;
+import athos.model.refactor.RefactorOperator;
+import athos.model.refactor.UnaryRefactorAction;
 import athos.stream.ActionOutputStream;
 
 
@@ -94,10 +96,10 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
     	
       if (deletions.isEmpty()) {
-        processUnary(javaFile, "Add", (IJavaElementDelta) additions.get(0));
+        processUnary(javaFile, RefactorOperator.ADD, (IJavaElementDelta) additions.get(0));
         
       } else if (additions.isEmpty()) {
-        processUnary(javaFile, "Remove", (IJavaElementDelta) deletions.get(0));
+        processUnary(javaFile, RefactorOperator.REMOVE, (IJavaElementDelta) deletions.get(0));
         
       } else if (deletions.size() == 1) {
         
@@ -117,13 +119,13 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     else if (additions.size() > 1) {
     	
       for (Iterator i = additions.iterator(); i.hasNext();) {
-        processUnary(javaFile, "Add", (IJavaElementDelta) i.next());
+        processUnary(javaFile, RefactorOperator.ADD, (IJavaElementDelta) i.next());
       }
     }
     // Massive block deletion
     else if (deletions.size() > 1) {
       for (Iterator i = deletions.iterator(); i.hasNext();) {
-        processUnary(javaFile, "Remove", (IJavaElementDelta) i.next());
+        processUnary(javaFile, RefactorOperator.REMOVE, (IJavaElementDelta) i.next());
       }
     }    
   }
@@ -135,7 +137,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
    * @param op Operation
    * @param delta Delta change element
    */
-  private void processUnary(IPath javaFile, String op, IJavaElementDelta delta) {
+  private void processUnary(IPath javaFile, RefactorOperator op, IJavaElementDelta delta) {
     IJavaElement element = delta.getElement();
 
     // Stop if there is no associated element. 
@@ -164,28 +166,15 @@ public class JavaStructureChangeListener implements IElementChangedListener {
     String name = buildElementName(element.toString());
     if (name != null && !"".equals(name)) {
       
-    	//TODO [1] should be a unary
-    	EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile());
+    	UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), classFileName.toFile());
     	
     	
 		IFile changedFile = (IFile) element.getResource();
 		
 		testCounter.measureJavaFile(changedFile);
 		
-		//TODO [data] recognize test classes by the annotations, not by name (extrair classificador pra depois? action deveria classificar?)
-//		action.setIsTestEdit(testCounter.hasTest());
-		action.setIsTestEdit(name.toLowerCase().contains("test"));
-		
-//		TODO do refactorings need file size?
-//		action.setFileSize(WindowListener.getActiveBufferSize());
-		
-		action.setMethodsCount(testCounter.getNumOfMethods());
-		action.setStatementsCount(testCounter.getNumOfStatements());
-		action.setTestMethodsCount(testCounter.getNumOfTestMethods());
-		action.setTestAssertionsCount(testCounter.getNumOfTestMethods());
-    		
-      action.setOperation(op);
-      action.setUnitName(name);
+		action.setOperator(op);
+		action.setSubjectName(name);
       
       this.stream.addAction(action);
     		  
@@ -224,13 +213,13 @@ public class JavaStructureChangeListener implements IElementChangedListener {
             
 //      msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
       
-      EditAction action = new EditAction(new Clock(new Date()), classFileName.toFile());
-      action.setOperation("Rename");
-      action.setUnitName(fromName + " => " + toName);
+      UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), classFileName.toFile());
+      action.setOperator(RefactorOperator.RENAME);
+      action.setSubjectName(fromName + " => " + toName);
       
-      System.out.println("REN");
+//      System.out.println("REN");
       
-      action.setIsTestEdit(classFileName.toString().toLowerCase().contains("test"));
+//      action.setIsTestEdit(classFileName.toString().toLowerCase().contains("test"));
       
       this.stream.addAction(action);
 
@@ -269,19 +258,10 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 //      msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').append(fromName).append(" -> ").append(toName);
       
-      EditAction action = new EditAction(new Clock(new Date()), javaFile.toFile());
-      action.setOperation("Move");
-      action.setUnitName(fromName + " => " + toName);
+      UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), javaFile.toFile());
+      action.setOperator(RefactorOperator.MOVE);
+      action.setSubjectName(fromName + " => " + toName);
       
-      action.setIsTestEdit(javaFile.toString().toLowerCase().contains("test"));
-      
-      action.setMethodsCount(testCounter.getNumOfMethods());
-      action.setStatementsCount(testCounter.getNumOfStatements());
-      action.setTestMethodsCount(testCounter.getNumOfTestMethods());
-      action.setTestAssertionsCount(testCounter.getNumOfTestAssertions());
-      
-//      action.setFileSize(WindowListener.getActiveBufferSize());
-		
       this.stream.addAction(action);
 
       
