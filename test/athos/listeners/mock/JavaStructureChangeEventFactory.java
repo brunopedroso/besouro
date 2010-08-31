@@ -8,14 +8,14 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
-public class JavaElementsFactory {
+public class JavaStructureChangeEventFactory {
 
 	public static IJavaElement createJavaElement(IJavaElement parentElement, String resourceName, String elementName, int type) {
 		IJavaElement fromElement = mock(IJavaElement.class);
 		when(fromElement.getParent()).thenReturn(parentElement);
 		when(fromElement.toString()).thenReturn(elementName);
 		when(fromElement.getElementType()).thenReturn(type);
-		IFile resource = ResourceFactory.createMockResource(resourceName);
+		IFile resource = ResourceChangeEventFactory.createMockResource(resourceName);
 		when(fromElement.getResource()).thenReturn(resource);
 //		when(resource.toString())
 		return fromElement;
@@ -32,12 +32,12 @@ public class JavaElementsFactory {
 	}
 	
 	public static ElementChangedEvent createAddMethodAction() {
-		IJavaElement classElement = JavaElementsFactory.createJavaElement(null,"AnyClass.java","AnyClass",IJavaElement.CLASS_FILE);
-		IJavaElement addedElement = JavaElementsFactory.createJavaElement(null,"AnyClass.java","AnyClass#aMethod", IJavaElement.METHOD);
+		IJavaElement classElement = JavaStructureChangeEventFactory.createJavaElement(null,"AnyClass.java","AnyClass",IJavaElement.CLASS_FILE);
+		IJavaElement addedElement = JavaStructureChangeEventFactory.createJavaElement(null,"AnyClass.java","AnyClass#aMethod", IJavaElement.METHOD);
 		
-		IJavaElementDelta childDelta = JavaElementsFactory.createJavaChangeDelta(addedElement,IJavaElementDelta.ADDED);
+		IJavaElementDelta childDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(addedElement,IJavaElementDelta.ADDED);
 		
-		IJavaElementDelta delta = JavaElementsFactory.createJavaChangeDelta(classElement,IJavaElementDelta.CHANGED);
+		IJavaElementDelta delta = JavaStructureChangeEventFactory.createJavaChangeDelta(classElement,IJavaElementDelta.CHANGED);
 		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
 		
 		ElementChangedEvent event = mock(ElementChangedEvent.class);

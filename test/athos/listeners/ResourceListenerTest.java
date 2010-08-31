@@ -12,7 +12,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.junit.Test;
 
 import athos.listeners.mock.FakeActionStream;
-import athos.listeners.mock.ResourceFactory;
+import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.model.Action;
 import athos.model.BuildErrorAction;
 import athos.model.EditAction;
@@ -35,7 +35,7 @@ public class ResourceListenerTest {
 		
 		listener.setTestCounter(testCounter);
 		
-		IResourceChangeEvent event = ResourceFactory.createTestEditAction();
+		IResourceChangeEvent event = ResourceChangeEventFactory.createTestEditAction();
 		
 		listener.resourceChanged(event);
 		
@@ -61,7 +61,7 @@ public class ResourceListenerTest {
 		
 		String filename = "afile.java";
 		String errorMessage = "any build error message";
-		listener.resourceChanged(ResourceFactory.createBuildErrorEvent(filename, errorMessage));
+		listener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent(filename, errorMessage));
 		
 		Assert.assertEquals(1, generatedActions.size());
 		Assert.assertTrue(generatedActions.get(0) instanceof BuildErrorAction);

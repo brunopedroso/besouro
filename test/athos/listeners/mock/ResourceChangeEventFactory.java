@@ -9,7 +9,6 @@ import java.io.File;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
@@ -19,7 +18,7 @@ import org.eclipse.jdt.core.IJavaModelMarker;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public class ResourceFactory {
+public class ResourceChangeEventFactory {
 
 	public static IResourceChangeEvent createTestEditAction() throws CoreException {
 		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
@@ -37,15 +36,7 @@ public class ResourceFactory {
 		IFile createMockResource = createMockResource("TestFile.java");
 		when(delta.getResource()).thenReturn(createMockResource);
 		
-		doAnswer(new Answer() {
-
-			public Object answer(InvocationOnMock invocation) throws Throwable {
-				IResourceDeltaVisitor visitor = (IResourceDeltaVisitor) invocation.getArguments()[0];
-				visitor.visit(delta);
-				return null;
-			}
-		
-		}).when(delta).accept(any(IResourceDeltaVisitor.class));
+		doAnswer(new FakeVisitorAnswer(delta)).when(delta).accept(any(IResourceDeltaVisitor.class));
 		
 		return delta;
 		
@@ -64,15 +55,7 @@ public class ResourceFactory {
 		
 		final IResourceDelta delta = mock(IResourceDelta.class);
 		
-		doAnswer(new Answer() {
-			
-			public Object answer(InvocationOnMock invocation) throws Throwable {
-				IResourceDeltaVisitor visitor = (IResourceDeltaVisitor) invocation.getArguments()[0];
-				visitor.visit(delta);
-				return null;
-			}
-			
-		}).when(delta).accept(any(IResourceDeltaVisitor.class));
+		doAnswer(new FakeVisitorAnswer(delta)).when(delta).accept(any(IResourceDeltaVisitor.class));
 		
 		when(delta.getFlags()).thenReturn(IResourceDelta.MARKERS);
 		

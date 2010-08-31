@@ -9,8 +9,8 @@ import org.junit.Test;
 import athos.listeners.JavaStatementMeter;
 import athos.listeners.JavaStructureChangeListener;
 import athos.listeners.ResourceChangeListener;
-import athos.listeners.mock.JavaElementsFactory;
-import athos.listeners.mock.ResourceFactory;
+import athos.listeners.mock.JavaStructureChangeEventFactory;
+import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.stream.EpisodeClassifierStream;
 
 public class IntegrationTest {
@@ -26,12 +26,12 @@ public class IntegrationTest {
 		JavaStatementMeter meter = mock(JavaStatementMeter.class);
 		resourceListener.setTestCounter(meter);
 		
-		ElementChangedEvent event = JavaElementsFactory.createAddMethodAction();
+		ElementChangedEvent event = JavaStructureChangeEventFactory.createAddMethodAction();
 		javaListener.elementChanged(event);
 		// unaryAction.setSubjectName("void testEquilateral()");
 
 		
-		IResourceChangeEvent resourceEvent = ResourceFactory.createTestEditAction();
+		IResourceChangeEvent resourceEvent = ResourceChangeEventFactory.createTestEditAction();
 		resourceListener.resourceChanged(resourceEvent);
 //	    EditAction editAction = new EditAction(clock, testFile, 123);
 
