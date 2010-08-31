@@ -24,53 +24,54 @@ import athos.stream.EpisodeClassifierStream;
 //- file open
 //- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
-
 //TODO z rename project to silver
 
 //TODO [2] integration tests  (listeners -> classification)
 
-
 //TODO z do we need all that File and URI stuff?
 
-
 public class SensorPlugin implements IStartup {
-	
+
 	public static SensorPlugin plugin;
+
 	public static SensorPlugin getInstance() {
 		return plugin;
 	}
 
 	private static ActionOutputStream stream;
-	
+
 	public SensorPlugin() {
 		super();
 		SensorPlugin.plugin = this;
-		
+
 		try {
 			stream = new EpisodeClassifierStream();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
+
 	}
-	
-	
+
 	public void earlyStartup() {
 
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(stream), IResourceChangeEvent.POST_CHANGE);
-		JavaCore.addElementChangedListener(new JavaStructureChangeListener(stream));
-//		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(
+				new ResourceChangeListener(stream),
+				IResourceChangeEvent.POST_CHANGE);
+		JavaCore.addElementChangedListener(new JavaStructureChangeListener(
+				stream));
+		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new
+		// LaunchListener(stream));
 		JUnitCore.addTestRunListener(new JUnitListener(stream));
-		
+
 		WindowListener windowListener = new WindowListener(stream);
-		
+
 		IWorkbench workbench = Activator.getDefault().getWorkbench();
 		workbench.addWindowListener(windowListener);
-		
-		// makes the installation of the windows' listeners in case we have already an opened document
-		windowListener.windowOpened(null);
-		
-	}
 
+		// makes the installation of the windows' listeners in case we have
+		// already an opened document
+		windowListener.windowOpened(null);
+
+	}
 
 }

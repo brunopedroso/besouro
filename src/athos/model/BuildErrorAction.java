@@ -9,7 +9,7 @@ import jess.Rete;
 public class BuildErrorAction extends FileAction {
 
 	private String errorMessage;
-	
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -21,10 +21,10 @@ public class BuildErrorAction extends FileAction {
 
 	@Override
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
-//		throw new RuntimeException("do we need a build error action?");
+		// throw new RuntimeException("do we need a build error action?");
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + " ERROR: " + errorMessage;

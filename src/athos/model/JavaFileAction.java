@@ -14,14 +14,12 @@ public class JavaFileAction extends FileAction {
 	private int testMethodsCount;
 	private JavaFileAction previousAction;
 
-	
-	
 	private int fileSize = 0;
 
 	public void setFileSize(int fileSize) {
 		this.fileSize = fileSize;
 	}
-  
+
 	public int getFileSize() {
 		return this.fileSize;
 	}
@@ -70,14 +68,9 @@ public class JavaFileAction extends FileAction {
 		return this.previousAction;
 	}
 
-	
 	@Override
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		return null;
 	}
-	
-	
-	
-	
 
 }

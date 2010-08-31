@@ -21,16 +21,16 @@ import athos.model.FileOpenedAction;
 import athos.plugin.Activator;
 import athos.stream.ActionOutputStream;
 
-
-public class WindowListener implements IWindowListener, IPartListener, IDocumentListener {
-
+public class WindowListener implements IWindowListener, IPartListener,
+		IDocumentListener {
 
 	// TODO z[clean] do we need to maintain the active editor?
 	private static ITextEditor activeTextEditor;
+
 	public static ITextEditor getActiveTextEditor() {
 		return activeTextEditor;
 	}
-	
+
 	private ActionOutputStream stream;
 	private IWorkbench workbench;
 	private JavaStatementMeter javaMeter = new JavaStatementMeter();
@@ -38,59 +38,55 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	public WindowListener(ActionOutputStream stream) {
 		this.stream = stream;
 	}
-	
-	
-	/** 
+
+	/**
 	 * For testing purposes
 	 */
 	public void setWorkbench(IWorkbench workbench) {
 		this.workbench = workbench;
 	}
 
-	/** 
+	/**
 	 * For testing purposes
 	 */
 	public void setJavaMeter(JavaStatementMeter javaMeter) {
 		this.javaMeter = javaMeter;
 	}
 
-
 	public void windowOpened(IWorkbenchWindow window) {
 
-		if (workbench==null)
+		if (workbench == null)
 			workbench = Activator.getDefault().getWorkbench();
-		
+
 		IWorkbenchWindow[] activeWindows = workbench.getWorkbenchWindows();
 
 		for (int i = 0; i < activeWindows.length; i++) {
 
-			installDocumentListener(activeWindows[i].getActivePage().getActiveEditor());
-			
+			installDocumentListener(activeWindows[i].getActivePage()
+					.getActiveEditor());
+
 			IWorkbenchPage activePage = activeWindows[i].getActivePage();
 			activePage.addPartListener(this);
-			
+
 			registerFileOpenAction(activePage.getActiveEditor());
-			
-			
+
 		}
 	}
-	
+
 	public void windowDeactivated(IWorkbenchWindow window) {
 	}
-	
+
 	public void windowActivated(IWorkbenchWindow window) {
 		installDocumentListener(window.getActivePage().getActiveEditor());
 	}
-	
+
 	public void partOpened(IWorkbenchPart part) {
 		registerFileOpenAction(part);
 	}
 
-
 	public void partActivated(IWorkbenchPart part) {
 		installDocumentListener(part);
 	}
-
 
 	public void partBroughtToTop(IWorkbenchPart part) {
 	}
@@ -103,49 +99,50 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 	public void documentAboutToBeChanged(DocumentEvent event) {
 	}
-	
+
 	public void documentChanged(DocumentEvent event) {
 	}
-	
+
 	public void windowClosed(IWorkbenchWindow window) {
 	}
-	
+
 	private void installDocumentListener(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
 			activeTextEditor = (ITextEditor) part;
-			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
+			IDocument document = activeTextEditor.getDocumentProvider()
+					.getDocument(activeTextEditor.getEditorInput());
 			document.addDocumentListener(this);
 		}
 	}
-	
 
 	private void registerFileOpenAction(IWorkbenchPart part) {
 
 		if (part instanceof ITextEditor) {
-		
+
 			ITextEditor textEditor = (ITextEditor) part;
-	
+
 			IEditorInput input = textEditor.getEditorInput();
 			if (input instanceof IFileEditorInput) {
 				IFileEditorInput fileInput = (IFileEditorInput) input;
-				
+
 				File file = fileInput.getFile().getLocation().toFile();
-				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), file);
-				
-//				action.setFileSize((int) file.length());
-				
+				FileOpenedAction action = new FileOpenedAction(new Clock(
+						new Date()), file);
+
+				// action.setFileSize((int) file.length());
+
 				javaMeter.reset();
 				javaMeter.measureJavaFile(fileInput.getFile());
 				action.setMethodsCount(javaMeter.getNumOfMethods());
 				action.setStatementsCount(javaMeter.getNumOfStatements());
-				action.setTestAssertionsCount(javaMeter.getNumOfTestAssertions());
+				action.setTestAssertionsCount(javaMeter
+						.getNumOfTestAssertions());
 				action.setTestMethodsCount(javaMeter.getNumOfTestMethods());
-				
+
 				stream.addAction(action);
 			}
-			
+
 		}
 	}
-
 
 }
