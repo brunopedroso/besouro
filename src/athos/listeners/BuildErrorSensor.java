@@ -32,7 +32,9 @@ public class BuildErrorSensor {
 
 	public void findBuildProblem(IResourceDelta delta) {
 
-		// TODO z[clean] do we realy need to use the active editor?
+		// we are registering build errors in any file.
+		// not only in the changed file, as it was in the original version
+		// from Hongbing. Aparently, rules are gonna manage it.
 
 		// ITextEditor activeEditor = WindowListener.getActiveTextEditor();
 

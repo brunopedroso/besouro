@@ -23,8 +23,6 @@ import athos.stream.EpisodeClassifierStream;
 
 //TODO [2] integration tests  (listeners -> classification)
 
-//TODO z do we need all that File and URI stuff?
-
 public class SensorPlugin implements IStartup {
 
 	public static SensorPlugin plugin;

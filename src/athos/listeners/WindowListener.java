@@ -24,7 +24,7 @@ import athos.stream.ActionOutputStream;
 public class WindowListener implements IWindowListener, IPartListener,
 		IDocumentListener {
 
-//	// TODO z[clean] do we need to maintain the active editor?
+//	// we do not need to maintain the active editor any more
 //	private static ITextEditor activeTextEditor;
 //
 //	public static ITextEditor getActiveTextEditor() {

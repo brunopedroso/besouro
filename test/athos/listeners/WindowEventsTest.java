@@ -87,6 +87,11 @@ public class WindowEventsTest {
 		Assert.assertEquals(44, fileOpenedAction.getTestMethodsCount());
 		
 	}
+	
+	//TODO [data]  is there more window events to test?
+	
+	
+	// TODO   move to a factory
 
 	private IWorkbench getMockWorkbench(File file) {
 		
@@ -153,7 +158,5 @@ public class WindowEventsTest {
 		
 	}
 	
-	
-	//TODO [data]  is there more window events to test?
 	
 }

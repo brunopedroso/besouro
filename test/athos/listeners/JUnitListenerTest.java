@@ -61,7 +61,7 @@ public class JUnitListenerTest {
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
 		
-		//TODO [data] we dont have failure messages yet
+		//TODO [data] do we need junit failure messages?
 //		Assert.assertNotNull(action.getFailureMessage());
 		
 	}
