@@ -43,11 +43,11 @@ public class Utils {
 	 * @return The fully qualified class name. For example,foo.bar.Baz.
 	 */
 	public static String getFullyQualifedClassName(IFile file) {
+		
 		String fullClassName = "";
-		if (file.exists()
-				&& file.getName().endsWith(ActionOutputStream.JAVA_EXT)) {
-			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore
-					.create(file);
+		if (file.exists() && file.getName().endsWith(ActionOutputStream.JAVA_EXT)) {
+			
+			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore.create(file);
 			String className = compilationUnit.getElementName();
 			if (className.endsWith(ActionOutputStream.JAVA_EXT)) {
 				className = className.substring(0, className.length() - 5);
@@ -55,15 +55,14 @@ public class Utils {
 
 			try {
 
-				IPackageDeclaration[] packageDeclarations = compilationUnit
-						.getPackageDeclarations();
+				IPackageDeclaration[] packageDeclarations = compilationUnit.getPackageDeclarations();
+				
 				// Should only have one package declaration
-				if (packageDeclarations == null
-						|| packageDeclarations.length == 0) {
+				if (packageDeclarations == null || packageDeclarations.length == 0) {
 					fullClassName = className;
+					
 				} else {
-					fullClassName = packageDeclarations[0].getElementName()
-							+ '.' + className;
+					fullClassName = packageDeclarations[0].getElementName() + '.' + className;
 				}
 
 			} catch (JavaModelException e) {
@@ -75,7 +74,6 @@ public class Utils {
 				// Perspective
 				// exits.
 				if (!e.isDoesNotExist()) {
-					// TODO zz what to do with exception?
 					// EclipseSensorPlugin.getDefault().log(file.getName(), e);
 				}
 			}

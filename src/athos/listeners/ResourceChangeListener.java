@@ -119,15 +119,15 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				testCounter.reset();
 				testCounter.measureJavaFile(changedFile);
 
-				EditAction action = new EditAction(new Clock(new Date()),
-						changedFile.getLocation().toFile());
+				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile());
 				action.setOperation("Save");
+				
+				//TODO [clean] do we need this full name?
 				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 
 				action.setIsTestEdit(testCounter.hasTest());
 
-				action.setFileSize((int) changedFile.getLocation().toFile()
-						.length());
+				action.setFileSize((int) changedFile.getLocation().toFile().length());
 
 				action.setMethodsCount(testCounter.getNumOfMethods());
 				action.setStatementsCount(testCounter.getNumOfStatements());
