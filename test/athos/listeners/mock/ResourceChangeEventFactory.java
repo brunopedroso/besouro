@@ -23,17 +23,25 @@ public class ResourceChangeEventFactory {
 	public static IResourceChangeEvent createTestEditAction() throws CoreException {
 		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
 		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
-		IResourceDelta createMockResourceDelta = createChangeTestDelta();
+		IResourceDelta createMockResourceDelta = createChangeTestDelta("TestFile.java");
 		when(event.getDelta()).thenReturn(createMockResourceDelta);
 		return event;
 	}
 
-	public static IResourceDelta createChangeTestDelta() throws CoreException {
+	public static IResourceChangeEvent createProductionEditAction() throws CoreException {
+		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
+		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
+		IResourceDelta createMockResourceDelta = createChangeTestDelta("ProductionFile.java");
+		when(event.getDelta()).thenReturn(createMockResourceDelta);
+		return event;
+	}
+	
+	public static IResourceDelta createChangeTestDelta(String filename) throws CoreException {
 		
 		final IResourceDelta delta = mock(IResourceDelta.class);
 		when(delta.getKind()).thenReturn(IResourceDelta.CHANGED);
 		when(delta.getFlags()).thenReturn(IResourceDelta.CONTENT);
-		IFile createMockResource = createMockResource("TestFile.java");
+		IFile createMockResource = createMockResource(filename);
 		when(delta.getResource()).thenReturn(createMockResource);
 		
 		doAnswer(new FakeVisitorAnswer(delta)).when(delta).accept(any(IResourceDeltaVisitor.class));

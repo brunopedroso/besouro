@@ -12,6 +12,7 @@ import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.junit.Test;
 
 import athos.listeners.mock.FakeActionStream;
+import athos.listeners.mock.JUnitEventFactory;
 import athos.model.Action;
 import athos.model.UnitTestAction;
 import athos.stream.ActionOutputStream;
@@ -22,9 +23,7 @@ public class JUnitListenerTest {
 	public void shouleGenerateAPassingUnitTestEvent() {
 		
 		//mock things
-		ITestRunSession session = mock(ITestRunSession.class);
-		when(session.getTestRunName()).thenReturn("MyTest.java");
-		when(session.getTestResult(true)).thenReturn(Result.OK);
+		ITestRunSession session = JUnitEventFactory.createPassingSession();
 				
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		ActionOutputStream stream = new FakeActionStream(generatedActions);
@@ -40,14 +39,12 @@ public class JUnitListenerTest {
 		Assert.assertEquals(null, action.getFailureMessage());
 		
 	}
-	
+
 	@Test
 	public void shouleGenerateAFailingUnitTestEvent() {
 		
 		//mock things
-		ITestRunSession session = mock(ITestRunSession.class);
-		when(session.getTestRunName()).thenReturn("MyTest.java");
-		when(session.getTestResult(true)).thenReturn(Result.ERROR);
+		ITestRunSession session = JUnitEventFactory.createFailingSession();
 		
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		ActionOutputStream stream = new FakeActionStream(generatedActions);
