@@ -132,7 +132,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				action.setMethodsCount(testCounter.getNumOfMethods());
 				action.setStatementsCount(testCounter.getNumOfStatements());
 				action.setTestMethodsCount(testCounter.getNumOfTestMethods());
-				action.setTestAssertionsCount(testCounter.getNumOfTestMethods());
+				action.setTestAssertionsCount(testCounter.getNumOfTestAssertions());
 
 				sensor.addAction(action);
 

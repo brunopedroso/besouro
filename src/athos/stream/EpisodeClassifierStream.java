@@ -3,10 +3,12 @@ package athos.stream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import jess.Batch;
+import jess.JessException;
 import jess.QueryResult;
 import jess.Rete;
 import jess.ValueVector;
@@ -20,6 +22,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	List<Action> actions = new ArrayList<Action>();
 
 	private Map<File, JavaFileAction> previousEditActionPerFile = new HashMap<File, JavaFileAction>();
+	private List<String> episodes = new ArrayList<String>();
 
 	public EpisodeClassifierStream() throws Exception {
 		this.engine = new Rete();
@@ -30,24 +33,12 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	public void addAction(Action action) {
 
-		// link the list, to calculate the increases
-		if (action instanceof JavaFileAction) {
-
-			JavaFileAction linkedAction = (JavaFileAction) action;
-
-			JavaFileAction previousPerFile = previousEditActionPerFile
-					.get(linkedAction.getFile());
-			linkedAction.setPreviousAction(previousPerFile); // 1st time will be
-																// null, I
-																// know...
-
-			previousEditActionPerFile.put(linkedAction.getFile(), linkedAction);
-
-		}
 
 		actions.add(action);
 
 		System.out.println("[action] " + action);
+		
+		linkActions(action);
 
 		if (action instanceof UnitTestAction) {
 
@@ -71,13 +62,12 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 
-					QueryResult result = engine.runQueryStar(
-							"episode-classification-query", new ValueVector());
+					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
 					if (result.next()) {
-						System.out.println("[episode]");
-						System.out.println("\t" + result.getString("cat"));
-						System.out.println("\t" + result.getString("tp"));
+						String episode = "[episode]"+" " + result.getString("cat") + " " + result.getString("tp");
+						episodes.add(episode);
+						System.out.println(episode);
 
 					} else {
 						System.out
@@ -96,9 +86,45 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		}
 
 	}
+	
+//	public void printRulesOut() {
+//		try {
+//			
+//			Iterator it = engine.listActivations();
+//			Object rule = null;
+//			for (;it.hasNext(); rule = it.next()) {
+//				System.out.println(rule.toString());
+//			}
+//			
+//		} catch (JessException e) {
+//			throw new RuntimeException(e);
+//		}
+//	}
+
+	private void linkActions(Action action) {
+		
+		// link the list, to calculate the increases
+		if (action instanceof JavaFileAction) {
+
+			JavaFileAction linkedAction = (JavaFileAction) action;
+			
+			JavaFileAction previousPerFile = previousEditActionPerFile.get(linkedAction.getFile());
+			
+//			System.out.println("  ==>" + (previousPerFile==null?"null":"Achei") + " " + linkedAction.getFile() + ".");
+
+			linkedAction.setPreviousAction(previousPerFile); // 1st time will be null, I know...
+
+			previousEditActionPerFile.put(linkedAction.getFile(), linkedAction);
+
+		}
+	}
 
 	public List<Action> getActions() {
 		return actions;
+	}
+
+	public List<String> getRecognizedEpisodes() {
+		return episodes;
 	}
 
 }

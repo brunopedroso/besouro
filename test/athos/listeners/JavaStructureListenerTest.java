@@ -25,7 +25,7 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateAnAddEvent() {
 		
-		ElementChangedEvent event = JavaStructureChangeEventFactory.createAddMethodAction();
+		ElementChangedEvent event = JavaStructureChangeEventFactory.createAddMethodAction("AnyClass.java", "AnyClass", "aMethod");
 		
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();

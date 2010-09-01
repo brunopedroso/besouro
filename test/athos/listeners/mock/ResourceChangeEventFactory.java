@@ -20,29 +20,30 @@ import org.mockito.stubbing.Answer;
 
 public class ResourceChangeEventFactory {
 
-	public static IResourceChangeEvent createTestEditAction() throws CoreException {
+	public static IResourceChangeEvent createTestEditAction(int fileSize) throws CoreException {
 		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
 		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
-		IResourceDelta createMockResourceDelta = createChangeTestDelta("TestFile.java");
+		IResourceDelta createMockResourceDelta = createChangeTestDelta("TestFile.java", fileSize);
 		when(event.getDelta()).thenReturn(createMockResourceDelta);
 		return event;
 	}
 
-	public static IResourceChangeEvent createProductionEditAction() throws CoreException {
+	public static IResourceChangeEvent createEditAction(String filename, int fileSize) throws CoreException {
 		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
 		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
-		IResourceDelta createMockResourceDelta = createChangeTestDelta("ProductionFile.java");
+		IResourceDelta createMockResourceDelta = createChangeTestDelta(filename, fileSize);
 		when(event.getDelta()).thenReturn(createMockResourceDelta);
 		return event;
 	}
 	
-	public static IResourceDelta createChangeTestDelta(String filename) throws CoreException {
+	public static IResourceDelta createChangeTestDelta(String filename, long fileSize) throws CoreException {
 		
 		final IResourceDelta delta = mock(IResourceDelta.class);
+		IFile resource = createMockResource(filename, fileSize);
+		
 		when(delta.getKind()).thenReturn(IResourceDelta.CHANGED);
 		when(delta.getFlags()).thenReturn(IResourceDelta.CONTENT);
-		IFile createMockResource = createMockResource(filename);
-		when(delta.getResource()).thenReturn(createMockResource);
+		when(delta.getResource()).thenReturn(resource);
 		
 		doAnswer(new FakeVisitorAnswer(delta)).when(delta).accept(any(IResourceDeltaVisitor.class));
 		
@@ -67,7 +68,7 @@ public class ResourceChangeEventFactory {
 		
 		when(delta.getFlags()).thenReturn(IResourceDelta.MARKERS);
 		
-		IFile aresource = createMockResource(filename);
+		IFile aresource = createMockResource(filename, (long)33);
 		when(delta.getResource()).thenReturn(aresource);
 		
 		when(delta.getMarkerDeltas()).thenReturn(markers);
@@ -78,7 +79,7 @@ public class ResourceChangeEventFactory {
 		return event;
 	}
 	
-	public static IFile createMockResource(String filename) {
+	public static IFile createMockResource(String filename, long fileSIze) {
 		
 		String[] split = filename.split("\\.");
 		
@@ -86,7 +87,12 @@ public class ResourceChangeEventFactory {
 		
 		IPath path = mock(IPath.class);
 		when(path.toString()).thenReturn(filename);
-		when(path.toFile()).thenReturn(new File(filename));
+		
+		File file = mock(File.class);
+		when(file.getName()).thenReturn(filename);
+		when(file.length()).thenReturn(fileSIze);
+		
+		when(path.toFile()).thenReturn(file);
 		
 		if (split.length>1)
 			when(path.getFileExtension()).thenReturn(split[1]);

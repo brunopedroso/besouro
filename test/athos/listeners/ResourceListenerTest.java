@@ -32,17 +32,28 @@ public class ResourceListenerTest {
 		JavaStatementMeter testCounter = mock(JavaStatementMeter.class);
 		// its how test edits are identified 
 		when(testCounter.hasTest()).thenReturn(Boolean.TRUE);
+		when(testCounter.getNumOfMethods()       ).thenReturn(1);
+		when(testCounter.getNumOfStatements()    ).thenReturn(2);
+		when(testCounter.getNumOfTestAssertions()).thenReturn(3);
+		when(testCounter.getNumOfTestMethods()   ).thenReturn(4);
 		
 		listener.setTestCounter(testCounter);
 		
-		IResourceChangeEvent event = ResourceChangeEventFactory.createTestEditAction();
+		IResourceChangeEvent event = ResourceChangeEventFactory.createTestEditAction(33);
 		
 		listener.resourceChanged(event);
 		
 		Assert.assertEquals(1, generatedActions.size());
 		EditAction action = (EditAction) generatedActions.get(0);
-		Assert.assertEquals(new File("TestFile.java"), action.getFile());
+		Assert.assertEquals("TestFile.java", action.getFile().getName());
 		Assert.assertEquals(true, action.isTestEdit());
+		
+		Assert.assertEquals(1, action.getMethodsCount());
+		Assert.assertEquals(2, action.getStatementsCount());
+		Assert.assertEquals(3, action.getTestAssertionsCount());
+		Assert.assertEquals(4, action.getTestMethodsCount());
+		
+		Assert.assertEquals(33, action.getFileSize());
 		
 	}
 	

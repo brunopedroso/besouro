@@ -46,21 +46,15 @@ public class EditAction extends JavaFileAction {
 
 		if (this.isTestEdit()) {
 			buf.append(" TEST {");
-			buf.append(
-					makeMetricPair("TI", this.testMethodIncrease,
-							getTestMethodsCount())).append(", ");
-			buf.append(makeMetricPair("AI", this.testAssertionIncrease,
-					getTestAssertionsCount()));
+			buf.append(makeMetricPair("TI", this.testMethodIncrease, getTestMethodsCount())).append(", ");
+			buf.append(makeMetricPair("AI", this.testAssertionIncrease, getTestAssertionsCount()));
 
 		} else {
 			buf.append(" PRODUCTION {");
 		}
 
-		buf.append(makeMetricPair("MI", getMethodIncrease(), getMethodsCount()))
-				.append(", ");
-		buf.append(
-				makeMetricPair("SI", getStatementIncrease(),
-						getStatementsCount())).append(", ");
+		buf.append(makeMetricPair("MI", getMethodIncrease(), getMethodsCount())).append(", ");
+		buf.append(makeMetricPair("SI", getStatementIncrease(),getStatementsCount())).append(", ");
 		buf.append(", ");
 		buf.append(makeMetricPair("FI", getFileSizeIncrease(), getFileSize()));
 

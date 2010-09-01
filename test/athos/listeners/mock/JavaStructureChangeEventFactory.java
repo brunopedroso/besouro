@@ -15,7 +15,7 @@ public class JavaStructureChangeEventFactory {
 		when(fromElement.getParent()).thenReturn(parentElement);
 		when(fromElement.toString()).thenReturn(elementName);
 		when(fromElement.getElementType()).thenReturn(type);
-		IFile resource = ResourceChangeEventFactory.createMockResource(resourceName);
+		IFile resource = ResourceChangeEventFactory.createMockResource(resourceName, (long)33);
 		when(fromElement.getResource()).thenReturn(resource);
 //		when(resource.toString())
 		return fromElement;
@@ -31,9 +31,9 @@ public class JavaStructureChangeEventFactory {
 		return delta;
 	}
 	
-	public static ElementChangedEvent createAddMethodAction() {
-		IJavaElement classElement = JavaStructureChangeEventFactory.createJavaElement(null,"AnyClass.java","AnyClass",IJavaElement.CLASS_FILE);
-		IJavaElement addedElement = JavaStructureChangeEventFactory.createJavaElement(null,"AnyClass.java","AnyClass#aMethod", IJavaElement.METHOD);
+	public static ElementChangedEvent createAddMethodAction(String filename, String className, String methodName) {
+		IJavaElement classElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className,IJavaElement.CLASS_FILE);
+		IJavaElement addedElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className + "#" + methodName, IJavaElement.METHOD);
 		
 		IJavaElementDelta childDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(addedElement,IJavaElementDelta.ADDED);
 		
