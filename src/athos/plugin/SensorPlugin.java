@@ -21,7 +21,6 @@ import athos.stream.EpisodeClassifierStream;
 
 //TODO z rename project to silver
 
-//TODO   integration tests  (listeners -> classification)
 
 public class SensorPlugin implements IStartup {
 

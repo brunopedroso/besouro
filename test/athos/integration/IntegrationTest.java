@@ -2,9 +2,6 @@ package athos.integration;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.io.File;
-
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -20,6 +17,8 @@ import athos.listeners.mock.JavaStructureChangeEventFactory;
 import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.listeners.mock.WindowEventsFactory;
 import athos.stream.EpisodeClassifierStream;
+
+//TODO   break and rename integraton tests
 
 public class IntegrationTest {
 
@@ -355,7 +354,7 @@ public class IntegrationTest {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
 		
-		//TODO we have 2 refactorings here... hongbing considered just one...
+		//TODO [rule] we have 2 refactorings here... hongbing considered just one...
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(0));
 		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(1));
@@ -449,7 +448,7 @@ public class IntegrationTest {
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] test-addition 2", stream.getRecognizedEpisodes().get(0));
-		// TODO this second one was not considered by hongbings test
+		// TODO [rule] this second one was not considered by hongbings test
 		Assert.assertEquals("[episode] test-addition 1", stream.getRecognizedEpisodes().get(1));
 		
 	}
@@ -562,7 +561,7 @@ public class IntegrationTest {
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
-		//TODO this one was not considered by hingbings test
+		//TODO [rule] this one was not considered by hingbings test
 		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(1));
 		
 	}
@@ -620,7 +619,7 @@ public class IntegrationTest {
 
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
-		//TODO just to be substancial :-/
+		//TODO [rule] just to be substancial :-/
 		when(meter.getNumOfMethods()).thenReturn(1);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",135));
 		
