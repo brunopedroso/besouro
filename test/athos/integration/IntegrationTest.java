@@ -362,7 +362,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testLast1() throws Exception {
+	public void testLasCategory1() throws Exception {
 		
 		// Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -382,7 +382,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testLast2() throws Exception {
+	public void testLastCategory2() throws Exception {
 		
 		// Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -411,7 +411,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testAdition1() throws Exception {
+	public void testAditionCategory1() throws Exception {
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -427,7 +427,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testAdition2() throws Exception {
+	public void testAditionCategory2() throws Exception {
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -454,7 +454,7 @@ public class IntegrationTest {
 	}
 
 	@Test 
-	public void regression1() throws Exception {
+	public void regressionCategory1() throws Exception {
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile1.java"));
@@ -465,7 +465,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void regression1_2() throws Exception {
+	public void regressionCategory1_2() throws Exception {
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile1.java"));
@@ -477,14 +477,24 @@ public class IntegrationTest {
 		
 	}
 	
+	@Test 
+	public void regressionCategory2() throws Exception {
+		
+		// TODO [rule] its a strange case without an test edit after the compilation problem :-/
+		
+		// Compile error on test
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent("TestFile.java", "error message"));
 
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] regression 2", stream.getRecognizedEpisodes().get(0));
+		// TODO [rule] this second one was not considered by hongbings test
+		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(1));
+		
+	}
 	
-	
-//			(deffacts Regression-2-episode
-//			   (CompilationAction    (index 1) (file TestTriangle.java) (message "Class ZorroStream not found"))        
-//			   (UnitTestAction       (index 2) (file TestTriangle.java))
-//			)
-//			(printout t (test-classifier "regression" "2") crlf crlf)
 
 	
 //			;; Production type 1 without method increase
