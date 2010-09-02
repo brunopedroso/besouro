@@ -50,7 +50,7 @@ public class IntegrationTest {
 	}
 
 	@Test 
-	public void testTDDEpisodeCategory1() throws Exception {
+	public void testFirstCategory1() throws Exception {
 	
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
@@ -88,7 +88,7 @@ public class IntegrationTest {
 	  }
 
 	@Test 
-	public void testTDDEpisodeCategory2() throws Exception {
+	public void testFirstCategory2() throws Exception {
 	    
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
@@ -121,7 +121,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testTDDEpisodeCategory3() throws Exception {
+	public void testFirstCategory3() throws Exception {
 		
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
@@ -155,7 +155,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testTDDEpisodeCategory4() throws Exception {
+	public void testFirstCategory4() throws Exception {
 		
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
@@ -185,7 +185,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testRefactoring_1A() throws Exception {
+	public void refactoringCategory1A() throws Exception {
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -218,7 +218,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testRefactoring_1A_2() throws Exception {
+	public void refactoringCategory1A_2() throws Exception {
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -243,7 +243,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testRefactoring_1B() throws Exception {
+	public void refactoringCategory1B() throws Exception {
 		
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("TestFile.java", "TestFile", "aTestMethod"));
@@ -263,7 +263,7 @@ public class IntegrationTest {
 	
 	
 	@Test 
-	public void testRefactoring_2A() throws Exception {
+	public void refactoringCategory2A() throws Exception {
 		
 		 // Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -286,7 +286,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testRefactoring_2B() throws Exception {
+	public void refactoringCategory2B() throws Exception {
 		
 		// Add prod method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
@@ -311,7 +311,7 @@ public class IntegrationTest {
 	}
 
 	@Test 
-	public void testRefactoring_3_1() throws Exception {
+	public void refactoringCategory3_1() throws Exception {
 		
 		 // Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -334,7 +334,7 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testRefactoring_3_2() throws Exception {
+	public void refactoringCategory3_2() throws Exception {
 		
 		// Add prod method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
@@ -361,14 +361,28 @@ public class IntegrationTest {
 		
 	}
 	
+	@Test 
+	public void testLast1() throws Exception {
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestAssertions()).thenReturn(3);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		//TODO we have 2 refactorings here... hongbing considered just one...
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] test-last 1", stream.getRecognizedEpisodes().get(0));
+		
+	}
 	
-//			(deffacts Test-Last-1-episode
-//			   (ProductionEditAction (index 1) (file Triangle.java) (duration 200))    
-//			   (UnitTestEditAction   (index 2) (file TestTriangle.java) (duration 200) (assertionChange 3))     
-//			   (UnitTestAction       (index 3) (file TestTriangle.java))        
-//			)
-//			(printout t (test-classifier "test-last" "1") crlf crlf)
-
+	
 	
 //			(deffacts Test-Last-2-episode
 //			   (ProductionEditAction (index 1) (file Triangle.java) (duration 200))    
