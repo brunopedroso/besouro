@@ -18,8 +18,6 @@ import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.listeners.mock.WindowEventsFactory;
 import athos.stream.EpisodeClassifierStream;
 
-//TODO   break and rename integraton tests
-
 public class IntegrationTestBaseClass {
 
 	protected EpisodeClassifierStream stream;
