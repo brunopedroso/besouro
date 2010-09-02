@@ -14,12 +14,20 @@ import athos.listeners.WindowListener;
 import athos.stream.ActionOutputStream;
 import athos.stream.EpisodeClassifierStream;
 
-//what do we have so far:
-//- java structure changes
-//- file open
-//- resource changed with metrics (statements, methods, is_test? (is it working?),  ...)
 
-//TODO z rename project to silver
+
+//TODO  not recognizing test edits
+//(MAIN::initial-fact)
+//(MAIN::UnaryRefactorAction (index 2) (file "RomanNumeralsTest.java") (operation "ADD") (type "FIELD") (data "void fr"))
+//(MAIN::UnaryRefactorAction (index 3) (file "RomanNumeralsTest.java") (operation "RENAME") (type "FIELD") (data "fr => void firstTest"))
+//(MAIN::UnaryRefactorAction (index 4) (file "RomanNumeralsTest.java") (operation "RENAME") (type "METHOD") (data "firstTest => void firstTest()"))
+//(MAIN::ProductionEditAction (index 5) (file "RomanNumeralsTest.java") (duration 0) (byteChange 37) (methodChange 1) (statementChange 0))
+//(MAIN::UnitTestEditAction (index 6) (file "RomanNumeralsTest.java") (duration 0) (byteChange 5) (testChange 1) (assertionChange 0))
+
+//TODO  junit listener is collecting filename without extension
+//	- do not recognize testAssertionAdd + junitFail + producion + junitPass as test first
+
+//TODO  make tostrings look easier to recognize
 
 
 public class SensorPlugin implements IStartup {
@@ -67,3 +75,5 @@ public class SensorPlugin implements IStartup {
 	}
 
 }
+
+//TODO z rename project. Silver?

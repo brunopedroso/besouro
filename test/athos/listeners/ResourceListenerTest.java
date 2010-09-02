@@ -56,7 +56,7 @@ public class ResourceListenerTest {
 		
 	}
 	
-	// TODO  [test] more unit tests for ResourceListener?
+	// TODO [test] more unit tests for ResourceListener?
 	// what about test x prod changes?
 	
 	@Test
