@@ -59,10 +59,11 @@ public class JavaStructureChangeEventFactory {
 		return event;
 	}
 	
-	public static ElementChangedEvent createRenameMethodEvent() {
-		IJavaElement parentElement = JavaStructureChangeEventFactory.createJavaElement(null,"AnyClass.java", "AnyClass", IJavaElement.CLASS_FILE);
-		IJavaElement renamedFromElement = JavaStructureChangeEventFactory.createJavaElement(parentElement,"AnyClass.java", "AnyClass#aMethod", IJavaElement.FIELD);
-		IJavaElement renamedToElement = JavaStructureChangeEventFactory.createJavaElement(parentElement,"AnyClass.java", "AnyClass#anotherMethod", IJavaElement.FIELD);
+	public static ElementChangedEvent createRenameMethodEvent(String filename, String classname, String fromMethod, String toMethod) {
+		
+		IJavaElement parentElement = JavaStructureChangeEventFactory.createJavaElement(null,filename, classname, IJavaElement.CLASS_FILE);
+		IJavaElement renamedFromElement = JavaStructureChangeEventFactory.createJavaElement(parentElement,filename, classname + "#" + fromMethod, IJavaElement.FIELD);
+		IJavaElement renamedToElement = JavaStructureChangeEventFactory.createJavaElement(parentElement,filename, classname + "#" + toMethod, IJavaElement.FIELD);
 		
 		IJavaElementDelta removedDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(renamedFromElement, IJavaElementDelta.REMOVED);
 		IJavaElementDelta addedDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(renamedToElement, IJavaElementDelta.ADDED);

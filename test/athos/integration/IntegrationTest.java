@@ -292,14 +292,8 @@ public class IntegrationTest {
 	    
 	}
 	
-//	@Test 
+	@Test 
 	public void testRefactoring_2B() throws Exception {
-		
-//		   (UnaryRefactorAction  (index 1) (file Triangle.java) (operation ADD) (type METHOD) (data "void create()"))
-//		   (UnitTestAction       (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))         
-//		   (BinaryRefactorAction (index 3) (file Triangle.java) (operation RENAME) (type METHOD) (from "void create()") (to "void create(int)"))
-//		   (UnitTestAction       (index 4) (file TestTriangle.java))        
-
 		
 		// Add prod method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
@@ -307,15 +301,19 @@ public class IntegrationTest {
 		// Unit test failue
 		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 		
-		// Add prod method
-		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
-		
+		// rename prod method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRenameMethodEvent("ProductionFile.java", "ProductionFile", "aMethod", "anotherMethod"));
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals(3, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(0));
+
+		//TODO [rule] why are it recognizing these 2 extra episodes?
+		//			  does it influence the metric?
+		Assert.assertEquals("[episode] regression 2", stream.getRecognizedEpisodes().get(1));
+		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(2));
 		
 	}
 	

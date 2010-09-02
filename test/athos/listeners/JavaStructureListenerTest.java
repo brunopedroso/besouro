@@ -79,7 +79,7 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateARenameEvent() {
 		
-		ElementChangedEvent event = JavaStructureChangeEventFactory.createRenameMethodEvent();
+		ElementChangedEvent event = JavaStructureChangeEventFactory.createRenameMethodEvent("AnyClass.java", "AnyClass", "aMethod", "anotherMethod");
 		
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
