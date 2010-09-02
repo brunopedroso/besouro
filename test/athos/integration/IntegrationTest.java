@@ -162,7 +162,37 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void testCodeRefact() throws Exception {
+	public void testTDDEpisodeCategory4() throws Exception {
+		
+		// Add test method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestAssertions()).thenReturn(3);
+		when(meter.getNumOfTestMethods()).thenReturn(5);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+   
+		// Work on production code
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",37));
+
+		// Work on production code
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",39));
+
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+    
+		int size = stream.getRecognizedEpisodes().size();
+		Assert.assertTrue(size>0);
+		Assert.assertEquals("[episode] test-first 4", stream.getRecognizedEpisodes().get(size-1));
+
+		
+	}
+	
+	@Test 
+	public void testRefactoring_1A() throws Exception {
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -195,7 +225,52 @@ public class IntegrationTest {
 	}
 	
 	@Test 
-	public void productionCodeRefact() throws Exception {
+	public void testRefactoring_1A_2() throws Exception {
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestMethods()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+				
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestMethods()).thenReturn(2);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",37));
+				
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
+		// two refactorings - one on each edit (because they precede test-pass)
+		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(1));
+	}
+	
+	@Test 
+	public void testRefactoring_1B() throws Exception {
+		
+		// Add test method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("TestFile.java", "TestFile", "aTestMethod"));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(4, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] refactoring 1B", stream.getRecognizedEpisodes().get(0));
+		
+		//TODO [rule] why are it recognizing these 3 extra episodes?
+		//			  does it influence the metric?
+		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(1));
+		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(2));
+		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(3));
+	}
+	
+	
+	@Test 
+	public void testRefactoring_2A() throws Exception {
 		
 		 // Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -215,6 +290,33 @@ public class IntegrationTest {
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(0));
 	    
+	}
+	
+//	@Test 
+	public void testRefactoring_2B() throws Exception {
+		
+//		   (UnaryRefactorAction  (index 1) (file Triangle.java) (operation ADD) (type METHOD) (data "void create()"))
+//		   (UnitTestAction       (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))         
+//		   (BinaryRefactorAction (index 3) (file Triangle.java) (operation RENAME) (type METHOD) (from "void create()") (to "void create(int)"))
+//		   (UnitTestAction       (index 4) (file TestTriangle.java))        
+
+		
+		// Add prod method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		
+		// Add prod method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
+		
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(0));
+		
 	}
 	
 	

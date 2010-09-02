@@ -79,21 +79,7 @@ public class JavaStructureListenerTest {
 	@Test
 	public void shouldGenerateARenameEvent() {
 		
-		IJavaElement parentElement = JavaStructureChangeEventFactory.createJavaElement(null,"AnyClass.java", "AnyClass", IJavaElement.CLASS_FILE);
-		IJavaElement renamedFromElement = JavaStructureChangeEventFactory.createJavaElement(parentElement,"AnyClass.java", "AnyClass#aMethod", IJavaElement.FIELD);
-		IJavaElement renamedToElement = JavaStructureChangeEventFactory.createJavaElement(parentElement,"AnyClass.java", "AnyClass#anotherMethod", IJavaElement.FIELD);
-		
-		IJavaElementDelta removedDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(renamedFromElement, IJavaElementDelta.REMOVED);
-		IJavaElementDelta addedDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(renamedToElement, IJavaElementDelta.ADDED);
-
-		IJavaElementDelta classDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED);
-		when(classDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{removedDelta, addedDelta});
-		
-		IJavaElementDelta parentDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED);
-		when(parentDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{classDelta});
-
-		ElementChangedEvent event = mock(ElementChangedEvent.class);
-		when(event.getDelta()).thenReturn(parentDelta);
+		ElementChangedEvent event = JavaStructureChangeEventFactory.createRenameMethodEvent();
 		
 		// create listener
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
@@ -114,7 +100,7 @@ public class JavaStructureListenerTest {
 		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
-	
+
 	@Test
 	public void shouldGenerateAMoveEvent() {
 		
