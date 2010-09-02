@@ -453,13 +453,32 @@ public class IntegrationTest {
 		
 	}
 
+	@Test 
+	public void regression1() throws Exception {
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile1.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(0));
+		
+	}
+	
+	@Test 
+	public void regression1_2() throws Exception {
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile1.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile2.java"));
+		
+		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(1));
+		
+	}
+	
 
 	
-//			(deffacts Regression-1-episode
-//			   (UnitTestAction       (index 1) (file TestRate.java))        
-//			   (UnitTestAction       (index 2) (file TestTriangle.java))        
-//			(printout t (test-classifier "regression" "1") crlf crlf)
-
 	
 //			(deffacts Regression-2-episode
 //			   (CompilationAction    (index 1) (file TestTriangle.java) (message "Class ZorroStream not found"))        
