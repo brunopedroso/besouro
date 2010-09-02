@@ -73,4 +73,8 @@ public class JUnitListenerTest {
 		
 	}
 	
+	//TODO   should generate actions for each test file executed
+//			(in case package or folder is execued)
+//			tokenize episodes just one time, containing various testPasses. Works?
+	
 }
