@@ -541,15 +541,32 @@ public class IntegrationTest {
 		
 	}
 	
+	@Test 
+	public void productionCategory2_2() throws Exception {
+		
+		// method increase but byte statement decrease
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		when(meter.getNumOfMethods()).thenReturn(5);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",15));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		
+		// TODO [rule] its a strange case without an edit after the test failure :-/
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
+		//TODO this one was not considered by hingbings test
+		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(1));
+		
+	}
 	
-//			;; Production type 2 with method increase but statement decrease
-//			(deffacts production-2-episodeB
-//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 2) (statementChange 2) (byteChange 8) (duration 200))    
-//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
-//			   (UnitTestAction (index 3) (file TestTriangle.java))        
-//			)
-//			(printout t (test-classifier "production" "2") crlf crlf)
-
+	
 	
 //			;; Production type 3 with method increase, and size increase and byte increase
 //			(deffacts production-3-episode
