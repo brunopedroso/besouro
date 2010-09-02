@@ -481,7 +481,6 @@ public class IntegrationTest {
 	@Test 
 	public void regressionCategory2() throws Exception {
 		
-		
 		// Compile error on test
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent("TestFile.java", "error message"));
 
@@ -593,32 +592,63 @@ public class IntegrationTest {
 		
 	}
 	
+	@Test 
+	public void testFirstRealCase() throws Exception {
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestAssertions()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",33));
+
+		// Add test method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));		
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestMethods()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",133));
+
+		// Compile error on test
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent("TestFile.java", "error message"));
+
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		//TODO just to be substancial :-/
+		when(meter.getNumOfMethods()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",135));
+		
+		// Add prod method
+		// in the original test, it was an ADD CLASS
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
+
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+
+		// Add prod method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
+
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		when(meter.getNumOfMethods()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",38));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		int size = stream.getRecognizedEpisodes().size();
+		Assert.assertTrue(size>0);
+		Assert.assertEquals("[episode] test-first 1", stream.getRecognizedEpisodes().get(size-1));
+		
+		//TODO [rule] we have 7 actions here!
+		
+	}
 	
-	
-//			(deffacts test-first-1-episode-real
-//			   (BufferTransAction (index 1) (leavingFile Frame.java))
-//			   (UnitTestEditAction (index 2) (file TestFrame.java) (duration 0)  
-//			                       (testChange 0) (assertionChange 1)) 
-//			   (UnitTestAction  (index 3) (file TestFrame.java) (errmsg "Failed to run test"))              
-//			   (BufferTransAction (index 4) (leavingFile TestFrame.java))
-//			   (ProductionEditAction (index 5) (file Frame.java) (methodChange 0) (statementChange 0) (byteChange 33) (duration 0))    
-//			   (BufferTransAction (index 6) (leavingFile Frame.java))
-//			   (UnaryRefactorAction (index 7) (file TestFrame.java) 
-//			                         (operation "ADD") (type "METHOD") (data "void testGame()"))    
-//			   (UnitTestEditAction (index 8) (file TestFrame.java) (duration 34)  
-//			                       (testChange 1) (assertionChange 0) (byteChange 131)) 
-//			   (CompilationAction  (index 9) (file TestFrame.java) ;;
-//			                        (message "BowlingGame cannot be resolved to a type"))
-//			   (UnitTestEditAction (index 10) (file TestFrame.java) (duration 0)  
-//			                       (testChange 0) (assertionChange 0) (byteChange 4)) 
-//			   (UnaryRefactorAction (index 11) (file BowlingGame.java) 
-//			                         (operation "ADD") (type "CLASS") (data "BowlingGame.java"))    
-//			   (BufferTransAction (index 12) (leavingFile TestFrame.java)) 
-//			   (ProductionEditAction (index 13) (file BowlingGame.java) (methodChange 0) (statementChange 0) (byteChange 167) (duration 9))    
-//			   (UnaryRefactorAction (index 14) (file BowlingGame.java) 
-//			                         (operation "ADD") (type "METHOD") (data "BowlingGame()"))    
-//			   (ProductionEditAction (index 15) (file BowlingGame.java) (methodChange 1) (statementChange 0) (byteChange 82) (duration 23))    
-//			   (BufferTransAction (index 16) (leavingFile BowlingGame.java)) 
-//			   (UnitTestAction (index 17) (file TestFrame.java)) 
-//			(printout t (test-classifier "test-first" "1") crlf crlf)
 }
