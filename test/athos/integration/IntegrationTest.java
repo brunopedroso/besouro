@@ -8,6 +8,7 @@ import junit.framework.Assert;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.junit.Before;
 import org.junit.Test;
 
 import athos.listeners.JUnitListener;
@@ -23,26 +24,33 @@ import athos.stream.EpisodeClassifierStream;
 
 public class IntegrationTest {
 
+	private EpisodeClassifierStream stream;
+	private JavaStructureChangeListener javaListener;
+	private ResourceChangeListener resourceListener;
+	private JUnitListener junitListener;
+	private WindowListener winListener;
+	private JavaStatementMeter meter;
+
+	@Before
+	public void setup() throws Exception {
+		stream = new EpisodeClassifierStream();
+		
+		javaListener = new JavaStructureChangeListener(stream);
+		resourceListener = new ResourceChangeListener(stream);
+		junitListener = new JUnitListener(stream);
+		winListener = new WindowListener(stream);
+		
+		meter = mock(JavaStatementMeter.class);
+		resourceListener.setTestCounter(meter);
+		winListener.setJavaMeter(meter);
+	}
+
 	@Test 
 	public void testTDDEpisodeCategory1() throws Exception {
 	
-		
-		EpisodeClassifierStream stream = new EpisodeClassifierStream();
-		
-		JavaStructureChangeListener javaListener = new JavaStructureChangeListener(stream);
-		ResourceChangeListener resourceListener = new ResourceChangeListener(stream);
-		JUnitListener junitListener = new JUnitListener(stream);
-		WindowListener winListener = new WindowListener(stream);
-		
-		JavaStatementMeter meter = mock(JavaStatementMeter.class);
-		resourceListener.setTestCounter(meter);
-		winListener.setJavaMeter(meter);
-
-		
 		// Open file (calculates the first file metrics)
 		winListener.partOpened(WindowEventsFactory.createTestEditor(new File("TestFile.java")));
 		winListener.partOpened(WindowEventsFactory.createTestEditor(new File("ProductionFile.java")));
-		
 		
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
@@ -67,7 +75,6 @@ public class IntegrationTest {
 	    // Unit test failue
 		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 		
-
 		// Edit on prodction code
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java", 37));
 
@@ -78,5 +85,6 @@ public class IntegrationTest {
 		Assert.assertEquals("[episode] test-first 1", stream.getRecognizedEpisodes().get(0));
 		
 	  }
+
 	
 }
