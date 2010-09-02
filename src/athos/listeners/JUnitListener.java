@@ -3,9 +3,13 @@ package athos.listeners;
 import java.io.File;
 import java.util.Date;
 
+import org.eclipse.jdt.internal.junit.model.ITestSessionListener;
 import org.eclipse.jdt.junit.TestRunListener;
+import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
+import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
 import athos.model.Clock;
 import athos.model.UnitTestAction;
@@ -21,14 +25,32 @@ public class JUnitListener extends TestRunListener {
 
 	@Override
 	public void sessionFinished(ITestRunSession session) {
-		UnitTestAction action = new UnitTestAction(new Clock(new Date()),
-				new File(session.getTestRunName()));
+		
+		String className = getTestClassName(session);
+		
+		File file = new File(className);
+		
+		UnitTestAction action = new UnitTestAction(new Clock(new Date()), file);
 		Result testResult = session.getTestResult(true);
-		action.setSuccessValue(testResult.toString().equals("OK"));
+		action.setSuccessValue(testResult.equals(Result.OK));
 		stream.addAction(action);
 		// print(session);
 	}
 
+	private String getTestClassName(ITestElement element) {
+		
+		if (element instanceof ITestCaseElement) {
+			ITestCaseElement testCase = (ITestCaseElement) element;
+			return testCase.getTestClassName();
+			
+		} else if (element instanceof ITestRunSession) {
+			ITestRunSession session = (ITestRunSession) element; 
+			return getTestClassName(session.getChildren()[0]);
+		}
+		
+		return null;
+	}
+	
 	// private void print(ITestElement session) {
 	//
 	// System.out.println(session);

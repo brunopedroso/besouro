@@ -2,6 +2,7 @@ package athos.integration;
 
 import junit.framework.Assert;
 
+import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.junit.Test;
 
 import athos.listeners.mock.JUnitEventFactory;
@@ -13,7 +14,7 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 	public void regressionCategory1() throws Exception {
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile1.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(0));
@@ -24,8 +25,8 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 	public void regressionCategory1_2() throws Exception {
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile1.java"));
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile2.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(0));
@@ -41,7 +42,7 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 
 		// TODO [rule] its a strange case without an test edit after the compilation problem :-/
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] regression 2", stream.getRecognizedEpisodes().get(0));

@@ -3,6 +3,7 @@ package athos.integration;
 import static org.mockito.Mockito.when;
 import junit.framework.Assert;
 
+import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.junit.Test;
 
 import athos.listeners.mock.JUnitEventFactory;
@@ -38,7 +39,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		//	a overwrite in the index 2 action
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(0));
@@ -53,7 +54,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 				
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -61,7 +62,8 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",37));
 				
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		// two refactorings - one on each edit (because they precede test-pass)
@@ -76,7 +78,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(4, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 1B", stream.getRecognizedEpisodes().get(0));
@@ -97,7 +99,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 	    
 	    // Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 
 	    // Edit on production code
 		when(meter.hasTest()).thenReturn(false);
@@ -105,7 +107,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 
 	    
 	    // Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(0));
@@ -119,13 +121,13 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
 		
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
 		// rename prod method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRenameMethodEvent("ProductionFile.java", "ProductionFile", "aMethod", "anotherMethod"));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(3, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(0));
@@ -145,7 +147,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 		
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -153,7 +155,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(0));
@@ -171,7 +173,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 		
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -179,7 +181,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		//TODO [rule] we have 2 refactorings here... hongbing considered just one...
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());

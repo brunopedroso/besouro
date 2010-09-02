@@ -3,6 +3,7 @@ package athos.integration;
 import static org.mockito.Mockito.when;
 import junit.framework.Assert;
 
+import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.junit.Test;
 
 import athos.listeners.mock.JUnitEventFactory;
@@ -25,7 +26,7 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 //		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] production 1", stream.getRecognizedEpisodes().get(0));
@@ -50,7 +51,7 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
@@ -68,12 +69,12 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",15));
 		
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
 		// TODO [rule] its a strange case without an edit after the test failure :-/
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
@@ -100,7 +101,7 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 //		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] production 3", stream.getRecognizedEpisodes().get(0));

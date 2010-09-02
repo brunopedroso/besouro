@@ -3,6 +3,7 @@ package athos.integration;
 import static org.mockito.Mockito.when;
 import junit.framework.Assert;
 
+import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.junit.Test;
 
 import athos.listeners.mock.JUnitEventFactory;
@@ -35,13 +36,13 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 		
 	    // Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.ERROR));
 		
 		// Edit on prodction code
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java", 37));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -74,7 +75,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -101,14 +102,14 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 		
 	    // Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile.java", Result.ERROR));
 
 		// Work on production code
 		when(meter.hasTest()).thenReturn(false);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",37));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -137,7 +138,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",39));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
     
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -154,7 +155,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile.java", Result.ERROR));
 
 		// Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -194,7 +195,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",38));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
