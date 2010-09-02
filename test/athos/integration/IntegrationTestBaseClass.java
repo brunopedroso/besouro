@@ -20,7 +20,7 @@ import athos.stream.EpisodeClassifierStream;
 
 //TODO   break and rename integraton tests
 
-public class IntegrationTest {
+public class IntegrationTestBaseClass {
 
 	protected EpisodeClassifierStream stream;
 	protected JavaStructureChangeListener javaListener;

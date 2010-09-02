@@ -8,7 +8,7 @@ import org.junit.Test;
 import athos.listeners.mock.JUnitEventFactory;
 import athos.listeners.mock.ResourceChangeEventFactory;
 
-public class ProductionEpisodesRecognition extends IntegrationTest {
+public class ProductionRecognition extends IntegrationTestBaseClass {
 
 	@Test 
 	public void productionCategory1() throws Exception {

@@ -7,7 +7,7 @@ import org.junit.Test;
 import athos.listeners.mock.JUnitEventFactory;
 import athos.listeners.mock.ResourceChangeEventFactory;
 
-public class RegressionEpisodesRecognition extends IntegrationTest {
+public class RegressionRecognition extends IntegrationTestBaseClass {
 
 	@Test 
 	public void regressionCategory1() throws Exception {

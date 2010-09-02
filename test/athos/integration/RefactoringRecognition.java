@@ -9,7 +9,7 @@ import athos.listeners.mock.JUnitEventFactory;
 import athos.listeners.mock.JavaStructureChangeEventFactory;
 import athos.listeners.mock.ResourceChangeEventFactory;
 
-public class RefactoringRecognition extends IntegrationTest {
+public class RefactoringRecognition extends IntegrationTestBaseClass {
 
 	@Test 
 	public void refactoringCategory1A() throws Exception {
