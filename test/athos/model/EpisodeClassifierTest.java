@@ -56,11 +56,6 @@ public class EpisodeClassifierTest {
     Assert.assertEquals("Test TDD type 1 episode category name", "test-first", result.getString("cat"));
     Assert.assertEquals("Test TDD type 1 episode cateory type", "1", result.getString("tp"));
     
-//	 Iterator it = engine.listFacts();
-//	 while (it.hasNext()) {
-//	 System.out.println(it.next());
-//	 }
-
   }
 
   @Test 
@@ -96,6 +91,12 @@ public class EpisodeClassifierTest {
     Assert.assertTrue("Type 1 refactor episode can be classified", result.next());
     Assert.assertEquals("Test refactoring type 2 episode category name", "refactoring", result.getString("cat"));
     Assert.assertEquals("Test refactoring type 2 episode categoty type", "1A", result.getString("tp"));  
+    
+//	 Iterator it = engine.listFacts();
+//	 while (it.hasNext()) {
+//	 System.out.println(it.next());
+//	 }
+
   }
 
   @Test 

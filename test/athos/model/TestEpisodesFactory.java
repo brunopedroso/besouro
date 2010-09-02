@@ -150,12 +150,9 @@ public class TestEpisodesFactory {
 	  }
 	  
 	  public static void addTestCodeRefactoFacts(Rete engine, Clock clock) throws Exception {
-	    // Edit on test code    
+
+		// Edit on test code    
 	    EditAction action = new EditAction(clock, testFile);
-	    
-//		ignorng duration
-//	    action.setDuration(300);
-	    
 	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(27);
 	    action.setMethodIncrease(2);
@@ -163,9 +160,6 @@ public class TestEpisodesFactory {
 	    
 	    // Edit on test code
 	    action = new EditAction(clock, testFile);
-	    
-//		ignorng duration
-//	    action.setDuration(200);
 	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(50);
 	    action.setMethodIncrease(2);
@@ -177,18 +171,15 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(3, engine);
 
 	    // Edit on test code
-	    action = new EditAction(clock, testFile);
-	    
-//		ignorng duration
-//	    action.setDuration(200);
-	    
-	    action.setIsTestEdit(true);
-	    action.setFileSizeIncrease(13);
-	    action.assertJessFact(2, engine);
+//	    action = new EditAction(clock, testFile);
+//	    action.setIsTestEdit(true);
+//	    action.setFileSizeIncrease(13);
+//	    action.assertJessFact(2, engine); //TODO [rule] index 2 again ??!!
 
 	    // Unit test pass
 	    unitTestAction = new UnitTestAction(clock, testFile);
 	    unitTestAction.assertJessFact(4, engine);
+	    
 	  }
 	  
 	  public static void addProductionCodeRefactoFacts(Rete engine, Clock clock) throws Exception {

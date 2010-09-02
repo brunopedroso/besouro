@@ -77,16 +77,18 @@ public class EditAction extends JavaFileAction {
 
 	public boolean isSubstantial() {
 
-		if (isTestEdit)
+		
+		if (isTestEdit) {
 			// ignoring the duration. Look a litle down
 			// return this.getDuration() > 0 &&
-			return (this.methodIncrease != 0 || this.statementIncrease != 0
-					|| this.testMethodIncrease != 0 || this.testAssertionIncrease != 0);
+			return (this.getMethodIncrease() != 0 || this.getStatementIncrease() != 0
+					|| this.getTestMethodIncrease() != 0 || this.getTestAssertionIncrease() != 0);
 
-		else
+		} else {
 			// ignoring the duration. Look a litle down
 			// return this.getDuration() > 0 &&
-			return (this.getFileSizeIncrease() != 0 || this.methodIncrease != 0 || this.statementIncrease != 0);
+			return (this.getFileSizeIncrease() != 0 || this.getMethodIncrease() != 0 || this.getStatementIncrease() != 0);
+		}
 
 	}
 

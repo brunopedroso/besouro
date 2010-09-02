@@ -55,20 +55,20 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 					
-//					Iterator it = engine.listFacts();
-//					while (it.hasNext()) {
-//						System.out.println(it.next());
-//					}
+					Iterator it = engine.listFacts();
+					while (it.hasNext()) {
+						System.out.println(it.next());
+					}
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
-					if (result.next()) {
+					while (result.next()) {
 						String episode = "[episode]"+" " + result.getString("cat") + " " + result.getString("tp");
 						episodes.add(episode);
 						System.out.println(episode);
 
-					} else {
-						System.out.println("[episode] could not be classified.");
+//					} else {
+//						System.out.println("[episode] could not be classified.");
 
 					}
 
