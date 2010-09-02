@@ -362,6 +362,110 @@ public class IntegrationTest {
 	}
 	
 	
+//			(deffacts Test-Last-1-episode
+//			   (ProductionEditAction (index 1) (file Triangle.java) (duration 200))    
+//			   (UnitTestEditAction   (index 2) (file TestTriangle.java) (duration 200) (assertionChange 3))     
+//			   (UnitTestAction       (index 3) (file TestTriangle.java))        
+//			)
+//			(printout t (test-classifier "test-last" "1") crlf crlf)
+
 	
+//			(deffacts Test-Last-2-episode
+//			   (ProductionEditAction (index 1) (file Triangle.java) (duration 200))    
+//			   (UnitTestEditAction   (index 2) (file TestTriangle.java) (duration 200) (assertionChange 3))
+//			   (UnitTestAction       (index 3) (file TestTriangle.java) (errmsg "1 is not equal to 2"))     
+//			   (UnitTestEditAction   (index 4) (file TestTriangle.java) (duration 200))
+//			   (UnitTestAction       (index 5) (file TestTriangle.java))        
+//			(printout t (test-classifier "test-last" "1") crlf crlf)
+
 	
+//			(deffacts Test-Test-Addition-1-episode
+//			   (UnitTestEditAction   (index 1) (file TestTriangle.java) (duration 200) (assertionChange 3))     
+//			   (UnitTestAction       (index 2) (file TestTriangle.java))        
+//			(printout t (test-classifier "test-addition" "1") crlf crlf)
+
+	
+//			(deffacts Test-Test-Addition-2-episode
+//			   (UnitTestEditAction   (index 1) (file TestTriangle.java) (duration 200) (assertionChange 3))     
+//			   (UnitTestAction       (index 2) (file TestTriangle.java) (errmsg "1 is not equal to 2"))     
+//			   (UnitTestEditAction   (index 3) (file TestTriangle.java) (duration 400))       
+//			   (UnitTestAction       (index 4) (file TestTriangle.java))        
+//			(printout t (test-classifier "test-addition" "2") crlf crlf)
+
+	
+//			(deffacts Regression-1-episode
+//			   (UnitTestAction       (index 1) (file TestRate.java))        
+//			   (UnitTestAction       (index 2) (file TestTriangle.java))        
+//			(printout t (test-classifier "regression" "1") crlf crlf)
+
+	
+//			(deffacts Regression-2-episode
+//			   (CompilationAction    (index 1) (file TestTriangle.java) (message "Class ZorroStream not found"))        
+//			   (UnitTestAction       (index 2) (file TestTriangle.java))
+//			)
+//			(printout t (test-classifier "regression" "2") crlf crlf)
+
+	
+//			;; Production type 1 without method increase
+//			(deffacts production-1-episode
+//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 0) (statementChange 14) (byteChange 210) (duration 200))    
+//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
+//			   (UnitTestAction (index 3) (file TestTriangle.java))        
+//			(printout t (test-classifier "production" "1") crlf crlf)
+
+	
+//			;; Production type 2 with method increase but byte size decrease
+//			(deffacts production-2-episode
+//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 2) (statementChange 2) (byteChange -10) (duration 200))    
+//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
+//			   (UnitTestAction (index 3) (file TestTriangle.java))        
+//			)
+//			(printout t (test-classifier "production" "2") crlf crlf)
+
+	
+//			;; Production type 2 with method increase but statement decrease
+//			(deffacts production-2-episodeB
+//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 2) (statementChange 2) (byteChange 8) (duration 200))    
+//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
+//			   (UnitTestAction (index 3) (file TestTriangle.java))        
+//			)
+//			(printout t (test-classifier "production" "2") crlf crlf)
+
+	
+//			;; Production type 3 with method increase, and size increase and byte increase
+//			(deffacts production-3-episode
+//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 2) (statementChange 5) (byteChange 125) (duration 200))    
+//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
+//			   (UnitTestAction (index 3) (file TestTriangle.java))        
+//			(printout t (test-classifier "production" "3") crlf crlf)
+//
+
+
+	
+//			(deffacts test-first-1-episode-real
+//			   (BufferTransAction (index 1) (leavingFile Frame.java))
+//			   (UnitTestEditAction (index 2) (file TestFrame.java) (duration 0)  
+//			                       (testChange 0) (assertionChange 1)) 
+//			   (UnitTestAction  (index 3) (file TestFrame.java) (errmsg "Failed to run test"))              
+//			   (BufferTransAction (index 4) (leavingFile TestFrame.java))
+//			   (ProductionEditAction (index 5) (file Frame.java) (methodChange 0) (statementChange 0) (byteChange 33) (duration 0))    
+//			   (BufferTransAction (index 6) (leavingFile Frame.java))
+//			   (UnaryRefactorAction (index 7) (file TestFrame.java) 
+//			                         (operation "ADD") (type "METHOD") (data "void testGame()"))    
+//			   (UnitTestEditAction (index 8) (file TestFrame.java) (duration 34)  
+//			                       (testChange 1) (assertionChange 0) (byteChange 131)) 
+//			   (CompilationAction  (index 9) (file TestFrame.java) ;;
+//			                        (message "BowlingGame cannot be resolved to a type"))
+//			   (UnitTestEditAction (index 10) (file TestFrame.java) (duration 0)  
+//			                       (testChange 0) (assertionChange 0) (byteChange 4)) 
+//			   (UnaryRefactorAction (index 11) (file BowlingGame.java) 
+//			                         (operation "ADD") (type "CLASS") (data "BowlingGame.java"))    
+//			   (BufferTransAction (index 12) (leavingFile TestFrame.java)) 
+//			   (ProductionEditAction (index 13) (file BowlingGame.java) (methodChange 0) (statementChange 0) (byteChange 167) (duration 9))    
+//			   (UnaryRefactorAction (index 14) (file BowlingGame.java) 
+//			                         (operation "ADD") (type "METHOD") (data "BowlingGame()"))    
+//			   (ProductionEditAction (index 15) (file BowlingGame.java) (methodChange 1) (statementChange 0) (byteChange 82) (duration 23))    
+//			   (BufferTransAction (index 16) (leavingFile BowlingGame.java)) 
+//			   (UnitTestAction (index 17) (file TestFrame.java)) 
+//			(printout t (test-classifier "test-first" "1") crlf crlf)
 }
