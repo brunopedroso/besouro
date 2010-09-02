@@ -376,7 +376,6 @@ public class IntegrationTest {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
 		
-		//TODO we have 2 refactorings here... hongbing considered just one...
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] test-last 1", stream.getRecognizedEpisodes().get(0));
 		
@@ -406,9 +405,24 @@ public class IntegrationTest {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
 		
-		//TODO we have 2 refactorings here... hongbing considered just one...
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] test-last 1", stream.getRecognizedEpisodes().get(0));
+		
+	}
+	
+	@Test 
+	public void testAdition1() throws Exception {
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestAssertions()).thenReturn(3);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] test-addition 1", stream.getRecognizedEpisodes().get(0));
 		
 	}
 	
