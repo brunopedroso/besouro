@@ -426,20 +426,33 @@ public class IntegrationTest {
 		
 	}
 	
-	
-	
-//			(deffacts Test-Test-Addition-1-episode
-//			   (UnitTestEditAction   (index 1) (file TestTriangle.java) (duration 200) (assertionChange 3))     
-//			   (UnitTestAction       (index 2) (file TestTriangle.java))        
-//			(printout t (test-classifier "test-addition" "1") crlf crlf)
+	@Test 
+	public void testAdition2() throws Exception {
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestAssertions()).thenReturn(3);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 
-	
-//			(deffacts Test-Test-Addition-2-episode
-//			   (UnitTestEditAction   (index 1) (file TestTriangle.java) (duration 200) (assertionChange 3))     
-//			   (UnitTestAction       (index 2) (file TestTriangle.java) (errmsg "1 is not equal to 2"))     
-//			   (UnitTestEditAction   (index 3) (file TestTriangle.java) (duration 400))       
-//			   (UnitTestAction       (index 4) (file TestTriangle.java))        
-//			(printout t (test-classifier "test-addition" "2") crlf crlf)
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		// TODO [rule] just to make it substantial :-/
+		when(meter.getNumOfTestMethods()).thenReturn(3);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] test-addition 2", stream.getRecognizedEpisodes().get(0));
+		// TODO this second one was not considered by hongbings test
+		Assert.assertEquals("[episode] test-addition 1", stream.getRecognizedEpisodes().get(1));
+		
+	}
+
 
 	
 //			(deffacts Regression-1-episode
