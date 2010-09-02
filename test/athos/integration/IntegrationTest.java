@@ -1,13 +1,12 @@
 package athos.integration;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 
 import junit.framework.Assert;
 
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.jdt.core.ElementChangedEvent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,12 +19,6 @@ import athos.listeners.mock.JUnitEventFactory;
 import athos.listeners.mock.JavaStructureChangeEventFactory;
 import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.listeners.mock.WindowEventsFactory;
-import athos.model.CompilationAction;
-import athos.model.EditAction;
-import athos.model.UnitTestAction;
-import athos.model.refactor.RefactorOperator;
-import athos.model.refactor.RefactorSubjectType;
-import athos.model.refactor.UnaryRefactorAction;
 import athos.stream.EpisodeClassifierStream;
 
 public class IntegrationTest {
@@ -314,6 +307,57 @@ public class IntegrationTest {
 		//			  does it influence the metric?
 		Assert.assertEquals("[episode] regression 2", stream.getRecognizedEpisodes().get(1));
 		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(2));
+		
+	}
+
+	@Test 
+	public void testRefactoring_3_1() throws Exception {
+		
+		 // Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestMethods()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(0));
+		
+	}
+	
+	@Test 
+	public void testRefactoring_3_2() throws Exception {
+		
+		// Add prod method
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		
+		// Edit on test
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestMethods()).thenReturn(1);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		//TODO we have 2 refactorings here... hongbing considered just one...
+		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(1));
 		
 	}
 	
