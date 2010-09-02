@@ -495,14 +495,27 @@ public class IntegrationTest {
 		
 	}
 	
+	@Test 
+	public void productionCategory1() throws Exception {
+		
+		// TODO [rule] its a strange case without an test edit after the test failure :-/
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		when(meter.getNumOfStatements()).thenReturn(14);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] production 1", stream.getRecognizedEpisodes().get(0));
+		
+	}
 	
-//			;; Production type 1 without method increase
-//			(deffacts production-1-episode
-//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 0) (statementChange 14) (byteChange 210) (duration 200))    
-//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
-//			   (UnitTestAction (index 3) (file TestTriangle.java))        
-//			(printout t (test-classifier "production" "1") crlf crlf)
 
 	
 //			;; Production type 2 with method increase but byte size decrease
