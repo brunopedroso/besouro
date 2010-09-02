@@ -90,6 +90,7 @@ public class ResourceChangeEventFactory {
 		
 		File file = mock(File.class);
 		when(file.getName()).thenReturn(filename);
+		when(file.getPath()).thenReturn(filename);
 		when(file.length()).thenReturn(fileSIze);
 		
 		when(path.toFile()).thenReturn(file);

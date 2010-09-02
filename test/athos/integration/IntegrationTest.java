@@ -58,21 +58,21 @@ public class IntegrationTest {
 		
 		// Work on production code
 		when(meter.hasTest()).thenReturn(false);
-		when(meter.getNumOfStatements()).thenReturn(2);
-		when(meter.getNumOfMethods()).thenReturn(3);
+		when(meter.getNumOfStatements()).thenReturn(0);
+		when(meter.getNumOfMethods()).thenReturn(0);
 		when(meter.getNumOfTestAssertions()).thenReturn(0);
 		when(meter.getNumOfTestMethods()).thenReturn(0);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",33));
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 		
 	    // Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createFailingSession());
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
 		
 
 		// Edit on prodction code
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java", 33));
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java", 37));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createPassingSession());
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] test-first 1", stream.getRecognizedEpisodes().get(0));

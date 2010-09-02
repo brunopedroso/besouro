@@ -21,7 +21,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private Rete engine;
 	List<Action> actions = new ArrayList<Action>();
 
-	private Map<File, JavaFileAction> previousEditActionPerFile = new HashMap<File, JavaFileAction>();
+	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
 	private List<String> episodes = new ArrayList<String>();
 
 	public EpisodeClassifierStream() throws Exception {
@@ -33,13 +33,11 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	public void addAction(Action action) {
 
-
+		linkActions(action);
 		actions.add(action);
-
+		
 		System.out.println("[action] " + action);
 		
-		linkActions(action);
-
 		if (action instanceof UnitTestAction) {
 
 			UnitTestAction utAction = (UnitTestAction) action;
@@ -55,12 +53,12 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 						a.assertJessFact(i++, engine);
 					}
 
-					// Iterator it = engine.listFacts();
-					// while (it.hasNext()) {
-					// System.out.println(it.next());
-					// }
-
 					engine.run();
+					
+//					Iterator it = engine.listFacts();
+//					while (it.hasNext()) {
+//						System.out.println(it.next());
+//					}
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
@@ -70,8 +68,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 						System.out.println(episode);
 
 					} else {
-						System.out
-								.println("[episode] could not be classified.");
+						System.out.println("[episode] could not be classified.");
 
 					}
 
@@ -108,13 +105,15 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 			JavaFileAction linkedAction = (JavaFileAction) action;
 			
-			JavaFileAction previousPerFile = previousEditActionPerFile.get(linkedAction.getFile());
+			String path = linkedAction.getFile().getPath();
+			JavaFileAction previousPerFile = previousEditActionPerFile.get(path);
 			
-//			System.out.println("  ==>" + (previousPerFile==null?"null":"Achei") + " " + linkedAction.getFile() + ".");
-
+//			System.out.println(path);
+//			System.out.println("  ==>" + (previousPerFile==null?"null":"Achei") + " " + path);
+			
 			linkedAction.setPreviousAction(previousPerFile); // 1st time will be null, I know...
 
-			previousEditActionPerFile.put(linkedAction.getFile(), linkedAction);
+			previousEditActionPerFile.put(path, linkedAction);
 
 		}
 	}

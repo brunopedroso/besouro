@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IJavaModelMarker;
 
 import athos.model.BuildErrorAction;
 import athos.model.Clock;
+import athos.model.CompilationAction;
 import athos.stream.ActionOutputStream;
 
 /**
@@ -103,11 +104,9 @@ public class BuildErrorSensor {
 				// dont repeat
 				if (!messagePool.contains(data)) {
 
-					// FUI EU QUEM CRIOU O BUILD ERROR ? ƒ IGUAL AO COMPILATION
-					// ?
-
-					this.sensor.addAction(new BuildErrorAction(new Clock(
-							new Date()), location.toFile(), errorMsg));
+					CompilationAction action = new CompilationAction(new Clock(new Date()), location.toFile());
+					action.setErrorMessage(errorMsg);
+					this.sensor.addAction(action);
 					messagePool.add(data);
 
 				}

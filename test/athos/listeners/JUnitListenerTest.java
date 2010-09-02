@@ -23,7 +23,7 @@ public class JUnitListenerTest {
 	public void shouleGenerateAPassingUnitTestEvent() {
 		
 		//mock things
-		ITestRunSession session = JUnitEventFactory.createPassingSession();
+		ITestRunSession session = JUnitEventFactory.createPassingSession("MyTest.java");
 				
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		ActionOutputStream stream = new FakeActionStream(generatedActions);
@@ -44,7 +44,7 @@ public class JUnitListenerTest {
 	public void shouleGenerateAFailingUnitTestEvent() {
 		
 		//mock things
-		ITestRunSession session = JUnitEventFactory.createFailingSession();
+		ITestRunSession session = JUnitEventFactory.createFailingSession("MyTest.java");
 		
 		final ArrayList<Action> generatedActions = new ArrayList<Action>();
 		ActionOutputStream stream = new FakeActionStream(generatedActions);

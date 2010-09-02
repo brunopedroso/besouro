@@ -15,6 +15,7 @@ import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.model.Action;
 import athos.model.BuildErrorAction;
+import athos.model.CompilationAction;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;
 
@@ -76,8 +77,8 @@ public class ResourceListenerTest {
 		listener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent(filename, errorMessage));
 		
 		Assert.assertEquals(1, generatedActions.size());
-		Assert.assertTrue(generatedActions.get(0) instanceof BuildErrorAction);
-		BuildErrorAction action = (BuildErrorAction) generatedActions.get(0);
+		Assert.assertTrue(generatedActions.get(0) instanceof CompilationAction);
+		CompilationAction action = (CompilationAction) generatedActions.get(0);
 		
 		Assert.assertEquals(filename, action.getFile().getName());
 		Assert.assertEquals(errorMessage, action.getErrorMessage());
