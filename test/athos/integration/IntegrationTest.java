@@ -194,6 +194,29 @@ public class IntegrationTest {
 		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(0));
 	}
 	
+	@Test 
+	public void productionCodeRefact() throws Exception {
+		
+		 // Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+	    
+	    // Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+
+	    // Edit on production code
+		when(meter.hasTest()).thenReturn(false);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+
+	    
+	    // Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(0));
+	    
+	}
+	
 	
 	
 	

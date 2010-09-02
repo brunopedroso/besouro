@@ -158,6 +158,7 @@ public class TestEpisodesFactory {
 	    action.setMethodIncrease(2);
 	    action.assertJessFact(1, engine);
 	    
+	    //TODO [rule] we dont need these two next acitons for the test to pass
 	    // Edit on test code
 	    action = new EditAction(clock, testFile);
 	    action.setIsTestEdit(true);
@@ -183,12 +184,9 @@ public class TestEpisodesFactory {
 	  }
 	  
 	  public static void addProductionCodeRefactoFacts(Rete engine, Clock clock) throws Exception {
+		  
 	    // Edit on production code    
 	    EditAction action = new EditAction(clock, productionFile);
-	    
-//		ignorng duration
-//	    action.setDuration(300);
-	    
 	    action.setIsTestEdit(false);
 	    action.setMethodIncrease(-1);
 	    action.setStatementIncrease(10);
@@ -202,10 +200,6 @@ public class TestEpisodesFactory {
 
 	    // Edit on production code
 	    action = new EditAction(clock, testFile);
-	    
-//		ignorng duration
-//	    action.setDuration(200);
-	    
 	    action.setIsTestEdit(false);
 	    action.setMethodIncrease(0);
 	    action.setStatementIncrease(0);
@@ -215,5 +209,6 @@ public class TestEpisodesFactory {
 	    // Unit test pass
 	    unitTestAction = new UnitTestAction(clock, testFile);
 	    unitTestAction.assertJessFact(4, engine);
+	    
 	  }
 }
