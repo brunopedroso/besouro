@@ -3,7 +3,6 @@ package athos.listeners;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
@@ -14,7 +13,6 @@ import org.junit.Test;
 import athos.listeners.mock.FakeActionStream;
 import athos.listeners.mock.ResourceChangeEventFactory;
 import athos.model.Action;
-import athos.model.BuildErrorAction;
 import athos.model.CompilationAction;
 import athos.model.EditAction;
 import athos.stream.ActionOutputStream;

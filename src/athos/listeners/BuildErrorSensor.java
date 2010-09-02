@@ -11,7 +11,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaModelMarker;
 
-import athos.model.BuildErrorAction;
 import athos.model.Clock;
 import athos.model.CompilationAction;
 import athos.stream.ActionOutputStream;
