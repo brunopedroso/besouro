@@ -38,18 +38,14 @@ public class WindowEventsTest {
 		WindowListener listener = new WindowListener(stream);
 		listener.setJavaMeter(WindowEventsFactory.createStubJavaMeter());
 		
-		File file = mock(File.class);
-		when(file.getName()).thenReturn("aFile.java");
-		
-		when(file.length()).thenReturn((long) 12345);
-		
-		listener.partOpened(WindowEventsFactory.createTestEditor(file));
+		String filename = "aFile.java";
+		listener.partOpened(WindowEventsFactory.createTestEditor(filename, 12345));
 		
 		Assert.assertEquals(1, generatedActions.size());
 		Assert.assertTrue(generatedActions.get(0) instanceof FileOpenedAction);
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
-		Assert.assertEquals(file, fileOpenedAction.getFile());
+		Assert.assertEquals(filename, fileOpenedAction.getFile().getName());
 		
 		Assert.assertEquals(12345, fileOpenedAction.getFileSize());
 		

@@ -44,8 +44,9 @@ public class IntegrationTest {
 		winListener.setJavaMeter(meter);
 		
 		// Open file (calculates the first file metrics)
-		winListener.partOpened(WindowEventsFactory.createTestEditor(new File("TestFile.java")));
-		winListener.partOpened(WindowEventsFactory.createTestEditor(new File("ProductionFile.java")));
+		when(meter.getNumOfMethods()).thenReturn(3);
+		winListener.partOpened(WindowEventsFactory.createTestEditor("TestFile.java", 10));
+		winListener.partOpened(WindowEventsFactory.createTestEditor("ProductionFile.java", 10));
 
 	}
 
@@ -58,7 +59,7 @@ public class IntegrationTest {
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		when(meter.getNumOfTestMethods()).thenReturn(5);
+		when(meter.getNumOfTestMethods()).thenReturn(10);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
 		// Compile error on test
@@ -498,7 +499,7 @@ public class IntegrationTest {
 	@Test 
 	public void productionCategory1() throws Exception {
 		
-		// TODO [rule] its a strange case without an test edit after the test failure :-/
+		// TODO [rule] its a strange case without an edit after the test failure :-/
 		
 		// Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -516,16 +517,30 @@ public class IntegrationTest {
 		
 	}
 	
+	@Test 
+	public void productionCategory2() throws Exception {
+		
+		// method increase but byte size decrease
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		when(meter.getNumOfStatements()).thenReturn(2);
+		when(meter.getNumOfMethods()).thenReturn(5);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",5));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
+		
+		// TODO [rule] its a strange case without an edit after the test failure :-/
 
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createPassingSession("TestFile.java"));
+		
+		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
+		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
+		
+	}
 	
-//			;; Production type 2 with method increase but byte size decrease
-//			(deffacts production-2-episode
-//			   (ProductionEditAction (index 1) (file Triangle.java) (methodChange 2) (statementChange 2) (byteChange -10) (duration 200))    
-//			   (UnitTestAction (index 2) (file TestTriangle.java) (errmsg  "Fix the test"))        
-//			   (UnitTestAction (index 3) (file TestTriangle.java))        
-//			)
-//			(printout t (test-classifier "production" "2") crlf crlf)
-
 	
 //			;; Production type 2 with method increase but statement decrease
 //			(deffacts production-2-episodeB

@@ -61,7 +61,13 @@ public class WindowEventsFactory {
 		return meter;
 	}
 
-	public static ITextEditor createTestEditor(File file) {
+	public static ITextEditor createTestEditor(String filename, int fileLength) {
+		
+		File file = mock(File.class);
+		when(file.getName()).thenReturn(filename);
+		when(file.getPath()).thenReturn(filename);
+		when(file.length()).thenReturn((long) fileLength);
+
 		
 		IPath ipath = mock(IPath.class);
 		when(ipath.toFile()).thenReturn(file);
