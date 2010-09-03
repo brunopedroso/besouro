@@ -57,7 +57,7 @@ public class JUnitListenerTest {
 	public void shouleGenerateAFailingUnitTestEvent() {
 		
 		// invoke the listener
-		listener.sessionFinished(JUnitEventFactory.createJunitSession("packageName", "MyTest.java", Result.ERROR));
+		listener.sessionFinished(JUnitEventFactory.createJunitSession("packageName", "MyTest", Result.ERROR));
 		
 		// asserts.
 		Assert.assertEquals(2, generatedActions.size());
@@ -76,7 +76,7 @@ public class JUnitListenerTest {
 	public void shouldGetTheFileNameFromOnlyTestCaseInTheHierarchy() {
 		
 		// invoke the listener
-		listener.sessionFinished(JUnitEventFactory.createDeepJunitExecutionHierarchy( "MyTest.java", Result.ERROR));
+		listener.sessionFinished(JUnitEventFactory.createDeepJunitExecutionHierarchy( "MyTest", Result.ERROR));
 		
 		// asserts.
 		Assert.assertEquals(2, generatedActions.size());
@@ -91,7 +91,7 @@ public class JUnitListenerTest {
 	@Test
 	public void shouldGenerateTwoActionsForTwoTestCasesInDiferentFiles() {
 		
-		listener.sessionFinished(JUnitEventFactory.createTwoTestCases("MyTest1.java",true , "MyTest2.java",true));
+		listener.sessionFinished(JUnitEventFactory.createTwoTestCases("MyTest1",true , "MyTest2",true));
 		
 		Assert.assertEquals(3, generatedActions.size());
 		
@@ -104,7 +104,7 @@ public class JUnitListenerTest {
 	@Test
 	public void shouldGenerateTwoActionsThatRespectsResults() {
 		
-		ITestRunSession session = JUnitEventFactory.createTwoTestCases("MyTest1.java",false, "MyTest2.java",true);
+		ITestRunSession session = JUnitEventFactory.createTwoTestCases("MyTest1",false, "MyTest2",true);
 
 		listener.sessionFinished(session);
 
@@ -125,7 +125,6 @@ public class JUnitListenerTest {
 //			(in case package or folder is execued)
 	
 	// .java
-	// cortar s— na session
 }
 
 

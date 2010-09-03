@@ -36,13 +36,13 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 		
 	    // Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.ERROR));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.ERROR));
 		
 		// Edit on prodction code
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java", 37));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -75,7 +75,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -102,14 +102,14 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
 		
 	    // Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile.java", Result.ERROR));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Work on production code
 		when(meter.hasTest()).thenReturn(false);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",37));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -138,7 +138,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",39));
 
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
     
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
@@ -155,7 +155,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile.java", Result.ERROR));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
@@ -195,7 +195,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",38));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);

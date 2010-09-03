@@ -20,7 +20,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] test-addition 1", stream.getRecognizedEpisodes().get(0));
@@ -36,7 +36,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile.java", Result.ERROR));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
@@ -45,7 +45,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
 		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		Assert.assertEquals("[episode] test-addition 2", stream.getRecognizedEpisodes().get(0));

@@ -4,15 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.jdt.internal.junit.model.ITestSessionListener;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
-import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
@@ -53,7 +49,7 @@ public class JUnitListener extends TestRunListener {
 		if (session instanceof ITestSuiteElement) {
 			
 			ITestSuiteElement testCase = (ITestSuiteElement) session;
-			String className = testCase.getSuiteTypeName();
+			String className = testCase.getSuiteTypeName() + ".java";
 			
 			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(className));
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
@@ -68,7 +64,6 @@ public class JUnitListener extends TestRunListener {
 		
 		return list;
 		
-//		return createUnitTestAction(session).values();
 	}
 
 
