@@ -16,6 +16,8 @@ import athos.stream.EpisodeClassifierStream;
 
 
 
+//TODO  do not recognize testAssertionAdd + junitFail + producion + junitPass as test first
+
 //TODO  not recognizing test edits
 //(MAIN::initial-fact)
 //(MAIN::UnaryRefactorAction (index 2) (file "RomanNumeralsTest.java") (operation "ADD") (type "FIELD") (data "void fr"))
@@ -23,9 +25,6 @@ import athos.stream.EpisodeClassifierStream;
 //(MAIN::UnaryRefactorAction (index 4) (file "RomanNumeralsTest.java") (operation "RENAME") (type "METHOD") (data "firstTest => void firstTest()"))
 //(MAIN::ProductionEditAction (index 5) (file "RomanNumeralsTest.java") (duration 0) (byteChange 37) (methodChange 1) (statementChange 0))
 //(MAIN::UnitTestEditAction (index 6) (file "RomanNumeralsTest.java") (duration 0) (byteChange 5) (testChange 1) (assertionChange 0))
-
-//TODO  junit listener is collecting filename without extension
-//	- do not recognize testAssertionAdd + junitFail + producion + junitPass as test first
 
 //TODO  make tostrings look easier to recognize
 
