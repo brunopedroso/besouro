@@ -67,10 +67,23 @@ public class JUnitListenerTest {
 	}
 
 	@Test
-	public void shouldGetTheFileNameFromTestCaseClasses() {
+	public void shouldGetTheFileNameFromOnlyTestCaseInTheHierarchy() {
 		
-		//TODO   test the general, recursive case
+		//mock things
+		ITestRunSession session = JUnitEventFactory.createDeepJunitExecutionHierarchy( "MyTest.java", Result.ERROR);
 		
+		final ArrayList<Action> generatedActions = new ArrayList<Action>();
+		ActionOutputStream stream = new FakeActionStream(generatedActions);
+		
+		// invoke the listener
+		JUnitListener listener = new JUnitListener(stream);
+		listener.sessionFinished(session);
+		
+		// asserts.
+		Assert.assertEquals(1, generatedActions.size());
+		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
+		Assert.assertEquals(false, action.isSuccessful());
+		Assert.assertEquals("MyTest.java", action.getFile().getName());		
 	}
 	
 	//TODO   should generate actions for each test file executed

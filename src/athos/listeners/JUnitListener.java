@@ -8,6 +8,7 @@ import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
+import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
@@ -43,8 +44,8 @@ public class JUnitListener extends TestRunListener {
 			ITestCaseElement testCase = (ITestCaseElement) element;
 			return testCase.getTestClassName();
 			
-		} else if (element instanceof ITestRunSession) {
-			ITestRunSession session = (ITestRunSession) element; 
+		} else if (element instanceof ITestElementContainer) {
+			ITestElementContainer session = (ITestElementContainer) element; 
 			return getTestClassName(session.getChildren()[0]);
 		}
 		

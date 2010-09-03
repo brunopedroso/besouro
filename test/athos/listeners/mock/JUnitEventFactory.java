@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElement;
+import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 
@@ -21,6 +22,22 @@ public class JUnitEventFactory {
 		when(session.getChildren()).thenReturn(new ITestElement[]{testCase});
 		
 		return session;
+	}
+
+	public static ITestRunSession createDeepJunitExecutionHierarchy(String fileName, Result result) {
+
+		ITestRunSession firstContainer = mock(ITestRunSession.class);
+		ITestElementContainer secondContainer = mock(ITestElementContainer.class);
+		ITestCaseElement testCase = mock(ITestCaseElement.class);
+		
+		when(firstContainer.getTestResult(true)).thenReturn(result);
+		when(firstContainer.getChildren()).thenReturn(new ITestElement[]{secondContainer});
+
+		when(secondContainer.getChildren()).thenReturn(new ITestElement[]{testCase});
+		
+		when(testCase.getTestClassName()).thenReturn(fileName);
+		
+		return firstContainer;
 	}
 
 }
