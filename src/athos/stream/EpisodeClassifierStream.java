@@ -42,14 +42,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		
 		if (action instanceof UnitTestSessionAction) {
 
-			System.out.println("--- session");
-			
 			UnitTestAction utAction = (UnitTestAction) action;
 
 			if (utAction.isSuccessful()) {
 				
-				System.out.println("--- pass");
-
 				try {
 
 					engine.reset();
