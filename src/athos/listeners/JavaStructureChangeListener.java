@@ -256,7 +256,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			return;
 		}
 
-		System.out.println("///" + to + "///");
+//		System.out.println("///" + to + "///");
 
 		// String name = retrieveName(element);
 		String fromName = buildElementName(from.toString());
@@ -324,7 +324,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		try {
 			name = name.substring(0, name.indexOf('['));
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("Where is the [ ? " + name);
+//			System.out.println("Where is the [ ? " + name);
+			
 		}
 		// Trim off the meaningless "(not open)" string
 		int pos = name.indexOf("(not open)");

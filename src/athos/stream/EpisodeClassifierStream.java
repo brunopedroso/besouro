@@ -15,6 +15,8 @@ import jess.ValueVector;
 import athos.model.Action;
 import athos.model.JavaFileAction;
 import athos.model.UnitTestAction;
+import athos.model.UnitTestCaseAction;
+import athos.model.UnitTestSessionAction;
 
 public class EpisodeClassifierStream implements ActionOutputStream {
 
@@ -38,11 +40,15 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		
 		System.out.println("[action] " + action);
 		
-		if (action instanceof UnitTestAction) {
+		if (action instanceof UnitTestSessionAction) {
 
+			System.out.println("--- session");
+			
 			UnitTestAction utAction = (UnitTestAction) action;
 
 			if (utAction.isSuccessful()) {
+				
+				System.out.println("--- pass");
 
 				try {
 
@@ -55,10 +61,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 					
-					Iterator it = engine.listFacts();
-					while (it.hasNext()) {
-						System.out.println(it.next());
-					}
+//					debugFacts();
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
@@ -82,6 +85,13 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			}
 		}
 
+	}
+
+	private void debugFacts() {
+		Iterator it = engine.listFacts();
+		while (it.hasNext()) {
+			System.out.println(it.next());
+		}
 	}
 	
 //	public void printRulesOut() {

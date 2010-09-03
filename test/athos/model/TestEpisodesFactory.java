@@ -45,7 +45,7 @@ public class TestEpisodesFactory {
 	    editAction.assertJessFact(4, engine);
 
 	    // Unit test failue
-	    UnitTestAction unitTestAction = new UnitTestAction(clock, testFile); 
+	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Failed to import");
 	    unitTestAction.assertJessFact(5, engine);
 	 
@@ -60,7 +60,7 @@ public class TestEpisodesFactory {
 	    editAction.assertJessFact(6, engine);
 
 	    // Unit test pass
-	    unitTestAction = new UnitTestAction(clock, testFile); 
+	    unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.assertJessFact(7, engine);
 	  }
 	  
@@ -98,7 +98,7 @@ public class TestEpisodesFactory {
 	    editAction.assertJessFact(4, engine);
 
 	    // Unit test pass
-	    UnitTestAction unitTestAction = new UnitTestAction(clock, testFile); 
+	    UnitTestAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.assertJessFact(5, engine);
 	  }
 	  
@@ -130,7 +130,7 @@ public class TestEpisodesFactory {
 	    editAction.assertJessFact(4, engine);
 
 	    // Unit test failue
-	    UnitTestAction unitTestAction = new UnitTestAction(clock, testFile); 
+	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Failed to import");
 	    unitTestAction.assertJessFact(5, engine);
 	 
@@ -145,7 +145,7 @@ public class TestEpisodesFactory {
 	    editAction.assertJessFact(6, engine);
 
 	    // Unit test pass
-	    unitTestAction = new UnitTestAction(clock, testFile); 
+	    unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.assertJessFact(7, engine);
 	  }
 	  
@@ -167,7 +167,7 @@ public class TestEpisodesFactory {
 	    action.assertJessFact(2, engine);
 
 	    // Unit test fail on test code
-	    UnitTestAction unitTestAction = new UnitTestAction(clock, testFile); 
+	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Cannot instantiate it");
 	    unitTestAction.assertJessFact(3, engine);
 
@@ -178,7 +178,7 @@ public class TestEpisodesFactory {
 //	    action.assertJessFact(2, engine); //TODO [rule] index 2 again ??!!
 
 	    // Unit test pass
-	    unitTestAction = new UnitTestAction(clock, testFile);
+	    unitTestAction = new UnitTestCaseAction(clock, testFile);
 	    unitTestAction.assertJessFact(4, engine);
 	    
 	  }
@@ -194,7 +194,7 @@ public class TestEpisodesFactory {
 	    action.assertJessFact(1, engine);
 	    
 	    // Unit test fail on test code
-	    UnitTestAction unitTestAction = new UnitTestAction(clock, testFile); 
+	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Cannot instantiate it");
 	    unitTestAction.assertJessFact(2, engine);
 
@@ -207,7 +207,7 @@ public class TestEpisodesFactory {
 	    action.assertJessFact(3, engine);
 	    
 	    // Unit test pass
-	    unitTestAction = new UnitTestAction(clock, testFile);
+	    unitTestAction = new UnitTestCaseAction(clock, testFile);
 	    unitTestAction.assertJessFact(4, engine);
 	    
 	  }

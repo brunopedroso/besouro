@@ -96,7 +96,7 @@ public class TemplatesTest {
 		editAction.assertJessFact(4, engine);
 
 		// Unit test failue
-		UnitTestAction unitTestAction = new UnitTestAction(this.clock, this.testFile);
+		UnitTestCaseAction unitTestAction = new UnitTestCaseAction(this.clock, this.testFile);
 		unitTestAction.setFailureMessage("Failed to import");
 		unitTestAction.assertJessFact(5, engine);
 
@@ -110,7 +110,7 @@ public class TemplatesTest {
 		editAction.assertJessFact(6, engine);
 
 		// Unit test pass
-		unitTestAction = new UnitTestAction(this.clock, this.testFile);
+		unitTestAction = new UnitTestCaseAction(this.clock, this.testFile);
 		unitTestAction.assertJessFact(7, engine);
 	}
 

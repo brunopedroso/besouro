@@ -22,6 +22,8 @@ import athos.listeners.mock.JUnitEventFactory;
 import athos.model.Action;
 import athos.model.FileAction;
 import athos.model.UnitTestAction;
+import athos.model.UnitTestCaseAction;
+import athos.model.UnitTestSessionAction;
 import athos.stream.ActionOutputStream;
 
 public class JUnitListenerTest {
@@ -43,11 +45,12 @@ public class JUnitListenerTest {
 		listener.sessionFinished(JUnitEventFactory.createJunitSession("packageName", "MyTest.java", Result.OK));
 		
 		// asserts.
-		Assert.assertEquals(1, generatedActions.size());
-		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
+		Assert.assertEquals(2, generatedActions.size());
+		UnitTestCaseAction action = (UnitTestCaseAction) generatedActions.get(0);
 		Assert.assertEquals(true, action.isSuccessful());
 		Assert.assertEquals(null, action.getFailureMessage());
 		
+		Assert.assertEquals(true, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 	}
 
 	@Test
@@ -57,10 +60,12 @@ public class JUnitListenerTest {
 		listener.sessionFinished(JUnitEventFactory.createJunitSession("packageName", "MyTest.java", Result.ERROR));
 		
 		// asserts.
-		Assert.assertEquals(1, generatedActions.size());
+		Assert.assertEquals(2, generatedActions.size());
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
 		Assert.assertEquals("MyTest.java", action.getFile().getName());
+		
+		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 		
 		//TODO [data] do we need junit failure messages?
 //		Assert.assertNotNull(action.getFailureMessage());
@@ -74,41 +79,26 @@ public class JUnitListenerTest {
 		listener.sessionFinished(JUnitEventFactory.createDeepJunitExecutionHierarchy( "MyTest.java", Result.ERROR));
 		
 		// asserts.
-		Assert.assertEquals(1, generatedActions.size());
+		Assert.assertEquals(2, generatedActions.size());
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
-		Assert.assertEquals("MyTest.java", action.getFile().getName());		
+		Assert.assertEquals("MyTest.java", action.getFile().getName());
+		
+		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 	}
 	
-	@Test
-	public void shouldGenerateOneActionForTwoTestCasesInTheSameFile() {
-		
-		// invoke the listener
-		listener.sessionFinished(JUnitEventFactory.createTwoTestCases("MyTest.java",true, "MyTest.java",true));
-		
-		// asserts.
-		Assert.assertEquals(1, generatedActions.size());
-		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
-//		Assert.assertEquals(false, action.isSuccessful());
-		Assert.assertEquals("MyTest.java", action.getFile().getName());		
-
-	}
 
 	@Test
 	public void shouldGenerateTwoActionsForTwoTestCasesInDiferentFiles() {
 		
 		listener.sessionFinished(JUnitEventFactory.createTwoTestCases("MyTest1.java",true , "MyTest2.java",true));
 		
-
-		Assert.assertEquals(2, generatedActions.size());
+		Assert.assertEquals(3, generatedActions.size());
 		
-		Set<String> names = new HashSet<String>();
-		for(Action action: generatedActions){
-			names.add(((FileAction)action).getFile().getName());
-		}
-		Assert.assertTrue(names.contains("MyTest1.java"));
-		Assert.assertTrue(names.contains("MyTest2.java"));
-				
+		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
+		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getFile().getName());
+		
+		Assert.assertEquals(true, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
 	}
 
 	@Test
@@ -117,25 +107,25 @@ public class JUnitListenerTest {
 		ITestRunSession session = JUnitEventFactory.createTwoTestCases("MyTest1.java",false, "MyTest2.java",true);
 
 		listener.sessionFinished(session);
-		
 
-		Assert.assertEquals(2, generatedActions.size());
+		Assert.assertEquals(3, generatedActions.size());
 		
-		//TODO [test] assertions depend on the inverse order...
+		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
+		Assert.assertFalse(((UnitTestAction) generatedActions.get(0)).isSuccessful());
 		
-		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(1)).getFile().getName());
-		Assert.assertFalse(((UnitTestAction) generatedActions.get(1)).isSuccessful());
+		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getFile().getName());
+		Assert.assertTrue(((UnitTestAction) generatedActions.get(1)).isSuccessful());
 		
-		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
-		Assert.assertTrue(((UnitTestAction) generatedActions.get(0)).isSuccessful());
+		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
 		
-				
 	}
 	
 	
 	//TODO   should generate actions for each test file executed
 //			(in case package or folder is execued)
 	
+	// .java
+	// cortar s— na session
 }
 
 

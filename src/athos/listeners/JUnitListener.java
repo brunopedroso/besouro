@@ -19,6 +19,8 @@ import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
 import athos.model.Clock;
 import athos.model.UnitTestAction;
+import athos.model.UnitTestCaseAction;
+import athos.model.UnitTestSessionAction;
 import athos.stream.ActionOutputStream;
 
 public class JUnitListener extends TestRunListener {
@@ -32,54 +34,61 @@ public class JUnitListener extends TestRunListener {
 	@Override
 	public void sessionFinished(ITestRunSession session) {
 		
-		Map<String, UnitTestAction> actions = createUnitTestAction(session);
-		
-		for (UnitTestAction action: actions.values()) {
-//			action.setSuccessValue(session.getTestResult(true).equals(Result.OK));
+		boolean isSuccessfull = true;
+		for (UnitTestAction action: getTestFileActions(session)) {
 			stream.addAction(action);
+			isSuccessfull &= action.isSuccessful();
 		}
+		
+		// registers the session action. It breake the episode, but doesnt count on the classification
+		UnitTestSessionAction action = new UnitTestSessionAction(new Clock(new Date()), new File(session.getTestRunName()));
+		action.setSuccessValue(isSuccessfull);
+		stream.addAction(action);
 	}
 
-	private Map<String, UnitTestAction> createUnitTestAction(ITestElement element) {
+	private Collection<UnitTestCaseAction> getTestFileActions(ITestElement session) {
 		
-		Map<String, UnitTestAction> list = new HashMap<String, UnitTestAction>();
+		List<UnitTestCaseAction> list = new ArrayList<UnitTestCaseAction>();
 		
-		if (element instanceof ITestCaseElement) {
-			ITestCaseElement testCase = (ITestCaseElement) element;
-			String className = testCase.getTestClassName();
-			UnitTestAction action = new UnitTestAction(new Clock(new Date()), new File(className));
-			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
-			list.put(className, action);
+		if (session instanceof ITestSuiteElement) {
 			
-		} else if (element instanceof ITestElementContainer) {
-			ITestElementContainer container = (ITestElementContainer) element; 
+			ITestSuiteElement testCase = (ITestSuiteElement) session;
+			String className = testCase.getSuiteTypeName();
+			
+			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(className));
+			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
+			list.add(action);
+			
+		} else if (session instanceof ITestElementContainer) {
+			ITestElementContainer container = (ITestElementContainer) session; 
 			for(ITestElement child: container.getChildren()){
-				list.putAll(createUnitTestAction(child));
+				list.addAll(getTestFileActions(child));
 			}
 		}
 		
 		return list;
+		
+//		return createUnitTestAction(session).values();
 	}
-	
-	// private void print(ITestElement session) {
-	//
-	// System.out.println(session);
-	//
-	// if (session instanceof ITestSuiteElement) {
-	// ITestSuiteElement suite = (ITestSuiteElement) session;
-	//
-	// for (ITestElement test : suite.getChildren()) {
-	// print(test);
-	// }
-	//
-	// }else if (session instanceof ITestRunSession) {
-	// ITestRunSession suite = (ITestRunSession) session;
-	//
-	// for (ITestElement test : suite.getChildren()) {
-	// print(test);
-	// }
-	// }
-	//
-	// }
+
+
+//	 private void print(ITestElement session) {
+//		
+//		
+//		 if (session instanceof ITestSuiteElement) {
+//			 
+//			 ITestSuiteElement suite = (ITestSuiteElement) session;
+//			 
+//		 } else if (session instanceof ITestElementContainer) {
+//			 
+//			 ITestElementContainer suite = (ITestElementContainer) session;
+//			
+//			 for (ITestElement test : suite.getChildren()) {
+//				 print(test);
+//			 }
+//			
+//		 }
+//		 
+//	 }
 
 }
