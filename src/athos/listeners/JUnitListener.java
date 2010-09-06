@@ -40,6 +40,9 @@ public class JUnitListener extends TestRunListener {
 		UnitTestSessionAction action = new UnitTestSessionAction(new Clock(new Date()), new File(session.getTestRunName()));
 		action.setSuccessValue(isSuccessfull);
 		stream.addAction(action);
+		
+		//TODO   should treat the case of test method execution
+		
 	}
 
 	private Collection<UnitTestCaseAction> getTestFileActions(ITestElement session) {
@@ -61,6 +64,7 @@ public class JUnitListener extends TestRunListener {
 				list.addAll(getTestFileActions(child));
 			}
 		}
+		
 		
 		return list;
 		

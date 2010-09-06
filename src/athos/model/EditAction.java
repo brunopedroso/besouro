@@ -42,15 +42,19 @@ public class EditAction extends JavaFileAction {
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(super.toString());
+		buf.append(getClock());
 
 		if (this.isTestEdit()) {
-			buf.append(" TEST {");
+			buf.append(" SAVE TEST ");
+			buf.append(getFile().getName());
+			buf.append(" {");
 			buf.append(makeMetricPair("TI", getTestMethodIncrease(), getTestMethodsCount())).append(", ");
 			buf.append(makeMetricPair("AI", getTestAssertionIncrease(), getTestAssertionsCount()));
 
 		} else {
-			buf.append(" PRODUCTION {");
+			buf.append(" SAVE PRODUCTION ");
+			buf.append(getFile().getName());
+			buf.append(" {");
 		}
 
 		buf.append(makeMetricPair("MI", getMethodIncrease(), getMethodsCount())).append(", ");

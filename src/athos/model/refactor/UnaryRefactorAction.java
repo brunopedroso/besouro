@@ -83,7 +83,7 @@ public class UnaryRefactorAction extends RefactorAction {
 	 * @return Refactor action string.
 	 */
 	public String toString() {
-		return super.toString() + " {" + this.subjectName + "}";
+		return getClock() + " REFACTORNG " + getActionType() + " in " + getFile().getName() + " {" + this.subjectName + "}";
 	}
 
 	/**

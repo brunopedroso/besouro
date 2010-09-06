@@ -15,21 +15,10 @@ import athos.stream.ActionOutputStream;
 import athos.stream.EpisodeClassifierStream;
 
 
-
-//TODO  do not recognize testAssertionAdd + junitFail + producion + junitPass as test first
-
-//TODO  not recognizing test edits
-//(MAIN::initial-fact)
-//(MAIN::UnaryRefactorAction (index 2) (file "RomanNumeralsTest.java") (operation "ADD") (type "FIELD") (data "void fr"))
-//(MAIN::UnaryRefactorAction (index 3) (file "RomanNumeralsTest.java") (operation "RENAME") (type "FIELD") (data "fr => void firstTest"))
-//(MAIN::UnaryRefactorAction (index 4) (file "RomanNumeralsTest.java") (operation "RENAME") (type "METHOD") (data "firstTest => void firstTest()"))
-//(MAIN::ProductionEditAction (index 5) (file "RomanNumeralsTest.java") (duration 0) (byteChange 37) (methodChange 1) (statementChange 0))
-//(MAIN::UnitTestEditAction (index 6) (file "RomanNumeralsTest.java") (duration 0) (byteChange 5) (testChange 1) (assertionChange 0))
-
-//TODO  make tostrings look easier to recognize
+//TODO  do not recognize test edits before the class have at least one anotated method
 
 //TODO  ive extracted a method and it doesnt classified it as a refactoring.
-//		probably its becausa of the substantial thing that in my case registered the prod-edit action
+//		probably its because of the substantial thing that in my case registered the prod-edit action
 //[action] 09/04/2010 10:02:35 Romans.java REFACTOR ADD METHOD {static int translateDigit(String)}
 //[action] 09/04/2010 10:02:35 Romans.java PRODUCTION {MI=+1(2), SI=+1(2), , FI=+89(332)}
 //[action] 09/04/2010 10:02:39 RomansTest.java TEST OK
@@ -81,7 +70,7 @@ import athos.stream.EpisodeClassifierStream;
 //[episode] test-addition 1
 
 
-//TODO  one more case where test-first war recognized as prod1
+//TODO  one more case where test-first was recognized as prod1
 // seems to be the negative FI in the test-edit
 //[action] 09/04/2010 10:23:33 RomansTest.java TEST {TI=0(3), AI=0(9)MI=0(3), SI=0(9), , FI=-2(674)}
 //[action] 09/04/2010 10:23:35 RomansTest.java TEST FAILED

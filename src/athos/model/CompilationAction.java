@@ -77,7 +77,7 @@ public class CompilationAction extends FileAction {
 	 * @return Compilation action string.
 	 */
 	public String toString() {
-		return super.toString() + " COMPILE {" + this.errMsg + "}";
+		return getClock() + " COMPILE FAIL " + getFile() + "{" + this.errMsg + "}";
 	}
 
 	/**

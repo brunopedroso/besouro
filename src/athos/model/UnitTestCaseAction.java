@@ -58,12 +58,12 @@ public class UnitTestCaseAction extends UnitTestAction {
 	 */
 	public String toString() {
 		if (this.isSuccessful()) {
-			return super.toString() + " TEST OK";
+			return getClock() + " TEST CASE - OK " + getFile();
 		} else {
-			return super.toString() + " TEST FAILED";
+			return getClock() + " TEST CASE - FAILED " + getFile();
 		}
 	}
-
+	
 	/**
 	 * Encode unit test success in green and failure in red.
 	 * 

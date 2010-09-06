@@ -17,4 +17,9 @@ public class UnitTestSessionAction extends UnitTestAction {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return getClock() + " TEST SESSION - " + (this.isSuccessful()?"OK":"FAIL") + " " + getFile();
+	}
+	
 }
