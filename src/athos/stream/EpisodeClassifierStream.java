@@ -64,6 +64,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					while (result.next()) {
 						Episode episode = new Episode();
+						episode.addActions(actions);
 						episode.setClassification(result.getString("cat"), result.getString("tp"));
 						episodes.add(episode);
 						System.out.println(episode);
