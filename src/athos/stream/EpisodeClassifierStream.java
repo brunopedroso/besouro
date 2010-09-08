@@ -13,6 +13,7 @@ import jess.QueryResult;
 import jess.Rete;
 import jess.ValueVector;
 import athos.model.Action;
+import athos.model.Episode;
 import athos.model.JavaFileAction;
 import athos.model.UnitTestAction;
 import athos.model.UnitTestCaseAction;
@@ -24,7 +25,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	List<Action> actions = new ArrayList<Action>();
 
 	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
-	private List<String> episodes = new ArrayList<String>();
+	private List<Episode> episodes = new ArrayList<Episode>();
 
 	public EpisodeClassifierStream() throws Exception {
 		this.engine = new Rete();
@@ -62,7 +63,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
 					while (result.next()) {
-						String episode = "[episode]"+" " + result.getString("cat") + " " + result.getString("tp");
+						Episode episode = new Episode();
+						episode.setClassification(result.getString("cat"), result.getString("tp"));
 						episodes.add(episode);
 						System.out.println(episode);
 
@@ -116,7 +118,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		return actions;
 	}
 
-	public List<String> getRecognizedEpisodes() {
+	public List<Episode> getRecognizedEpisodes() {
 		return episodes;
 	}
 

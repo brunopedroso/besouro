@@ -42,7 +42,8 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1A", stream.getRecognizedEpisodes().get(0).getSubtype());
 	}
 	
 	@Test 
@@ -67,8 +68,11 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
 		// two refactorings - one on each edit (because they precede test-pass)
-		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(0));
-		Assert.assertEquals("[episode] refactoring 1A", stream.getRecognizedEpisodes().get(1));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1A", stream.getRecognizedEpisodes().get(0).getSubtype());
+		
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
+		Assert.assertEquals("1A", stream.getRecognizedEpisodes().get(1).getSubtype());
 	}
 	
 	@Test 
@@ -81,13 +85,19 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(4, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 1B", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1B", stream.getRecognizedEpisodes().get(0).getSubtype());
 		
 		//TODO [rule] why are it recognizing these 3 extra episodes?
 		//			  does it influence the metric?
-		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(1));
-		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(2));
-		Assert.assertEquals("[episode] regression 1", stream.getRecognizedEpisodes().get(3));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
+		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(1).getSubtype());
+		
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(2).getCategory());
+		Assert.assertEquals("2B", stream.getRecognizedEpisodes().get(2).getSubtype());
+		
+		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(3).getCategory());
+		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(3).getSubtype());
 	}
 	
 	
@@ -110,7 +120,8 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2A", stream.getRecognizedEpisodes().get(0).getSubtype());
 	    
 	}
 	
@@ -130,12 +141,16 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(3, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2B", stream.getRecognizedEpisodes().get(0).getSubtype());
 
 		//TODO [rule] why are it recognizing these 2 extra episodes?
 		//			  does it influence the metric?
-		Assert.assertEquals("[episode] regression 2", stream.getRecognizedEpisodes().get(1));
-		Assert.assertEquals("[episode] refactoring 2B", stream.getRecognizedEpisodes().get(2));
+		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(1).getCategory());
+		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(1).getSubtype());
+		
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(2).getCategory());
+		Assert.assertEquals("2B", stream.getRecognizedEpisodes().get(2).getSubtype());
 		
 	}
 
@@ -158,7 +173,8 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	
@@ -185,8 +201,11 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		
 		//TODO [rule] we have 2 refactorings here... hongbing considered just one...
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(0));
-		Assert.assertEquals("[episode] refactoring 3", stream.getRecognizedEpisodes().get(1));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(0).getSubtype());
+		
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
+		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(1).getSubtype());
 		
 	}
 }

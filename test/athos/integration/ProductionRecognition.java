@@ -29,7 +29,8 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] production 1", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	
@@ -54,7 +55,8 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	
@@ -77,9 +79,12 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] production 2", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(0).getSubtype());
+		
 		//TODO [rule] this one was not considered by hingbings test
-		Assert.assertEquals("[episode] refactoring 2A", stream.getRecognizedEpisodes().get(1));
+		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
+		Assert.assertEquals("2A", stream.getRecognizedEpisodes().get(1).getSubtype());
 		
 	}
 	
@@ -104,7 +109,8 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
 		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("[episode] production 3", stream.getRecognizedEpisodes().get(0));
+		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	

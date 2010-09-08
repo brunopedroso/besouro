@@ -46,7 +46,8 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("[episode] test-first 1", stream.getRecognizedEpisodes().get(size-1));
+		Assert.assertEquals("test-first", stream.getRecognizedEpisodes().get(size-1).getCategory());
+		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(size-1).getSubtype());
 		
 	  }
 
@@ -79,7 +80,8 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("[episode] test-first 2", stream.getRecognizedEpisodes().get(size-1));
+		Assert.assertEquals("test-first", stream.getRecognizedEpisodes().get(size-1).getCategory());
+		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(size-1).getSubtype());
 
 	}
 	
@@ -113,7 +115,8 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("[episode] test-first 3", stream.getRecognizedEpisodes().get(size-1));
+		Assert.assertEquals("test-first", stream.getRecognizedEpisodes().get(size-1).getCategory());
+		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(size-1).getSubtype());
 
 	}
 	
@@ -142,7 +145,8 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
     
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("[episode] test-first 4", stream.getRecognizedEpisodes().get(size-1));
+		Assert.assertEquals("test-first", stream.getRecognizedEpisodes().get(size-1).getCategory());
+		Assert.assertEquals("4", stream.getRecognizedEpisodes().get(size-1).getSubtype());
 
 	}
 
@@ -199,7 +203,8 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		
 		int size = stream.getRecognizedEpisodes().size();
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("[episode] test-first 1", stream.getRecognizedEpisodes().get(size-1));
+		Assert.assertEquals("test-first", stream.getRecognizedEpisodes().get(size-1).getCategory());
+		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(size-1).getSubtype());
 		
 		//TODO [rule] we have 7 actions here!
 		

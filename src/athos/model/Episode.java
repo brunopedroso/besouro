@@ -37,4 +37,19 @@ public class Episode {
 		return duration;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[episode] ");
+		
+		sb.append("(");
+		sb.append(getDuration());
+		sb.append(") ");
+		
+		sb.append(getCategory());
+		sb.append(" ");
+		sb.append(getSubtype());
+		
+		return sb.toString();
+	}
+	
 }
