@@ -27,6 +27,10 @@ public class EpisodeDurationTest {
 	private EditAction action2;
 	private UnitTestCaseAction action3;
 	private UnitTestSessionAction action4;
+	
+	private EditAction action5;
+	private UnitTestCaseAction action6;
+	private UnitTestSessionAction action7;
 
 
 	@Before
@@ -39,21 +43,37 @@ public class EpisodeDurationTest {
 		file1 = new File("afile.any");
 		file2 = new File("atestfile.any");
 		
-		action1 = new EditAction(new Clock(new Date(referenceDate.getTime()+10000)), file2);
+		long time = 10000;
 		
-		action2 = new EditAction(new Clock(new Date(referenceDate.getTime()+20000)), file1);
+		action1 = new EditAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
 		
-		action3 = new UnitTestCaseAction(new Clock(new Date(referenceDate.getTime()+30000)), file2);
+		time+=10000;
+		action2 = new EditAction(new Clock(new Date(referenceDate.getTime()+time)), file1);
+		
+		time+=15000;
+		action3 = new UnitTestCaseAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
 		action3.setSuccessValue(true);
 		
-		action4 = new UnitTestSessionAction(new Clock(new Date(referenceDate.getTime()+35000)), file2);
+		action4 = new UnitTestSessionAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
 		action4.setSuccessValue(true);
 
+		// first episode ends here
+		
+		time+=5000;
+		action5 = new EditAction(new Clock(new Date(referenceDate.getTime()+time)), file1);
+		
+		time+=6000;
+		action6 = new UnitTestCaseAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action6.setSuccessValue(true);
+		
+		action7 = new UnitTestSessionAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action7.setSuccessValue(true);
+		
 	}
 
 	
 	@Test
-	public void durationIsTheTimeFromFirtToLastActionOfTheEpisode() {
+	public void durationIShouldBeTimeFromFirtToLastActionOfTheEpisode() {
 		
 		stream.addAction(action1);
 		stream.addAction(action2);
@@ -63,6 +83,26 @@ public class EpisodeDurationTest {
 		List<Episode> recognizedEpisodes = stream.getRecognizedEpisodes();
 		Assert.assertEquals(1, recognizedEpisodes.size());
 		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
+		
+	}
+	
+	@Test
+	public void shouldConsiderThePreviousEpisodeLastAction() {
+		
+		stream.addAction(action1);
+		stream.addAction(action2);
+		stream.addAction(action3);
+		stream.addAction(action4);
+		stream.addAction(action5);
+		stream.addAction(action6);
+		stream.addAction(action7);
+		
+		List<Episode> recognizedEpisodes = stream.getRecognizedEpisodes();
+		Assert.assertEquals(2, recognizedEpisodes.size());
+		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
+		
+		// here! should consider the 5s between the two episodes!
+		Assert.assertEquals(11, recognizedEpisodes.get(1).getDuration());
 		
 	}
 	
