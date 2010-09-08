@@ -57,7 +57,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 					
-//					debugFacts();
+					debugFacts();
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
@@ -90,19 +90,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		}
 	}
 	
-//	public void printRulesOut() {
-//		try {
-//			
-//			Iterator it = engine.listActivations();
-//			Object rule = null;
-//			for (;it.hasNext(); rule = it.next()) {
-//				System.out.println(rule.toString());
-//			}
-//			
-//		} catch (JessException e) {
-//			throw new RuntimeException(e);
-//		}
-//	}
+
 
 	private void linkActions(Action action) {
 		

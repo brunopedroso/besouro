@@ -17,7 +17,7 @@ import athos.stream.EpisodeClassifierStream;
 
 //TODO  do not recognize test edits before the class have at least one anotated method
 
-//TODO  ive extracted a method and it doesnt classified it as a refactoring.
+//TODO  ive extracted a method and it didnt classify it as a refactoring.
 //		probably its because of the substantial thing that in my case registered the prod-edit action
 //[action] 09/04/2010 10:02:35 Romans.java REFACTOR ADD METHOD {static int translateDigit(String)}
 //[action] 09/04/2010 10:02:35 Romans.java PRODUCTION {MI=+1(2), SI=+1(2), , FI=+89(332)}
