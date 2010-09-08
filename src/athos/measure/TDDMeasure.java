@@ -16,6 +16,9 @@ public class TDDMeasure {
 	private float numberOfTDDEpisodes;
 	private float numberOfNonTDDEpisodes;
 
+	private float durationOfTDDEpisodes;
+	private float durationOfNonTDDEpisodes;
+
 	public TDDMeasure() throws Exception {
 		this.engine = new Rete();
 	    Batch.batch("athos/measure/EpisodeTDDConformance.clp", this.engine);
@@ -39,8 +42,11 @@ public class TDDMeasure {
 		
 		numberOfNonTDDEpisodes = 0;
 		numberOfTDDEpisodes = 0;
+		durationOfNonTDDEpisodes = 0;
+		durationOfTDDEpisodes = 0;
 
 		for (int i=0 ; i< episodes.length ; i++) {
+			
 			QueryResult result = engine.runQueryStar("episode-tdd-conformance-query-by-index", 
 					(new ValueVector()).add(new Value(i, RU.INTEGER)));
 			
@@ -48,10 +54,14 @@ public class TDDMeasure {
 			if (result.next()) {
 				episodes[i].setIsTDD("True".equals(result.getString("isTDD")));
 				
-				if (episodes[i].isTDD())
+				if (episodes[i].isTDD()) {
 					numberOfTDDEpisodes += 1;
-				else
+					durationOfTDDEpisodes += episodes[i].getDuration();
+					
+				} else {
 					numberOfNonTDDEpisodes += 1;
+					durationOfNonTDDEpisodes += episodes[i].getDuration();
+				}
 			}
 			
 				
@@ -62,6 +72,10 @@ public class TDDMeasure {
 
 	public float getTDDPercentageByNumber() {
 		return numberOfTDDEpisodes / (numberOfNonTDDEpisodes + numberOfTDDEpisodes);
+	}
+
+	public float getTDDPercentageByDuration() {
+		return durationOfTDDEpisodes / (durationOfNonTDDEpisodes + durationOfTDDEpisodes);
 	}
 
 }

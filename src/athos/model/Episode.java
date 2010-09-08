@@ -5,6 +5,7 @@ public class Episode {
 	private String category;
 	private String subtype;
 	private boolean isTDD;
+	private int duration;
 
 	public void setClassification(String category, String subtype) {
 		this.category = category;
@@ -25,6 +26,15 @@ public class Episode {
 
 	public boolean isTDD() {
 		return isTDD;
+	}
+
+	public void setDuration(int i) {
+		this.duration = i;
+		
+	}
+
+	public int getDuration() {
+		return duration;
 	}
 
 }
