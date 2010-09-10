@@ -82,4 +82,3 @@ public class SensorPlugin implements IStartup {
 
 }
 
-//TODO z rename project. Silver?
