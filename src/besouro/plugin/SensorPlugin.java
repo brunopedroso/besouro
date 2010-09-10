@@ -15,10 +15,11 @@ import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeClassifierStream;
 
 
+//TODO  test filenames when code has packages
 
 //TODO  do not recognize test edits before the class have at least one anotated method
 
-//TODO  ive extracted a method and it didnt classify it as a refactoring.
+//TODO [rule] ive extracted a method and it didnt classify it as a refactoring.
 //		probably its because of the substantial thing that in my case registered the prod-edit action
 //[action] 09/04/2010 10:02:35 Romans.java REFACTOR ADD METHOD {static int translateDigit(String)}
 //[action] 09/04/2010 10:02:35 Romans.java PRODUCTION {MI=+1(2), SI=+1(2), , FI=+89(332)}
@@ -29,13 +30,14 @@ import besouro.stream.EpisodeClassifierStream;
 //TODO [rule] its recognizing test-first many times
 
 
-//TODO  if i write a test, fail, comment the test out to refactor and test pass, it recognizes as tstAdd2, tstAdd1, tstAdd2, tstAdd1 
+//TODO [rule] if i write a test, fail, comment the test out to refactor and test pass, it recognizes as tstAdd2, tstAdd1, tstAdd2, tstAdd1 
 
 
-//TODO  one more case where test-first was recognized as prod1
+//TODO [rule] one more case where test-first was recognized as prod1
 // if we edit test without increasing assertions or methods, its not recognized as test-adition
 // what is modeled through this 'production' rules?!
 
+//TODO [clean] remove unusefull classes
 
 public class SensorPlugin implements IStartup {
 
