@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import besouro.measure.TDDMeasure;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.model.JavaFileAction;
@@ -59,7 +60,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 					
-					debugFacts();
+//					debugFacts();
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
@@ -74,8 +75,17 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 						
 						episodes.add(episode);
 						
+						// TODO   measure incrementally
+						TDDMeasure measure = new TDDMeasure();
+						measure.measure(episodes.toArray(new Episode[episodes.size()]));
+						
 						System.out.println(episode);
-
+						System.out.println("-----------------");
+						System.out.println("\t#episodes: " + episodes.size());
+						System.out.println("\t duration: " + measure.getTDDPercentageByDuration());
+						System.out.println("\t   number: " + measure.getTDDPercentageByNumber());
+						System.out.println("-----------------");
+						
 //					} else {
 //						System.out.println("[episode] could not be classified.");
 
