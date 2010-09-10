@@ -2,8 +2,12 @@ package besouro.measure;
 
 // TODO [rule] a single regression is not TDD?
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jess.Batch;
 import jess.Fact;
+import jess.JessException;
 import jess.QueryResult;
 import jess.RU;
 import jess.Rete;
@@ -21,73 +25,94 @@ public class TDDMeasure {
 	private float durationOfTDDEpisodes;
 	private float durationOfNonTDDEpisodes;
 
+	private List<Episode> episodes = new ArrayList<Episode>();
+
+	private boolean executed;
+
+	private int currentFactIndex;
+
 	public TDDMeasure() throws Exception {
 		this.engine = new Rete();
+		this.currentFactIndex = 0;
 	    Batch.batch("besouro/measure/EpisodeTDDConformance.clp", this.engine);
 	    Batch.batch("besouro/measure/OneWayTDDHeuristicAlgorithm.clp", this.engine);
-
 	}
 	
-	public void measure(Episode[] episodes) {
-		
+	public void measure(Episode[] eps) {
+		for (Episode e : eps) {
+			addEpisode(e);
+		}
+	}
+
+	public void addEpisode(Episode e) {
 		try {
 			
-			for (int i=0 ; i< episodes.length ; i++) {
-				Episode e = episodes[i];
-				Fact f = new Fact("EpisodeTDDConformance", engine);
-				f.setSlotValue("index", new Value(i, RU.INTEGER));
-				f.setSlotValue("category", new Value(e.getCategory(), RU.STRING));
-				f.setSlotValue("subtype", new Value(e.getSubtype(), RU.STRING));
-				
-				engine.assertFact(f);
-			}
+			Fact f = new Fact("EpisodeTDDConformance", engine);
+			f.setSlotValue("index", new Value(this.currentFactIndex++, RU.INTEGER));
+			f.setSlotValue("category", new Value(e.getCategory(), RU.STRING));
+			f.setSlotValue("subtype", new Value(e.getSubtype(), RU.STRING));
 			
-			engine.run();
+			engine.assertFact(f);
+			this.episodes.add(e);
+			executed = false;
+			
+		} catch (Exception e2) {
+			throw new RuntimeException(e2);
+		}
+	}
+
+	private void execute() {
+		
+		if (!executed) {
 			
 			numberOfNonTDDEpisodes = 0;
 			numberOfTDDEpisodes = 0;
 			durationOfNonTDDEpisodes = 0;
 			durationOfTDDEpisodes = 0;
 			
-			for (int i=0 ; i< episodes.length ; i++) {
+			try {
 				
-				QueryResult result = engine.runQueryStar("episode-tdd-conformance-query-by-index", 
-						(new ValueVector()).add(new Value(i, RU.INTEGER)));
+				engine.run();
 				
-				
-				if (result.next()) {
+				for (int i=0 ; i< episodes.size() ; i++) {
 					
+					QueryResult result = engine.runQueryStar("episode-tdd-conformance-query-by-index", (new ValueVector()).add(new Value(i, RU.INTEGER)));
 					
-					episodes[i].setIsTDD("True".equals(result.getString("isTDD")));
-					
-					if (episodes[i].isTDD()) {
-						numberOfTDDEpisodes += 1;
-						durationOfTDDEpisodes += episodes[i].getDuration();
+					if (result.next()) {
 						
-					} else {
-						numberOfNonTDDEpisodes += 1;
-						durationOfNonTDDEpisodes += episodes[i].getDuration();
+						
+						episodes.get(i).setIsTDD("True".equals(result.getString("isTDD")));
+						
+						if (episodes.get(i).isTDD()) {
+							numberOfTDDEpisodes += 1;
+							durationOfTDDEpisodes += episodes.get(i).getDuration();
+							
+						} else {
+							numberOfNonTDDEpisodes += 1;
+							durationOfNonTDDEpisodes += episodes.get(i).getDuration();
+						}
 					}
+					
 				}
 				
-				
-				
+			} catch (JessException e) {
+				throw new RuntimeException(e);
 			}
 			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+			executed = true;
+			
 		}
-		
-		
 	}
 
 	public float getTDDPercentageByNumber() {
+		execute();
 		float totalEpisodes = numberOfNonTDDEpisodes + numberOfTDDEpisodes;
 		if (totalEpisodes == 0) return 0;
 		else return numberOfTDDEpisodes / totalEpisodes;
 	}
 
 	public float getTDDPercentageByDuration() {
+		execute();
 		float totalDuration = durationOfNonTDDEpisodes + durationOfTDDEpisodes;
 		if (totalDuration == 0) return 0;
 		else return durationOfTDDEpisodes / totalDuration;

@@ -64,5 +64,30 @@ public class TDDMeasureTest {
 		
 	}
 	
+	@Test
+	public void contextDependentIncrementalCase() throws Exception {
+		
+		TDDMeasure measure = new TDDMeasure();
+		
+		Episode e1 = new Episode();
+		e1.setClassification("test-first", "1");
+		measure.addEpisode(e1);
+		
+		Episode e2 = new Episode();
+		e2.setClassification("refactoring", "1");
+		measure.addEpisode(e2);
+		
+		Episode e3 = new Episode();
+		e3.setClassification("test-adition", "1");
+		measure.addEpisode(e3);
+		
+		Episode e4 = new Episode();
+		e4.setClassification("test-first", "1");
+		measure.addEpisode(e4);
+		
+		Assert.assertEquals(0.75, measure.getTDDPercentageByNumber(), 0.0001);
+		
+	}
+	
 	
 }
