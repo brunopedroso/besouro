@@ -33,9 +33,9 @@ public class EpisodeClassifierTest {
   public void setUp() throws Exception {
     this.engine = new Rete();
 
-    Batch.batch("athos/model/Episode.clp", this.engine);
-    Batch.batch("athos/model/Actions.clp", this.engine);
-    Batch.batch("athos/model/EpisodeClassifier.clp", this.engine);
+    Batch.batch("besouro/model/Episode.clp", this.engine);
+    Batch.batch("besouro/model/Actions.clp", this.engine);
+    Batch.batch("besouro/model/EpisodeClassifier.clp", this.engine);
     
     this.clock = new Clock(dateFormat.parse("01/01/2005 08:30:45"));
 
@@ -44,7 +44,7 @@ public class EpisodeClassifierTest {
   
   @Test 
   public void testPassEpisodeClassifierTest() throws Exception {
-	  Batch.batch("athos/model/EpisodeClassifierTest.clp", this.engine);
+	  Batch.batch("besouro/model/EpisodeClassifierTest.clp", this.engine);
 	  this.engine.run();
   }
 

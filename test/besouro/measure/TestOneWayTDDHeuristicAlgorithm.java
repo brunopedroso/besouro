@@ -28,8 +28,8 @@ public class TestOneWayTDDHeuristicAlgorithm extends TestCase {
    */
   protected void setUp() throws Exception {
     this.engine = new Rete();
-    Batch.batch("athos/measure/EpisodeTDDConformance.clp", this.engine);
-    Batch.batch("athos/measure/OneWayTDDHeuristicAlgorithm.clp", this.engine);
+    Batch.batch("besouro/measure/EpisodeTDDConformance.clp", this.engine);
+    Batch.batch("besouro/measure/OneWayTDDHeuristicAlgorithm.clp", this.engine);
   }
   
   /**

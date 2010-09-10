@@ -38,8 +38,8 @@ public class TemplatesTest {
 		engine = new Rete();
 		engine.reset();
 
-		engine.batch("athos/model/Episode.clp");
-		engine.batch("athos/model/Actions.clp");
+		engine.batch("besouro/model/Episode.clp");
+		engine.batch("besouro/model/Actions.clp");
 	}
 
 	@Test

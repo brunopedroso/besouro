@@ -30,9 +30,9 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	public EpisodeClassifierStream() throws Exception {
 		this.engine = new Rete();
-		Batch.batch("athos/model/Actions.clp", this.engine);
-		Batch.batch("athos/model/Episode.clp", this.engine);
-		Batch.batch("athos/model/EpisodeClassifier.clp", this.engine);
+		Batch.batch("besouro/model/Actions.clp", this.engine);
+		Batch.batch("besouro/model/Episode.clp", this.engine);
+		Batch.batch("besouro/model/EpisodeClassifier.clp", this.engine);
 	}
 
 	public void addAction(Action action) {
