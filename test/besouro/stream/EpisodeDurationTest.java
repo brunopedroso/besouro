@@ -95,6 +95,7 @@ public class EpisodeDurationTest {
 		stream.addAction(action2);
 		stream.addAction(action3);
 		stream.addAction(action4);
+		// first episode ends here
 		stream.addAction(action5);
 		stream.addAction(action6);
 		stream.addAction(action7);
@@ -103,7 +104,7 @@ public class EpisodeDurationTest {
 		Assert.assertEquals(2, recognizedEpisodes.size());
 		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
 		
-		// here! should consider the 5s between the two episodes!
+		// here! should consider the 5s between episodes 4 and 5
 		Assert.assertEquals(11, recognizedEpisodes.get(1).getDuration());
 		
 	}

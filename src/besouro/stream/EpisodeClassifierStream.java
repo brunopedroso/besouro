@@ -64,10 +64,16 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
 					while (result.next()) {
+						
 						Episode episode = new Episode();
 						episode.addActions(actions);
 						episode.setClassification(result.getString("cat"), result.getString("tp"));
+						
+						if (episodes.size()>0)
+							episode.setPreviousEpisode(episodes.get(episodes.size()-1));
+						
 						episodes.add(episode);
+						
 						System.out.println(episode);
 
 //					} else {
@@ -102,14 +108,9 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		if (action instanceof JavaFileAction) {
 
 			JavaFileAction linkedAction = (JavaFileAction) action;
-			
 			String path = linkedAction.getFile().getPath();
-			JavaFileAction previousPerFile = previousEditActionPerFile.get(path);
 			
-//			System.out.println(path);
-//			System.out.println("  ==>" + (previousPerFile==null?"null":"Achei") + " " + path);
-			
-			linkedAction.setPreviousAction(previousPerFile); // 1st time will be null, I know...
+			linkedAction.setPreviousAction(previousEditActionPerFile.get(path)); // 1st time will be null, I know...
 
 			previousEditActionPerFile.put(path, linkedAction);
 
