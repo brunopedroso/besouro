@@ -9,6 +9,7 @@ import java.util.List;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
@@ -42,8 +43,6 @@ public class JUnitListener extends TestRunListener {
 		action.setSuccessValue(isSuccessfull);
 		stream.addAction(action);
 		
-		//TODO   should treat the case of test method execution
-		
 	}
 
 	private Collection<UnitTestCaseAction> getTestFileActions(ITestElement session) {
@@ -59,6 +58,15 @@ public class JUnitListener extends TestRunListener {
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
 			
+		} else if (session instanceof ITestCaseElement) {
+			
+			// will reach this case only when user executes a single test method
+			ITestCaseElement testCase = (ITestCaseElement) session;
+			
+			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(testCase.getTestClassName()+".java"));
+			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
+			list.add(action);
+						
 		} else if (session instanceof ITestElementContainer) {
 			ITestElementContainer container = (ITestElementContainer) session; 
 			for(ITestElement child: container.getChildren()){

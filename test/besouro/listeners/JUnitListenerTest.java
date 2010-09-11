@@ -14,6 +14,7 @@ import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
+import org.eclipse.jdt.junit.model.ITestSuiteElement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -121,6 +122,21 @@ public class JUnitListenerTest {
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
 		
 	}
+	
+	
+	/**
+	 * this case happens when one exdecutes a single test method
+	 */
+	@Test
+	public void shouldGenerateTestCaseActionWithTheCorrectFileName() {
+		
+		listener.sessionFinished(JUnitEventFactory.createJunitSessionForSingleMethod("MyTest.myMethod", "MyTest", Result.ERROR));
+		
+		Assert.assertEquals(2, generatedActions.size());
+		
+		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
+	}
+
 	
 	
 }

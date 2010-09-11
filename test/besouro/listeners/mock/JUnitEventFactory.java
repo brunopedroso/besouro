@@ -3,6 +3,7 @@ package besouro.listeners.mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
@@ -25,6 +26,20 @@ public class JUnitEventFactory {
 		return session;
 	}
 
+	public static ITestRunSession createJunitSessionForSingleMethod(String sessionName, String classname, Result result) {
+		
+		ITestRunSession session = mock(ITestRunSession.class);
+		ITestCaseElement testCase = mock(ITestCaseElement.class);
+		
+		when(session.getTestRunName()).thenReturn(sessionName);
+		when(session.getChildren()).thenReturn(new ITestElement[]{testCase});
+		
+		when(testCase.getTestClassName()).thenReturn(classname);
+		when(testCase.getTestResult(true)).thenReturn(result);
+		
+		return session;
+	}
+	
 	public static ITestRunSession createDeepJunitExecutionHierarchy(String fileName, Result result) {
 
 		ITestRunSession srcFolderTest = mock(ITestRunSession.class);
