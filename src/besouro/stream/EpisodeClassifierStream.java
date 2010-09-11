@@ -28,9 +28,11 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
 	private List<Episode> episodes = new ArrayList<Episode>();
+	private TDDMeasure measure;
 
 	public EpisodeClassifierStream() throws Exception {
 		this.engine = new Rete();
+		measure = new TDDMeasure();
 		Batch.batch("besouro/model/Actions.clp", this.engine);
 		Batch.batch("besouro/model/Episode.clp", this.engine);
 		Batch.batch("besouro/model/EpisodeClassifier.clp", this.engine);
@@ -64,7 +66,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
-					while (result.next()) {
+					// TODO   recognizing various episodes. Shouldnt it be a while?
+					if (result.next()) {
 						
 						Episode episode = new Episode();
 						episode.addActions(actions);
@@ -73,13 +76,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 						if (episodes.size()>0)
 							episode.setPreviousEpisode(episodes.get(episodes.size()-1));
 						
-						// TODO   next: make it measure incrementally
-						
 						episodes.add(episode);
-						
-						// TODO   measure incrementally
-						TDDMeasure measure = new TDDMeasure();
-						measure.measure(episodes.toArray(new Episode[episodes.size()]));
+						measure.addEpisode(episode);
 						
 						System.out.println(episode);
 						System.out.println("-----------------");
@@ -135,6 +133,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	public List<Episode> getRecognizedEpisodes() {
 		return episodes;
+	}
+
+	public TDDMeasure getTDDMeasure() {
+		return measure;
 	}
 
 }

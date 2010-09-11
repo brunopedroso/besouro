@@ -87,7 +87,6 @@ public class TDDMeasure {
 					
 					if (result.next()) {
 						
-						
 						episodes.get(i).setIsTDD("True".equals(result.getString("isTDD")));
 						
 						if (episodes.get(i).isTDD()) {
