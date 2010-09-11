@@ -28,14 +28,16 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * @author Hongbing Kou
  */
 public class JavaStatementMeter extends ASTVisitor {
-	/** Name of this compilation unit. */
+
 	private String name;
+	private String packageName;
 
 	private int numOfMethods = 0;
 	private int numOfStatements = 0;
 
 	private int numOfTestMethods = 0;
 	private int numOfTestAssertions = 0;
+
 
 	public void reset() {
 		name = null;
@@ -49,6 +51,7 @@ public class JavaStatementMeter extends ASTVisitor {
 	public boolean visit(TypeDeclaration td) {
 		if (td.getName() != null) {
 			this.name = td.getName().getIdentifier();
+			this.packageName = td.getClass().getPackage().getName();
 		}
 
 		return true;
@@ -132,6 +135,12 @@ public class JavaStatementMeter extends ASTVisitor {
 		return this.numOfTestMethods > 0 || this.numOfTestAssertions > 0;
 	}
 
+	public boolean isTest() {
+		boolean hasTestInPackageName = this.packageName.toLowerCase().indexOf("test") >= 0;
+		boolean hasTestInClassName = this.name.toLowerCase().indexOf("test") >= 0;
+		return hasTest() || hasTestInClassName || hasTestInPackageName;
+	}
+	
 	public String toString() {
 		StringBuffer buf = new StringBuffer(200);
 		buf.append("*****  ").append(this.name)

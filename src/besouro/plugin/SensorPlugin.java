@@ -19,6 +19,8 @@ import besouro.stream.EpisodeClassifierStream;
 
 //TODO  do not recognize test edits before the class have at least one anotated method
 
+//TODO  edits in document change -> agregate continuous changes
+
 //TODO [rule] ive extracted a method and it didnt classify it as a refactoring.
 //		probably its because of the substantial thing that in my case registered the prod-edit action
 //[action] 09/04/2010 10:02:35 Romans.java REFACTOR ADD METHOD {static int translateDigit(String)}
