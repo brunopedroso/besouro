@@ -29,11 +29,9 @@ public class TDDMeasure {
 
 	private boolean executed;
 
-	private int currentFactIndex;
 
 	public TDDMeasure() throws Exception {
 		this.engine = new Rete();
-		this.currentFactIndex = 0;
 	    Batch.batch("besouro/measure/EpisodeTDDConformance.clp", this.engine);
 	    Batch.batch("besouro/measure/OneWayTDDHeuristicAlgorithm.clp", this.engine);
 	}
@@ -47,18 +45,21 @@ public class TDDMeasure {
 	public void addEpisode(Episode e) {
 		try {
 			
-			Fact f = new Fact("EpisodeTDDConformance", engine);
-			f.setSlotValue("index", new Value(this.currentFactIndex++, RU.INTEGER));
-			f.setSlotValue("category", new Value(e.getCategory(), RU.STRING));
-			f.setSlotValue("subtype", new Value(e.getSubtype(), RU.STRING));
-			
-			engine.assertFact(f);
 			this.episodes.add(e);
 			executed = false;
 			
 		} catch (Exception e2) {
 			throw new RuntimeException(e2);
 		}
+	}
+
+	private void assertJessFact(Episode e, int currentFactIndex) throws JessException {
+		Fact f = new Fact("EpisodeTDDConformance", engine);
+		f.setSlotValue("index", new Value(currentFactIndex, RU.INTEGER));
+		f.setSlotValue("category", new Value(e.getCategory(), RU.STRING));
+		f.setSlotValue("subtype", new Value(e.getSubtype(), RU.STRING));
+		
+		engine.assertFact(f);
 	}
 
 	private void execute() {
@@ -71,6 +72,12 @@ public class TDDMeasure {
 			durationOfTDDEpisodes = 0;
 			
 			try {
+				
+				engine.reset();
+				
+				for (int i=0 ; i< episodes.size() ; i++) {
+					assertJessFact(this.episodes.get(i), i);
+				}
 				
 				engine.run();
 				

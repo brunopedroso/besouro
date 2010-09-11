@@ -73,6 +73,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 						if (episodes.size()>0)
 							episode.setPreviousEpisode(episodes.get(episodes.size()-1));
 						
+						// TODO   next: make it measure incrementally
+						
 						episodes.add(episode);
 						
 						// TODO   measure incrementally
