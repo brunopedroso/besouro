@@ -66,7 +66,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
-					// TODO   recognizing various episodes. Shouldnt it be a while?
+					// TODO [rule] recognizing various episodes. Shouldnt it be a while?
 					if (result.next()) {
 						
 						Episode episode = new Episode();
