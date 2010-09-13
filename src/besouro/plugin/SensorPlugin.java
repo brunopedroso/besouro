@@ -15,7 +15,7 @@ import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeClassifierStream;
 
 
-//TODO  edits in document change -> agregate continuous changes
+//TODO [rule] edits in document change -> agregate continuous changes (is it necessary?)
 
 //TODO [rule] ive extracted a method and it didnt classify it as a refactoring.
 //		probably its because of the substantial thing that in my case registered the prod-edit action
