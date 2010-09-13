@@ -1,16 +1,8 @@
 package besouro.model;
 import java.io.File;
 
-import besouro.model.Clock;
-import besouro.model.CompilationAction;
-import besouro.model.EditAction;
-import besouro.model.UnitTestAction;
-import besouro.model.UnitTestCaseAction;
-import besouro.model.refactor.RefactorOperator;
-import besouro.model.refactor.RefactorSubjectType;
-import besouro.model.refactor.UnaryRefactorAction;
-
 import jess.Rete;
+import besouro.model.refactor.UnaryRefactorAction;
 
 
 public class TestEpisodesFactory {
@@ -21,8 +13,8 @@ public class TestEpisodesFactory {
 	  public static void addTDDType1Facts(Rete engine, Clock clock) throws Exception {
 	    // Add test method
 	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
-	    unaryAction.setOperator(RefactorOperator.ADD);
-	    unaryAction.setSubjectType(RefactorSubjectType.METHOD);
+	    unaryAction.setOperator("ADD");
+	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
 	    unaryAction.assertJessFact(1, engine);
 	    
@@ -73,8 +65,8 @@ public class TestEpisodesFactory {
 	  public static void addTDDType2Facts(Rete engine, Clock clock) throws Exception {
 	    // Add test method
 	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
-	    unaryAction.setOperator(RefactorOperator.ADD);
-	    unaryAction.setSubjectType(RefactorSubjectType.METHOD);
+	    unaryAction.setOperator("ADD");
+	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
 	    unaryAction.assertJessFact(1, engine);
 	    
@@ -111,8 +103,8 @@ public class TestEpisodesFactory {
 	  public static void addTDDType3Facts(Rete engine, Clock clock) throws Exception {
 	    // Add test method
 	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
-	    unaryAction.setOperator(RefactorOperator.ADD);
-	    unaryAction.setSubjectType(RefactorSubjectType.METHOD);
+	    unaryAction.setOperator("ADD");
+	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
 	    unaryAction.assertJessFact(1, engine);
 	    

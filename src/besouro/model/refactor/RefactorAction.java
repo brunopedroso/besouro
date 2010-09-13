@@ -14,70 +14,30 @@ import besouro.model.FileAction;
  */
 public abstract class RefactorAction extends FileAction {
 
-	// TODO [clean] inline these two classes here
+	private String op;
+	private String subjectType;
 
-	/** Refactoring operator. */
-	private RefactorOperator op;
-	/** Refactoring subject type */
-	private RefactorSubjectType subjectType;
-
-	/**
-	 * Constructs refactor action.
-	 * 
-	 * @param clock
-	 *            Time stamp.
-	 * @param workspceFile
-	 *            Associated file.
-	 */
 	public RefactorAction(Clock clock, File workspceFile) {
 		super(clock, workspceFile);
 	}
 
-	/**
-	 * Sets the refactor operator.
-	 * 
-	 * @param op
-	 *            Refactoring operator.
-	 */
-	public void setOperator(RefactorOperator op) {
+	public void setOperator(String op) {
 		this.op = op;
 	}
 
-	/**
-	 * Gets refactoring operator.
-	 * 
-	 * @return Refactoring operator.
-	 */
-	public RefactorOperator getOperator() {
+	public String getOperator() {
 		return this.op;
 	}
 
-	/**
-	 * Sets refactor subject type.
-	 * 
-	 * @param subjectType
-	 *            Refactor subject type.
-	 */
-	public void setSubjectType(RefactorSubjectType subjectType) {
+	public void setSubjectType(String subjectType) {
 		this.subjectType = subjectType;
 	}
 
-	/**
-	 * Gets the refactoring subject type.
-	 * 
-	 * @return Type of this refactor action on.
-	 */
-	public RefactorSubjectType getSubjectType() {
+	public String getSubjectType() {
 		return this.subjectType;
 	}
 
-	/**
-	 * Gets refactor action string.
-	 * 
-	 * @return Refactor action string.
-	 */
 	public String toString() {
-		return super.toString() + " REFACTOR " + this.getOperator() + " "
-				+ this.getSubjectType();
+		return super.toString() + " REFACTOR " + this.getOperator() + " " + this.getSubjectType();
 	}
 }

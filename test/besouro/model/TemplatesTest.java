@@ -14,12 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.model.Clock;
-import besouro.model.CompilationAction;
-import besouro.model.EditAction;
-import besouro.model.UnitTestCaseAction;
-import besouro.model.refactor.RefactorOperator;
-import besouro.model.refactor.RefactorSubjectType;
 import besouro.model.refactor.UnaryRefactorAction;
 
 
@@ -71,8 +65,8 @@ public class TemplatesTest {
 		
 		// Add test method
 		UnaryRefactorAction unaryAction = new UnaryRefactorAction(this.clock, this.testFile);
-		unaryAction.setOperator(RefactorOperator.ADD);
-		unaryAction.setSubjectType(RefactorSubjectType.METHOD);
+		unaryAction.setOperator("ADD");
+		unaryAction.setSubjectType("METHOD");
 		unaryAction.setSubjectName("void testEquilateral()");
 		unaryAction.assertJessFact(1, engine);
 		

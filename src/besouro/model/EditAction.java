@@ -182,10 +182,10 @@ public class EditAction extends JavaFileAction {
 
 	}
 
-	public void setUnitName(String name) {
-		this.unitName = name;
-
-	}
+//	public void setUnitName(String name) {
+//		this.unitName = name;
+//
+//	}
 
 	public void setTestMethodIncrease(int value) {
 		this.testMethodIncrease = value;

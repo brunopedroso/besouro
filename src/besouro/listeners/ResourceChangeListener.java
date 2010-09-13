@@ -122,11 +122,11 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile());
 				action.setOperation("Save");
 				
-				//TODO [clean] do we need this full name?
-				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
+				// do we need this full name?
+//				action.setUnitName(Utils.getFullyQualifedClassName(changedFile));
 
-//				action.setIsTestEdit(testCounter.hasTest());
 				// minimizes the problem of the case of the first class' test method creation
+//				action.setIsTestEdit(testCounter.hasTest());
 				action.setIsTestEdit(testCounter.isTest());
 
 				action.setFileSize((int) changedFile.getLocation().toFile().length());

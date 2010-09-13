@@ -65,13 +65,10 @@ public class UnaryRefactorAction extends RefactorAction {
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		Fact f = new Fact("UnaryRefactorAction", engine);
 		f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-		f.setSlotValue(FILE_SLOT,
-				new Value(this.getFile().getName(), RU.STRING));
+		f.setSlotValue(FILE_SLOT,new Value(this.getFile().getName(), RU.STRING));
 
-		f.setSlotValue("operation", new Value(this.getOperator().getName(),
-				RU.STRING));
-		f.setSlotValue("type", new Value(this.getSubjectType().getName(),
-				RU.STRING));
+		f.setSlotValue("operation", new Value(this.getOperator(),RU.STRING));
+		f.setSlotValue("type", new Value(this.getSubjectType(),RU.STRING));
 		f.setSlotValue("data", new Value(this.getSubjectName(), RU.STRING));
 
 		Fact assertedFact = engine.assertFact(f);
@@ -102,7 +99,7 @@ public class UnaryRefactorAction extends RefactorAction {
 	 * @return Unary rfactoring action name and its subtype.
 	 */
 	public String getActionType() {
-		return this.getOperator().getName() + " "
-				+ this.getSubjectType().getName();
+		return this.getOperator() + " "
+				+ this.getSubjectType();
 	}
 }

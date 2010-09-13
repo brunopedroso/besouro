@@ -12,8 +12,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
 import besouro.model.Clock;
-import besouro.model.refactor.RefactorOperator;
-import besouro.model.refactor.RefactorSubjectType;
 import besouro.model.refactor.UnaryRefactorAction;
 import besouro.stream.ActionOutputStream;
 
@@ -93,22 +91,17 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		} else if (additions.size() == 1 || deletions.size() == 1) {
 
 			if (deletions.isEmpty()) {
-				processUnary(javaFile, RefactorOperator.ADD,
-						(IJavaElementDelta) additions.get(0));
+				processUnary(javaFile, "ADD", (IJavaElementDelta) additions.get(0));
 
 			} else if (additions.isEmpty()) {
-				processUnary(javaFile, RefactorOperator.REMOVE,
-						(IJavaElementDelta) deletions.get(0));
+				processUnary(javaFile, "REMOVE", (IJavaElementDelta) deletions.get(0));
 
 			} else if (deletions.size() == 1) {
 
-				IJavaElementDelta fromDelta = (IJavaElementDelta) deletions
-						.get(0);
-				IJavaElementDelta toDelta = (IJavaElementDelta) additions
-						.get(0);
+				IJavaElementDelta fromDelta = (IJavaElementDelta) deletions.get(0);
+				IJavaElementDelta toDelta = (IJavaElementDelta) additions.get(0);
 
-				if (fromDelta.getElement().getParent()
-						.equals(toDelta.getElement().getParent())) {
+				if (fromDelta.getElement().getParent().equals(toDelta.getElement().getParent())) {
 					processRenameRefactor(javaFile, fromDelta, toDelta);
 
 				} else {
@@ -121,15 +114,13 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		else if (additions.size() > 1) {
 
 			for (Iterator i = additions.iterator(); i.hasNext();) {
-				processUnary(javaFile, RefactorOperator.ADD,
-						(IJavaElementDelta) i.next());
+				processUnary(javaFile, "ADD",(IJavaElementDelta) i.next());
 			}
 		}
 		// Massive block deletion
 		else if (deletions.size() > 1) {
 			for (Iterator i = deletions.iterator(); i.hasNext();) {
-				processUnary(javaFile, RefactorOperator.REMOVE,
-						(IJavaElementDelta) i.next());
+				processUnary(javaFile, "REMOVE",(IJavaElementDelta) i.next());
 			}
 		}
 	}
@@ -144,8 +135,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	 * @param delta
 	 *            Delta change element
 	 */
-	private void processUnary(IPath javaFile, RefactorOperator op,
-			IJavaElementDelta delta) {
+	private void processUnary(IPath javaFile, String op, IJavaElementDelta delta) {
+		
 		IJavaElement element = delta.getElement();
 
 		// Stop if there is no associated element.
@@ -154,14 +145,14 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			return;
 		}
 
-		RefactorSubjectType type = retrieveType(element);
+		String type = retrieveType(element);
 		// If type is not field, method, import and class do nothing.
 		if (type == null) {
 			return;
 		}
 
 		IPath classFileName = javaFile;
-		if (CLASS.equals(type)) {
+		if ("CLASS".equals(type)) {
 			classFileName = element.getResource().getLocation();
 		}
 
@@ -174,8 +165,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		String name = buildElementName(element.toString());
 		if (name != null && !"".equals(name)) {
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(
-					new Date()), classFileName.toFile());
+			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), classFileName.toFile());
 			action.setOperator(op);
 			action.setSubjectType(type);
 			action.setSubjectName(name);
@@ -198,13 +188,13 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	private void processRenameRefactor(IPath javaFile,
 			IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
 
-		RefactorSubjectType type = retrieveType(toDelta.getElement());
+		String type = retrieveType(toDelta.getElement());
 
 		IPath classFileName = javaFile;
-		if (RefactorSubjectType.CLASS == type) {
+		if ("CLASS".equals(type)) {
 			classFileName = fromDelta.getElement().getResource().getLocation();
 
-		} else if (RefactorSubjectType.PACKAGE == type) {
+		} else if ("PACKAGE".equals(type)) {
 			classFileName = fromDelta.getElement().getResource().getLocation();
 		}
 
@@ -221,9 +211,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			// msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(
-					new Date()), classFileName.toFile());
-			action.setOperator(RefactorOperator.RENAME);
+			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), classFileName.toFile());
+			action.setOperator("RENAME");
 			action.setSubjectName(fromName + " => " + toName);
 
 			action.setSubjectType(type);
@@ -273,7 +262,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(
 					new Date()), javaFile.toFile());
-			action.setOperator(RefactorOperator.MOVE);
+			action.setOperator("MOVE");
 			action.setSubjectName(fromName + " => " + toName);
 
 			action.setSubjectType(retrieveType(toDelta.getElement()));
@@ -290,24 +279,24 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	 *            Java element object
 	 * @return Element type string (class, method, field or import).
 	 */
-	private RefactorSubjectType retrieveType(IJavaElement element) {
+	private String retrieveType(IJavaElement element) {
 		int eType = element.getElementType();
 
 		switch (eType) {
 		case IJavaElement.FIELD:
-			return RefactorSubjectType.FIELD;
+			return "FIELD";
 		case IJavaElement.METHOD:
-			return RefactorSubjectType.METHOD;
+			return "METHOD";
 		case IJavaElement.IMPORT_DECLARATION:
-			return RefactorSubjectType.IMPORT;
+			return "IMPORT";
 		case IJavaElement.IMPORT_CONTAINER:
-			return RefactorSubjectType.IMPORT;
+			return "IMPORT";
 		case IJavaElement.COMPILATION_UNIT:
-			return RefactorSubjectType.CLASS;
+			return "CLASS";
 		case IJavaElement.JAVA_PROJECT:
-			return RefactorSubjectType.CLASS;
+			return "CLASS";
 		case IJavaElement.PACKAGE_FRAGMENT:
-			return RefactorSubjectType.PACKAGE;
+			return "PACKAGE";
 		default:
 			return null;
 		}

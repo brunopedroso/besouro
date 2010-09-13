@@ -12,13 +12,9 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.junit.Test;
 
-import besouro.listeners.JavaStructureChangeListener;
 import besouro.listeners.mock.FakeActionStream;
 import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.model.Action;
-import besouro.model.EditAction;
-import besouro.model.refactor.RefactorOperator;
-import besouro.model.refactor.RefactorSubjectType;
 import besouro.model.refactor.UnaryRefactorAction;
 
 
@@ -41,8 +37,8 @@ public class JavaStructureListenerTest {
 		
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		Assert.assertEquals(RefactorOperator.ADD, ((UnaryRefactorAction)action).getOperator());
-		Assert.assertEquals(RefactorSubjectType.METHOD, ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertEquals("ADD", ((UnaryRefactorAction)action).getOperator());
+		Assert.assertEquals("METHOD", ((UnaryRefactorAction)action).getSubjectType());
 		Assert.assertEquals("AnyClass/aMethod", ((UnaryRefactorAction)action).getSubjectName());
 		
 	}
@@ -72,9 +68,9 @@ public class JavaStructureListenerTest {
 		
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		Assert.assertEquals(RefactorOperator.REMOVE, ((UnaryRefactorAction)action).getOperator());
+		Assert.assertEquals("REMOVE", ((UnaryRefactorAction)action).getOperator());
 		Assert.assertEquals("AnyClass/aMethod", ((UnaryRefactorAction)action).getSubjectName());
-		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertEquals("FIELD", ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
 
@@ -97,9 +93,9 @@ public class JavaStructureListenerTest {
 		
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		Assert.assertEquals(RefactorOperator.RENAME, ((UnaryRefactorAction)action).getOperator());
+		Assert.assertEquals("RENAME", ((UnaryRefactorAction)action).getOperator());
 		Assert.assertEquals("AnyClass/aMethod => AnyClass/anotherMethod", ((UnaryRefactorAction)action).getSubjectName());
-		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertEquals("FIELD", ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
 
@@ -136,8 +132,8 @@ public class JavaStructureListenerTest {
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof UnaryRefactorAction);
 		UnaryRefactorAction refactorAction = (UnaryRefactorAction)action;
-		Assert.assertEquals(RefactorOperator.MOVE, refactorAction.getOperator());
-		Assert.assertEquals(RefactorSubjectType.FIELD, ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertEquals("MOVE", refactorAction.getOperator());
+		Assert.assertEquals("FIELD", ((UnaryRefactorAction)action).getSubjectType());
 		
 	}
 
