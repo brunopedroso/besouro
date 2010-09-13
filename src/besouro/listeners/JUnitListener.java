@@ -52,7 +52,15 @@ public class JUnitListener extends TestRunListener {
 		if (session instanceof ITestSuiteElement) {
 			
 			ITestSuiteElement testCase = (ITestSuiteElement) session;
-			String className = testCase.getSuiteTypeName() + ".java";
+			String className = testCase.getSuiteTypeName();
+
+			// take off the package name
+			int indexOfPoint = className.lastIndexOf(".");
+			if (indexOfPoint>=0){
+				className = className.substring(indexOfPoint+1);
+			}
+			
+			className = className + ".java";
 			
 			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(className));
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));

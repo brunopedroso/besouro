@@ -125,7 +125,7 @@ public class JUnitListenerTest {
 	
 	
 	/**
-	 * this case happens when one exdecutes a single test method
+	 * this case happens when one executes a single test method
 	 */
 	@Test
 	public void shouldGenerateTestCaseActionWithTheCorrectFileName() {
@@ -136,8 +136,19 @@ public class JUnitListenerTest {
 		
 		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
 	}
-
 	
+	@Test
+	public void shouldExcludeThePackageFromFileName() {
+		
+		// its necessary so that packaged files have the same name of test-edits
+		
+		listener.sessionFinished(JUnitEventFactory.createJunitSession("suiteName", "package.MyTest", Result.ERROR));
+		
+		Assert.assertEquals(2, generatedActions.size());
+		
+		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
+	}
+
 	
 }
 
