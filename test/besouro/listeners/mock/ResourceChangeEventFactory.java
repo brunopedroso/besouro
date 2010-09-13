@@ -20,14 +20,6 @@ import org.mockito.stubbing.Answer;
 
 public class ResourceChangeEventFactory {
 
-	public static IResourceChangeEvent createTestEditAction(int fileSize) throws CoreException {
-		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
-		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
-		IResourceDelta createMockResourceDelta = createChangeTestDelta("TestFile.java", fileSize);
-		when(event.getDelta()).thenReturn(createMockResourceDelta);
-		return event;
-	}
-
 	public static IResourceChangeEvent createEditAction(String filename, int fileSize) throws CoreException {
 		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
 		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);

@@ -16,7 +16,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 	public void testAditionCategory1() throws Exception {
 		
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
+		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
@@ -33,7 +33,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 	public void testAditionCategory2() throws Exception {
 		
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
+		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
@@ -41,7 +41,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
+		when(meter.isTest()).thenReturn(true);
 		// TODO [rule] just to make it substantial :-/
 		when(meter.getNumOfTestMethods()).thenReturn(3);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));

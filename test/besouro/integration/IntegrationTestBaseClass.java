@@ -86,11 +86,11 @@ public class IntegrationTestBaseClass {
 	
 	protected void addTestLast1Actions() throws CoreException {
 		// Edit on production code    
-		when(meter.hasTest()).thenReturn(false);
+		when(meter.isTest()).thenReturn(false);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 		
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
+		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
@@ -101,7 +101,7 @@ public class IntegrationTestBaseClass {
 	
 	protected void addRefactoring1A_Actions() throws CoreException {
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
+		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(1);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 //		//TODO [rule] its a little strange... I dont count test methods change in test-edits, but i consider it to be substancial

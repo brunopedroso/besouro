@@ -17,8 +17,6 @@ import besouro.stream.EpisodeClassifierStream;
 
 //TODO  test filenames when code has packages
 
-//TODO  do not recognize test edits before the class have at least one anotated method
-
 //TODO  edits in document change -> agregate continuous changes
 
 //TODO [rule] ive extracted a method and it didnt classify it as a refactoring.

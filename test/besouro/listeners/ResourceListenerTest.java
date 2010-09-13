@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import junit.framework.Assert;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
+import org.junit.Before;
 import org.junit.Test;
 
 import besouro.listeners.JavaStatementMeter;
@@ -23,31 +24,38 @@ import besouro.stream.ActionOutputStream;
 
 public class ResourceListenerTest {
 
+	private ArrayList<Action> generatedActions;
+	private ActionOutputStream stream;
+	private ResourceChangeListener listener;
+	private JavaStatementMeter testCounter;
+
+	@Before
+	public void setup() {
+		generatedActions = new ArrayList<Action>();
+		stream = new FakeActionStream(generatedActions);
+		listener = new ResourceChangeListener(stream);
+		testCounter = mock(JavaStatementMeter.class);
+		listener.setTestCounter(testCounter);
+	}
+
+	
 	@Test
-	public void shouldRegisterAnEditAction() throws Throwable {
+	public void shouldRecognizeTestEditsByNumberOfTestsAndAsserts() throws Exception {
 		
-		final ArrayList<Action> generatedActions = new ArrayList<Action>();
-		ActionOutputStream stream = new FakeActionStream(generatedActions);
-		
-		ResourceChangeListener listener = new ResourceChangeListener(stream);
-		
-		JavaStatementMeter testCounter = mock(JavaStatementMeter.class);
 		// its how test edits are identified 
-		when(testCounter.hasTest()).thenReturn(Boolean.TRUE);
+		when(testCounter.isTest()).thenReturn(Boolean.TRUE);
 		when(testCounter.getNumOfMethods()       ).thenReturn(1);
 		when(testCounter.getNumOfStatements()    ).thenReturn(2);
 		when(testCounter.getNumOfTestAssertions()).thenReturn(3);
 		when(testCounter.getNumOfTestMethods()   ).thenReturn(4);
 		
-		listener.setTestCounter(testCounter);
-		
-		IResourceChangeEvent event = ResourceChangeEventFactory.createTestEditAction(33);
+		IResourceChangeEvent event = ResourceChangeEventFactory.createEditAction("AJavaFile.java",33);
 		
 		listener.resourceChanged(event);
 		
 		Assert.assertEquals(1, generatedActions.size());
 		EditAction action = (EditAction) generatedActions.get(0);
-		Assert.assertEquals("TestFile.java", action.getFile().getName());
+		Assert.assertEquals("AJavaFile.java", action.getFile().getName());
 		Assert.assertEquals(true, action.isTestEdit());
 		
 		Assert.assertEquals(1, action.getMethodsCount());
@@ -59,19 +67,37 @@ public class ResourceListenerTest {
 		
 	}
 	
-	// TODO [test] more unit tests for ResourceListener?
-	// what about test x prod changes?
+	@Test
+	public void shouldRecognizeProductionEdits() throws Exception {
+		
+		// it depends on the implementation of JavaStatementMeter (is not being testet yet)
+		when(testCounter.isTest()).thenReturn(Boolean.FALSE);
+		IResourceChangeEvent event = ResourceChangeEventFactory.createEditAction("ATestJavaFile.java", 33);
+		
+		listener.resourceChanged(event);
+		
+		EditAction action = (EditAction) generatedActions.get(0);
+		Assert.assertEquals(false, action.isTestEdit());
+
+	}
+
+	
+	@Test
+	public void shouldRecognizeTestEditsByTesInTheNameOfTheClass() throws Exception {
+		
+		// it depends on the implementation of JavaStatementMeter (is not being testet yet)
+		when(testCounter.isTest()).thenReturn(Boolean.TRUE);
+		IResourceChangeEvent event = ResourceChangeEventFactory.createEditAction("ATestJavaFile.java", 33);
+		
+		listener.resourceChanged(event);
+		
+		EditAction action = (EditAction) generatedActions.get(0);
+		Assert.assertEquals(true, action.isTestEdit());
+		
+	}
 	
 	@Test
 	public void shouldRegisterABuildErrorActon() throws Exception {
-		
-		final ArrayList<Action> generatedActions = new ArrayList<Action>();
-		ActionOutputStream stream = new FakeActionStream(generatedActions);
-		
-		ResourceChangeListener listener = new ResourceChangeListener(stream);
-		
-		JavaStatementMeter testMeter = mock(JavaStatementMeter.class);
-		listener.setTestCounter(testMeter);
 		
 		String filename = "afile.java";
 		String errorMessage = "any build error message";
@@ -84,6 +110,8 @@ public class ResourceListenerTest {
 		Assert.assertEquals(filename, action.getFile().getName());
 		Assert.assertEquals(errorMessage, action.getErrorMessage());
 	}
+
+	// TODO [test] more unit tests for ResourceListener?
 
 	
 }

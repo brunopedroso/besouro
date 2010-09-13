@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -48,10 +49,14 @@ public class JavaStatementMeter extends ASTVisitor {
 
 	}
 
+	public boolean visit(PackageDeclaration node) {
+		this.packageName = node.getName().getFullyQualifiedName();
+		return true;
+	}
+	
 	public boolean visit(TypeDeclaration td) {
 		if (td.getName() != null) {
 			this.name = td.getName().getIdentifier();
-			this.packageName = td.getClass().getPackage().getName();
 		}
 
 		return true;
@@ -136,6 +141,8 @@ public class JavaStatementMeter extends ASTVisitor {
 	}
 
 	public boolean isTest() {
+		// minimizes the problem of the case of the first class' test method creation
+		// (looking for 'test' in the class or package name
 		boolean hasTestInPackageName = this.packageName.toLowerCase().indexOf("test") >= 0;
 		boolean hasTestInClassName = this.name.toLowerCase().indexOf("test") >= 0;
 		return hasTest() || hasTestInClassName || hasTestInPackageName;

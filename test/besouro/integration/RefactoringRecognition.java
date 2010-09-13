@@ -29,7 +29,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 	public void refactoringCategory1A_2() throws Exception {
 		
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
+		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(1);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 				
@@ -137,7 +137,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 	public void refactoringCategory3_1() throws Exception {
 		
 		 // Edit on production code    
-		when(meter.hasTest()).thenReturn(false);
+		when(meter.isTest()).thenReturn(false);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 		
 		// Unit test failue
@@ -158,7 +158,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
 		
 		// Edit on production code    
-		when(meter.hasTest()).thenReturn(false);
+		when(meter.isTest()).thenReturn(false);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 		
 		// Unit test failue
