@@ -18,21 +18,20 @@ import org.eclipse.jdt.core.IJavaModelMarker;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-//TODO [clean] organize mocks, in general
 
 public class ResourceChangeEventFactory {
 
 	public static IResourceChangeEvent createEditAction(String filename, int fileSize) throws CoreException {
 		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
-		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
 		IResourceDelta createMockResourceDelta = createChangeTestDelta(filename, fileSize);
+		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
 		when(event.getDelta()).thenReturn(createMockResourceDelta);
 		return event;
 	}
 	
 	public static IResourceDelta createChangeTestDelta(String filename, long fileSize) throws CoreException {
 		
-		final IResourceDelta delta = mock(IResourceDelta.class);
+		IResourceDelta delta = mock(IResourceDelta.class);
 		IFile resource = createMockResource(filename, fileSize);
 		
 		when(delta.getKind()).thenReturn(IResourceDelta.CHANGED);
@@ -49,27 +48,25 @@ public class ResourceChangeEventFactory {
 	public static IResourceChangeEvent createBuildErrorEvent(String filename, String errorMessage) throws CoreException {
 		
 		IMarkerDelta marker = mock(IMarkerDelta.class);
+		IMarkerDelta[] markers = new IMarkerDelta[]{marker};
+		IResourceDelta delta = mock(IResourceDelta.class);
+		IFile aresource = createMockResource(filename, (long)33);
+		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
+		
 		when(marker.getType()).thenReturn(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER);
 		when(marker.getAttribute("severity")).thenReturn("2");
 		when(marker.getAttribute("message")).thenReturn(errorMessage);
 		when(marker.getKind()).thenReturn(IResourceDelta.CHANGED);
-
-		IMarkerDelta[] markers = new IMarkerDelta[]{marker};
-		
-		final IResourceDelta delta = mock(IResourceDelta.class);
 		
 		doAnswer(new FakeVisitorAnswer(delta)).when(delta).accept(any(IResourceDeltaVisitor.class));
 		
 		when(delta.getFlags()).thenReturn(IResourceDelta.MARKERS);
-		
-		IFile aresource = createMockResource(filename, (long)33);
 		when(delta.getResource()).thenReturn(aresource);
-		
 		when(delta.getMarkerDeltas()).thenReturn(markers);
 		
-		IResourceChangeEvent event = mock(IResourceChangeEvent.class);
 		when(event.getType()).thenReturn(IResourceChangeEvent.POST_CHANGE);
 		when(event.getDelta()).thenReturn(delta);
+		
 		return event;
 	}
 	

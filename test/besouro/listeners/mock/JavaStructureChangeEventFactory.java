@@ -11,13 +11,15 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 public class JavaStructureChangeEventFactory {
 
 	public static IJavaElement createJavaElement(IJavaElement parentElement, String resourceName, String elementName, int type) {
+		
 		IJavaElement fromElement = mock(IJavaElement.class);
+		IFile resource = ResourceChangeEventFactory.createMockResource(resourceName, (long)33);
+
 		when(fromElement.getParent()).thenReturn(parentElement);
 		when(fromElement.toString()).thenReturn(elementName);
 		when(fromElement.getElementType()).thenReturn(type);
-		IFile resource = ResourceChangeEventFactory.createMockResource(resourceName, (long)33);
 		when(fromElement.getResource()).thenReturn(resource);
-//		when(resource.toString())
+		
 		return fromElement;
 	}
 	
@@ -32,30 +34,34 @@ public class JavaStructureChangeEventFactory {
 	}
 	
 	public static ElementChangedEvent createAddMethodAction(String filename, String className, String methodName) {
-		IJavaElement classElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className,IJavaElement.CLASS_FILE);
-		IJavaElement addedElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className + "#" + methodName, IJavaElement.METHOD);
 		
+		IJavaElement classElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className,IJavaElement.CLASS_FILE);
+		IJavaElementDelta delta = JavaStructureChangeEventFactory.createJavaChangeDelta(classElement,IJavaElementDelta.CHANGED);
+		
+		IJavaElement addedElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className + "#" + methodName, IJavaElement.METHOD);
 		IJavaElementDelta childDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(addedElement,IJavaElementDelta.ADDED);
 		
-		IJavaElementDelta delta = JavaStructureChangeEventFactory.createJavaChangeDelta(classElement,IJavaElementDelta.CHANGED);
+		ElementChangedEvent event = mock(ElementChangedEvent.class);
+		
 		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
 		
-		ElementChangedEvent event = mock(ElementChangedEvent.class);
 		when(event.getDelta()).thenReturn(delta);
 		return event;
 	}
 	
 	public static ElementChangedEvent createRemoveMethodAction(String filename, String className, String methodName) {
+		
 		IJavaElement classElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className,IJavaElement.CLASS_FILE);
 		IJavaElement addedElement = JavaStructureChangeEventFactory.createJavaElement(null,filename,className + "#" + methodName, IJavaElement.METHOD);
 		
 		IJavaElementDelta childDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(addedElement,IJavaElementDelta.REMOVED);
 		
 		IJavaElementDelta delta = JavaStructureChangeEventFactory.createJavaChangeDelta(classElement,IJavaElementDelta.CHANGED);
-		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
-		
 		ElementChangedEvent event = mock(ElementChangedEvent.class);
+		
+		when(delta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{childDelta});
 		when(event.getDelta()).thenReturn(delta);
+		
 		return event;
 	}
 	
@@ -69,12 +75,12 @@ public class JavaStructureChangeEventFactory {
 		IJavaElementDelta addedDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(renamedToElement, IJavaElementDelta.ADDED);
 
 		IJavaElementDelta classDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED);
-		when(classDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{removedDelta, addedDelta});
-		
 		IJavaElementDelta parentDelta = JavaStructureChangeEventFactory.createJavaChangeDelta(parentElement,IJavaElementDelta.CHANGED);
+		ElementChangedEvent event = mock(ElementChangedEvent.class);
+		
+		when(classDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{removedDelta, addedDelta});
 		when(parentDelta.getAffectedChildren()).thenReturn(new IJavaElementDelta[]{classDelta});
 
-		ElementChangedEvent event = mock(ElementChangedEvent.class);
 		when(event.getDelta()).thenReturn(parentDelta);
 		return event;
 	}

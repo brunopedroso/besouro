@@ -26,10 +26,9 @@ public class JUnitEventFactory {
 
 		ITestRunSession session = mock(ITestRunSession.class);
 		ITestSuiteElement testCase = mock(ITestSuiteElement.class);
-		
 		IJavaProject prj = createTestProject();
-		when(session.getLaunchedProject()).thenReturn(prj);
 		
+		when(session.getLaunchedProject()).thenReturn(prj);
 		when(session.getTestRunName()).thenReturn(sessionName);
 		when(session.getChildren()).thenReturn(new ITestElement[]{testCase});
 		
@@ -63,11 +62,10 @@ public class JUnitEventFactory {
 		
 		ITestRunSession session = mock(ITestRunSession.class);
 		ITestCaseElement testCase = mock(ITestCaseElement.class);
+		IJavaProject prj = createTestProject();
 		
 		when(session.getTestRunName()).thenReturn(sessionName);
 		when(session.getChildren()).thenReturn(new ITestElement[]{testCase});
-		
-		IJavaProject prj = createTestProject();
 		when(session.getLaunchedProject()).thenReturn(prj);
 		
 		when(testCase.getTestClassName()).thenReturn(classname);
@@ -81,11 +79,10 @@ public class JUnitEventFactory {
 		ITestRunSession srcFolderTest = mock(ITestRunSession.class);
 		ITestElementContainer packageTest = mock(ITestElementContainer.class);
 		ITestSuiteElement testCase = mock(ITestSuiteElement.class);
+		IJavaProject prj = createTestProject();
 		
 		when(srcFolderTest.getChildren()).thenReturn(new ITestElement[]{packageTest});
 		when(srcFolderTest.getTestRunName()).thenReturn(fileName);
-		
-		IJavaProject prj = createTestProject();
 		when(srcFolderTest.getLaunchedProject()).thenReturn(prj);
 
 		when(packageTest.getChildren()).thenReturn(new ITestElement[]{testCase});
@@ -102,12 +99,12 @@ public class JUnitEventFactory {
 		ITestElementContainer packageTest = mock(ITestElementContainer.class);
 		ITestSuiteElement testCase1 = mock(ITestSuiteElement.class);
 		ITestSuiteElement testCase2 = mock(ITestSuiteElement.class);
+		IJavaProject prj = createTestProject();
 		
 		when(session.getChildren()).thenReturn(new ITestElement[]{packageTest});
 		when(session.getTestRunName()).thenReturn("TestSession");
 		when(session.getTestResult(true)).thenReturn(Result.OK);
 		
-		IJavaProject prj = createTestProject();
 		when(session.getLaunchedProject()).thenReturn(prj);
 		
 		when(packageTest.getChildren()).thenReturn(new ITestElement[]{testCase1, testCase2});
@@ -118,6 +115,7 @@ public class JUnitEventFactory {
 		
 		when(testCase2.getTestResult(true)).thenReturn(passing2?Result.OK:Result.ERROR);
 		when(testCase2.getSuiteTypeName()).thenReturn(testFile2);
+		
 		return session;
 	}
 

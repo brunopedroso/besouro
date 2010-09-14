@@ -23,36 +23,37 @@ public class WindowEventsFactory {
 
 	public static IWorkbench getMockWorkbench(String file) {
 		
-		IDocument doc = mock(IDocument.class);
+		IWorkbench workbench = mock(IWorkbench.class);
+		IWorkbenchWindow window = mock(IWorkbenchWindow.class);
+		IWorkbenchPage page = mock(IWorkbenchPage.class);
+		
+		ITextEditor editor = mock(ITextEditor.class);
 		
 		IDocumentProvider docProvider = mock(IDocumentProvider.class);
-		when(docProvider.getDocument(any())).thenReturn(doc);
+		IDocument doc = mock(IDocument.class);
 		
 		IPath ipath = mock(IPath.class);
 		File afile = mock(File.class);
-		when(ipath.toFile()).thenReturn(afile);
-		when(afile.length()).thenReturn(33l);
-		
 		IFile inputFile = mock(IFile.class);
+		
+		IFileEditorInput editorInput = mock(IFileEditorInput.class);
+		
+		when(workbench.getWorkbenchWindows()).thenReturn(new IWorkbenchWindow[]{window});
+		when(window.getActivePage()).thenReturn(page);
+		when(page.getActiveEditor()).thenReturn(editor);
+		
+		when(editor.getEditorInput()).thenReturn(editorInput);
+		when(editor.getDocumentProvider()).thenReturn(docProvider);
+		
+		when(editorInput.getFile()).thenReturn(inputFile);
+		when(docProvider.getDocument(any())).thenReturn(doc);
 		
 		when(inputFile.getLocation()).thenReturn(ipath);
 		when(inputFile.getName()).thenReturn(file);
 		
-		IFileEditorInput editorInput = mock(IFileEditorInput.class);
-		when(editorInput.getFile()).thenReturn(inputFile);
+		when(ipath.toFile()).thenReturn(afile);
+		when(afile.length()).thenReturn(33l);
 		
-		ITextEditor editor = mock(ITextEditor.class);
-		when(editor.getEditorInput()).thenReturn(editorInput);
-		when(editor.getDocumentProvider()).thenReturn(docProvider);
-		
-		IWorkbenchPage page = mock(IWorkbenchPage.class);
-		when(page.getActiveEditor()).thenReturn(editor);
-		
-		IWorkbenchWindow window = mock(IWorkbenchWindow.class);
-		when(window.getActivePage()).thenReturn(page);
-		
-		IWorkbench workbench = mock(IWorkbench.class);
-		when(workbench.getWorkbenchWindows()).thenReturn(new IWorkbenchWindow[]{window});
 		return workbench;
 	}
 	
@@ -67,24 +68,25 @@ public class WindowEventsFactory {
 
 	public static ITextEditor createTestEditor(String filename, int fileLength) {
 		
+		ITextEditor part = mock(ITextEditor.class);
+		
+		IPath ipath = mock(IPath.class);
 		File file = mock(File.class);
+		IFile ifile = mock(IFile.class);
+		IFileEditorInput fileInput = mock(IFileEditorInput.class);
+		
+		when(part.getEditorInput()).thenReturn(fileInput);
+		when(fileInput.getFile()).thenReturn(ifile);
+		
+		when(ifile.getLocation()).thenReturn(ipath);
+		when(ifile.getName()).thenReturn(filename);
+		
+		when(ipath.toFile()).thenReturn(file);
+		
 		when(file.getName()).thenReturn(filename);
 		when(file.getPath()).thenReturn(filename);
 		when(file.length()).thenReturn((long) fileLength);
 
-		
-		IPath ipath = mock(IPath.class);
-		when(ipath.toFile()).thenReturn(file);
-		
-		IFile ifile = mock(IFile.class);
-		when(ifile.getLocation()).thenReturn(ipath);
-		when(ifile.getName()).thenReturn(filename);
-		IFileEditorInput fileInput = mock(IFileEditorInput.class);
-		when(fileInput.getFile()).thenReturn(ifile);
-		
-		ITextEditor part = mock(ITextEditor.class);
-		when(part.getEditorInput()).thenReturn(fileInput);
-		
 		return part;
 	}
 }

@@ -12,8 +12,6 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
-//TODO do we need a unary/binary diff?
-
 /**
  * Defines unary refactoring action.
  * 
