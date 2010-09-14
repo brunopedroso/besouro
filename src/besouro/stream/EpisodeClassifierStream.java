@@ -16,11 +16,12 @@ import besouro.zorro.ZorroTDDMeasure;
 public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private ZorroEpisodeClassification classifier;
+	private ZorroTDDMeasure measure;
+	
 	List<Action> actions = new ArrayList<Action>();
+	private List<Episode> episodes = new ArrayList<Episode>();
 
 	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
-	private List<Episode> episodes = new ArrayList<Episode>();
-	private ZorroTDDMeasure measure;
 
 	public EpisodeClassifierStream() throws Exception {
 		classifier = new ZorroEpisodeClassification();
