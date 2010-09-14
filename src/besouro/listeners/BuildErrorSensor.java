@@ -19,8 +19,6 @@ import besouro.stream.ActionOutputStream;
  * Provides an approach to find build error using problem markers.
  * 
  * @author Hongbing Kou
- * @version $Id: BuildErrorSensor.java,v 1.1.1.1 2005/10/20 23:56:56 johnson Exp
- *          $
  */
 public class BuildErrorSensor {
 
@@ -36,35 +34,6 @@ public class BuildErrorSensor {
 		// not only in the changed file, as it was in the original version
 		// from Hongbing. Aparently, rules are gonna manage it.
 
-		// ITextEditor activeEditor = WindowListener.getActiveTextEditor();
-
-		// Do nothing if there is no file edited.
-		// if (activeEditor == null) {
-		// return;
-		// }
-		//
-		// if (!(activeEditor.getEditorInput() instanceof IFileEditorInput)) {
-		// return;
-		// }
-
-		// IFileEditorInput fileEditorInput = (IFileEditorInput)
-		// activeEditor.getEditorInput();
-		// Do nothing if it is not file edit
-		// if (fileEditorInput == null) {
-		// return;
-		// }
-		//
-		// We are interested in java file only.
-		// IFile file = fileEditorInput.getFile();
-		// if (file == null) {
-		// return;
-		// }
-
-		// String fileName2 = file.getLocation().toString();
-		// if (!fileName2.endsWith(".java")) {
-		// return;
-		// }
-
 		IResource resource = delta.getResource();
 		if (resource == null) {
 			return;
@@ -74,13 +43,6 @@ public class BuildErrorSensor {
 		if (location == null) {
 			return;
 		}
-
-		// String deltaFileName = location.toString();
-		// if (!fileName2.equals(deltaFileName)) {
-		// return;
-		// }
-
-		// URI fileResource = fileEditorInput.getFile().getLocationURI();
 
 		IMarkerDelta markerDeltas[] = delta.getMarkerDeltas();
 		if (markerDeltas == null || markerDeltas.length == 0) {
@@ -113,15 +75,6 @@ public class BuildErrorSensor {
 		}
 	}
 
-	/**
-	 * Processes the marker defined in the resource file.
-	 * 
-	 * @param fileResource
-	 *            File resource.
-	 * @param markerDelta
-	 *            Marker to in the resource file.
-	 * @return A map contains metric names and values.
-	 */
 	private Map<String, String> processPossibleBuildErrors(
 			IMarkerDelta markerDelta) {
 

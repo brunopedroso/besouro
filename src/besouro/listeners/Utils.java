@@ -13,13 +13,6 @@ import besouro.stream.ActionOutputStream;
 
 public class Utils {
 
-	/**
-	 * Extracts file name from a file resource URI.
-	 * 
-	 * @param fileResource
-	 *            File name path.
-	 * @return File name.
-	 */
 	public static String extractFileName(URI fileResource) {
 
 		String fileStirng = fileResource.toString();
@@ -38,19 +31,15 @@ public class Utils {
 	/**
 	 * Gets the fully qualified class name for an active file. For example, its
 	 * value is foo.bar.Baz.
-	 * 
-	 * @param file
-	 *            Get fully qualified class file.
-	 * @return The fully qualified class name. For example,foo.bar.Baz.
 	 */
 	public static String getFullyQualifedClassName(IFile file) {
 		
 		String fullClassName = "";
-		if (file.exists() && file.getName().endsWith(ActionOutputStream.JAVA_EXT)) {
+		if (file.exists() && file.getName().endsWith(".java")) {
 			
 			ICompilationUnit compilationUnit = (ICompilationUnit) JavaCore.create(file);
 			String className = compilationUnit.getElementName();
-			if (className.endsWith(ActionOutputStream.JAVA_EXT)) {
+			if (className.endsWith(".java")) {
 				className = className.substring(0, className.length() - 5);
 			}
 
@@ -67,14 +56,11 @@ public class Utils {
 				}
 
 			} catch (JavaModelException e) {
-				// This exception will be thrown if user is working on a Java
-				// but did not open
-				// it with "Java Perspective". Thus, the Java Model does not
-				// exist to parse
-				// Java files. So we only log out exception while Eclipse's Java
-				// Perspective
-				// exits.
+				// This exception will be thrown if user is working on a Java but did not open it with "Java Perspective". 
+				// Thus, the Java Model does not exist to parse Java files. 
+				// So we only log out exception while Eclipse's Java Perspective exits.
 				if (!e.isDoesNotExist()) {
+					// what should we do in this case?
 					// EclipseSensorPlugin.getDefault().log(file.getName(), e);
 				}
 			}

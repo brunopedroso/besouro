@@ -19,7 +19,6 @@ public class Episode {
 		
 	}
 	
-	
 	public void setClassification(String category, String subtype) {
 		this.category = category;
 		this.subtype = subtype;
@@ -65,14 +64,13 @@ public class Episode {
 			first = actions.get(0).getClock().getTime();
 			
 		} else {
-			// for testing
+			// used for testing
 			return duration;
 			
 		}
 		
 		long last = actions.get(actions.size()-1).getClock().getTime();
 		return (int) (last-first)/1000;
-		
 		
 	}
 

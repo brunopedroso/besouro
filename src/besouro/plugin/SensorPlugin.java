@@ -35,8 +35,7 @@ import besouro.stream.EpisodeClassifierStream;
 // if we edit test without increasing assertions or methods, its not recognized as test-adition
 // what is modeled through this 'production' rules?!
 
-//TODO [clean] remove unusefull classes
-
+//TODO [clean] rename sensor plugin?
 public class SensorPlugin implements IStartup {
 
 	public static SensorPlugin plugin;
@@ -61,13 +60,10 @@ public class SensorPlugin implements IStartup {
 
 	public void earlyStartup() {
 
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(
-				new ResourceChangeListener(stream),
-				IResourceChangeEvent.POST_CHANGE);
-		JavaCore.addElementChangedListener(new JavaStructureChangeListener(
-				stream));
-		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new
-		// LaunchListener(stream));
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(stream), IResourceChangeEvent.POST_CHANGE);
+		JavaCore.addElementChangedListener(new JavaStructureChangeListener(stream));
+		
+		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
 		JUnitCore.addTestRunListener(new JUnitListener(stream));
 
 		WindowListener windowListener = new WindowListener(stream);
@@ -75,8 +71,7 @@ public class SensorPlugin implements IStartup {
 		IWorkbench workbench = Activator.getDefault().getWorkbench();
 		workbench.addWindowListener(windowListener);
 
-		// makes the installation of the windows' listeners in case we have
-		// already an opened document
+		// registers open events for the already opened files
 		windowListener.windowOpened(null);
 
 	}

@@ -50,11 +50,6 @@ public class UnitTestCaseAction extends UnitTestAction {
 		return assertedFact;
 	}
 
-	/**
-	 * Gets unit test action string.
-	 * 
-	 * @return Unit test action string.
-	 */
 	public String toString() {
 		if (this.isSuccessful()) {
 			return getClock() + " TEST CASE - OK " + getResource();
@@ -63,38 +58,4 @@ public class UnitTestCaseAction extends UnitTestAction {
 		}
 	}
 	
-	/**
-	 * Encode unit test success in green and failure in red.
-	 * 
-	 * @return Green or red.
-	 */
-	public String getActionColorEncoding() {
-		if (this.isSuccessful()) {
-			return "green";
-		} else {
-			return "red";
-		}
-	}
-
-	/**
-	 * Gets unit test invocation result..
-	 * 
-	 * @return OK or failure.
-	 */
-	public String getActionDesc() {
-		if (this.isSuccessful()) {
-			return "TEST OK";
-		} else {
-			return "TEST FAILED";
-		}
-	}
-
-	/**
-	 * Action type is unit test.
-	 * 
-	 * @return "UNIT TEST"
-	 */
-	public String getActionType() {
-		return "UNIT TEST";
-	}
 }

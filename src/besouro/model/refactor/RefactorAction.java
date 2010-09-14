@@ -9,9 +9,7 @@ import besouro.model.ResourceAction;
 
 /**
  * Implements action regarding to refactoring on java class, method etc.
- * 
  * @author Hongbing Kou
- * @version $Id: RefactorAction.java 281 2005-11-10 22:25:19Z hongbing $
  */
 public abstract class RefactorAction extends ResourceAction {
 

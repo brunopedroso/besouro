@@ -1,5 +1,7 @@
 package besouro.model;
-import java.io.File;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
 
 import jess.Fact;
@@ -14,7 +16,6 @@ import org.eclipse.core.resources.IResource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
 import besouro.model.refactor.UnaryRefactorAction;
 
@@ -52,14 +53,11 @@ public class TemplatesTest {
 		engine.assertFact(f);
 		engine.run();
 
-		QueryResult result = engine.runQueryStar(
-				"episode-classification-query", new ValueVector());
+		QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 		Assert.assertTrue("Type 1 TDD episode can be classified", result.next());
 
-		Assert.assertEquals("Test TDD type 1 episode category name",
-				"regression", result.getString("cat"));
-		Assert.assertEquals("Test TDD type 1 episode cateory type", "1",
-				result.getString("tp"));
+		Assert.assertEquals("Test TDD type 1 episode category name","regression", result.getString("cat"));
+		Assert.assertEquals("Test TDD type 1 episode cateory type", "1",result.getString("tp"));
 
 	}
 

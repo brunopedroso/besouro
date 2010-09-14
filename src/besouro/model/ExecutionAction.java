@@ -18,7 +18,6 @@ public class ExecutionAction extends ResourceAction {
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		System.out.println("canot assert execs yet");
 		return null;
-		// throw new RuntimeException("not implemented yet");
 	}
 
 }

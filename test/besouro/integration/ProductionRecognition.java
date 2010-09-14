@@ -15,7 +15,6 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 	@Test 
 	public void productionCategory1() throws Exception {
 		
-		
 		// Edit on production code    
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfStatements()).thenReturn(14);

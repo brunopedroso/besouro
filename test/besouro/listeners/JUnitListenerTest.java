@@ -1,28 +1,17 @@
 package besouro.listeners;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import junit.framework.Assert;
 
-import org.eclipse.jdt.junit.model.ITestCaseElement;
-import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
-import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
-import org.eclipse.jdt.junit.model.ITestSuiteElement;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.listeners.JUnitListener;
 import besouro.listeners.mock.FakeActionStream;
 import besouro.listeners.mock.JUnitEventFactory;
 import besouro.model.Action;
-import besouro.model.ResourceAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;

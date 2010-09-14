@@ -16,9 +16,7 @@ import org.junit.Test;
 
 /**
  * Tests test-pass episode classification.
- * 
  * @author Hongbing Kou
- * @version $Id$
  */
 public class EpisodeClassifierTest {
 
@@ -93,11 +91,6 @@ public class EpisodeClassifierTest {
     Assert.assertEquals("Test refactoring type 2 episode category name", "refactoring", result.getString("cat"));
     Assert.assertEquals("Test refactoring type 2 episode categoty type", "1A", result.getString("tp"));  
     
-//	 Iterator it = engine.listFacts();
-//	 while (it.hasNext()) {
-//	 System.out.println(it.next());
-//	 }
-
   }
 
   @Test 

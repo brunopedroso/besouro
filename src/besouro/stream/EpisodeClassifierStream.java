@@ -1,25 +1,21 @@
 package besouro.stream;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import jess.Batch;
+import jess.QueryResult;
+import jess.Rete;
+import jess.ValueVector;
 import besouro.measure.TDDMeasure;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.model.JavaFileAction;
 import besouro.model.UnitTestAction;
-import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
-
-import jess.Batch;
-import jess.JessException;
-import jess.QueryResult;
-import jess.Rete;
-import jess.ValueVector;
 
 public class EpisodeClassifierStream implements ActionOutputStream {
 
@@ -62,7 +58,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 					
-					debugFacts();
+					//debugFacts();
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 

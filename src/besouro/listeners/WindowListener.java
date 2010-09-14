@@ -20,15 +20,7 @@ import besouro.plugin.Activator;
 import besouro.stream.ActionOutputStream;
 
 
-public class WindowListener implements IWindowListener, IPartListener,
-		IDocumentListener {
-
-//	// we do not need to maintain the active editor any more
-//	private static ITextEditor activeTextEditor;
-//
-//	public static ITextEditor getActiveTextEditor() {
-//		return activeTextEditor;
-//	}
+public class WindowListener implements IWindowListener, IPartListener, IDocumentListener {
 
 	private ActionOutputStream stream;
 	private IWorkbench workbench;
@@ -61,8 +53,8 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 		for (int i = 0; i < activeWindows.length; i++) {
 
-			installDocumentListener(activeWindows[i].getActivePage()
-					.getActiveEditor());
+			// not using doclistener
+//			installDocumentListener(activeWindows[i].getActivePage().getActiveEditor());
 
 			IWorkbenchPage activePage = activeWindows[i].getActivePage();
 			activePage.addPartListener(this);
@@ -76,7 +68,8 @@ public class WindowListener implements IWindowListener, IPartListener,
 	}
 
 	public void windowActivated(IWorkbenchWindow window) {
-		installDocumentListener(window.getActivePage().getActiveEditor());
+		// not using doclistener
+//		installDocumentListener(window.getActivePage().getActiveEditor());
 	}
 
 	public void partOpened(IWorkbenchPart part) {
@@ -84,7 +77,8 @@ public class WindowListener implements IWindowListener, IPartListener,
 	}
 
 	public void partActivated(IWorkbenchPart part) {
-		installDocumentListener(part);
+		// not using doclistener
+//		installDocumentListener(part);
 	}
 
 	public void partBroughtToTop(IWorkbenchPart part) {
@@ -105,13 +99,13 @@ public class WindowListener implements IWindowListener, IPartListener,
 	public void windowClosed(IWorkbenchWindow window) {
 	}
 
-	private void installDocumentListener(IWorkbenchPart part) {
-		if (part instanceof ITextEditor) {
-			ITextEditor activeTextEditor = (ITextEditor) part;
-			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
-			document.addDocumentListener(this);
-		}
-	}
+//	private void installDocumentListener(IWorkbenchPart part) {
+//		if (part instanceof ITextEditor) {
+//			ITextEditor activeTextEditor = (ITextEditor) part;
+//			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
+//			document.addDocumentListener(this);
+//		}
+//	}
 
 	private void registerFileOpenAction(IWorkbenchPart part) {
 

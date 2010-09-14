@@ -1,9 +1,6 @@
 package besouro.model;
 
-import java.io.File;
 import java.util.Date;
-
-import org.eclipse.core.resources.IResource;
 
 import jess.Fact;
 import jess.JessException;
@@ -11,11 +8,11 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
+import org.eclipse.core.resources.IResource;
+
 /**
  * Implements edit action on files.
- * 
  * @author Hongbing Kou
- * @version $Id: EditAction.java 281 2005-11-10 22:25:19Z hongbing $
  */
 public class EditAction extends JavaFileAction {
 
@@ -24,8 +21,6 @@ public class EditAction extends JavaFileAction {
 	public String getOperation() {
 		return operation;
 	}
-
-	private String unitName;
 
 	private int methodIncrease = 0;
 	private int statementIncrease = 0;
@@ -36,8 +31,6 @@ public class EditAction extends JavaFileAction {
 	private boolean isTestEdit;
 
 	private int fileSizeIncrease;
-
-	private long duration;
 
 	public EditAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
@@ -84,16 +77,11 @@ public class EditAction extends JavaFileAction {
 
 	public boolean isSubstantial() {
 
-		
 		if (isTestEdit) {
-			// ignoring the duration. Look a litle down
-			// return this.getDuration() > 0 &&
 			return (this.getMethodIncrease() != 0 || this.getStatementIncrease() != 0
 					|| this.getTestMethodIncrease() != 0 || this.getTestAssertionIncrease() != 0);
 
 		} else {
-			// ignoring the duration. Look a litle down
-			// return this.getDuration() > 0 &&
 			return (this.getFileSizeIncrease() != 0 || this.getMethodIncrease() != 0 || this.getStatementIncrease() != 0);
 		}
 
@@ -102,61 +90,32 @@ public class EditAction extends JavaFileAction {
 	// TODO [mod] assert facts in a 'classifier' object to 
 
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
+		
 		Fact assertedFact = null;
+		
 		if (isSubstantial()) {
 			Fact f;
 
 			if (this.isTestEdit()) {
 				f = new Fact("UnitTestEditAction", engine);
-				f.setSlotValue("testChange",
-						new Value(this.getTestMethodIncrease(), RU.INTEGER));
-				f.setSlotValue("assertionChange",
-						new Value(this.getTestAssertionIncrease(), RU.INTEGER));
+				f.setSlotValue("testChange", new Value(this.getTestMethodIncrease(), RU.INTEGER));
+				f.setSlotValue("assertionChange", new Value(this.getTestAssertionIncrease(), RU.INTEGER));
 
 			} else {
 				f = new Fact("ProductionEditAction", engine);
-				f.setSlotValue("methodChange",
-						new Value(this.getMethodIncrease(), RU.INTEGER));
-				f.setSlotValue("statementChange",
-						new Value(this.getStatementIncrease(), RU.INTEGER));
+				f.setSlotValue("methodChange", new Value(this.getMethodIncrease(), RU.INTEGER));
+				f.setSlotValue("statementChange", new Value(this.getStatementIncrease(), RU.INTEGER));
 			}
 
 			f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-			f.setSlotValue(FILE_SLOT, new Value(this.getResource().getName(),
-					RU.STRING));
-			// f.setSlotValue("duration", new Value(this.getDuration(),
-			// RU.INTEGER));
-			f.setSlotValue("byteChange", new Value(this.getFileSizeIncrease(),
-					RU.INTEGER));
+			f.setSlotValue(FILE_SLOT, new Value(this.getResource().getName(), RU.STRING));
+			f.setSlotValue("byteChange", new Value(this.getFileSizeIncrease(), RU.INTEGER));
 
 			assertedFact = engine.assertFact(f);
 		}
 
 		return assertedFact;
 	}
-
-	// I've droped this concept. Hongbing used it just for classifying an action
-	// as substancial...
-	// Im gonna consider all durations as substantial...
-
-	// @Override
-	// public int getDuration(){
-	//
-	// if (previousAction != null) {
-	// long thisTimestamp = getClock().getDate().getTime();
-	// long previousTimestamp = previousAction.getClock().getDate().getTime();
-	// duration = (thisTimestamp - previousTimestamp)/1000;
-	// previousTimestamp = thisTimestamp;
-	// }
-	//
-	// return (int) duration;
-	//
-	// }
-	//
-	// @Override
-	// public void setDuration(int d){
-	// this.duration = d;
-	// }
 
 	public boolean isTestEdit() {
 		return isTestEdit;
@@ -185,19 +144,13 @@ public class EditAction extends JavaFileAction {
 
 	}
 
-//	public void setUnitName(String name) {
-//		this.unitName = name;
-//
-//	}
-
 	public void setTestMethodIncrease(int value) {
 		this.testMethodIncrease = value;
 	}
 
 	public int getTestMethodIncrease() {
 		if (getPreviousAction() != null) {
-			return this.getTestMethodsCount()
-					- getPreviousAction().getTestMethodsCount();
+			return this.getTestMethodsCount() - getPreviousAction().getTestMethodsCount();
 		}
 		return this.testMethodIncrease;
 	}
@@ -208,8 +161,7 @@ public class EditAction extends JavaFileAction {
 
 	public int getTestAssertionIncrease() {
 		if (getPreviousAction() != null) {
-			return this.getTestAssertionsCount()
-					- getPreviousAction().getTestAssertionsCount();
+			return this.getTestAssertionsCount() - getPreviousAction().getTestAssertionsCount();
 		}
 		return this.testAssertionIncrease;
 	}
@@ -220,8 +172,7 @@ public class EditAction extends JavaFileAction {
 
 	public int getMethodIncrease() {
 		if (getPreviousAction() != null) {
-			return this.getMethodsCount()
-					- getPreviousAction().getMethodsCount();
+			return this.getMethodsCount() - getPreviousAction().getMethodsCount();
 		}
 		return this.methodIncrease;
 	}
@@ -232,23 +183,9 @@ public class EditAction extends JavaFileAction {
 
 	public int getStatementIncrease() {
 		if (getPreviousAction() != null) {
-			return this.getStatementsCount()
-					- getPreviousAction().getStatementsCount();
+			return this.getStatementsCount() - getPreviousAction().getStatementsCount();
 		}
 		return this.statementIncrease;
 	}
 
-	/**
-	 * Checks whether this edit work makes any progress.
-	 * 
-	 * @return True if there is any or false otherwise.
-	 */
-	// public abstract boolean hasProgress();
-
-	/**
-	 * Checks whether this edit work is significant.
-	 * 
-	 * @return True if it is and false otherwise.
-	 */
-	// public abstract boolean isSubstantial();
 }
