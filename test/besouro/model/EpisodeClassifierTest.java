@@ -2,7 +2,7 @@ package besouro.model;
 
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
+import java.util.Date;
 
 import jess.Batch;
 import jess.QueryResult;
@@ -12,8 +12,6 @@ import jess.ValueVector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import besouro.model.Clock;
 
 
 /**
@@ -25,7 +23,7 @@ import besouro.model.Clock;
 public class EpisodeClassifierTest {
 
   private Rete engine;
-  private Clock clock;
+  private Date clock;
   
   private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
   
@@ -37,7 +35,7 @@ public class EpisodeClassifierTest {
     Batch.batch("besouro/model/Actions.clp", this.engine);
     Batch.batch("besouro/model/EpisodeClassifier.clp", this.engine);
     
-    this.clock = new Clock(dateFormat.parse("01/01/2005 08:30:45"));
+    this.clock = dateFormat.parse("01/01/2005 08:30:45");
 
     engine.reset();
   }

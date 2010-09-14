@@ -11,7 +11,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 
-import besouro.model.Clock;
 import besouro.model.EditAction;
 import besouro.stream.ActionOutputStream;
 
@@ -119,7 +118,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				testCounter.reset();
 				testCounter.measureJavaFile(changedFile);
 
-				EditAction action = new EditAction(new Clock(new Date()), changedFile);
+				EditAction action = new EditAction(new Date(), changedFile);
 				action.setOperation("Save");
 				
 				// do we need this full name?

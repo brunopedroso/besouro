@@ -1,27 +1,23 @@
 package besouro.listeners;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.TestRunListener;
+import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
-import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
-import besouro.model.Clock;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
@@ -48,7 +44,7 @@ public class JUnitListener extends TestRunListener {
 		IResource res = findTestResource(session.getLaunchedProject(), session.getTestRunName());
 		
 		// registers the session action. It breake the episode, but doesnt count on the classification
-		UnitTestSessionAction action = new UnitTestSessionAction(new Clock(new Date()), res);
+		UnitTestSessionAction action = new UnitTestSessionAction(new Date(), res);
 		action.setSuccessValue(isSuccessfull);
 		stream.addAction(action);
 		
@@ -64,7 +60,7 @@ public class JUnitListener extends TestRunListener {
 
 			IResource res = findTestResource(project, testCase.getSuiteTypeName());
 			
-			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), res);
+			UnitTestCaseAction action = new UnitTestCaseAction(new Date(), res);
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
 			
@@ -76,7 +72,7 @@ public class JUnitListener extends TestRunListener {
 				
 			// will reach this case only when user executes a single test method
 			
-			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()),res);
+			UnitTestCaseAction action = new UnitTestCaseAction(new Date(),res);
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
 						

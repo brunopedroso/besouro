@@ -1,16 +1,16 @@
 package besouro.model;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IResource;
+import java.util.Date;
 
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
 
+import org.eclipse.core.resources.IResource;
+
 public class FileOpenedAction extends JavaFileAction {
 
-	public FileOpenedAction(Clock clock, IResource workspaceFile) {
+	public FileOpenedAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 
 		setFileSize((int) workspaceFile.getLocation().toFile().length());

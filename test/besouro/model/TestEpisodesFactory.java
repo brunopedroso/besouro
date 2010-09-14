@@ -1,10 +1,13 @@
 package besouro.model;
-import java.io.File;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.eclipse.core.resources.IResource;
-import static org.mockito.Mockito.*;
+import java.util.Date;
 
 import jess.Rete;
+
+import org.eclipse.core.resources.IResource;
+
 import besouro.model.refactor.UnaryRefactorAction;
 
 
@@ -20,7 +23,7 @@ public class TestEpisodesFactory {
 		  when(testFile.getName()).thenReturn("C:\\cvs\\work\\example\\TestTriangle.java");
 	  }
 	  
-	  public static void addTDDType1Facts(Rete engine, Clock clock) throws Exception {
+	  public static void addTDDType1Facts(Rete engine, Date clock) throws Exception {
 	    // Add test method
 	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
@@ -72,7 +75,7 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(7, engine);
 	  }
 	  
-	  public static void addTDDType2Facts(Rete engine, Clock clock) throws Exception {
+	  public static void addTDDType2Facts(Rete engine, Date clock) throws Exception {
 	    // Add test method
 	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
@@ -110,7 +113,7 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(5, engine);
 	  }
 	  
-	  public static void addTDDType3Facts(Rete engine, Clock clock) throws Exception {
+	  public static void addTDDType3Facts(Rete engine, Date clock) throws Exception {
 	    // Add test method
 	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
@@ -157,7 +160,7 @@ public class TestEpisodesFactory {
 	    unitTestAction.assertJessFact(7, engine);
 	  }
 	  
-	  public static void addTestCodeRefactoFacts(Rete engine, Clock clock) throws Exception {
+	  public static void addTestCodeRefactoFacts(Rete engine, Date clock) throws Exception {
 
 		// Edit on test code    
 	    EditAction action = new EditAction(clock, testFile);
@@ -191,7 +194,7 @@ public class TestEpisodesFactory {
 	    
 	  }
 	  
-	  public static void addProductionCodeRefactoFacts(Rete engine, Clock clock) throws Exception {
+	  public static void addProductionCodeRefactoFacts(Rete engine, Date clock) throws Exception {
 		  
 	    // Edit on production code    
 	    EditAction action = new EditAction(clock, productionFile);

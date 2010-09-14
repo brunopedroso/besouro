@@ -11,7 +11,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaModelMarker;
 
-import besouro.model.Clock;
 import besouro.model.CompilationAction;
 import besouro.stream.ActionOutputStream;
 
@@ -104,7 +103,7 @@ public class BuildErrorSensor {
 				// dont repeat
 				if (!messagePool.contains(data)) {
 
-					CompilationAction action = new CompilationAction(new Clock(new Date()), resource);
+					CompilationAction action = new CompilationAction(new Date(), resource);
 					action.setErrorMessage(errorMsg);
 					this.sensor.addAction(action);
 					messagePool.add(data);

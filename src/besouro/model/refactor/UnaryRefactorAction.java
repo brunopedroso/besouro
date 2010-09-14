@@ -1,16 +1,14 @@
 package besouro.model.refactor;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IResource;
-
-import besouro.model.Clock;
+import java.util.Date;
 
 import jess.Fact;
 import jess.JessException;
 import jess.RU;
 import jess.Rete;
 import jess.Value;
+
+import org.eclipse.core.resources.IResource;
 
 /**
  * Defines unary refactoring action.
@@ -30,7 +28,7 @@ public class UnaryRefactorAction extends RefactorAction {
 	 * @param workspaceFile
 	 *            Associated file.
 	 */
-	public UnaryRefactorAction(Clock clock, IResource workspaceFile) {
+	public UnaryRefactorAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

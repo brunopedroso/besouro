@@ -15,10 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import besouro.model.Action;
-import besouro.model.Clock;
 import besouro.model.EditAction;
 import besouro.model.FileOpenedAction;
-import besouro.stream.EpisodeClassifierStream;
 
 
 
@@ -28,15 +26,13 @@ public class IncreasesCalculationTest {
 	private EpisodeClassifierStream stream;
 	private EditAction action1;
 	private EditAction action2;
-	private Clock clock;
+	private Date clock;
 
 	@Before
 	public void setup() throws Exception {
 
 		stream = new EpisodeClassifierStream();
 
-		Date referenceDate = new Date();
-		
 		file = mock(IResource.class);
 		IPath path = mock(IPath.class);
 		File aFile = mock(File.class);
@@ -45,7 +41,7 @@ public class IncreasesCalculationTest {
 		when(path.toFile()).thenReturn(aFile);
 		when(aFile.length()).thenReturn(33l);
 		
-		clock = new Clock(referenceDate);
+		clock = new Date();
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
 		action2.setPreviousAction(action1);

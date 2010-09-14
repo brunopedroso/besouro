@@ -1,6 +1,5 @@
 package besouro.listeners;
 
-import java.io.File;
 import java.util.Date;
 
 import org.eclipse.jface.text.DocumentEvent;
@@ -16,7 +15,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import besouro.model.Clock;
 import besouro.model.FileOpenedAction;
 import besouro.plugin.Activator;
 import besouro.stream.ActionOutputStream;
@@ -125,7 +123,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 			if (input instanceof IFileEditorInput) {
 				IFileEditorInput fileInput = (IFileEditorInput) input;
 
-				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile());
+				FileOpenedAction action = new FileOpenedAction(new Date(), fileInput.getFile());
 
 				action.setFileSize((int) fileInput.getFile().getLocation().toFile().length());
 

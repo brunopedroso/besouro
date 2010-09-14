@@ -1,8 +1,6 @@
 package besouro.model;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IResource;
+import java.util.Date;
 
 import jess.Fact;
 import jess.JessException;
@@ -10,12 +8,14 @@ import jess.RU;
 import jess.Rete;
 import jess.Value;
 
+import org.eclipse.core.resources.IResource;
+
 public class UnitTestCaseAction extends UnitTestAction {
 
 	private String testcase;
 	protected String failureMessage;
 	
-	public UnitTestCaseAction(Clock clock, IResource workspaceFile) {
+	public UnitTestCaseAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

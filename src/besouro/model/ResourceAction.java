@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.io.File;
+import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
 
@@ -29,7 +30,7 @@ public abstract class ResourceAction extends Action implements Comparable {
 	 * @param workspaceFile
 	 *            Workspace file being worked on.
 	 */
-	public ResourceAction(Clock clock, IResource workspaceFile) {
+	public ResourceAction(Date clock, IResource workspaceFile) {
 		super(clock);
 		this.resource = workspaceFile;
 	}

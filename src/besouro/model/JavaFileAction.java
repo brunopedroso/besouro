@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.io.File;
+import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
 
@@ -17,7 +18,7 @@ public class JavaFileAction extends ResourceAction {
 	private int fileSize = 0;
 	private JavaFileAction previousAction;
 
-	public JavaFileAction(Clock clock, IResource workspaceFile) {
+	public JavaFileAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.io.File;
+import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
 
@@ -28,7 +29,7 @@ public class CompilationAction extends ResourceAction {
 	 * @param workspaceFile
 	 *            Active file.
 	 */
-	public CompilationAction(Clock clock, IResource workspaceFile) {
+	public CompilationAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

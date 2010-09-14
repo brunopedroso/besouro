@@ -12,7 +12,6 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
-import besouro.model.Clock;
 import besouro.model.refactor.UnaryRefactorAction;
 import besouro.stream.ActionOutputStream;
 
@@ -166,7 +165,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		String name = buildElementName(element.toString());
 		if (name != null && !"".equals(name)) {
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), element.getResource());
+			UnaryRefactorAction action = new UnaryRefactorAction(new Date(), element.getResource());
 			action.setOperator(op);
 			action.setSubjectType(type);
 			action.setSubjectName(name);
@@ -211,7 +210,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			// msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), javaFile);
+			UnaryRefactorAction action = new UnaryRefactorAction(new Date(), javaFile);
 			action.setOperator("RENAME");
 			action.setSubjectName(fromName + " => " + toName);
 
@@ -259,7 +258,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			// msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').append(fromName).append(" -> ").append(toName);
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), javaFile);
+			UnaryRefactorAction action = new UnaryRefactorAction(new Date(), javaFile);
 			action.setOperator("MOVE");
 			action.setSubjectName(fromName + " => " + toName);
 

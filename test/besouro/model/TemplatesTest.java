@@ -21,7 +21,7 @@ import besouro.model.refactor.UnaryRefactorAction;
 
 public class TemplatesTest {
 
-	private Clock clock;
+	private Date clock;
 	private Rete engine;
 
 	private IResource productionFile;
@@ -29,7 +29,7 @@ public class TemplatesTest {
 
 	@Before
 	public void setup() throws JessException {
-		clock = new Clock(new Date());
+		clock = new Date();
 		testFile = mock(IResource.class);
 		when(testFile.getName()).thenReturn("testFile");
 		productionFile = mock(IResource.class);

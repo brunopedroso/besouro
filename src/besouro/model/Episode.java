@@ -59,10 +59,10 @@ public class Episode {
 		long first;
 		
 		if (previousEpisode != null){
-			first = previousEpisode.getLastAction().getClock().getDate().getTime();
+			first = previousEpisode.getLastAction().getClock().getTime();
 			
 		} else if (actions.size()>0) {
-			first = actions.get(0).getClock().getDate().getTime();
+			first = actions.get(0).getClock().getTime();
 			
 		} else {
 			// for testing
@@ -70,7 +70,7 @@ public class Episode {
 			
 		}
 		
-		long last = actions.get(actions.size()-1).getClock().getDate().getTime();
+		long last = actions.get(actions.size()-1).getClock().getTime();
 		return (int) (last-first)/1000;
 		
 		

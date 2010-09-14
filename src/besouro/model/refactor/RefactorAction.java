@@ -1,10 +1,9 @@
 package besouro.model.refactor;
 
-import java.io.File;
+import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
 
-import besouro.model.Clock;
 import besouro.model.ResourceAction;
 
 
@@ -19,7 +18,7 @@ public abstract class RefactorAction extends ResourceAction {
 	private String op;
 	private String subjectType;
 
-	public RefactorAction(Clock clock, IResource workspceFile) {
+	public RefactorAction(Date clock, IResource workspceFile) {
 		super(clock, workspceFile);
 	}
 

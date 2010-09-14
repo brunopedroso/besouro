@@ -1,16 +1,16 @@
 package besouro.model;
 
-import java.io.File;
-
-import org.eclipse.core.resources.IResource;
+import java.util.Date;
 
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
 
+import org.eclipse.core.resources.IResource;
+
 public class UnitTestSessionAction extends UnitTestAction {
 
-	public UnitTestSessionAction(Clock clock, IResource workspaceFile) {
+	public UnitTestSessionAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

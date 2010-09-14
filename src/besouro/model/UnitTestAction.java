@@ -1,6 +1,6 @@
 package besouro.model;
 
-import java.io.File;
+import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
 
@@ -8,7 +8,7 @@ public abstract class UnitTestAction extends ResourceAction {
 
 	private boolean success = true;
 
-	public UnitTestAction(Clock clock, IResource workspaceFile) {
+	public UnitTestAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

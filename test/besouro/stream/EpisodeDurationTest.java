@@ -1,7 +1,8 @@
 package besouro.stream;
 
-import java.io.File;
-import java.util.Calendar;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,14 +11,11 @@ import junit.framework.Assert;
 import org.eclipse.core.resources.IResource;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
-import besouro.model.Clock;
 import besouro.model.EditAction;
 import besouro.model.Episode;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
-import besouro.stream.EpisodeClassifierStream;
 
 
 public class EpisodeDurationTest {
@@ -52,28 +50,28 @@ public class EpisodeDurationTest {
 		
 		long time = 10000;
 		
-		action1 = new EditAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action1 = new EditAction(new Date(referenceDate.getTime()+time), file2);
 		
 		time+=10000;
-		action2 = new EditAction(new Clock(new Date(referenceDate.getTime()+time)), file1);
+		action2 = new EditAction(new Date(referenceDate.getTime()+time), file1);
 		
 		time+=15000;
-		action3 = new UnitTestCaseAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action3 = new UnitTestCaseAction(new Date(referenceDate.getTime()+time), file2);
 		action3.setSuccessValue(true);
 		
-		action4 = new UnitTestSessionAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action4 = new UnitTestSessionAction(new Date(referenceDate.getTime()+time), file2);
 		action4.setSuccessValue(true);
 
 		// first episode ends here
 		
 		time+=5000;
-		action5 = new EditAction(new Clock(new Date(referenceDate.getTime()+time)), file1);
+		action5 = new EditAction(new Date(referenceDate.getTime()+time), file1);
 		
 		time+=6000;
-		action6 = new UnitTestCaseAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action6 = new UnitTestCaseAction(new Date(referenceDate.getTime()+time), file2);
 		action6.setSuccessValue(true);
 		
-		action7 = new UnitTestSessionAction(new Clock(new Date(referenceDate.getTime()+time)), file2);
+		action7 = new UnitTestSessionAction(new Date(referenceDate.getTime()+time), file2);
 		action7.setSuccessValue(true);
 		
 	}

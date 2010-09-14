@@ -1,5 +1,7 @@
 package besouro.model;
 
+import java.util.Date;
+
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
@@ -14,7 +16,7 @@ import jess.Rete;
  */
 public abstract class Action implements Comparable {
 	/** Time stamp of the command. */
-	private Clock clock;
+	private Date clock;
 
 	/**
 	 * Instantiates a command with clock.
@@ -22,7 +24,7 @@ public abstract class Action implements Comparable {
 	 * @param clock
 	 *            Time stamp for command.
 	 */
-	public Action(Clock clock) {
+	public Action(Date clock) {
 		this.clock = clock;
 	}
 
@@ -31,7 +33,7 @@ public abstract class Action implements Comparable {
 	 * 
 	 * @return Command time stamp.
 	 */
-	public Clock getClock() {
+	public Date getClock() {
 		return this.clock;
 	}
 

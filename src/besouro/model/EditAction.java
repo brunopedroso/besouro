@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.io.File;
+import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
 
@@ -38,7 +39,7 @@ public class EditAction extends JavaFileAction {
 
 	private long duration;
 
-	public EditAction(Clock clock, IResource workspaceFile) {
+	public EditAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
