@@ -6,6 +6,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
@@ -33,7 +40,7 @@ public class JUnitListener extends TestRunListener {
 	public void sessionFinished(ITestRunSession session) {
 		
 		boolean isSuccessfull = true;
-		for (UnitTestAction action: getTestFileActions(session)) {
+		for (UnitTestAction action: getTestFileActions(session, session.getLaunchedProject())) {
 			stream.addAction(action);
 			isSuccessfull &= action.isSuccessful();
 		}
@@ -45,7 +52,7 @@ public class JUnitListener extends TestRunListener {
 		
 	}
 
-	private Collection<UnitTestCaseAction> getTestFileActions(ITestElement session) {
+	private Collection<UnitTestCaseAction> getTestFileActions(ITestElement session, IJavaProject project) {
 		
 		List<UnitTestCaseAction> list = new ArrayList<UnitTestCaseAction>();
 		
@@ -54,6 +61,8 @@ public class JUnitListener extends TestRunListener {
 			ITestSuiteElement testCase = (ITestSuiteElement) session;
 			String className = testCase.getSuiteTypeName();
 
+			IResource res = findTestResource(project, testCase.getSuiteTypeName());
+			
 			// take off the package name
 			int indexOfPoint = className.lastIndexOf(".");
 			if (indexOfPoint>=0){
@@ -68,8 +77,11 @@ public class JUnitListener extends TestRunListener {
 			
 		} else if (session instanceof ITestCaseElement) {
 			
-			// will reach this case only when user executes a single test method
 			ITestCaseElement testCase = (ITestCaseElement) session;
+			
+			IResource res = findTestResource(project, testCase.getTestClassName());
+				
+			// will reach this case only when user executes a single test method
 			
 			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(testCase.getTestClassName()+".java"));
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
@@ -78,13 +90,22 @@ public class JUnitListener extends TestRunListener {
 		} else if (session instanceof ITestElementContainer) {
 			ITestElementContainer container = (ITestElementContainer) session; 
 			for(ITestElement child: container.getChildren()){
-				list.addAll(getTestFileActions(child));
+				list.addAll(getTestFileActions(child, project));
 			}
 		}
 		
 		
 		return list;
 		
+	}
+
+	private IResource findTestResource(IJavaProject project, String className) {
+		IPath path = new Path(className.replaceAll("\\.", "/") + ".java");
+		try {
+			return project.findElement(path).getResource();
+		} catch (JavaModelException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 
