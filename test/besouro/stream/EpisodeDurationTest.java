@@ -7,8 +7,10 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.eclipse.core.resources.IResource;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 import besouro.model.Clock;
 import besouro.model.EditAction;
@@ -22,8 +24,8 @@ public class EpisodeDurationTest {
 	
 	private EpisodeClassifierStream stream;
 	
-	private File file1;
-	private File file2;
+	private IResource file1;
+	private IResource file2;
 	
 	private EditAction action1;
 	private EditAction action2;
@@ -42,8 +44,11 @@ public class EpisodeDurationTest {
 
 		Date referenceDate = new Date();
 		
-		file1 = new File("afile.any");
-		file2 = new File("atestfile.any");
+		file1 = mock(IResource.class);
+		when(file1.getName()).thenReturn("afile.any");
+		
+		file2 = mock(IResource.class);
+		when(file2.getName()).thenReturn("atestfile.any");
 		
 		long time = 10000;
 		

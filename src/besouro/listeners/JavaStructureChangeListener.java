@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
@@ -81,7 +82,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		traverse(jed, additions, deletions);
 
 		// Gets the location of java file.
-		IPath javaFile = jed.getElement().getResource().getLocation();
+		IResource javaFile = jed.getElement().getResource();
 
 		// No java structure change
 		if (additions.isEmpty() && deletions.isEmpty()) {
@@ -135,7 +136,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	 * @param delta
 	 *            Delta change element
 	 */
-	private void processUnary(IPath javaFile, String op, IJavaElementDelta delta) {
+	private void processUnary(IResource javaFile, String op, IJavaElementDelta delta) {
 		
 		IJavaElement element = delta.getElement();
 
@@ -151,7 +152,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			return;
 		}
 
-		IPath classFileName = javaFile;
+		IPath classFileName = javaFile.getLocation();
 		if ("CLASS".equals(type)) {
 			classFileName = element.getResource().getLocation();
 		}
@@ -165,7 +166,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		String name = buildElementName(element.toString());
 		if (name != null && !"".equals(name)) {
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), classFileName.toFile());
+			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), element.getResource());
 			action.setOperator(op);
 			action.setSubjectType(type);
 			action.setSubjectName(name);
@@ -185,12 +186,11 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	 * @param toDelta
 	 *            Change to delta.
 	 */
-	private void processRenameRefactor(IPath javaFile,
-			IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
+	private void processRenameRefactor(IResource javaFile, IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
 
 		String type = retrieveType(toDelta.getElement());
 
-		IPath classFileName = javaFile;
+		IPath classFileName = javaFile.getLocation();
 		if ("CLASS".equals(type)) {
 			classFileName = fromDelta.getElement().getResource().getLocation();
 
@@ -211,7 +211,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			// msgBuf.append("Refactor : Rename#").append(typeName).append('#').append(fromName).append(" -> ").append(toName);
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), classFileName.toFile());
+			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), javaFile);
 			action.setOperator("RENAME");
 			action.setSubjectName(fromName + " => " + toName);
 
@@ -234,10 +234,9 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	 * @param to
 	 *            Change to element.
 	 */
-	private void processMoveRefactor(IJavaElementDelta fromDelta,
-			IJavaElementDelta toDelta) {
+	private void processMoveRefactor(IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
 
-		IPath javaFile = fromDelta.getElement().getResource().getLocation();
+		IResource javaFile = fromDelta.getElement().getResource();
 		IJavaElement from = fromDelta.getElement();
 		IJavaElement to = toDelta.getElement().getParent();
 
@@ -260,8 +259,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			// msgBuf.append("Refactor : Move#").append(typeName).append('#').append(name).append('#').append(fromName).append(" -> ").append(toName);
 
-			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(
-					new Date()), javaFile.toFile());
+			UnaryRefactorAction action = new UnaryRefactorAction(new Clock(new Date()), javaFile);
 			action.setOperator("MOVE");
 			action.setSubjectName(fromName + " => " + toName);
 

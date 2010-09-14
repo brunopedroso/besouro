@@ -1,14 +1,24 @@
 package besouro.model;
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+import static org.mockito.Mockito.*;
+
 import jess.Rete;
 import besouro.model.refactor.UnaryRefactorAction;
 
 
 public class TestEpisodesFactory {
 	
-	  private static File productionFile = new File("C:\\cvs\\work\\example\\Triangle.java");  
-	  private static File testFile = new File("C:\\cvs\\work\\example\\TestTriangle.java");
+	  private static IResource productionFile;  
+	  private static IResource testFile;
+	  
+	  static {
+		  productionFile = mock(IResource.class);
+		  when(productionFile.getName()).thenReturn("C:\\cvs\\work\\example\\Triangle.java");  
+		  testFile = mock(IResource.class);
+		  when(testFile.getName()).thenReturn("C:\\cvs\\work\\example\\TestTriangle.java");
+	  }
 	  
 	  public static void addTDDType1Facts(Rete engine, Clock clock) throws Exception {
 	    // Add test method

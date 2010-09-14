@@ -93,7 +93,7 @@ public class ResourceChangeEventFactory {
 		when(resource.getLocation()).thenReturn(path);
 
 		// separates "filename" of ".java"
-		when(resource.getName()).thenReturn(split[0]);
+		when(resource.getName()).thenReturn(filename);
 		
 		if (split.length>1)
 			when(resource.getFileExtension()).thenReturn(split[1]);

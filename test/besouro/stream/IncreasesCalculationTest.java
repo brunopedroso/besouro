@@ -1,11 +1,16 @@
 package besouro.stream;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IPath;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +24,7 @@ import besouro.stream.EpisodeClassifierStream;
 
 public class IncreasesCalculationTest {
 	
-	private File file;
+	private IResource file;
 	private EpisodeClassifierStream stream;
 	private EditAction action1;
 	private EditAction action2;
@@ -32,7 +37,14 @@ public class IncreasesCalculationTest {
 
 		Date referenceDate = new Date();
 		
-		file = new File("afile.any");
+		file = mock(IResource.class);
+		IPath path = mock(IPath.class);
+		File aFile = mock(File.class);
+		when(file.getName()).thenReturn("afile.any");
+		when(file.getLocation()).thenReturn(path);
+		when(path.toFile()).thenReturn(aFile);
+		when(aFile.length()).thenReturn(33l);
+		
 		clock = new Clock(referenceDate);
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
@@ -63,7 +75,8 @@ public class IncreasesCalculationTest {
 	@Test
 	public void shouldLinkActionsPerFile() throws Exception {
 		
-		File anotherFile = new File("another.file");
+		IResource anotherFile = mock(IResource.class);
+		when(anotherFile.getName()).thenReturn("anotherfile.any");
 		
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
@@ -139,7 +152,10 @@ public class IncreasesCalculationTest {
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
 		
-		File anotherFile = new File("another.file");
+		IResource anotherFile = mock(IResource.class);
+		when(anotherFile.getName()).thenReturn("anotherfile.any");
+
+		
 		EditAction action3 = new EditAction(clock, anotherFile);
 
 		stream.addAction(open);

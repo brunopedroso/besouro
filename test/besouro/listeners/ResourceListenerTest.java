@@ -55,7 +55,7 @@ public class ResourceListenerTest {
 		
 		Assert.assertEquals(1, generatedActions.size());
 		EditAction action = (EditAction) generatedActions.get(0);
-		Assert.assertEquals("AJavaFile.java", action.getFile().getName());
+		Assert.assertEquals("AJavaFile.java", action.getResource().getName());
 		Assert.assertEquals(true, action.isTestEdit());
 		
 		Assert.assertEquals(1, action.getMethodsCount());
@@ -107,7 +107,7 @@ public class ResourceListenerTest {
 		Assert.assertTrue(generatedActions.get(0) instanceof CompilationAction);
 		CompilationAction action = (CompilationAction) generatedActions.get(0);
 		
-		Assert.assertEquals(filename, action.getFile().getName());
+		Assert.assertEquals(filename, action.getResource().getName());
 		Assert.assertEquals(errorMessage, action.getErrorMessage());
 	}
 

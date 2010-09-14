@@ -119,7 +119,7 @@ public class ResourceChangeListener implements IResourceChangeListener,
 				testCounter.reset();
 				testCounter.measureJavaFile(changedFile);
 
-				EditAction action = new EditAction(new Clock(new Date()), changedFile.getLocation().toFile());
+				EditAction action = new EditAction(new Clock(new Date()), changedFile);
 				action.setOperation("Save");
 				
 				// do we need this full name?

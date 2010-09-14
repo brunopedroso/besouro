@@ -21,7 +21,7 @@ import besouro.listeners.JavaStatementMeter;
 
 public class WindowEventsFactory {
 
-	public static IWorkbench getMockWorkbench(File file) {
+	public static IWorkbench getMockWorkbench(String file) {
 		
 		IDocument doc = mock(IDocument.class);
 		
@@ -29,11 +29,14 @@ public class WindowEventsFactory {
 		when(docProvider.getDocument(any())).thenReturn(doc);
 		
 		IPath ipath = mock(IPath.class);
-		when(ipath.toFile()).thenReturn(file);
+		File afile = mock(File.class);
+		when(ipath.toFile()).thenReturn(afile);
+		when(afile.length()).thenReturn(33l);
 		
 		IFile inputFile = mock(IFile.class);
 		
 		when(inputFile.getLocation()).thenReturn(ipath);
+		when(inputFile.getName()).thenReturn(file);
 		
 		IFileEditorInput editorInput = mock(IFileEditorInput.class);
 		when(editorInput.getFile()).thenReturn(inputFile);
@@ -75,6 +78,7 @@ public class WindowEventsFactory {
 		
 		IFile ifile = mock(IFile.class);
 		when(ifile.getLocation()).thenReturn(ipath);
+		when(ifile.getName()).thenReturn(filename);
 		IFileEditorInput fileInput = mock(IFileEditorInput.class);
 		when(fileInput.getFile()).thenReturn(ifile);
 		

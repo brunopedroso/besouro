@@ -2,6 +2,8 @@ package besouro.model;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 import jess.Fact;
 import jess.JessException;
 import jess.RU;
@@ -14,7 +16,7 @@ import jess.Value;
  * @author Hongbing Kou
  * @version $Id: CompilationAction.java 281 2005-11-10 22:25:19Z hongbing $
  */
-public class CompilationAction extends FileAction {
+public class CompilationAction extends ResourceAction {
 	/** Compilation error. */
 	private String errMsg;
 
@@ -26,7 +28,7 @@ public class CompilationAction extends FileAction {
 	 * @param workspaceFile
 	 *            Active file.
 	 */
-	public CompilationAction(Clock clock, File workspaceFile) {
+	public CompilationAction(Clock clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
@@ -63,8 +65,7 @@ public class CompilationAction extends FileAction {
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		Fact f = new Fact("CompilationAction", engine);
 		f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-		f.setSlotValue(FILE_SLOT,
-				new Value(this.getFile().getName(), RU.STRING));
+		f.setSlotValue(FILE_SLOT,new Value(this.getResource().getName(), RU.STRING));
 		f.setSlotValue("message", new Value(this.getErrorMessage(), RU.STRING));
 		Fact assertedFact = engine.assertFact(f);
 
@@ -77,7 +78,7 @@ public class CompilationAction extends FileAction {
 	 * @return Compilation action string.
 	 */
 	public String toString() {
-		return getClock() + " COMPILE FAIL " + getFile() + "{" + this.errMsg + "}";
+		return getClock() + " COMPILE FAIL " + getResource() + "{" + this.errMsg + "}";
 	}
 
 	/**

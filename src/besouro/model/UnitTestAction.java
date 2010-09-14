@@ -2,11 +2,13 @@ package besouro.model;
 
 import java.io.File;
 
-public abstract class UnitTestAction extends FileAction {
+import org.eclipse.core.resources.IResource;
+
+public abstract class UnitTestAction extends ResourceAction {
 
 	private boolean success = true;
 
-	public UnitTestAction(Clock clock, File workspaceFile) {
+	public UnitTestAction(Clock clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

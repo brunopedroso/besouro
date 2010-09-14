@@ -126,10 +126,9 @@ public class WindowListener implements IWindowListener, IPartListener,
 			if (input instanceof IFileEditorInput) {
 				IFileEditorInput fileInput = (IFileEditorInput) input;
 
-				File file = fileInput.getFile().getLocation().toFile();
-				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), file);
+				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile());
 
-				 action.setFileSize((int) file.length());
+				 action.setFileSize((int) fileInput.getFile().getLocation().toFile().length());
 
 				javaMeter.reset();
 				javaMeter.measureJavaFile(fileInput.getFile());

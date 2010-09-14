@@ -2,19 +2,25 @@ package besouro.model;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
 
-public class JavaFileAction extends FileAction {
+public class JavaFileAction extends ResourceAction {
 
 	private int methodsCount;
 	private int statementsCount;
 	private int testAssertionsCount;
 	private int testMethodsCount;
+	private int fileSize = 0;
 	private JavaFileAction previousAction;
 
-	private int fileSize = 0;
+	public JavaFileAction(Clock clock, IResource workspaceFile) {
+		super(clock, workspaceFile);
+	}
+
 
 	public void setFileSize(int fileSize) {
 		this.fileSize = fileSize;
@@ -54,10 +60,6 @@ public class JavaFileAction extends FileAction {
 
 	public void setTestMethodsCount(int testMethodsCount) {
 		this.testMethodsCount = testMethodsCount;
-	}
-
-	public JavaFileAction(Clock clock, File workspaceFile) {
-		super(clock, workspaceFile);
 	}
 
 	public void setPreviousAction(JavaFileAction previousAction) {

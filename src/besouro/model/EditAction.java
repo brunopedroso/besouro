@@ -2,6 +2,8 @@ package besouro.model;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 import jess.Fact;
 import jess.JessException;
 import jess.RU;
@@ -36,7 +38,7 @@ public class EditAction extends JavaFileAction {
 
 	private long duration;
 
-	public EditAction(Clock clock, File workspaceFile) {
+	public EditAction(Clock clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
@@ -46,14 +48,14 @@ public class EditAction extends JavaFileAction {
 
 		if (this.isTestEdit()) {
 			buf.append(" SAVE TEST ");
-			buf.append(getFile().getName());
+			buf.append(getResource().getName());
 			buf.append(" {");
 			buf.append(makeMetricPair("TI", getTestMethodIncrease(), getTestMethodsCount())).append(", ");
 			buf.append(makeMetricPair("AI", getTestAssertionIncrease(), getTestAssertionsCount()));
 
 		} else {
 			buf.append(" SAVE PRODUCTION ");
-			buf.append(getFile().getName());
+			buf.append(getResource().getName());
 			buf.append(" {");
 		}
 
@@ -119,7 +121,7 @@ public class EditAction extends JavaFileAction {
 			}
 
 			f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-			f.setSlotValue(FILE_SLOT, new Value(this.getFile().getName(),
+			f.setSlotValue(FILE_SLOT, new Value(this.getResource().getName(),
 					RU.STRING));
 			// f.setSlotValue("duration", new Value(this.getDuration(),
 			// RU.INTEGER));

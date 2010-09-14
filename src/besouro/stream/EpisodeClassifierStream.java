@@ -62,7 +62,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 					engine.run();
 					
-//					debugFacts();
+					debugFacts();
 
 					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
@@ -118,7 +118,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		if (action instanceof JavaFileAction) {
 
 			JavaFileAction linkedAction = (JavaFileAction) action;
-			String path = linkedAction.getFile().getPath();
+			String path = linkedAction.getResource().getName();
 			
 			linkedAction.setPreviousAction(previousEditActionPerFile.get(path)); // 1st time will be null, I know...
 

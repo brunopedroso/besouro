@@ -45,8 +45,10 @@ public class JUnitListener extends TestRunListener {
 			isSuccessfull &= action.isSuccessful();
 		}
 		
+		IResource res = findTestResource(session.getLaunchedProject(), session.getTestRunName());
+		
 		// registers the session action. It breake the episode, but doesnt count on the classification
-		UnitTestSessionAction action = new UnitTestSessionAction(new Clock(new Date()), new File(session.getTestRunName()));
+		UnitTestSessionAction action = new UnitTestSessionAction(new Clock(new Date()), res);
 		action.setSuccessValue(isSuccessfull);
 		stream.addAction(action);
 		
@@ -59,19 +61,10 @@ public class JUnitListener extends TestRunListener {
 		if (session instanceof ITestSuiteElement) {
 			
 			ITestSuiteElement testCase = (ITestSuiteElement) session;
-			String className = testCase.getSuiteTypeName();
 
 			IResource res = findTestResource(project, testCase.getSuiteTypeName());
 			
-			// take off the package name
-			int indexOfPoint = className.lastIndexOf(".");
-			if (indexOfPoint>=0){
-				className = className.substring(indexOfPoint+1);
-			}
-			
-			className = className + ".java";
-			
-			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(className));
+			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), res);
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
 			
@@ -83,7 +76,7 @@ public class JUnitListener extends TestRunListener {
 				
 			// will reach this case only when user executes a single test method
 			
-			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()), new File(testCase.getTestClassName()+".java"));
+			UnitTestCaseAction action = new UnitTestCaseAction(new Clock(new Date()),res);
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
 						

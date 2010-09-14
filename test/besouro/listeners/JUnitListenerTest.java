@@ -22,7 +22,7 @@ import besouro.listeners.JUnitListener;
 import besouro.listeners.mock.FakeActionStream;
 import besouro.listeners.mock.JUnitEventFactory;
 import besouro.model.Action;
-import besouro.model.FileAction;
+import besouro.model.ResourceAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
@@ -43,7 +43,7 @@ public class JUnitListenerTest {
 	}
 
 	@Test
-	public void shouleGenerateAPassingUnitTestEvent() {
+	public void shouleGenerateAPassingUnitTestEvent() throws Exception {
 		
 		listener.sessionFinished(JUnitEventFactory.createJunitSession("packageName", "MyTest.java", Result.OK));
 		
@@ -57,7 +57,7 @@ public class JUnitListenerTest {
 	}
 
 	@Test
-	public void shouleGenerateAFailingUnitTestEvent() {
+	public void shouleGenerateAFailingUnitTestEvent() throws Exception {
 		
 		// invoke the listener
 		listener.sessionFinished(JUnitEventFactory.createJunitSession("packageName", "MyTest", Result.ERROR));
@@ -66,7 +66,7 @@ public class JUnitListenerTest {
 		Assert.assertEquals(2, generatedActions.size());
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
-		Assert.assertEquals("MyTest.java", action.getFile().getName());
+		Assert.assertEquals("MyTest.java", action.getResource().getName());
 		
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 		
@@ -76,7 +76,7 @@ public class JUnitListenerTest {
 	}
 
 	@Test
-	public void shouldGetTheFileNameFromOnlyTestCaseInTheHierarchy() {
+	public void shouldGetTheFileNameFromOnlyTestCaseInTheHierarchy() throws Exception {
 		
 		// invoke the listener
 		listener.sessionFinished(JUnitEventFactory.createDeepJunitExecutionHierarchy( "MyTest", Result.ERROR));
@@ -85,27 +85,27 @@ public class JUnitListenerTest {
 		Assert.assertEquals(2, generatedActions.size());
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
-		Assert.assertEquals("MyTest.java", action.getFile().getName());
+		Assert.assertEquals("MyTest.java", action.getResource().getName());
 		
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 	}
 	
 
 	@Test
-	public void shouldGenerateTwoActionsForTwoTestCasesInDiferentFiles() {
+	public void shouldGenerateTwoActionsForTwoTestCasesInDiferentFiles() throws Exception {
 		
 		listener.sessionFinished(JUnitEventFactory.createTwoTestCases("MyTest1",true , "MyTest2",true));
 		
 		Assert.assertEquals(3, generatedActions.size());
 		
-		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
-		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getFile().getName());
+		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getResource().getName());
+		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getResource().getName());
 		
 		Assert.assertEquals(true, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
 	}
 
 	@Test
-	public void shouldGenerateTwoActionsThatRespectsResults() {
+	public void shouldGenerateTwoActionsThatRespectsResults() throws Exception {
 		
 		ITestRunSession session = JUnitEventFactory.createTwoTestCases("MyTest1",false, "MyTest2",true);
 
@@ -113,10 +113,10 @@ public class JUnitListenerTest {
 
 		Assert.assertEquals(3, generatedActions.size());
 		
-		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
+		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getResource().getName());
 		Assert.assertFalse(((UnitTestAction) generatedActions.get(0)).isSuccessful());
 		
-		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getFile().getName());
+		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getResource().getName());
 		Assert.assertTrue(((UnitTestAction) generatedActions.get(1)).isSuccessful());
 		
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
@@ -126,28 +126,18 @@ public class JUnitListenerTest {
 	
 	/**
 	 * this case happens when one executes a single test method
+	 * @throws Exception 
 	 */
 	@Test
-	public void shouldGenerateTestCaseActionWithTheCorrectFileName() {
+	public void shouldGenerateTestCaseActionWithTheCorrectFileName() throws Exception {
 		
 		listener.sessionFinished(JUnitEventFactory.createJunitSessionForSingleMethod("MyTest.myMethod", "MyTest", Result.ERROR));
 		
 		Assert.assertEquals(2, generatedActions.size());
 		
-		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
+		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getResource().getName());
 	}
 	
-	@Test
-	public void shouldExcludeThePackageFromFileName() {
-		
-		// its necessary so that packaged files have the same name of test-edits
-		
-		listener.sessionFinished(JUnitEventFactory.createJunitSession("suiteName", "package.MyTest", Result.ERROR));
-		
-		Assert.assertEquals(2, generatedActions.size());
-		
-		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getFile().getName());
-	}
 
 	
 }

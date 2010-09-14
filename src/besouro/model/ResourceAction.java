@@ -2,6 +2,8 @@ package besouro.model;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 /**
  * Defines generic software development actions, which is an independent
  * activity taken by software developer. For instance, unit test creation,
@@ -10,9 +12,9 @@ import java.io.File;
  * @author Hongbing Kou
  * @version $Id: FileAction.java 281 2005-11-10 22:25:19Z hongbing $
  */
-public abstract class FileAction extends Action implements Comparable {
+public abstract class ResourceAction extends Action implements Comparable {
 	/** Action workspace file. */
-	private File workspaceFile;
+	private IResource resource;
 
 	/** Action index. */
 	protected static final String INDEX_SLOT = "index";
@@ -27,9 +29,9 @@ public abstract class FileAction extends Action implements Comparable {
 	 * @param workspaceFile
 	 *            Workspace file being worked on.
 	 */
-	public FileAction(Clock clock, File workspaceFile) {
+	public ResourceAction(Clock clock, IResource workspaceFile) {
 		super(clock);
-		this.workspaceFile = workspaceFile;
+		this.resource = workspaceFile;
 	}
 
 	/**
@@ -37,8 +39,8 @@ public abstract class FileAction extends Action implements Comparable {
 	 * 
 	 * @return Target file.
 	 */
-	public File getFile() {
-		return this.workspaceFile;
+	public IResource getResource() {
+		return this.resource;
 	}
 
 	/**
@@ -47,7 +49,7 @@ public abstract class FileAction extends Action implements Comparable {
 	 * @return Action string.
 	 */
 	public String toString() {
-		return super.getClock() + " " + this.workspaceFile.getName();
+		return super.getClock() + " " + this.resource.getName();
 	}
 
 	/**
@@ -56,6 +58,6 @@ public abstract class FileAction extends Action implements Comparable {
 	 * @return File name.
 	 */
 	public String getActionValue() {
-		return this.workspaceFile.getName();
+		return this.resource.getName();
 	}
 }

@@ -2,16 +2,18 @@ package besouro.model;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 import jess.Fact;
 import jess.JessException;
 import jess.Rete;
 
 public class FileOpenedAction extends JavaFileAction {
 
-	public FileOpenedAction(Clock clock, File workspaceFile) {
+	public FileOpenedAction(Clock clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 
-		setFileSize((int) workspaceFile.length());
+		setFileSize((int) workspaceFile.getLocation().toFile().length());
 
 		// should calculate java metrics here?
 
@@ -24,7 +26,7 @@ public class FileOpenedAction extends JavaFileAction {
 
 	@Override
 	public String toString() {
-		return getClock() + " OPEN " + getFile().getName() 
+		return getClock() + " OPEN " + getResource().getName() 
 				+ "(size: " + getFileSize() + ")"
 				+ "(m: "  + getMethodsCount() + ")" 
 				+ "(s: "  + getStatementsCount() + ")" 

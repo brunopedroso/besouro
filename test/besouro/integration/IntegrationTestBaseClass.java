@@ -53,7 +53,7 @@ public class IntegrationTestBaseClass {
 	
 	// SHARED FACTORIES
 	
-	protected void addTestFirst1Actions() throws CoreException {
+	protected void addTestFirst1Actions() throws Exception {
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 
@@ -84,7 +84,7 @@ public class IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 	}
 	
-	protected void addTestLast1Actions() throws CoreException {
+	protected void addTestLast1Actions() throws Exception {
 		// Edit on production code    
 		when(meter.isTest()).thenReturn(false);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
@@ -99,7 +99,7 @@ public class IntegrationTestBaseClass {
 	}
 	
 	
-	protected void addRefactoring1A_Actions() throws CoreException {
+	protected void addRefactoring1A_Actions() throws Exception {
 		// Edit on test
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(1);

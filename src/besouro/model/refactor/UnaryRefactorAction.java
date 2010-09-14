@@ -2,6 +2,8 @@ package besouro.model.refactor;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 import besouro.model.Clock;
 
 import jess.Fact;
@@ -28,7 +30,7 @@ public class UnaryRefactorAction extends RefactorAction {
 	 * @param workspaceFile
 	 *            Associated file.
 	 */
-	public UnaryRefactorAction(Clock clock, File workspaceFile) {
+	public UnaryRefactorAction(Clock clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
@@ -65,7 +67,7 @@ public class UnaryRefactorAction extends RefactorAction {
 	public Fact assertJessFact(int index, Rete engine) throws JessException {
 		Fact f = new Fact("UnaryRefactorAction", engine);
 		f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-		f.setSlotValue(FILE_SLOT,new Value(this.getFile().getName(), RU.STRING));
+		f.setSlotValue(FILE_SLOT,new Value(this.getResource().getName(), RU.STRING));
 
 		f.setSlotValue("operation", new Value(this.getOperator(),RU.STRING));
 		f.setSlotValue("type", new Value(this.getSubjectType(),RU.STRING));
@@ -81,7 +83,7 @@ public class UnaryRefactorAction extends RefactorAction {
 	 * @return Refactor action string.
 	 */
 	public String toString() {
-		return getClock() + " REFACTORNG " + getActionType() + " in " + getFile().getName() + " {" + this.subjectName + "}";
+		return getClock() + " REFACTORNG " + getActionType() + " in " + getResource().getName() + " {" + this.subjectName + "}";
 	}
 
 	/**

@@ -2,6 +2,8 @@ package besouro.model;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IResource;
+
 import jess.Fact;
 import jess.JessException;
 import jess.RU;
@@ -13,7 +15,7 @@ public class UnitTestCaseAction extends UnitTestAction {
 	private String testcase;
 	protected String failureMessage;
 	
-	public UnitTestCaseAction(Clock clock, File workspaceFile) {
+	public UnitTestCaseAction(Clock clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
@@ -40,7 +42,7 @@ public class UnitTestCaseAction extends UnitTestAction {
 
 		// TODO [clean] organize the file representation all over the program
 		f.setSlotValue(FILE_SLOT,
-				new Value(this.getFile().getName(), RU.STRING));
+				new Value(this.getResource().getName(), RU.STRING));
 
 		if (!this.isSuccessful()) {
 			f.setSlotValue("errmsg", new Value(""
@@ -58,9 +60,9 @@ public class UnitTestCaseAction extends UnitTestAction {
 	 */
 	public String toString() {
 		if (this.isSuccessful()) {
-			return getClock() + " TEST CASE - OK " + getFile();
+			return getClock() + " TEST CASE - OK " + getResource();
 		} else {
-			return getClock() + " TEST CASE - FAILED " + getFile();
+			return getClock() + " TEST CASE - FAILED " + getResource();
 		}
 	}
 	

@@ -10,9 +10,11 @@ import jess.Rete;
 import jess.Value;
 import jess.ValueVector;
 
+import org.eclipse.core.resources.IResource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
 import besouro.model.refactor.UnaryRefactorAction;
 
@@ -22,13 +24,17 @@ public class TemplatesTest {
 	private Clock clock;
 	private Rete engine;
 
-	private File productionFile = new File("productionFile");
-	private File testFile = new File("testFile");
+	private IResource productionFile;
+	private IResource testFile;
 
 	@Before
 	public void setup() throws JessException {
 		clock = new Clock(new Date());
-
+		testFile = mock(IResource.class);
+		when(testFile.getName()).thenReturn("testFile");
+		productionFile = mock(IResource.class);
+		when(productionFile.getName()).thenReturn("productionFile");
+		
 		engine = new Rete();
 		engine.reset();
 
