@@ -17,7 +17,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.model.refactor.UnaryRefactorAction;
 
 
 public class TemplatesTest {
@@ -68,7 +67,7 @@ public class TemplatesTest {
 	public void actionTemplateTest() throws Exception {
 		
 		// Add test method
-		UnaryRefactorAction unaryAction = new UnaryRefactorAction(this.clock, this.testFile);
+		RefactoringAction unaryAction = new RefactoringAction(this.clock, this.testFile);
 		unaryAction.setOperator("ADD");
 		unaryAction.setSubjectType("METHOD");
 		unaryAction.setSubjectName("void testEquilateral()");

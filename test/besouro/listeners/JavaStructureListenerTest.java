@@ -15,7 +15,7 @@ import org.junit.Test;
 import besouro.listeners.mock.FakeActionStream;
 import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.model.Action;
-import besouro.model.refactor.UnaryRefactorAction;
+import besouro.model.RefactoringAction;
 
 
 public class JavaStructureListenerTest {
@@ -36,10 +36,10 @@ public class JavaStructureListenerTest {
 		Assert.assertEquals(1, generatedActions.size());
 		
 		Action action = generatedActions.get(0);
-		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		Assert.assertEquals("ADD", ((UnaryRefactorAction)action).getOperator());
-		Assert.assertEquals("METHOD", ((UnaryRefactorAction)action).getSubjectType());
-		Assert.assertEquals("AnyClass/aMethod", ((UnaryRefactorAction)action).getSubjectName());
+		Assert.assertTrue(action instanceof RefactoringAction);
+		Assert.assertEquals("ADD", ((RefactoringAction)action).getOperator());
+		Assert.assertEquals("METHOD", ((RefactoringAction)action).getSubjectType());
+		Assert.assertEquals("AnyClass/aMethod", ((RefactoringAction)action).getSubjectName());
 		
 	}
 
@@ -67,10 +67,10 @@ public class JavaStructureListenerTest {
 		Assert.assertEquals(1, generatedActions.size());
 		
 		Action action = generatedActions.get(0);
-		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		Assert.assertEquals("REMOVE", ((UnaryRefactorAction)action).getOperator());
-		Assert.assertEquals("AnyClass/aMethod", ((UnaryRefactorAction)action).getSubjectName());
-		Assert.assertEquals("FIELD", ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertTrue(action instanceof RefactoringAction);
+		Assert.assertEquals("REMOVE", ((RefactoringAction)action).getOperator());
+		Assert.assertEquals("AnyClass/aMethod", ((RefactoringAction)action).getSubjectName());
+		Assert.assertEquals("FIELD", ((RefactoringAction)action).getSubjectType());
 		
 	}
 
@@ -89,13 +89,11 @@ public class JavaStructureListenerTest {
 		// verify event data
 		Assert.assertEquals(1, generatedActions.size());
 		
-		//TODO [data] do we need to diferentiate unaries from binaries refactorings?
-		
 		Action action = generatedActions.get(0);
-		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		Assert.assertEquals("RENAME", ((UnaryRefactorAction)action).getOperator());
-		Assert.assertEquals("AnyClass/aMethod => AnyClass/anotherMethod", ((UnaryRefactorAction)action).getSubjectName());
-		Assert.assertEquals("FIELD", ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertTrue(action instanceof RefactoringAction);
+		Assert.assertEquals("RENAME", ((RefactoringAction)action).getOperator());
+		Assert.assertEquals("AnyClass/aMethod => AnyClass/anotherMethod", ((RefactoringAction)action).getSubjectName());
+		Assert.assertEquals("FIELD", ((RefactoringAction)action).getSubjectType());
 		
 	}
 
@@ -130,10 +128,10 @@ public class JavaStructureListenerTest {
 		Assert.assertEquals(1, generatedActions.size());
 		
 		Action action = generatedActions.get(0);
-		Assert.assertTrue(action instanceof UnaryRefactorAction);
-		UnaryRefactorAction refactorAction = (UnaryRefactorAction)action;
+		Assert.assertTrue(action instanceof RefactoringAction);
+		RefactoringAction refactorAction = (RefactoringAction)action;
 		Assert.assertEquals("MOVE", refactorAction.getOperator());
-		Assert.assertEquals("FIELD", ((UnaryRefactorAction)action).getSubjectType());
+		Assert.assertEquals("FIELD", ((RefactoringAction)action).getSubjectType());
 		
 	}
 

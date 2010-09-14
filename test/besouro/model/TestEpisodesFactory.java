@@ -8,7 +8,6 @@ import jess.Rete;
 
 import org.eclipse.core.resources.IResource;
 
-import besouro.model.refactor.UnaryRefactorAction;
 
 
 public class TestEpisodesFactory {
@@ -25,7 +24,7 @@ public class TestEpisodesFactory {
 	  
 	  public static void addTDDType1Facts(Rete engine, Date clock) throws Exception {
 	    // Add test method
-	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
+	    RefactoringAction unaryAction = new RefactoringAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
 	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
@@ -77,7 +76,7 @@ public class TestEpisodesFactory {
 	  
 	  public static void addTDDType2Facts(Rete engine, Date clock) throws Exception {
 	    // Add test method
-	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
+	    RefactoringAction unaryAction = new RefactoringAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
 	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
@@ -115,7 +114,7 @@ public class TestEpisodesFactory {
 	  
 	  public static void addTDDType3Facts(Rete engine, Date clock) throws Exception {
 	    // Add test method
-	    UnaryRefactorAction unaryAction = new UnaryRefactorAction(clock, testFile);
+	    RefactoringAction unaryAction = new RefactoringAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
 	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");

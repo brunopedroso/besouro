@@ -1,4 +1,4 @@
-package besouro.model.refactor;
+package besouro.model;
 
 import java.util.Date;
 
@@ -10,16 +10,36 @@ import jess.Value;
 
 import org.eclipse.core.resources.IResource;
 
+
 /**
  * Defines unary refactoring action.
  * 
  * @author Hongbing Kou
  */
-public class UnaryRefactorAction extends RefactorAction {
+public class RefactoringAction extends ResourceAction {
+
+	private String op;
+	private String subjectType;
+	
+	public String getOperator() {
+		return op;
+	}
+
+	public void setOperator(String op) {
+		this.op = op;
+	}
+
+	public String getSubjectType() {
+		return subjectType;
+	}
+
+	public void setSubjectType(String subjectType) {
+		this.subjectType = subjectType;
+	}
 
 	private String subjectName;
 
-	public UnaryRefactorAction(Date clock, IResource workspaceFile) {
+	public RefactoringAction(Date clock, IResource workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
