@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.TestRunListener;
@@ -91,7 +92,13 @@ public class JUnitListener extends TestRunListener {
 	private IResource findTestResource(IJavaProject project, String className) {
 		IPath path = new Path(className.replaceAll("\\.", "/") + ".java");
 		try {
-			return project.findElement(path).getResource();
+			
+			IJavaElement element = project.findElement(path);
+			if (element != null)
+				return element.getResource();
+			else 
+				return null;
+			
 		} catch (JavaModelException e) {
 			throw new RuntimeException(e);
 		}

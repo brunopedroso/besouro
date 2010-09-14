@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Test_plugin
-Bundle-SymbolicName: athos_plugin;singleton:=true
+Bundle-Name: besouro_plugin
+Bundle-SymbolicName: besouro_plugin;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: besouro.plugin.Activator
 Require-Bundle: org.eclipse.ui,

@@ -35,20 +35,19 @@ import besouro.stream.EpisodeClassifierStream;
 // if we edit test without increasing assertions or methods, its not recognized as test-adition
 // what is modeled through this 'production' rules?!
 
-//TODO [clean] rename sensor plugin?
-public class SensorPlugin implements IStartup {
+public class BesouroPlugin implements IStartup {
 
-	public static SensorPlugin plugin;
+	public static BesouroPlugin plugin;
 
-	public static SensorPlugin getInstance() {
+	public static BesouroPlugin getInstance() {
 		return plugin;
 	}
 
 	private static ActionOutputStream stream;
 
-	public SensorPlugin() {
+	public BesouroPlugin() {
 		super();
-		SensorPlugin.plugin = this;
+		BesouroPlugin.plugin = this;
 
 		try {
 			stream = new EpisodeClassifierStream();

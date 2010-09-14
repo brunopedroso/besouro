@@ -3,7 +3,7 @@
 <plugin>
 
    <extension point="org.eclipse.ui.startup">
-      <startup class="besouro.plugin.SensorPlugin">
+      <startup class="besouro.plugin.BesouroPlugin">
       </startup>
    </extension>
    
