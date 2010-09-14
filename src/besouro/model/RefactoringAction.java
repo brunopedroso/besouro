@@ -2,12 +2,6 @@ package besouro.model;
 
 import java.util.Date;
 
-import jess.Fact;
-import jess.JessException;
-import jess.RU;
-import jess.Rete;
-import jess.Value;
-
 import org.eclipse.core.resources.IResource;
 
 
@@ -49,19 +43,6 @@ public class RefactoringAction extends ResourceAction {
 
 	public String getSubjectName() {
 		return this.subjectName;
-	}
-
-	public Fact assertJessFact(int index, Rete engine) throws JessException {
-		Fact f = new Fact("UnaryRefactorAction", engine);
-		f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-		f.setSlotValue(FILE_SLOT,new Value(this.getResource().getName(), RU.STRING));
-
-		f.setSlotValue("operation", new Value(this.getOperator(),RU.STRING));
-		f.setSlotValue("type", new Value(this.getSubjectType(),RU.STRING));
-		f.setSlotValue("data", new Value(this.getSubjectName(), RU.STRING));
-
-		Fact assertedFact = engine.assertFact(f);
-		return assertedFact;
 	}
 
 	public String toString() {

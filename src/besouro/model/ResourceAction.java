@@ -15,9 +15,6 @@ public abstract class ResourceAction extends Action {
 	
 	private IResource resource;
 
-	protected static final String INDEX_SLOT = "index";
-	protected static final String FILE_SLOT = "file";
-
 	public ResourceAction(Date clock, IResource workspaceFile) {
 		super(clock);
 		this.resource = workspaceFile;

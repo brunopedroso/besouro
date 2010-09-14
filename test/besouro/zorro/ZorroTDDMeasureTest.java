@@ -1,14 +1,14 @@
-package besouro.measure;
+package besouro.zorro;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import besouro.measure.TDDMeasure;
 import besouro.model.Episode;
+import besouro.zorro.ZorroTDDMeasure;
 
 
-public class TDDMeasureTest {
+public class ZorroTDDMeasureTest {
 	
 	
 	@Test
@@ -32,7 +32,7 @@ public class TDDMeasureTest {
 		
 		Episode[] episodes = new Episode[]{e1,e2,e3,e4};
 		
-		TDDMeasure measure = new TDDMeasure();
+		ZorroTDDMeasure measure = new ZorroTDDMeasure();
 		measure.measure(episodes);
 		
 		Assert.assertEquals(0.75, measure.getTDDPercentageByNumber(), 0.0001);
@@ -57,7 +57,7 @@ public class TDDMeasureTest {
 		
 		Episode[] episodes = new Episode[]{e1,e2,e3,e4};
 		
-		TDDMeasure measure = new TDDMeasure();
+		ZorroTDDMeasure measure = new ZorroTDDMeasure();
 		measure.measure(episodes);
 		
 		Assert.assertEquals(0.75, measure.getTDDPercentageByNumber(), 0.0001);
@@ -67,7 +67,7 @@ public class TDDMeasureTest {
 	@Test
 	public void contextDependentIncrementalCase() throws Exception {
 		
-		TDDMeasure measure = new TDDMeasure();
+		ZorroTDDMeasure measure = new ZorroTDDMeasure();
 		
 		Episode e1 = new Episode();
 		e1.setClassification("test-first", "1"); // TDD

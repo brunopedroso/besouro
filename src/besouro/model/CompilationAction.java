@@ -1,15 +1,8 @@
 package besouro.model;
 
-import java.io.File;
 import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
-
-import jess.Fact;
-import jess.JessException;
-import jess.RU;
-import jess.Rete;
-import jess.Value;
 
 /**
  * Implements compilation error action.
@@ -29,16 +22,6 @@ public class CompilationAction extends ResourceAction {
 
 	public String getErrorMessage() {
 		return this.errMsg;
-	}
-
-	public Fact assertJessFact(int index, Rete engine) throws JessException {
-		Fact f = new Fact("CompilationAction", engine);
-		f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-		f.setSlotValue(FILE_SLOT,new Value(this.getResource().getName(), RU.STRING));
-		f.setSlotValue("message", new Value(this.getErrorMessage(), RU.STRING));
-		Fact assertedFact = engine.assertFact(f);
-
-		return assertedFact;
 	}
 
 	public String toString() {

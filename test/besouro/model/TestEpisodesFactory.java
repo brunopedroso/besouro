@@ -4,9 +4,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
-import jess.Rete;
-
 import org.eclipse.core.resources.IResource;
+
+import besouro.zorro.ZorroEpisodeClassification;
 
 
 
@@ -22,13 +22,14 @@ public class TestEpisodesFactory {
 		  when(testFile.getName()).thenReturn("C:\\cvs\\work\\example\\TestTriangle.java");
 	  }
 	  
-	  public static void addTDDType1Facts(Rete engine, Date clock) throws Exception {
+	  public static void addTDDType1Facts(ZorroEpisodeClassification engine, Date clock) throws Exception {
 	    // Add test method
 	    RefactoringAction unaryAction = new RefactoringAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
 	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
-	    unaryAction.assertJessFact(1, engine);
+//	    unaryAction.assertJessFact(1, engine);
+	    engine.assertJessFact(1, unaryAction);
 	    
 	    // Edit on test
 	    EditAction editAction = new EditAction(clock, testFile);
@@ -37,12 +38,14 @@ public class TestEpisodesFactory {
 //	    editAction.setDuration(123);
 	    
 	    editAction.setIsTestEdit(true);
-	    editAction.assertJessFact(2, engine);
+//	    editAction.assertJessFact(2, engine);
+	    engine.assertJessFact(2, editAction);
 
 	    // Compile error on test
 	    CompilationAction compilationAction = new CompilationAction(clock, testFile);
 	    compilationAction.setErrorMessage("Unknown data type");
-	    compilationAction.assertJessFact(3, engine);
+//	    compilationAction.assertJessFact(3, engine);
+	    engine.assertJessFact(3, compilationAction);
 
 	    // Work on production code
 	    editAction = new EditAction(clock, productionFile);
@@ -52,12 +55,15 @@ public class TestEpisodesFactory {
 	    
 	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(10);
-	    editAction.assertJessFact(4, engine);
+//	    editAction.assertJessFact(4, engine);
+	    engine.assertJessFact(4, editAction);
+	    
 
 	    // Unit test failue
 	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Failed to import");
-	    unitTestAction.assertJessFact(5, engine);
+//	    unitTestAction.assertJessFact(5, engine);
+	    engine.assertJessFact(5, unitTestAction);
 	 
 	    // Edit on prodction code
 	    editAction = new EditAction(clock, productionFile);
@@ -67,20 +73,23 @@ public class TestEpisodesFactory {
 	    
 	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(30);
-	    editAction.assertJessFact(6, engine);
+//	    editAction.assertJessFact(6, engine);
+	    engine.assertJessFact(6, editAction);
 
 	    // Unit test pass
 	    unitTestAction = new UnitTestCaseAction(clock, testFile); 
-	    unitTestAction.assertJessFact(7, engine);
+	    engine.assertJessFact(7, unitTestAction);
+//	    unitTestAction.assertJessFact(7, engine);
 	  }
 	  
-	  public static void addTDDType2Facts(Rete engine, Date clock) throws Exception {
+	  public static void addTDDType2Facts(ZorroEpisodeClassification engine, Date clock) throws Exception {
 	    // Add test method
 	    RefactoringAction unaryAction = new RefactoringAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
 	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
-	    unaryAction.assertJessFact(1, engine);
+//	    unaryAction.assertJessFact(1, engine);
+	    engine.assertJessFact(1, unaryAction);
 	    
 	    // Edit on test
 	    EditAction editAction = new EditAction(clock, testFile);
@@ -90,12 +99,14 @@ public class TestEpisodesFactory {
 	    
 	    editAction.setIsTestEdit(true);
 	    editAction.setFileSizeIncrease(11);
-	    editAction.assertJessFact(2, engine);
+//	    editAction.assertJessFact(2, engine);
+	    engine.assertJessFact(2, editAction);
 
 	    // Compile error on test
 	    CompilationAction compilationAction = new CompilationAction(clock, testFile);
 	    compilationAction.setErrorMessage("Unknown data type");
-	    compilationAction.assertJessFact(3, engine);
+//	    compilationAction.assertJessFact(3, engine);
+	    engine.assertJessFact(3, compilationAction);
 
 	    // Work on production code
 	    editAction = new EditAction(clock, productionFile);
@@ -105,20 +116,22 @@ public class TestEpisodesFactory {
 	    
 	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(26);
-	    editAction.assertJessFact(4, engine);
+	    engine.assertJessFact(4, editAction);
+//	    editAction.assertJessFact(4, engine);
 
 	    // Unit test pass
 	    UnitTestAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
-	    unitTestAction.assertJessFact(5, engine);
+	    engine.assertJessFact(5, unitTestAction);
+//	    unitTestAction.assertJessFact(5, engine);
 	  }
 	  
-	  public static void addTDDType3Facts(Rete engine, Date clock) throws Exception {
+	  public static void addTDDType3Facts(ZorroEpisodeClassification engine, Date clock) throws Exception {
 	    // Add test method
 	    RefactoringAction unaryAction = new RefactoringAction(clock, testFile);
 	    unaryAction.setOperator("ADD");
 	    unaryAction.setSubjectType("METHOD");
 	    unaryAction.setSubjectName("void testEquilateral()");
-	    unaryAction.assertJessFact(1, engine);
+	    engine.assertJessFact(1, unaryAction);
 	    
 	    // Edit on test
 	    EditAction editAction = new EditAction(clock, testFile);
@@ -128,7 +141,7 @@ public class TestEpisodesFactory {
 	    
 	    editAction.setIsTestEdit(true);
 	    editAction.setFileSizeIncrease(10);
-	    editAction.assertJessFact(2, engine);
+	    engine.assertJessFact(2, editAction);
 
 	    // Work on production code
 	    editAction = new EditAction(clock, productionFile);
@@ -137,12 +150,12 @@ public class TestEpisodesFactory {
 //	    editAction.setDuration(200);
 	    
 	    editAction.setIsTestEdit(true);
-	    editAction.assertJessFact(4, engine);
+	    engine.assertJessFact(4, editAction);
 
 	    // Unit test failue
 	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Failed to import");
-	    unitTestAction.assertJessFact(5, engine);
+	    engine.assertJessFact(5, unitTestAction);
 	 
 	    // Edit on prodction code
 	    editAction = new EditAction(clock, productionFile);
@@ -152,21 +165,21 @@ public class TestEpisodesFactory {
 	    
 	    editAction.setIsTestEdit(false);
 	    editAction.setFileSizeIncrease(90);
-	    editAction.assertJessFact(6, engine);
+	    engine.assertJessFact(6, editAction);
 
 	    // Unit test pass
 	    unitTestAction = new UnitTestCaseAction(clock, testFile); 
-	    unitTestAction.assertJessFact(7, engine);
+	    engine.assertJessFact(7, unitTestAction);
 	  }
 	  
-	  public static void addTestCodeRefactoFacts(Rete engine, Date clock) throws Exception {
+	  public static void addTestCodeRefactoFacts(ZorroEpisodeClassification engine, Date clock) throws Exception {
 
 		// Edit on test code    
 	    EditAction action = new EditAction(clock, testFile);
 	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(27);
 	    action.setMethodIncrease(2);
-	    action.assertJessFact(1, engine);
+	    engine.assertJessFact(1, action);
 	    
 	    //TODO [rule] we dont need these two next acitons for the test to pass
 	    // Edit on test code
@@ -174,12 +187,12 @@ public class TestEpisodesFactory {
 	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(50);
 	    action.setMethodIncrease(2);
-	    action.assertJessFact(2, engine);
+	    engine.assertJessFact(2, action);
 
 	    // Unit test fail on test code
 	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Cannot instantiate it");
-	    unitTestAction.assertJessFact(3, engine);
+	    engine.assertJessFact(3, unitTestAction);
 
 	    // Edit on test code
 //	    action = new EditAction(clock, testFile);
@@ -189,11 +202,11 @@ public class TestEpisodesFactory {
 
 	    // Unit test pass
 	    unitTestAction = new UnitTestCaseAction(clock, testFile);
-	    unitTestAction.assertJessFact(4, engine);
+	    engine.assertJessFact(4, unitTestAction);
 	    
 	  }
 	  
-	  public static void addProductionCodeRefactoFacts(Rete engine, Date clock) throws Exception {
+	  public static void addProductionCodeRefactoFacts(ZorroEpisodeClassification engine, Date clock) throws Exception {
 		  
 	    // Edit on production code    
 	    EditAction action = new EditAction(clock, productionFile);
@@ -201,12 +214,12 @@ public class TestEpisodesFactory {
 	    action.setMethodIncrease(-1);
 	    action.setStatementIncrease(10);
 	    action.setFileSize(122);
-	    action.assertJessFact(1, engine);
+	    engine.assertJessFact(1, action);
 	    
 	    // Unit test fail on test code
 	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Cannot instantiate it");
-	    unitTestAction.assertJessFact(2, engine);
+	    engine.assertJessFact(2, unitTestAction);
 
 	    // Edit on production code
 	    action = new EditAction(clock, testFile);
@@ -214,11 +227,11 @@ public class TestEpisodesFactory {
 	    action.setMethodIncrease(0);
 	    action.setStatementIncrease(0);
 	    action.setFileSize(89);
-	    action.assertJessFact(3, engine);
+	    engine.assertJessFact(3, action);
 	    
 	    // Unit test pass
 	    unitTestAction = new UnitTestCaseAction(clock, testFile);
-	    unitTestAction.assertJessFact(4, engine);
+	    engine.assertJessFact(4, unitTestAction);
 	    
 	  }
 }

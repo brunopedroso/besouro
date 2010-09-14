@@ -2,12 +2,6 @@ package besouro.model;
 
 import java.util.Date;
 
-import jess.Fact;
-import jess.JessException;
-import jess.RU;
-import jess.Rete;
-import jess.Value;
-
 import org.eclipse.core.resources.IResource;
 
 /**
@@ -85,36 +79,6 @@ public class EditAction extends JavaFileAction {
 			return (this.getFileSizeIncrease() != 0 || this.getMethodIncrease() != 0 || this.getStatementIncrease() != 0);
 		}
 
-	}
-
-	// TODO [mod] assert facts in a 'classifier' object to 
-
-	public Fact assertJessFact(int index, Rete engine) throws JessException {
-		
-		Fact assertedFact = null;
-		
-		if (isSubstantial()) {
-			Fact f;
-
-			if (this.isTestEdit()) {
-				f = new Fact("UnitTestEditAction", engine);
-				f.setSlotValue("testChange", new Value(this.getTestMethodIncrease(), RU.INTEGER));
-				f.setSlotValue("assertionChange", new Value(this.getTestAssertionIncrease(), RU.INTEGER));
-
-			} else {
-				f = new Fact("ProductionEditAction", engine);
-				f.setSlotValue("methodChange", new Value(this.getMethodIncrease(), RU.INTEGER));
-				f.setSlotValue("statementChange", new Value(this.getStatementIncrease(), RU.INTEGER));
-			}
-
-			f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
-			f.setSlotValue(FILE_SLOT, new Value(this.getResource().getName(), RU.STRING));
-			f.setSlotValue("byteChange", new Value(this.getFileSizeIncrease(), RU.INTEGER));
-
-			assertedFact = engine.assertFact(f);
-		}
-
-		return assertedFact;
 	}
 
 	public boolean isTestEdit() {

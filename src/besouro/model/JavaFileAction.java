@@ -1,13 +1,8 @@
 package besouro.model;
 
-import java.io.File;
 import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
-
-import jess.Fact;
-import jess.JessException;
-import jess.Rete;
 
 public class JavaFileAction extends ResourceAction {
 
@@ -69,11 +64,6 @@ public class JavaFileAction extends ResourceAction {
 
 	public JavaFileAction getPreviousAction() {
 		return this.previousAction;
-	}
-
-	@Override
-	public Fact assertJessFact(int index, Rete engine) throws JessException {
-		return null;
 	}
 
 }

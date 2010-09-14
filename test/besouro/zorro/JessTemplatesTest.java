@@ -1,4 +1,4 @@
-package besouro.model;
+package besouro.zorro;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -17,11 +17,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.model.CompilationAction;
+import besouro.model.EditAction;
+import besouro.model.RefactoringAction;
+import besouro.model.UnitTestCaseAction;
+import besouro.zorro.ZorroEpisodeClassification;
 
 
-public class TemplatesTest {
+
+public class JessTemplatesTest {
 
 	private Date clock;
+	private ZorroEpisodeClassification zorro;
 	private Rete engine;
 
 	private IResource productionFile;
@@ -35,11 +42,8 @@ public class TemplatesTest {
 		productionFile = mock(IResource.class);
 		when(productionFile.getName()).thenReturn("productionFile");
 		
-		engine = new Rete();
-		engine.reset();
-
-		engine.batch("besouro/model/Episode.clp");
-		engine.batch("besouro/model/Actions.clp");
+		zorro = new ZorroEpisodeClassification();
+		engine = zorro.getEngine();
 	}
 
 	@Test
@@ -71,7 +75,8 @@ public class TemplatesTest {
 		unaryAction.setOperator("ADD");
 		unaryAction.setSubjectType("METHOD");
 		unaryAction.setSubjectName("void testEquilateral()");
-		unaryAction.assertJessFact(1, engine);
+//		unaryAction.assertJessFact(1, engine);
+		zorro.assertJessFact(1, unaryAction);
 		
 		// Edit on test
 		EditAction editAction = new EditAction(this.clock, this.testFile);
@@ -81,12 +86,14 @@ public class TemplatesTest {
 //		editAction.setDuration(123);
 		
 		editAction.setIsTestEdit(true);
-		editAction.assertJessFact(2, engine);
+		zorro.assertJessFact(2, editAction);
+//		editAction.assertJessFact(2, engine);
 
 		// Compile error on test
 		CompilationAction compilationAction = new CompilationAction(this.clock, this.testFile);
 		compilationAction.setErrorMessage("Unknown data type");
-		compilationAction.assertJessFact(3, engine);
+		zorro.assertJessFact(3, compilationAction);
+//		compilationAction.assertJessFact(3, engine);
 
 		// Work on production code
 		editAction = new EditAction(this.clock, this.productionFile);
@@ -95,12 +102,14 @@ public class TemplatesTest {
 //		editAction.setDuration(200);
 		
 		editAction.setIsTestEdit(false);
-		editAction.assertJessFact(4, engine);
+		zorro.assertJessFact(4, editAction);
+//		editAction.assertJessFact(4, engine);
 
 		// Unit test failue
 		UnitTestCaseAction unitTestAction = new UnitTestCaseAction(this.clock, this.testFile);
 		unitTestAction.setFailureMessage("Failed to import");
-		unitTestAction.assertJessFact(5, engine);
+		zorro.assertJessFact(5, unitTestAction);
+//		unitTestAction.assertJessFact(5, engine);
 
 		// Edit on prodction code
 		editAction = new EditAction(this.clock, this.productionFile);
@@ -109,11 +118,13 @@ public class TemplatesTest {
 //		editAction.setDuration(199);
 		
 		editAction.setIsTestEdit(false);
-		editAction.assertJessFact(6, engine);
+		zorro.assertJessFact(6, editAction);
+//		editAction.assertJessFact(6, engine);
 
 		// Unit test pass
 		unitTestAction = new UnitTestCaseAction(this.clock, this.testFile);
-		unitTestAction.assertJessFact(7, engine);
+		zorro.assertJessFact(7, unitTestAction);
+//		unitTestAction.assertJessFact(7, engine);
 	}
 
 }

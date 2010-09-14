@@ -1,4 +1,4 @@
-package besouro.measure;
+package besouro.zorro;
 
 // TODO [rule] a single regression is not TDD?
 
@@ -15,7 +15,7 @@ import jess.Value;
 import jess.ValueVector;
 import besouro.model.Episode;
 
-public class TDDMeasure {
+public class ZorroTDDMeasure {
 
 	private Rete engine;
 	
@@ -30,10 +30,10 @@ public class TDDMeasure {
 	private boolean executed;
 
 
-	public TDDMeasure() throws Exception {
+	public ZorroTDDMeasure() throws Exception {
 		this.engine = new Rete();
-	    Batch.batch("besouro/measure/EpisodeTDDConformance.clp", this.engine);
-	    Batch.batch("besouro/measure/OneWayTDDHeuristicAlgorithm.clp", this.engine);
+	    Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
+	    Batch.batch("besouro/zorro/OneWayTDDHeuristicAlgorithm.clp", this.engine);
 	}
 	
 	public void measure(Episode[] eps) {

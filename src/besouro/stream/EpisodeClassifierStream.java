@@ -2,36 +2,29 @@ package besouro.stream;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jess.Batch;
-import jess.QueryResult;
-import jess.Rete;
-import jess.ValueVector;
-import besouro.measure.TDDMeasure;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.model.JavaFileAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestSessionAction;
+import besouro.zorro.ZorroEpisodeClassification;
+import besouro.zorro.ZorroTDDMeasure;
 
 public class EpisodeClassifierStream implements ActionOutputStream {
 
-	private Rete engine;
+	private ZorroEpisodeClassification classifier;
 	List<Action> actions = new ArrayList<Action>();
 
 	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
 	private List<Episode> episodes = new ArrayList<Episode>();
-	private TDDMeasure measure;
+	private ZorroTDDMeasure measure;
 
 	public EpisodeClassifierStream() throws Exception {
-		this.engine = new Rete();
-		measure = new TDDMeasure();
-		Batch.batch("besouro/model/Actions.clp", this.engine);
-		Batch.batch("besouro/model/Episode.clp", this.engine);
-		Batch.batch("besouro/model/EpisodeClassifier.clp", this.engine);
+		classifier = new ZorroEpisodeClassification();
+		measure = new ZorroTDDMeasure();
 	}
 
 	public void addAction(Action action) {
@@ -47,66 +40,31 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 			if (utAction.isSuccessful()) {
 				
-				try {
-
-					engine.reset();
-
-					int i = 1;
-					for (Action a : actions) {
-						a.assertJessFact(i++, engine);
-					}
-
-					engine.run();
-					
-					//debugFacts();
-
-					QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
-
-					// TODO [rule] recognizing various episodes. Shouldnt it be a while?
-					if (result.next()) {
-						
-						Episode episode = new Episode();
-						episode.addActions(actions);
-						episode.setClassification(result.getString("cat"), result.getString("tp"));
-						
-						if (episodes.size()>0)
-							episode.setPreviousEpisode(episodes.get(episodes.size()-1));
-						
-						episodes.add(episode);
-						measure.addEpisode(episode);
-						
-						System.out.println(episode);
-						System.out.println("-----------------");
-						System.out.println("\t#episodes: " + episodes.size());
-						System.out.println("\t duration: " + measure.getTDDPercentageByDuration());
-						System.out.println("\t   number: " + measure.getTDDPercentageByNumber());
-						System.out.println("-----------------");
-						
-//					} else {
-//						System.out.println("[episode] could not be classified.");
-
-					}
-
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-
-				// start a new classification
+				Episode episode = new Episode();
+				episode.addActions(actions);
+				
+				classifier.classifyEpisode(episode);
+				
+				if (episodes.size()>0)
+					episode.setPreviousEpisode(episodes.get(episodes.size()-1));
+				
+				episodes.add(episode);
+				measure.addEpisode(episode);
+				
+				System.out.println(episode);
+				System.out.println("-----------------");
+				System.out.println("\t#episodes: " + episodes.size());
+				System.out.println("\t duration: " + measure.getTDDPercentageByDuration());
+				System.out.println("\t   number: " + measure.getTDDPercentageByNumber());
+				System.out.println("-----------------");
+				
+				// start a new episode
 				actions.clear();
 
 			}
 		}
 
 	}
-
-	private void debugFacts() {
-		Iterator it = engine.listFacts();
-		while (it.hasNext()) {
-			System.out.println(it.next());
-		}
-	}
-	
-
 
 	private void linkActions(Action action) {
 		
@@ -131,7 +89,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		return episodes;
 	}
 
-	public TDDMeasure getTDDMeasure() {
+	public ZorroTDDMeasure getTDDMeasure() {
 		return measure;
 	}
 

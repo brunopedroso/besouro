@@ -1,4 +1,4 @@
-package besouro.measure;
+package besouro.zorro;
 
 import jess.Batch;
 import jess.Fact;
@@ -15,14 +15,14 @@ import junit.framework.TestCase;
  * 
  * @author Hongbing Kou
  */
-public class TestTwoWayTDDHeuristicAlgorithm extends TestCase {
+public class TwoWayTDDHeuristicAlgorithmTest extends TestCase {
 
 	private Rete engine;
 
 	protected void setUp() throws Exception {
 		this.engine = new Rete();
-		Batch.batch("besouro/measure/EpisodeTDDConformance.clp", this.engine);
-		Batch.batch("besouro/measure/TwoWayTDDHeuristicAlgorithm.clp",this.engine);
+		Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
+		Batch.batch("besouro/zorro/TwoWayTDDHeuristicAlgorithm.clp",this.engine);
 	}
 
 	public Fact assertConformanceEpisode(int index, String category,String subtype) throws JessException {

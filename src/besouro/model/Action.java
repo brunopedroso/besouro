@@ -2,10 +2,6 @@ package besouro.model;
 
 import java.util.Date;
 
-import jess.Fact;
-import jess.JessException;
-import jess.Rete;
-
 /**
  * Implements abstract command for build data or cli data.
  * 
@@ -30,6 +26,4 @@ public abstract class Action implements Comparable<Action> {
 	public String toString() {
 		return this.clock.toString();
 	}
-
-	public abstract Fact assertJessFact(int index, Rete engine) throws JessException;
 }
