@@ -40,13 +40,10 @@ public class UnitTestCaseAction extends UnitTestAction {
 		Fact f = new Fact("UnitTestAction", engine);
 		f.setSlotValue(INDEX_SLOT, new Value(index, RU.INTEGER));
 
-		// TODO [clean] organize the file representation all over the program
-		f.setSlotValue(FILE_SLOT,
-				new Value(this.getResource().getName(), RU.STRING));
+		f.setSlotValue(FILE_SLOT,new Value(this.getResource().getName(), RU.STRING));
 
 		if (!this.isSuccessful()) {
-			f.setSlotValue("errmsg", new Value(""
-					+ (this.isSuccessful() ? "true" : "failure"), RU.STRING));
+			f.setSlotValue("errmsg", new Value(this.isSuccessful() ? "true" : "failure", RU.STRING));
 		}
 
 		Fact assertedFact = engine.assertFact(f);

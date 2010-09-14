@@ -110,8 +110,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 	private void installDocumentListener(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
 			ITextEditor activeTextEditor = (ITextEditor) part;
-			IDocument document = activeTextEditor.getDocumentProvider()
-					.getDocument(activeTextEditor.getEditorInput());
+			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
 			document.addDocumentListener(this);
 		}
 	}
@@ -128,7 +127,7 @@ public class WindowListener implements IWindowListener, IPartListener,
 
 				FileOpenedAction action = new FileOpenedAction(new Clock(new Date()), fileInput.getFile());
 
-				 action.setFileSize((int) fileInput.getFile().getLocation().toFile().length());
+				action.setFileSize((int) fileInput.getFile().getLocation().toFile().length());
 
 				javaMeter.reset();
 				javaMeter.measureJavaFile(fileInput.getFile());

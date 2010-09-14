@@ -18,6 +18,8 @@ import org.eclipse.jdt.core.IJavaModelMarker;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+//TODO [clean] organize mocks, in general
+
 public class ResourceChangeEventFactory {
 
 	public static IResourceChangeEvent createEditAction(String filename, int fileSize) throws CoreException {
