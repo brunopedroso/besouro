@@ -84,7 +84,8 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 				IFile changedFile = (IFile) resource;
 
-				// TODO [mod] measures and classification be made in another place?
+				// TODO  [mod] measures be made in another place
+				//  - first extract measurement to a 'stream'. After unify it as a get/set metrics.
 
 				testCounter.reset();
 				testCounter.measureJavaFile(changedFile);
