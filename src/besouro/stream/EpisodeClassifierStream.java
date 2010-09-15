@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
+
+import besouro.listeners.JavaStatementMeter;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.model.JavaFileAction;
@@ -22,16 +25,42 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private List<Episode> episodes = new ArrayList<Episode>();
 
 	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
+	private JavaStatementMeter javaFileMeasurer;
+
+	/**
+	 * for testing purposes
+	 * @param javaFileMeasurer
+	 */
+	public void setJavaFileMeasurer(JavaStatementMeter javaFileMeasurer) {
+		this.javaFileMeasurer = javaFileMeasurer;
+	}
 
 	public EpisodeClassifierStream() throws Exception {
 		classifier = new ZorroEpisodeClassification();
 		measure = new ZorroTDDMeasure();
+		javaFileMeasurer = new JavaStatementMeter();
 	}
 
 	public void addAction(Action action) {
 
 		linkActions(action);
 		actions.add(action);
+		
+		if (action instanceof JavaFileAction) {
+			
+			// TODO finish modeling the measurement aspect
+			
+			JavaFileAction javaAction = (JavaFileAction) action;
+			JavaStatementMeter metrics = javaFileMeasurer.measureJavaFile((IFile) javaAction.getResource());
+			
+			javaAction.setFileSize((int) javaAction.getResource().getLocation().toFile().length());
+			javaAction.setIsTestEdit(metrics.isTest());
+			javaAction.setMethodsCount(metrics.getNumOfMethods());
+			javaAction.setStatementsCount(metrics.getNumOfStatements());
+			javaAction.setTestMethodsCount(metrics.getNumOfTestMethods());
+			javaAction.setTestAssertionsCount(metrics.getNumOfTestAssertions());
+			
+		}
 		
 		System.out.println("[action] " + action);
 		

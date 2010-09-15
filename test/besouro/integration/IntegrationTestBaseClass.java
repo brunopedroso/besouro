@@ -1,9 +1,11 @@
 package besouro.integration;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import junit.framework.Assert;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.junit.Before;
@@ -29,6 +31,7 @@ public class IntegrationTestBaseClass {
 	protected JUnitListener junitListener;
 	protected WindowListener winListener;
 	protected JavaStatementMeter meter;
+	protected JavaStatementMeter measurer;
 
 	@Before
 	public void setup() throws Exception {
@@ -39,9 +42,12 @@ public class IntegrationTestBaseClass {
 		junitListener = new JUnitListener(stream);
 		winListener = new WindowListener(stream);
 		
+		// its strange yet, i know
 		meter = mock(JavaStatementMeter.class);
-		resourceListener.setTestCounter(meter);
-		winListener.setJavaMeter(meter);
+		measurer = mock(JavaStatementMeter.class);
+		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(meter);
+		
+		stream.setJavaFileMeasurer(measurer);
 		
 		// Open file (calculates the first file metrics)
 		when(meter.getNumOfMethods()).thenReturn(3);

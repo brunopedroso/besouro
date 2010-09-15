@@ -38,7 +38,6 @@ public class WindowEventsTest {
 		ActionOutputStream stream = new FakeActionStream(generatedActions);
 		
 		WindowListener listener = new WindowListener(stream);
-		listener.setJavaMeter(WindowEventsFactory.createStubJavaMeter());
 		
 		String filename = "aFile.java";
 		listener.partOpened(WindowEventsFactory.createTestEditor(filename, 12345));
@@ -51,10 +50,6 @@ public class WindowEventsTest {
 		
 		Assert.assertEquals(12345, fileOpenedAction.getFileSize());
 		
-		Assert.assertEquals(11, fileOpenedAction.getMethodsCount());
-		Assert.assertEquals(22, fileOpenedAction.getStatementsCount());
-		Assert.assertEquals(33, fileOpenedAction.getTestAssertionsCount());
-		Assert.assertEquals(44, fileOpenedAction.getTestMethodsCount());
 		
 	}
 	
@@ -68,21 +63,16 @@ public class WindowEventsTest {
 		
 		WindowListener listener = new WindowListener(stream);
 		
-		listener.setJavaMeter(WindowEventsFactory.createStubJavaMeter());
 		listener.setWorkbench(WindowEventsFactory.getMockWorkbench(filename));
 		
 		listener.windowOpened(null);
-		
 		
 		Assert.assertEquals(1, generatedActions.size());
 		Assert.assertTrue(generatedActions.get(0) instanceof FileOpenedAction);
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
 		Assert.assertEquals(filename, fileOpenedAction.getResource().getName());
-		Assert.assertEquals(11, fileOpenedAction.getMethodsCount());
-		Assert.assertEquals(22, fileOpenedAction.getStatementsCount());
-		Assert.assertEquals(33, fileOpenedAction.getTestAssertionsCount());
-		Assert.assertEquals(44, fileOpenedAction.getTestMethodsCount());
+		
 		
 	}
 	

@@ -27,11 +27,6 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 	private ActionOutputStream sensor;
 	private BuildErrorSensor buildErrorSensor;
-	private JavaStatementMeter testCounter = new JavaStatementMeter();
-
-	public void setTestCounter(JavaStatementMeter testCounter) {
-		this.testCounter = testCounter;
-	}
 
 	public ResourceChangeListener(ActionOutputStream s) {
 		this.sensor = s;
@@ -83,27 +78,8 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 			if (resource.getLocation().toString().endsWith(".java")) {
 
 				IFile changedFile = (IFile) resource;
-
-				// TODO  [mod] measures be made in another place
-				//  - first extract measurement to a 'stream'. After unify it as a get/set metrics.
-
-				testCounter.reset();
-				testCounter.measureJavaFile(changedFile);
-
 				EditAction action = new EditAction(new Date(), changedFile);
 				action.setOperation("Save");
-				
-				// minimizes the problem of the case of the first class' test method creation
-//				action.setIsTestEdit(testCounter.hasTest());
-				action.setIsTestEdit(testCounter.isTest());
-
-				action.setFileSize((int) changedFile.getLocation().toFile().length());
-
-				action.setMethodsCount(testCounter.getNumOfMethods());
-				action.setStatementsCount(testCounter.getNumOfStatements());
-				action.setTestMethodsCount(testCounter.getNumOfTestMethods());
-				action.setTestAssertionsCount(testCounter.getNumOfTestAssertions());
-				
 				sensor.addAction(action);
 
 			}

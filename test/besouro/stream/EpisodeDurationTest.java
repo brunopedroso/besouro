@@ -1,6 +1,6 @@
 package besouro.stream;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
@@ -8,10 +8,13 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.listeners.JavaStatementMeter;
+import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.EditAction;
 import besouro.model.Episode;
 import besouro.model.UnitTestCaseAction;
@@ -39,14 +42,22 @@ public class EpisodeDurationTest {
 	public void setup() throws Exception {
 
 		stream = new EpisodeClassifierStream();
+		
+		// strange, i know
+		JavaStatementMeter measurer = mock(JavaStatementMeter.class);
+		JavaStatementMeter metric = mock(JavaStatementMeter.class);
+		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(metric);
+		stream.setJavaFileMeasurer(measurer);
 
 		Date referenceDate = new Date();
 		
-		file1 = mock(IResource.class);
-		when(file1.getName()).thenReturn("afile.any");
+		file1 = ResourceChangeEventFactory.createMockResource("afile.java", 33);
+//		file1 = mock(IFile.class);
+//		when(file1.getName()).thenReturn("afile.any");
 		
-		file2 = mock(IResource.class);
-		when(file2.getName()).thenReturn("atestfile.any");
+		file2 = ResourceChangeEventFactory.createMockResource("atestfile.any", 44);
+//		file2 = mock(IFile.class);
+//		when(file2.getName()).thenReturn("atestfile.any");
 		
 		long time = 10000;
 		

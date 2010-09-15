@@ -163,7 +163,7 @@ public class JavaStatementMeter extends ASTVisitor {
 		return buf.toString();
 	}
 
-	public void measureJavaFile(IFile file) {
+	public JavaStatementMeter measureJavaFile(IFile file) {
 		// Compute number of tests and assertions to this file.
 
 		ICompilationUnit cu = (ICompilationUnit) JavaCore.create(file);
@@ -172,6 +172,8 @@ public class JavaStatementMeter extends ASTVisitor {
 		parser.setResolveBindings(true);
 
 		ASTNode root = parser.createAST(null);
-		root.accept(this);
+		JavaStatementMeter meter = new JavaStatementMeter();
+		root.accept(meter);
+		return meter;
 	}
 }

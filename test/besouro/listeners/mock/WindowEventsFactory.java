@@ -58,12 +58,19 @@ public class WindowEventsFactory {
 	}
 	
 	public static JavaStatementMeter createStubJavaMeter() {
+		
+		
 		JavaStatementMeter meter = mock(JavaStatementMeter.class);
 		when(meter.getNumOfMethods()).thenReturn(11);
 		when(meter.getNumOfStatements()).thenReturn(22);
 		when(meter.getNumOfTestAssertions()).thenReturn(33);
 		when(meter.getNumOfTestMethods()).thenReturn(44);
-		return meter;
+		
+		// its strange yet, i know
+		JavaStatementMeter measurer = mock(JavaStatementMeter.class);
+		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(meter);
+		
+		return measurer;
 	}
 
 	public static ITextEditor createTestEditor(String filename, int fileLength) {

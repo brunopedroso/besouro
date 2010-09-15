@@ -24,7 +24,6 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 
 	private ActionOutputStream stream;
 	private IWorkbench workbench;
-	private JavaStatementMeter javaMeter = new JavaStatementMeter();
 
 	public WindowListener(ActionOutputStream stream) {
 		this.stream = stream;
@@ -35,13 +34,6 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	 */
 	public void setWorkbench(IWorkbench workbench) {
 		this.workbench = workbench;
-	}
-
-	/**
-	 * For testing purposes
-	 */
-	public void setJavaMeter(JavaStatementMeter javaMeter) {
-		this.javaMeter = javaMeter;
 	}
 
 	public void windowOpened(IWorkbenchWindow window) {
@@ -112,23 +104,14 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 		if (part instanceof ITextEditor) {
 
 			ITextEditor textEditor = (ITextEditor) part;
-
 			IEditorInput input = textEditor.getEditorInput();
+			
 			if (input instanceof IFileEditorInput) {
+				
 				IFileEditorInput fileInput = (IFileEditorInput) input;
-
 				FileOpenedAction action = new FileOpenedAction(new Date(), fileInput.getFile());
-
-				action.setFileSize((int) fileInput.getFile().getLocation().toFile().length());
-
-				javaMeter.reset();
-				javaMeter.measureJavaFile(fileInput.getFile());
-				action.setMethodsCount(javaMeter.getNumOfMethods());
-				action.setStatementsCount(javaMeter.getNumOfStatements());
-				action.setTestAssertionsCount(javaMeter.getNumOfTestAssertions());
-				action.setTestMethodsCount(javaMeter.getNumOfTestMethods());
-
 				stream.addAction(action);
+				
 			}
 
 		}
