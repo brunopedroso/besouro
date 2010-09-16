@@ -25,10 +25,10 @@ import besouro.model.FileOpenedAction;
 
 
 
-public class IncreasesCalculationTest {
+public class JavaActionsMeasurerTest {
 	
 	private IResource file;
-	private EpisodeClassifierStream stream;
+	private JavaActionsMeasurer stream;
 	private EditAction action1;
 	private EditAction action2;
 	private Date clock;
@@ -38,7 +38,7 @@ public class IncreasesCalculationTest {
 	@Before
 	public void setup() throws Exception {
 
-		stream = new EpisodeClassifierStream();
+		stream = new JavaActionsMeasurer();
 
 		// strange, i know
 		JavaStatementMeter measurer = mock(JavaStatementMeter.class);
@@ -72,12 +72,10 @@ public class IncreasesCalculationTest {
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
 		
-		stream.addAction(action1);
-		stream.addAction(action2);
+		stream.measureJavaActions(action1);
+		stream.measureJavaActions(action2);
 		
-		List<Action> actions = stream.getActions();
-		Assert.assertEquals(2, actions.size());
-		Assert.assertEquals(actions.get(0), ((EditAction)actions.get(1)).getPreviousAction());
+		Assert.assertEquals(action1, action2.getPreviousAction());
 		
 	}
 	
@@ -93,10 +91,10 @@ public class IncreasesCalculationTest {
 		EditAction action3 = new EditAction(clock, anotherFile);
 		EditAction action4 = new EditAction(clock, anotherFile);
 
-		stream.addAction(action1);
-		stream.addAction(action3);
-		stream.addAction(action2);
-		stream.addAction(action4);
+		stream.measureJavaActions(action1);
+		stream.measureJavaActions(action3);
+		stream.measureJavaActions(action2);
+		stream.measureJavaActions(action4);
 		
 		// should link action1 -> action2
 		Assert.assertEquals(action1, action2.getPreviousAction());
@@ -168,13 +166,11 @@ public class IncreasesCalculationTest {
 		
 		EditAction action3 = new EditAction(clock, anotherFile);
 
-		stream.addAction(open);
-		stream.addAction(action1);
-		stream.addAction(action3); // should not be linked
-		stream.addAction(action2);
+		stream.measureJavaActions(open);
+		stream.measureJavaActions(action1);
+		stream.measureJavaActions(action3); // should not be linked
+		stream.measureJavaActions(action2);
 		
-		List<Action> actions = stream.getActions();
-		Assert.assertEquals(4, actions.size());
 		Assert.assertEquals(open, action1.getPreviousAction());
 		Assert.assertEquals(action1, action2.getPreviousAction());
 		
@@ -207,20 +203,17 @@ public class IncreasesCalculationTest {
 		when(metric.getNumOfTestAssertions()).thenReturn(3);
 		when(metric.getNumOfTestMethods()   ).thenReturn(4);
 		
-		stream.addAction(action1);
-		List<Action> generatedActions = stream.getActions();
+		stream.measureJavaActions(action1);
 		
-		Assert.assertEquals(1, generatedActions.size());
-		EditAction action = (EditAction) generatedActions.get(0);
-		Assert.assertEquals("afile.any", action.getResource().getName());
+		Assert.assertEquals("afile.any", action1.getResource().getName());
 		
-		Assert.assertEquals(true, action.isTestEdit());
-		Assert.assertEquals(1, action.getMethodsCount());
-		Assert.assertEquals(2, action.getStatementsCount());
-		Assert.assertEquals(3, action.getTestAssertionsCount());
-		Assert.assertEquals(4, action.getTestMethodsCount());
+		Assert.assertEquals(true, action1.isTestEdit());
+		Assert.assertEquals(1, action1.getMethodsCount());
+		Assert.assertEquals(2, action1.getStatementsCount());
+		Assert.assertEquals(3, action1.getTestAssertionsCount());
+		Assert.assertEquals(4, action1.getTestMethodsCount());
 		
-		Assert.assertEquals(33, action.getFileSize());
+		Assert.assertEquals(33, action1.getFileSize());
 		
 	}
 
@@ -230,11 +223,9 @@ public class IncreasesCalculationTest {
 		// it depends on the implementation of JavaStatementMeter (is not being testet yet)
 		when(metric.isTest()).thenReturn(Boolean.FALSE);
 		
-		stream.addAction(action1);
-		List<Action> generatedActions = stream.getActions();
+		stream.measureJavaActions(action1);
 
-		EditAction action = (EditAction) generatedActions.get(0);
-		Assert.assertEquals(false, action.isTestEdit());
+		Assert.assertEquals(false, action1.isTestEdit());
 
 	}
 
@@ -245,11 +236,9 @@ public class IncreasesCalculationTest {
 		// it depends on the implementation of JavaStatementMeter (is not being testet yet)
 		when(metric.isTest()).thenReturn(Boolean.TRUE);
 		
-		stream.addAction(action1);
-		List<Action> generatedActions = stream.getActions();
+		stream.measureJavaActions(action1);
 		
-		EditAction action = (EditAction) generatedActions.get(0);
-		Assert.assertEquals(true, action.isTestEdit());
+		Assert.assertEquals(true, action1.isTestEdit());
 		
 	}
 	
