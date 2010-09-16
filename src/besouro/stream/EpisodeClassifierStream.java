@@ -30,7 +30,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		System.out.println("[action] " + action);
 		
 		if (action instanceof JavaFileAction) {
-			// TODO  maybe it can be made by the classifier...
 			javaActionsMeasurer.measureJavaActions((JavaFileAction) action);
 		}
 		
