@@ -57,8 +57,10 @@ public class Episode {
 		
 		long first;
 		
+		System.out.println("--");
 		if (previousEpisode != null){
 			first = previousEpisode.getLastAction().getClock().getTime();
+			System.out.println(actions.size());
 			
 		} else if (actions.size()>0) {
 			first = actions.get(0).getClock().getTime();

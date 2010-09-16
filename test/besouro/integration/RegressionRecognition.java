@@ -17,9 +17,9 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	
@@ -30,12 +30,12 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(2, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(2, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		
-		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(1).getCategory());
-		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(1).getSubtype());
+		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
+		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
 		
 	}
 	
@@ -49,12 +49,12 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		// TODO [rule] this second one was not considered by hongbings test
-//		Assert.assertEquals("regression", stream.getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(1).getSubtype());
+//		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
+//		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
 		
 	}
 	

@@ -28,9 +28,9 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("production", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	
@@ -54,9 +54,9 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("production", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	
@@ -78,9 +78,9 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("2", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("production", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		
 		//TODO [rule] this one was not considered by hingbings test
 //		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
@@ -108,9 +108,9 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
-		Assert.assertEquals(1, stream.getRecognizedEpisodes().size());
-		Assert.assertEquals("production", stream.getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("3", stream.getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals("production", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
+		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
 		
 	}
 	

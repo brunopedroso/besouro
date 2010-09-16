@@ -124,4 +124,12 @@ public class ZorroTDDMeasure {
 		else return durationOfTDDEpisodes / totalDuration;
 	}
 
+	public int countEpisodes() {
+		return episodes.size();
+	}
+
+	public List<Episode> getRecognizedEpisodes() {
+		return episodes;
+	}
+
 }

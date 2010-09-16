@@ -96,7 +96,7 @@ public class EpisodeDurationTest {
 		stream.addAction(action3);
 		stream.addAction(action4);
 		
-		List<Episode> recognizedEpisodes = stream.getRecognizedEpisodes();
+		List<Episode> recognizedEpisodes = stream.getTDDMeasure().getRecognizedEpisodes();
 		Assert.assertEquals(1, recognizedEpisodes.size());
 		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
 		
@@ -114,7 +114,7 @@ public class EpisodeDurationTest {
 		stream.addAction(action6);
 		stream.addAction(action7);
 		
-		List<Episode> recognizedEpisodes = stream.getRecognizedEpisodes();
+		List<Episode> recognizedEpisodes = stream.getTDDMeasure().getRecognizedEpisodes();
 		Assert.assertEquals(2, recognizedEpisodes.size());
 		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
 		

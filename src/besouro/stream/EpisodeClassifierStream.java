@@ -22,10 +22,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private ZorroTDDMeasure measure;
 	
 	List<Action> actions = new ArrayList<Action>();
-	private List<Episode> episodes = new ArrayList<Episode>();
 
 	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
 	private JavaStatementMeter javaFileMeasurer;
+	private Episode previsousEpisode;
 
 	/**
 	 * for testing purposes
@@ -43,12 +43,56 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	public void addAction(Action action) {
 
-		linkActions(action);
-		actions.add(action);
+		System.out.println("[action] " + action);
 		
-		if (action instanceof JavaFileAction) {
+		linkActions(action);
+		measureJavaActions(action);
+		
+		Episode episode = recognizeEpisode(action);
+
+		if (episode != null) {
 			
-			// TODO finish modeling the measurement aspect
+			linkEpisodes(episode);
+			classifier.classifyEpisode(episode);
+			measure.addEpisode(episode);
+			
+			System.out.println(episode);
+			System.out.println("-----------------");
+			System.out.println("\t#episodes: " + measure.countEpisodes());
+			System.out.println("\t duration: " + measure.getTDDPercentageByDuration());
+			System.out.println("\t   number: " + measure.getTDDPercentageByNumber());
+			System.out.println("-----------------");
+
+		}
+		
+	}
+
+	private void linkEpisodes(Episode episode) {
+		if (previsousEpisode!=null)
+			episode.setPreviousEpisode(previsousEpisode);
+		previsousEpisode = episode;
+	}
+
+	private Episode recognizeEpisode(Action action) {
+		
+		actions.add(action);
+		if (action instanceof UnitTestSessionAction) {
+
+			if (((UnitTestAction) action).isSuccessful()) {
+				
+				Episode episode = new Episode();
+				episode.addActions(actions);
+				actions.clear();
+				return episode;
+				
+			}
+		}
+		
+		return null;
+	}
+
+	private void measureJavaActions(Action action) {
+		if (action instanceof JavaFileAction) {
 			
 			JavaFileAction javaAction = (JavaFileAction) action;
 			JavaStatementMeter metrics = javaFileMeasurer.measureJavaFile((IFile) javaAction.getResource());
@@ -61,39 +105,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			javaAction.setTestAssertionsCount(metrics.getNumOfTestAssertions());
 			
 		}
-		
-		System.out.println("[action] " + action);
-		
-		if (action instanceof UnitTestSessionAction) {
-
-			UnitTestAction utAction = (UnitTestAction) action;
-
-			if (utAction.isSuccessful()) {
-				
-				Episode episode = new Episode();
-				episode.addActions(actions);
-				
-				classifier.classifyEpisode(episode);
-				
-				if (episodes.size()>0)
-					episode.setPreviousEpisode(episodes.get(episodes.size()-1));
-				
-				episodes.add(episode);
-				measure.addEpisode(episode);
-				
-				System.out.println(episode);
-				System.out.println("-----------------");
-				System.out.println("\t#episodes: " + episodes.size());
-				System.out.println("\t duration: " + measure.getTDDPercentageByDuration());
-				System.out.println("\t   number: " + measure.getTDDPercentageByNumber());
-				System.out.println("-----------------");
-				
-				// start a new episode
-				actions.clear();
-
-			}
-		}
-
 	}
 
 	private void linkActions(Action action) {
@@ -113,10 +124,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	public List<Action> getActions() {
 		return actions;
-	}
-
-	public List<Episode> getRecognizedEpisodes() {
-		return episodes;
 	}
 
 	public ZorroTDDMeasure getTDDMeasure() {
