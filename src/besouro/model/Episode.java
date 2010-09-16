@@ -29,6 +29,7 @@ public class Episode {
 	}
 
 	public Action getLastAction() {
+		if (actions.size()==0) return null;
 		return actions.get(actions.size()-1);
 	}
 	
@@ -57,10 +58,8 @@ public class Episode {
 		
 		long first;
 		
-		System.out.println("--");
-		if (previousEpisode != null){
+		if (previousEpisode != null && previousEpisode.getLastAction()!=null){
 			first = previousEpisode.getLastAction().getClock().getTime();
-			System.out.println(actions.size());
 			
 		} else if (actions.size()>0) {
 			first = actions.get(0).getClock().getTime();

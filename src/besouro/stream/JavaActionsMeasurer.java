@@ -1,14 +1,11 @@
 package besouro.stream;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
 import besouro.listeners.JavaStatementMeter;
-import besouro.model.Action;
 import besouro.model.JavaFileAction;
 
 public class JavaActionsMeasurer {
@@ -24,27 +21,21 @@ public class JavaActionsMeasurer {
 	}
 
 	
-	public void measureJavaActions(Action action) {
+	public void measureJavaActions(JavaFileAction javaAction) {
 		
-		if (action instanceof JavaFileAction) {
+		linkActions(javaAction);
+		JavaStatementMeter metrics = javaFileMeasurer.measureJavaFile((IFile) javaAction.getResource());
 		
-			JavaFileAction javaAction = (JavaFileAction) action;
+		javaAction.setFileSize((int) javaAction.getResource().getLocation().toFile().length());
+		javaAction.setIsTestEdit(metrics.isTest());
+		javaAction.setMethodsCount(metrics.getNumOfMethods());
+		javaAction.setStatementsCount(metrics.getNumOfStatements());
+		javaAction.setTestMethodsCount(metrics.getNumOfTestMethods());
+		javaAction.setTestAssertionsCount(metrics.getNumOfTestAssertions());
 			
-			linkActions(javaAction);
-			JavaStatementMeter metrics = javaFileMeasurer.measureJavaFile((IFile) javaAction.getResource());
-			
-			javaAction.setFileSize((int) javaAction.getResource().getLocation().toFile().length());
-			javaAction.setIsTestEdit(metrics.isTest());
-			javaAction.setMethodsCount(metrics.getNumOfMethods());
-			javaAction.setStatementsCount(metrics.getNumOfStatements());
-			javaAction.setTestMethodsCount(metrics.getNumOfTestMethods());
-			javaAction.setTestAssertionsCount(metrics.getNumOfTestAssertions());
-			
-		}
 	}
 
 	private void linkActions(JavaFileAction linkedAction) {
-		
 		String path = linkedAction.getResource().getName();
 		linkedAction.setPreviousAction(previousEditActionPerFile.get(path)); // 1st time will be null, I know...
 		previousEditActionPerFile.put(path, linkedAction);

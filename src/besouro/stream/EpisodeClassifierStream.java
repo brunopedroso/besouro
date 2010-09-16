@@ -1,13 +1,8 @@
 package besouro.stream;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
-
-import besouro.listeners.JavaStatementMeter;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.model.JavaFileAction;
@@ -23,15 +18,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private JavaActionsMeasurer javaActionsMeasurer;
 	
 	List<Action> actions = new ArrayList<Action>();
-	private Episode previsousEpisode;
-
-
-	/**
-	 * for testing purposes
-	 */
-	public JavaActionsMeasurer getJavaActionsMeasurer() {
-		return javaActionsMeasurer;
-	}
 
 	public EpisodeClassifierStream() throws Exception {
 		classifier = new ZorroEpisodeClassification();
@@ -43,13 +29,14 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 		System.out.println("[action] " + action);
 		
-		javaActionsMeasurer.measureJavaActions(action);
+		if (action instanceof JavaFileAction) {
+			javaActionsMeasurer.measureJavaActions((JavaFileAction) action);
+		}
 		
 		Episode episode = recognizeEpisode(action);
 
 		if (episode != null) {
 			
-			linkEpisodes(episode);
 			classifier.classifyEpisode(episode);
 			measure.addEpisode(episode);
 			
@@ -62,11 +49,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 		}
 		
-	}
-
-	private void linkEpisodes(Episode episode) {
-		if (previsousEpisode!=null) episode.setPreviousEpisode(previsousEpisode);
-		previsousEpisode = episode;
 	}
 
 	private Episode recognizeEpisode(Action action) {
@@ -91,5 +73,13 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	public ZorroTDDMeasure getTDDMeasure() {
 		return measure;
 	}
+
+	/**
+	 * for testing purposes
+	 */
+	public JavaActionsMeasurer getJavaActionsMeasurer() {
+		return javaActionsMeasurer;
+	}
+
 
 }

@@ -19,6 +19,8 @@ public class ZorroTDDMeasure {
 
 	private Rete engine;
 	
+	private Episode previsousEpisode;
+	
 	private float numberOfTDDEpisodes;
 	private float numberOfNonTDDEpisodes;
 
@@ -43,6 +45,7 @@ public class ZorroTDDMeasure {
 	}
 
 	public void addEpisode(Episode e) {
+		linkEpisodes(e);
 		try {
 			
 			this.episodes.add(e);
@@ -53,6 +56,12 @@ public class ZorroTDDMeasure {
 		}
 	}
 
+	private void linkEpisodes(Episode episode) {
+		if (previsousEpisode!=null) episode.setPreviousEpisode(previsousEpisode);
+		previsousEpisode = episode;
+	}
+
+	
 	private void assertJessFact(Episode e, int currentFactIndex) throws JessException {
 		Fact f = new Fact("EpisodeTDDConformance", engine);
 		f.setSlotValue("index", new Value(currentFactIndex, RU.INTEGER));
