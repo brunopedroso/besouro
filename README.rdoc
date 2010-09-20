@@ -12,11 +12,11 @@ Besouro was initially built to make the Zorro's rule system available for a TDD 
 
 Besouro was created as a plain eclipse plugin. Please refer to its documentation in order to build and install it.
 
-In order to compile/execute it, you will need to download by yourself the "JESS Engine"[http://www.jessrules.com/].
+In order to compile/execute it, you will need to download by yourself the JESSEngine[http://www.jessrules.com/].
 
 Some automated tests relies on Mockito[http://mockito.org/], that is not distributed with this code as well.
 
 
 = License
 
-This code inherits the "Apache License"[http://www.apache.org/licenses/LICENSE-2.0] once its an adaptation of Zorro[http://code.google.com/p/hackystat-ui-zorro/].
+This code inherits the ApacheLicense[http://www.apache.org/licenses/LICENSE-2.0] once its an adaptation of Zorro[http://code.google.com/p/hackystat-ui-zorro/].
