@@ -86,6 +86,7 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	}
 
 	public void documentChanged(DocumentEvent event) {
+		// [data] we can use it to generate small detailed edit events. Is it necessary?
 	}
 
 	public void windowClosed(IWorkbenchWindow window) {
