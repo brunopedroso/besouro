@@ -1,18 +1,15 @@
 package besouro.view;
 
 //tasks
-//TODO   (1) what is the right way of integrating view with listeners?   
-//TODO   use tree instead of table
-//TODO   show episodes
-//TODO   use custom icons
+//TODO   order the episodes
+//TODO   use custom icons (ConformantEpisode, NonconformantEpisode, Action)
 //TODO   button to start session
+//TODO   button to disagree with classification
 
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
@@ -29,7 +26,7 @@ import besouro.plugin.ListenersSet;
 
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
-	private TableViewer viewer;
+	private TreeViewer viewer;
 	
 	public static EpisodeView sharedInstance;
 
@@ -42,13 +39,28 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		EpisodeView.sharedInstance = this;
 	}
 
-	class ViewContentProvider implements IStructuredContentProvider {
+	class ViewContentProvider implements ITreeContentProvider {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
 		public void dispose() {
 		}
 		public Object[] getElements(Object parent) {
 			return ListenersSet.getSingleton().getEpisodes();
+		}
+		public Object[] getChildren(Object parentElement) {
+			if (parentElement instanceof Episode){
+				return ((Episode)parentElement).getActions().toArray();
+			}
+			return null;
+		}
+		public Object getParent(Object element) {
+			return null;
+		}
+		public boolean hasChildren(Object element) {
+			if (element instanceof Episode){
+				return ((Episode)element).getActions().size()>0;
+			}
+			return false;
 		}
 	}
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -67,23 +79,11 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	@Override
 	public void createPartControl(Composite parent) {
 		
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(ListenersSet.getSingleton().getEpisodes());
-		
-		IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
-		Action action1 = new Action() {
-			public void run() {
-				Episode episode = new Episode();
-				viewer.add(episode);
-			}
-		};
-		action1.setText("Action 1");
-		action1.setToolTipText("Action 1 tooltip");
-		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		manager.add(action1);
 		
 		ListenersSet.getSingleton().addEpisodeListener(this);
 		
@@ -91,12 +91,12 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 
 	@Override
 	public void setFocus() {
-		
 	}
 
 	public void episodeRecognized(final Episode e) {
 		Display.getDefault().asyncExec(new Runnable() {
             public void run() {
+            	// refreshes the entire list
             	viewer.refresh();
             }
          });
