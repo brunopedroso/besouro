@@ -8,6 +8,7 @@ import besouro.model.Episode;
 import besouro.model.JavaFileAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestSessionAction;
+import besouro.plugin.EpisodeListener;
 import besouro.zorro.ZorroEpisodeClassification;
 import besouro.zorro.ZorroTDDMeasure;
 
@@ -18,6 +19,9 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	private JavaActionsMeasurer javaActionsMeasurer;
 	
 	List<Action> actions = new ArrayList<Action>();
+	List<Episode> episodes = new ArrayList<Episode>();
+	
+	private EpisodeListener listener;
 
 	public EpisodeClassifierStream() throws Exception {
 		classifier = new ZorroEpisodeClassification();
@@ -39,6 +43,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			
 			classifier.classifyEpisode(episode);
 			measure.addEpisode(episode);
+			episodes.add(episode);
+			
+			if (listener!=null)
+				listener.episodeRecognized(episode);
 			
 			System.out.println(episode);
 			System.out.println("-----------------");
@@ -79,6 +87,15 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	 */
 	public JavaActionsMeasurer getJavaActionsMeasurer() {
 		return javaActionsMeasurer;
+	}
+
+	public void addEpisodeListener(EpisodeListener listener) {
+		this.listener = listener;
+		
+	}
+
+	public Episode[] getEpisodes() {
+		return episodes.toArray(new Episode[episodes.size()]);
 	}
 
 

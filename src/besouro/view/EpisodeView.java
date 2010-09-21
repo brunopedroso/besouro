@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -47,7 +48,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		public void dispose() {
 		}
 		public Object[] getElements(Object parent) {
-			return new String[] { "One", "Two", "Three" };
+			return ListenersSet.getSingleton().getEpisodes();
 		}
 	}
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
@@ -70,7 +71,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.setSorter(new ViewerSorter());
-		viewer.setInput(getViewSite());
+		viewer.setInput(ListenersSet.getSingleton().getEpisodes());
 		
 		IToolBarManager manager = getViewSite().getActionBars().getToolBarManager();
 		Action action1 = new Action() {
@@ -85,6 +86,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		manager.add(action1);
 		
 		ListenersSet.getSingleton().addEpisodeListener(this);
+		
 	}
 
 	@Override
@@ -92,13 +94,12 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		
 	}
 
-	public void add(Object o) {
-		this.viewer.add(o);
-	}
-
-	public void episodeRecognized(Episode e) {
-		viewer.add(e);
-		
+	public void episodeRecognized(final Episode e) {
+		Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+            	viewer.refresh();
+            }
+         });
 	}
 
 }

@@ -27,7 +27,7 @@ public class BesouroPlugin implements IStartup {
 
 	public void earlyStartup() {
 		// this should register listeners
-		ListenersSet.getSingleton();
+//		ListenersSet.getSingleton();
 	}
 
 }
