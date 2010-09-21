@@ -6,6 +6,11 @@
       <startup class="besouro.plugin.BesouroPlugin">
       </startup>
    </extension>
-   
-
+   <extension point="org.eclipse.ui.views">
+      <view class="besouro.view.EpisodeView"
+            id="besouro.view.EpisodeView"
+            name="episodeView"
+            restorable="true">
+      </view>
+   </extension>
 </plugin>

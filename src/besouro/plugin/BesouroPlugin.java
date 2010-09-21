@@ -1,18 +1,6 @@
 package besouro.plugin;
 
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.ui.IStartup;
-import org.eclipse.ui.IWorkbench;
-
-import besouro.listeners.JUnitListener;
-import besouro.listeners.JavaStructureChangeListener;
-import besouro.listeners.ResourceChangeListener;
-import besouro.listeners.WindowListener;
-import besouro.stream.ActionOutputStream;
-import besouro.stream.EpisodeClassifierStream;
 
 
 //TODO [rule] edits in document change -> agregate continuous changes (is it necessary?)
@@ -37,42 +25,9 @@ import besouro.stream.EpisodeClassifierStream;
 
 public class BesouroPlugin implements IStartup {
 
-	public static BesouroPlugin plugin;
-
-	public static BesouroPlugin getInstance() {
-		return plugin;
-	}
-
-	private static ActionOutputStream stream;
-
-	public BesouroPlugin() {
-		super();
-		BesouroPlugin.plugin = this;
-
-		try {
-			stream = new EpisodeClassifierStream();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
-	}
-
 	public void earlyStartup() {
-
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(stream), IResourceChangeEvent.POST_CHANGE);
-		JavaCore.addElementChangedListener(new JavaStructureChangeListener(stream));
-		
-		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
-		JUnitCore.addTestRunListener(new JUnitListener(stream));
-
-		WindowListener windowListener = new WindowListener(stream);
-
-		IWorkbench workbench = Activator.getDefault().getWorkbench();
-		workbench.addWindowListener(windowListener);
-
-		// registers open events for the already opened files
-		windowListener.windowOpened(null);
-
+		// this should register listeners
+		ListenersSet.getSingleton();
 	}
 
 }
