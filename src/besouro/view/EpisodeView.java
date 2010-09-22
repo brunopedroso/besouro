@@ -3,7 +3,7 @@ package besouro.view;
 //tasks
 //TODO   button to start session
 
-//TODO   button to disagree with classification
+//TODO   2clicks to disagree with classification
 //		 - icon diffs disagred classification
 
 import org.eclipse.jface.resource.ImageDescriptor;
