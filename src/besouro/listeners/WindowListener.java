@@ -49,9 +49,11 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 //			installDocumentListener(activeWindows[i].getActivePage().getActiveEditor());
 
 			IWorkbenchPage activePage = activeWindows[i].getActivePage();
-			activePage.addPartListener(this);
-
-			registerFileOpenAction(activePage.getActiveEditor());
+			if (activePage != null) {
+				activePage.addPartListener(this);
+				registerFileOpenAction(activePage.getActiveEditor());
+				
+			}
 
 		}
 	}

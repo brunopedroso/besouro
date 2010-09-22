@@ -77,16 +77,18 @@ public class Episode {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("[episode] ");
+		StringBuilder sb = new StringBuilder();
 		
-		sb.append("(");
-		sb.append(getDuration());
-		sb.append(") ");
 		
 		sb.append(getCategory());
 		sb.append(" ");
 		sb.append(getSubtype());
 		
+		sb.append(" ");
+		sb.append("(");
+		sb.append(getDuration());
+		sb.append("s) ")
+		;
 		return sb.toString();
 	}
 

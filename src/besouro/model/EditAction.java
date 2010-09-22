@@ -1,5 +1,6 @@
 package besouro.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
@@ -22,7 +23,7 @@ public class EditAction extends JavaFileAction {
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(getClock());
+		buf.append(new SimpleDateFormat("HH:mm:ss").format(getClock()));
 
 		if (this.isTestEdit()) {
 			buf.append(" SAVE TEST ");

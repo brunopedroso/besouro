@@ -1,5 +1,6 @@
 package besouro.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
@@ -46,7 +47,7 @@ public class RefactoringAction extends ResourceAction {
 	}
 
 	public String toString() {
-		return getClock() + " REFACTORNG " + getActionType() + " in " + getResource().getName() + " {" + this.subjectName + "}";
+		return new SimpleDateFormat("HH:mm:ss").format(getClock()) + " REFACTORNG " + getActionType() + " in " + getResource().getName() + " {" + this.subjectName + "}";
 	}
 
 	public String getActionDesc() {

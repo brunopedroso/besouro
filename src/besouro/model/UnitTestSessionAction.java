@@ -1,5 +1,6 @@
 package besouro.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
@@ -12,7 +13,7 @@ public class UnitTestSessionAction extends UnitTestAction {
 
 	@Override
 	public String toString() {
-		return getClock() + " TEST SESSION - " + (this.isSuccessful()?"OK":"FAIL") + " " + getResource();
+		return new SimpleDateFormat("HH:mm:ss").format(getClock()) + " TEST SESSION - " + (this.isSuccessful()?"OK":"FAIL") + " " + getResource();
 	}
 	
 }

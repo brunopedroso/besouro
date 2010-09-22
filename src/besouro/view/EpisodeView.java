@@ -1,17 +1,18 @@
 package besouro.view;
 
 //tasks
-//TODO   order the episodes
-//TODO   use custom icons (ConformantEpisode, NonconformantEpisode, Action)
 //TODO   button to start session
-//TODO   button to disagree with classification
 
+//TODO   button to disagree with classification
+//		 - icon diffs disagred classification
+//TODO   format action details as children nodes (time, measures, filename)
+
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -20,12 +21,16 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import besouro.model.Action;
 import besouro.model.Episode;
+import besouro.plugin.Activator;
 import besouro.plugin.EpisodeListener;
 import besouro.plugin.ListenersSet;
 
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
+	public static final String ID = "besouro.view.EpisodeView";
+	
 	private TreeViewer viewer;
 	
 	public static EpisodeView sharedInstance;
@@ -71,8 +76,24 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			return getImage(obj);
 		}
 		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+			
+			ImageDescriptor descriptor = null;
+			
+			if (obj instanceof Episode) {
+				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode.gif");
+				
+			} else if (obj instanceof Action) {
+				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/action.gif");
+				
+			} else {
+				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+				
+			}
+
+		   //obtain the cached image corresponding to the descriptor
+		   Image image = descriptor.createImage();
+		   return image;
+
 		}
 	}
 	
@@ -82,7 +103,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setSorter(new ViewerSorter());
+//		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(ListenersSet.getSingleton().getEpisodes());
 		
 		ListenersSet.getSingleton().addEpisodeListener(this);
