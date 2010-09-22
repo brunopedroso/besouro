@@ -2,6 +2,7 @@ package besouro.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 
@@ -23,29 +24,32 @@ public class EditAction extends JavaFileAction {
 
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
-		buf.append(new SimpleDateFormat("HH:mm:ss").format(getClock()));
 
 		if (this.isTestEdit()) {
-			buf.append(" SAVE TEST ");
-			buf.append(getResource().getName());
-			buf.append(" {");
-			buf.append(makeMetricPair("TI", getTestMethodIncrease(), getTestMethodsCount())).append(", ");
-			buf.append(makeMetricPair("AI", getTestAssertionIncrease(), getTestAssertionsCount()));
+			buf.append("SAVE TEST ");
 
 		} else {
-			buf.append(" SAVE PRODUCTION ");
-			buf.append(getResource().getName());
-			buf.append(" {");
+			buf.append("SAVE PRODUCTION ");
 		}
 
-		buf.append(makeMetricPair("MI", getMethodIncrease(), getMethodsCount())).append(", ");
-		buf.append(makeMetricPair("SI", getStatementIncrease(),getStatementsCount())).append(", ");
-		buf.append(", ");
-		buf.append(makeMetricPair("FI", getFileSizeIncrease(), getFileSize()));
-
-		buf.append("}");
+		buf.append(getResource().getName());
+		
 		return buf.toString();
 	}
+	
+	@Override
+	public java.util.List<String> getActionDetails() {
+		List<String> list = super.getActionDetails();
+		if (this.isTestEdit()) {
+			list.add(makeMetricPair("TestIncrease: ", getTestMethodIncrease(), getTestMethodsCount()));
+			list.add(makeMetricPair("AssertionIncrease: ", getTestAssertionIncrease(), getTestAssertionsCount()));
+			
+		}
+		list.add(makeMetricPair("MethodsIncrease: ", getMethodIncrease(), getMethodsCount()));
+		list.add(makeMetricPair("StatementsIncrease: ", getStatementIncrease(),getStatementsCount()));
+		list.add(makeMetricPair("FileSizeIncrease: ", getFileSizeIncrease(), getFileSize()));
+		return list;
+	};
 
 	protected String makeMetricPair(String name, int value, int total) {
 		StringBuffer buf = new StringBuffer();

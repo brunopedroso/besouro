@@ -5,7 +5,6 @@ package besouro.view;
 
 //TODO   button to disagree with classification
 //		 - icon diffs disagred classification
-//TODO   format action details as children nodes (time, measures, filename)
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -55,6 +54,9 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof Episode){
 				return ((Episode)parentElement).getActions().toArray();
+			} else if (parentElement instanceof Action) {
+				return ((Action)parentElement).getActionDetails().toArray();
+				
 			}
 			return null;
 		}
@@ -64,6 +66,8 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		public boolean hasChildren(Object element) {
 			if (element instanceof Episode){
 				return ((Episode)element).getActions().size()>0;
+			} else if (element instanceof Action){
+				return ((Action)element).getActionDetails().size()>0;
 			}
 			return false;
 		}
@@ -84,6 +88,9 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				
 			} else if (obj instanceof Action) {
 				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/action.gif");
+				
+			} else if (obj instanceof String) {
+				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
 				
 			} else {
 				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);

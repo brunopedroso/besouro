@@ -1,6 +1,9 @@
 package besouro.model;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Implements abstract command for build data or cli data.
@@ -24,6 +27,12 @@ public abstract class Action implements Comparable<Action> {
 	}
 
 	public String toString() {
-		return this.clock.toString();
+		return "action";
+	}
+	
+	public List<String> getActionDetails() {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(new SimpleDateFormat("HH:mm:ss").format(clock));
+		return list;
 	}
 }

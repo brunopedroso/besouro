@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 
@@ -25,8 +26,15 @@ public class CompilationAction extends ResourceAction {
 	}
 
 	public String toString() {
-		return getClock() + " COMPILE FAIL " + getResource() + "{" + this.errMsg + "}";
+		return "COMPILE FAIL in " + getResource();
 	}
+	
+	@Override
+	public List<String> getActionDetails() {
+		List<String> list = super.getActionDetails();
+		list.add(this.errMsg);
+		return list;
+	};
 
 	public String getActionColorEncoding() {
 		return "yellow";

@@ -2,6 +2,7 @@ package besouro.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 
@@ -18,13 +19,18 @@ public class FileOpenedAction extends JavaFileAction {
 
 	@Override
 	public String toString() {
-		return new SimpleDateFormat("HH:mm:ss").format(getClock())
-				+ " OPEN " + getResource().getName() 
-				+ "(size: " + getFileSize() + ")"
-				+ "(m: "  + getMethodsCount() + ")" 
-				+ "(s: "  + getStatementsCount() + ")" 
-				+ "(ta: " + getTestAssertionsCount() + ")" 
-				+ "(ts: " + getTestMethodsCount() + ")";
+		return  "OPEN " + getResource().getName();
+	}
+	
+	@Override
+	public List<String> getActionDetails() {
+		List<String> details = super.getActionDetails();
+		details.add("size: " + getFileSize());
+		details.add("methods: "  + getMethodsCount());
+		details.add("statements: "  + getStatementsCount()); 
+		details.add("tests: " + getTestMethodsCount());
+		details.add("asserts: " + getTestAssertionsCount()); 
+		return details;
 	}
 
 }

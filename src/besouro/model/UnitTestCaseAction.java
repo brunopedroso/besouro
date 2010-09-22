@@ -1,6 +1,5 @@
 package besouro.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.resources.IResource;
@@ -32,11 +31,10 @@ public class UnitTestCaseAction extends UnitTestAction {
 	}
 
 	public String toString() {
-		String formatedDate = new SimpleDateFormat("HH:mm:ss").format(getClock());
 		if (this.isSuccessful()) {
-			return formatedDate + " TEST CASE - OK " + getResource();
+			return "TEST CASE - OK " + getResource();
 		} else {
-			return formatedDate + " TEST CASE - FAILED " + getResource();
+			return "TEST CASE - FAILED " + getResource();
 		}
 	}
 	

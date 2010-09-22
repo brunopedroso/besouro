@@ -25,7 +25,7 @@ public abstract class ResourceAction extends Action {
 	}
 
 	public String toString() {
-		return super.getClock() + " " + this.resource.getName();
+		return this.resource.getName();
 	}
 
 	public String getActionValue() {

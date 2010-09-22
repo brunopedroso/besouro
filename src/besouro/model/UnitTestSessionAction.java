@@ -13,7 +13,7 @@ public class UnitTestSessionAction extends UnitTestAction {
 
 	@Override
 	public String toString() {
-		return new SimpleDateFormat("HH:mm:ss").format(getClock()) + " TEST SESSION - " + (this.isSuccessful()?"OK":"FAIL") + " " + getResource();
+		return "TEST SESSION - " + (this.isSuccessful()?"OK":"FAIL");
 	}
 	
 }
