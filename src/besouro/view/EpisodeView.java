@@ -38,25 +38,29 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	}
 
 	class ViewContentProvider implements ITreeContentProvider {
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-		public void dispose() {
-		}
+		
+		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
+		public void dispose() {}
+		
 		public Object[] getElements(Object parent) {
 			return ListenersSet.getSingleton().getEpisodes();
 		}
+		
 		public Object[] getChildren(Object parentElement) {
+			
 			if (parentElement instanceof Episode){
 				return ((Episode)parentElement).getActions().toArray();
 			} else if (parentElement instanceof Action) {
 				return ((Action)parentElement).getActionDetails().toArray();
-				
 			}
 			return null;
+			
 		}
+		
 		public Object getParent(Object element) {
 			return null;
 		}
+		
 		public boolean hasChildren(Object element) {
 			if (element instanceof Episode){
 				return ((Episode)element).getActions().size()>0;
@@ -66,19 +70,34 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			return false;
 		}
 	}
+	
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
+		
 		public String getColumnText(Object obj, int index) {
 			return getText(obj);
 		}
+		
 		public Image getColumnImage(Object obj, int index) {
 			return getImage(obj);
 		}
+		
 		public Image getImage(Object obj) {
 			
 			ImageDescriptor descriptor = null;
 			
 			if (obj instanceof Episode) {
-				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode.gif");
+				Episode episode = (Episode)obj;
+				if (episode.isTDD()==null) {
+					// unclassified
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode.gif");
+					
+				} else if (episode.isTDD()) {
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.gif");
+					
+				} else { // classified as non-conformant
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_nonconformant.gif");
+					
+				}
 				
 			} else if (obj instanceof Action) {
 				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/action.gif");

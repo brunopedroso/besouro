@@ -45,15 +45,13 @@ public class ZorroTDDMeasure {
 	}
 
 	public void addEpisode(Episode e) {
+		
 		linkEpisodes(e);
-		try {
+		this.episodes.add(e);
 			
-			this.episodes.add(e);
-			
-		} catch (Exception e2) {
-			throw new RuntimeException(e2);
-		}
+		// measures all the stream again
 		execute();
+		
 	}
 
 	private void linkEpisodes(Episode episode) {
