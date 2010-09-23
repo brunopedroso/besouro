@@ -35,7 +35,7 @@ public class ZorroTDDMeasure {
 	public ZorroTDDMeasure() throws Exception {
 		this.engine = new Rete();
 	    Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
-	    Batch.batch("besouro/zorro/OneWayTDDHeuristicAlgorithm.clp", this.engine);
+	    Batch.batch("besouro/zorro/TwoWayTDDHeuristicAlgorithm.clp", this.engine);
 	}
 	
 	public void measure(Episode[] eps) {
@@ -49,11 +49,11 @@ public class ZorroTDDMeasure {
 		try {
 			
 			this.episodes.add(e);
-			executed = false;
 			
 		} catch (Exception e2) {
 			throw new RuntimeException(e2);
 		}
+		execute();
 	}
 
 	private void linkEpisodes(Episode episode) {
@@ -73,50 +73,55 @@ public class ZorroTDDMeasure {
 
 	private void execute() {
 		
-		if (!executed) {
+		numberOfNonTDDEpisodes = 0;
+		numberOfTDDEpisodes = 0;
+		durationOfNonTDDEpisodes = 0;
+		durationOfTDDEpisodes = 0;
+		
+		try {
 			
-			numberOfNonTDDEpisodes = 0;
-			numberOfTDDEpisodes = 0;
-			durationOfNonTDDEpisodes = 0;
-			durationOfTDDEpisodes = 0;
+			engine.reset();
 			
-			try {
-				
-				engine.reset();
-				
-				for (int i=0 ; i< episodes.size() ; i++) {
-					assertJessFact(this.episodes.get(i), i);
-				}
-				
-				engine.run();
-				
-				for (int i=0 ; i< episodes.size() ; i++) {
-					
-					QueryResult result = engine.runQueryStar("episode-tdd-conformance-query-by-index", (new ValueVector()).add(new Value(i, RU.INTEGER)));
-					
-					if (result.next()) {
-						
-						episodes.get(i).setIsTDD("True".equals(result.getString("isTDD")));
-						
-						if (episodes.get(i).isTDD()) {
-							numberOfTDDEpisodes += 1;
-							durationOfTDDEpisodes += episodes.get(i).getDuration();
-							
-						} else {
-							numberOfNonTDDEpisodes += 1;
-							durationOfNonTDDEpisodes += episodes.get(i).getDuration();
-						}
-					}
-					
-				}
-				
-			} catch (JessException e) {
-				throw new RuntimeException(e);
+			for (int i=0 ; i< episodes.size() ; i++) {
+				assertJessFact(this.episodes.get(i), i);
 			}
 			
-			executed = true;
+			engine.run();
 			
+			for (int i=0 ; i< episodes.size() ; i++) {
+				
+				QueryResult result = engine.runQueryStar("episode-tdd-conformance-query-by-index", (new ValueVector()).add(new Value(i, RU.INTEGER)));
+				
+				if (result.next()) {
+					
+					if ("True".equals(result.getString("isTDD"))) {
+						episodes.get(i).setIsTDD(true);
+						
+					} else if ("False".equals(result.getString("isTDD"))) {
+						episodes.get(i).setIsTDD(false);
+						
+					} else {
+						// unclassified remains isTdd? == null
+					}
+					
+					
+					if (episodes.get(i).isTDD()) {
+						numberOfTDDEpisodes += 1;
+						durationOfTDDEpisodes += episodes.get(i).getDuration();
+						
+					} else {
+						numberOfNonTDDEpisodes += 1;
+						durationOfNonTDDEpisodes += episodes.get(i).getDuration();
+					}
+				}
+				
+			}
+			
+		} catch (JessException e) {
+			throw new RuntimeException(e);
 		}
+		
+			
 	}
 
 	public float getTDDPercentageByNumber() {

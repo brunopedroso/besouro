@@ -7,7 +7,7 @@ public class Episode {
 
 	private String category;
 	private String subtype;
-	private boolean isTDD;
+	private Boolean isTDD;
 	private int duration;
 	private List<Action> actions = new ArrayList<Action>();
 	
@@ -45,7 +45,7 @@ public class Episode {
 		this.isTDD = isTDD;
 	}
 
-	public boolean isTDD() {
+	public Boolean isTDD() {
 		return isTDD;
 	}
 
