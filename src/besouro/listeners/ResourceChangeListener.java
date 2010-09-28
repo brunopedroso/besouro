@@ -79,7 +79,6 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 				IFile changedFile = (IFile) resource;
 				EditAction action = new EditAction(new Date(), changedFile);
-				action.setOperation("Save");
 				sensor.addAction(action);
 
 			}

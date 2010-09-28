@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 
@@ -157,5 +158,32 @@ public class JavaFileAction extends ResourceAction {
 		return this.statementIncrease;
 	}
 	
+	@Override
+	public java.util.List<String> getActionDetails() {
+		List<String> list = super.getActionDetails();
+		if (this.isTestEdit()) {
+			list.add(makeMetricPair("TestIncrease: ", getTestMethodIncrease(), getTestMethodsCount()));
+			list.add(makeMetricPair("AssertionIncrease: ", getTestAssertionIncrease(), getTestAssertionsCount()));
+			
+		}
+		list.add(makeMetricPair("MethodsIncrease: ", getMethodIncrease(), getMethodsCount()));
+		list.add(makeMetricPair("StatementsIncrease: ", getStatementIncrease(),getStatementsCount()));
+		list.add(makeMetricPair("FileSizeIncrease: ", getFileSizeIncrease(), getFileSize()));
+		return list;
+	};
 
+	protected String makeMetricPair(String name, int value, int total) {
+		StringBuffer buf = new StringBuffer();
+		buf.append(name);
+		buf.append("=");
+		if (value > 0) {
+			buf.append("+");
+		}
+		buf.append(value);
+
+		buf.append("(").append(total).append(")");
+		return buf.toString();
+	}
+	
+	
 }

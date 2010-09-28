@@ -21,7 +21,8 @@ public abstract class Action implements Comparable<Action> {
 	public Date getClock() {
 		return this.clock;
 	}
-
+	
+	//TODO  clean up unecessary methods from classes.
 	public int compareTo(Action o) {
 		return this.clock.compareTo(o.clock);
 	}
@@ -35,4 +36,5 @@ public abstract class Action implements Comparable<Action> {
 		list.add(new SimpleDateFormat("HH:mm:ss").format(clock));
 		return list;
 	}
+
 }
