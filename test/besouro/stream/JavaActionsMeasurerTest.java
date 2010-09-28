@@ -14,6 +14,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.jdt.core.dom.Name;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -231,17 +236,34 @@ public class JavaActionsMeasurerTest {
 
 	
 	@Test
+	public void shouldRecognizeProductionEditsWhenNoTestWordIsFoundInTheNameOfTheClass() throws Exception {
+		metric = new JavaStatementMeter();
+		metric.visit(ResourceChangeEventFactory.createClassDeclaration("ProductionClassName"));
+		Assert.assertFalse(metric.isTest());
+	}
+
+	@Test
 	public void shouldRecognizeTestEditsByTesInTheNameOfTheClass() throws Exception {
-		
-		// it depends on the implementation of JavaStatementMeter (is not being testet yet)
-		when(metric.isTest()).thenReturn(Boolean.TRUE);
-		
-		stream.measureJavaActions(action1);
-		
-		Assert.assertEquals(true, action1.isTestEdit());
-		
+		metric = new JavaStatementMeter();
+		metric.visit(ResourceChangeEventFactory.createClassDeclaration("TestClassName"));
+		Assert.assertTrue(metric.isTest());		
 	}
 	
-	//TODO    shouldRecognizeWithPackageNameNull
+
+	@Test
+	public void shouldRecognizeTestClassByPackageName() throws Exception {
+		metric = new JavaStatementMeter();
+		metric.visit(ResourceChangeEventFactory.createClassDeclaration("AnOrdinaryClassName"));
+		metric.visit(ResourceChangeEventFactory.createPackageDeclaration("package.with.test.word"));
+		Assert.assertTrue(metric.isTest());
+	}
 	
+	@Test
+	public void shouldRecognizeWithPackageNameNull() throws Exception {
+		metric = new JavaStatementMeter();
+		metric.visit(ResourceChangeEventFactory.createClassDeclaration("TestClassName"));
+		metric.visit(ResourceChangeEventFactory.createPackageDeclaration(null));
+		Assert.assertTrue(metric.isTest());
+	}
+
 }

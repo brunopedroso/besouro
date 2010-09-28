@@ -15,6 +15,9 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaModelMarker;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -98,6 +101,23 @@ public class ResourceChangeEventFactory {
 			when(resource.getFileExtension()).thenReturn(split[1]);
 		
 		return resource;
+	}
+	
+	
+	public static TypeDeclaration createClassDeclaration(String className) {
+		TypeDeclaration classDecl = mock(TypeDeclaration.class);
+		SimpleName theClassName = mock(SimpleName.class);;
+		when(classDecl.getName()).thenReturn(theClassName);
+		when(theClassName.getIdentifier()).thenReturn(className);
+		return classDecl;
+	}
+	
+	public static PackageDeclaration createPackageDeclaration(String packageName) {
+		PackageDeclaration packageDeclaration = mock(PackageDeclaration.class);
+		SimpleName thePackageName = mock(SimpleName.class);
+		when(packageDeclaration.getName()).thenReturn(thePackageName);
+		when(thePackageName.getFullyQualifiedName()).thenReturn(packageName);
+		return packageDeclaration;
 	}
 
 }

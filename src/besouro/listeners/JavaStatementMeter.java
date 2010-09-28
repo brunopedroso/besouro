@@ -143,7 +143,7 @@ public class JavaStatementMeter extends ASTVisitor {
 	public boolean isTest() {
 		// minimizes the problem of the case of the first class' test method creation
 		// (looking for 'test' in the class or package name
-		boolean hasTestInPackageName = this.packageName.toLowerCase().indexOf("test") >= 0;
+		boolean hasTestInPackageName = this.packageName!=null && this.packageName.toLowerCase().indexOf("test") >= 0;
 		boolean hasTestInClassName = this.name.toLowerCase().indexOf("test") >= 0;
 		return hasTest() || hasTestInClassName || hasTestInPackageName;
 	}
