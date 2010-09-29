@@ -126,7 +126,7 @@ public class FileStorageActionStreamTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void shouldStoreActionResourceName() throws Exception {
 		
 		
