@@ -1,36 +1,26 @@
 package besouro.stream;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 import junit.framework.Assert;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jdt.core.dom.PackageDeclaration;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.listeners.JavaStatementMeter;
 import besouro.listeners.mock.ResourceChangeEventFactory;
-import besouro.model.Action;
 import besouro.model.EditAction;
 import besouro.model.FileOpenedAction;
 
 
 
-public class JavaActionsMeasurerTest {
+public class JavaActionsLinkerTest {
 	
 	private IResource file;
 	private JavaActionsLinker stream;
