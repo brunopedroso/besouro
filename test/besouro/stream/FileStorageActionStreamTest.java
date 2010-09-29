@@ -16,6 +16,7 @@ import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.Action;
 import besouro.model.EditAction;
 import besouro.model.RefactoringAction;
+import besouro.model.ResourceAction;
 import besouro.model.UnitTestCaseAction;
 
 public class FileStorageActionStreamTest {
@@ -103,7 +104,7 @@ public class FileStorageActionStreamTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void shouldStoreActionDate() throws Exception {
 		
 		IFile resource = ResourceChangeEventFactory.createMockResource("anyFileName", 33);
@@ -114,10 +115,36 @@ public class FileStorageActionStreamTest {
 		
 		Date clock = format.parse("01/01/2010 11:22:33");
 		stream.addAction(new EditAction(clock,resource));
+		stream.addAction(new UnitTestCaseAction(clock,resource));
+		stream.addAction(new RefactoringAction(clock,resource));
 		
 		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		
 		Assert.assertEquals("should preserve the date", clock, readActions[0].getClock());
+		Assert.assertEquals("should preserve the date", clock, readActions[1].getClock());
+		Assert.assertEquals("should preserve the date", clock, readActions[2].getClock());
 		
 	}
 	
+	//@Test
+	public void shouldStoreActionResourceName() throws Exception {
+		
+		
+		stream = new FileStorageActionStream(file);
+		
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		Date clock = format.parse("01/01/2010 11:22:33");
+		
+		String filename = "anyFileName";
+		IFile resource = ResourceChangeEventFactory.createMockResource(filename, 33);
+		
+		stream.addAction(new EditAction(clock,resource));
+		stream.addAction(new UnitTestCaseAction(clock,resource));
+		stream.addAction(new RefactoringAction(clock,resource));
+		
+		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		
+		Assert.assertEquals("should preserve the date", filename, ((ResourceAction)readActions[0]).getResource().getName());
+		
+	}
 }

@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.core.resources.IFile;
+
 import besouro.model.Action;
 import besouro.model.EditAction;
 import besouro.model.RefactoringAction;
@@ -39,14 +41,17 @@ public class FileStorageActionStream implements ActionOutputStream {
 	public void addAction(Action action) {
 		try {
 			
-			if (action instanceof EditAction)
+			if (action instanceof EditAction) {
 				writer.write("EditAction");
 			
-			else if (action instanceof UnitTestCaseAction)
+			}else if (action instanceof UnitTestCaseAction) {
 				writer.write("UnitTestCaseAction");
 			
-			else
+			} else {
 				writer.write("RefactoringAction");
+			}
+			
+			writer.write(" "+ action.getClock().getTime());
 			
 			writer.write("\n");
 			writer.flush();
@@ -77,15 +82,18 @@ public class FileStorageActionStream implements ActionOutputStream {
 					StringTokenizer tok = new StringTokenizer(a," ");
 					String token1 = tok.nextToken();
 					
-					if (token1.equals("EditAction"))
-						list.add(new EditAction(new Date(), null));
+					String token2 = tok.nextToken();
+					Date clock = new Date(Long.parseLong(token2));
 					
-					else if (token1.equals("UnitTestCaseAction"))
-						list.add(new UnitTestCaseAction(new Date(), null));
+					if (token1.equals("EditAction")) {
+						list.add(new EditAction(clock, null));
 					
-					else if (token1.equals("RefactoringAction"))
-						list.add(new RefactoringAction(new Date(), null));
+					} else if (token1.equals("UnitTestCaseAction")) {
+						list.add(new UnitTestCaseAction(clock, null));
 					
+					} else if (token1.equals("RefactoringAction")) {
+						list.add(new RefactoringAction(clock, null));
+					}
 				}
 				
 			}
