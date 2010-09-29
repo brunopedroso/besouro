@@ -45,7 +45,7 @@ public class WindowEventsTest {
 		Assert.assertTrue(generatedActions.get(0) instanceof FileOpenedAction);
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
-		Assert.assertEquals(filename, fileOpenedAction.getResource().getName());
+		Assert.assertEquals(filename, fileOpenedAction.getResource());
 		
 		Assert.assertEquals(12345, fileOpenedAction.getFileSize());
 		
@@ -65,7 +65,7 @@ public class WindowEventsTest {
 		Assert.assertTrue(generatedActions.get(0) instanceof FileOpenedAction);
 		
 		FileOpenedAction fileOpenedAction = (FileOpenedAction) generatedActions.get(0);
-		Assert.assertEquals(filename, fileOpenedAction.getResource().getName());
+		Assert.assertEquals(filename, fileOpenedAction.getResource());
 		
 		
 	}

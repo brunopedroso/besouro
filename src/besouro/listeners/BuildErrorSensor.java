@@ -65,7 +65,7 @@ public class BuildErrorSensor {
 				// dont repeat
 				if (!messagePool.contains(data)) {
 
-					CompilationAction action = new CompilationAction(new Date(), resource);
+					CompilationAction action = new CompilationAction(new Date(), resource.getName());
 					action.setErrorMessage(errorMsg);
 					this.sensor.addAction(action);
 					messagePool.add(data);

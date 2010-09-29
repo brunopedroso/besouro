@@ -31,16 +31,14 @@ public class JessTemplatesTest {
 	private ZorroEpisodeClassification zorro;
 	private Rete engine;
 
-	private IResource productionFile;
-	private IResource testFile;
+	private String productionFile;
+	private String testFile;
 
 	@Before
 	public void setup() throws JessException {
 		clock = new Date();
-		testFile = mock(IResource.class);
-		when(testFile.getName()).thenReturn("testFile");
-		productionFile = mock(IResource.class);
-		when(productionFile.getName()).thenReturn("productionFile");
+		testFile = "testFile";
+		productionFile = "productionFile";
 		
 		zorro = new ZorroEpisodeClassification();
 		engine = zorro.getEngine();

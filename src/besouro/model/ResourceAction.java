@@ -13,22 +13,22 @@ import org.eclipse.core.resources.IResource;
  */
 public abstract class ResourceAction extends Action {
 	
-	private IResource resource;
+	private String resource;
 
-	public ResourceAction(Date clock, IResource workspaceFile) {
+	public ResourceAction(Date clock, String resourceName) {
 		super(clock);
-		this.resource = workspaceFile;
+		this.resource = resourceName;
 	}
 
-	public IResource getResource() {
+	public String getResource() {
 		return this.resource;
 	}
 
 	public String toString() {
-		return this.resource.getName();
+		return this.resource;
 	}
 
 	public String getActionValue() {
-		return this.resource.getName();
+		return this.resource;
 	}
 }

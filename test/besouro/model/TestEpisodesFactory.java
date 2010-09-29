@@ -12,14 +12,12 @@ import besouro.zorro.ZorroEpisodeClassification;
 
 public class TestEpisodesFactory {
 	
-	  private static IResource productionFile;  
-	  private static IResource testFile;
+	  private static String productionFile;  
+	  private static String testFile;
 	  
 	  static {
-		  productionFile = mock(IResource.class);
-		  when(productionFile.getName()).thenReturn("C:\\cvs\\work\\example\\Triangle.java");  
-		  testFile = mock(IResource.class);
-		  when(testFile.getName()).thenReturn("C:\\cvs\\work\\example\\TestTriangle.java");
+		  productionFile = "C:\\cvs\\work\\example\\Triangle.java";  
+		  testFile = "C:\\cvs\\work\\example\\TestTriangle.java";
 	  }
 	  
 	  public static void addTDDType1Facts(ZorroEpisodeClassification engine, Date clock) throws Exception {

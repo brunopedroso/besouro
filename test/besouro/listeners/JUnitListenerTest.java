@@ -55,7 +55,7 @@ public class JUnitListenerTest {
 		Assert.assertEquals(2, generatedActions.size());
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
-		Assert.assertEquals("MyTest.java", action.getResource().getName());
+		Assert.assertEquals("MyTest.java", action.getResource());
 		
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 		
@@ -71,7 +71,7 @@ public class JUnitListenerTest {
 		Assert.assertEquals(2, generatedActions.size());
 		UnitTestAction action = (UnitTestAction) generatedActions.get(0);
 		Assert.assertEquals(false, action.isSuccessful());
-		Assert.assertEquals("MyTest.java", action.getResource().getName());
+		Assert.assertEquals("MyTest.java", action.getResource());
 		
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(1)).isSuccessful());
 	}
@@ -84,8 +84,8 @@ public class JUnitListenerTest {
 		
 		Assert.assertEquals(3, generatedActions.size());
 		
-		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getResource().getName());
-		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getResource().getName());
+		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getResource());
+		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getResource());
 		
 		Assert.assertEquals(true, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
 	}
@@ -99,10 +99,10 @@ public class JUnitListenerTest {
 
 		Assert.assertEquals(3, generatedActions.size());
 		
-		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getResource().getName());
+		Assert.assertEquals("MyTest1.java", ((UnitTestAction) generatedActions.get(0)).getResource());
 		Assert.assertFalse(((UnitTestAction) generatedActions.get(0)).isSuccessful());
 		
-		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getResource().getName());
+		Assert.assertEquals("MyTest2.java", ((UnitTestAction) generatedActions.get(1)).getResource());
 		Assert.assertTrue(((UnitTestAction) generatedActions.get(1)).isSuccessful());
 		
 		Assert.assertEquals(false, ((UnitTestSessionAction) generatedActions.get(2)).isSuccessful());
@@ -121,7 +121,7 @@ public class JUnitListenerTest {
 		
 		Assert.assertEquals(2, generatedActions.size());
 		
-		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getResource().getName());
+		Assert.assertEquals("MyTest.java", ((UnitTestAction) generatedActions.get(0)).getResource());
 	}
 	
 

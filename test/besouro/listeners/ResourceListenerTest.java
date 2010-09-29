@@ -57,7 +57,7 @@ public class ResourceListenerTest {
 		Assert.assertTrue(generatedActions.get(0) instanceof CompilationAction);
 		CompilationAction action = (CompilationAction) generatedActions.get(0);
 		
-		Assert.assertEquals(filename, action.getResource().getName());
+		Assert.assertEquals(filename, action.getResource());
 		Assert.assertEquals(errorMessage, action.getErrorMessage());
 	}
 

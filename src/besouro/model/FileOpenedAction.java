@@ -1,25 +1,23 @@
 package besouro.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.core.resources.IResource;
-
 public class FileOpenedAction extends JavaFileAction {
 
-	public FileOpenedAction(Date clock, IResource workspaceFile) {
+	public FileOpenedAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
 
-		setFileSize((int) workspaceFile.getLocation().toFile().length());
+		
+		//TODO   should calculate java metrics here?
+//		setFileSize((int) workspaceFile.getLocation().toFile().length());
 
-		// should calculate java metrics here?
 
 	}
 
 	@Override
 	public String toString() {
-		return  "OPEN " + getResource().getName();
+		return  "OPEN " + getResource();
 	}
 	
 	@Override

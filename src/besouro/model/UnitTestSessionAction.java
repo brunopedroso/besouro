@@ -1,13 +1,10 @@
 package besouro.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.eclipse.core.resources.IResource;
 
 public class UnitTestSessionAction extends UnitTestAction {
 
-	public UnitTestSessionAction(Date clock, IResource workspaceFile) {
+	public UnitTestSessionAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

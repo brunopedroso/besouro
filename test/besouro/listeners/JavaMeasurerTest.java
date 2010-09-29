@@ -1,30 +1,22 @@
 package besouro.listeners;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.util.Date;
 
 import junit.framework.Assert;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
 import org.junit.Before;
 import org.junit.Test;
 
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.EditAction;
-import besouro.stream.JavaActionsLinker;
 
 public class JavaMeasurerTest {
 
 	private JavaStatementMeter metric;
 	
-	private IResource file;
-	private JavaActionsLinker stream;
+	private String file;
 	private EditAction action1;
 	private EditAction action2;
 	private Date clock;
@@ -33,13 +25,7 @@ public class JavaMeasurerTest {
 	@Before
 	public void setup() throws Exception {
 
-		file = mock(IFile.class);
-		IPath path = mock(IPath.class);
-		File aFile = mock(File.class);
-		when(file.getName()).thenReturn("afile.any");
-		when(file.getLocation()).thenReturn(path);
-		when(path.toFile()).thenReturn(aFile);
-		when(aFile.length()).thenReturn(33l);
+		file = "afile.any";
 		
 		clock = new Date();
 		action1 = new EditAction(clock, file);

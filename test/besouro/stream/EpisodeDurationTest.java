@@ -25,8 +25,8 @@ public class EpisodeDurationTest {
 	
 	private EpisodeClassifierStream stream;
 	
-	private IResource file1;
-	private IResource file2;
+	private String file1;
+	private String file2;
 	
 	private EditAction action1;
 	private EditAction action2;
@@ -48,16 +48,10 @@ public class EpisodeDurationTest {
 		JavaStatementMeter metric = mock(JavaStatementMeter.class);
 		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(metric);
 		
-		
 		Date referenceDate = new Date();
 		
-		file1 = ResourceChangeEventFactory.createMockResource("afile.java", 33);
-//		file1 = mock(IFile.class);
-//		when(file1.getName()).thenReturn("afile.any");
-		
-		file2 = ResourceChangeEventFactory.createMockResource("atestfile.any", 44);
-//		file2 = mock(IFile.class);
-//		when(file2.getName()).thenReturn("atestfile.any");
+		file1 = "afile.java";
+		file2 = "atestfile.any";
 		
 		long time = 10000;
 		

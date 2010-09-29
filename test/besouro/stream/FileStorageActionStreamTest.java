@@ -55,7 +55,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreTheFirstActionInTheFile() throws Exception {
 		
-		Action a = new EditAction(new Date(),ResourceChangeEventFactory.createMockResource("anyFileName", 33));
+		Action a = new EditAction(new Date(), "anyFileName");
 		
 		stream = new FileStorageActionStream(file);
 		stream.addAction(a);
@@ -76,7 +76,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreMoreThanOneAction() throws Exception {
 		
-		IFile resource = ResourceChangeEventFactory.createMockResource("anyFileName", 33);
+		String resource = "anyFileName";
 		
 		stream = new FileStorageActionStream(file);
 		stream.addAction(new EditAction(new Date(),resource));
@@ -90,7 +90,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreActionTypes() throws Exception {
 		
-		IFile resource = ResourceChangeEventFactory.createMockResource("anyFileName", 33);
+		String resource = "anyFileName";
 		
 		stream = new FileStorageActionStream(file);
 		stream.addAction(new EditAction(new Date(),resource));
@@ -107,7 +107,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreActionDate() throws Exception {
 		
-		IFile resource = ResourceChangeEventFactory.createMockResource("anyFileName", 33);
+		String resource = "anyFileName";
 		
 		stream = new FileStorageActionStream(file);
 		
@@ -135,8 +135,7 @@ public class FileStorageActionStreamTest {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date clock = format.parse("01/01/2010 11:22:33");
 		
-		String filename = "anyFileName";
-		IFile resource = ResourceChangeEventFactory.createMockResource(filename, 33);
+		String resource = "anyFileName";
 		
 		stream.addAction(new EditAction(clock,resource));
 		stream.addAction(new UnitTestCaseAction(clock,resource));
@@ -144,7 +143,7 @@ public class FileStorageActionStreamTest {
 		
 		Action[] readActions = FileStorageActionStream.loadFromFile(file);
 		
-		Assert.assertEquals("should preserve the date", filename, ((ResourceAction)readActions[0]).getResource().getName());
+		Assert.assertEquals("should preserve the date", resource, ((ResourceAction)readActions[0]).getResource());
 		
 	}
 }

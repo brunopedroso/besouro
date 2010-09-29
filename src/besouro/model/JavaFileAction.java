@@ -24,7 +24,7 @@ public class JavaFileAction extends ResourceAction {
 	
 	private JavaFileAction previousAction;
 
-	public JavaFileAction(Date clock, IResource workspaceFile) {
+	public JavaFileAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

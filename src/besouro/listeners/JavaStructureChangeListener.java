@@ -133,7 +133,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		String name = buildElementName(element.toString());
 		if (name != null && !"".equals(name)) {
 
-			RefactoringAction action = new RefactoringAction(new Date(), element.getResource());
+			RefactoringAction action = new RefactoringAction(new Date(), element.getResource().getName());
 			action.setOperator(op);
 			action.setSubjectType(type);
 			action.setSubjectName(name);
@@ -165,7 +165,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 		if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
 
-			RefactoringAction action = new RefactoringAction(new Date(), javaFile);
+			RefactoringAction action = new RefactoringAction(new Date(), javaFile.getName());
 			action.setOperator("RENAME");
 			action.setSubjectName(fromName + " => " + toName);
 
@@ -192,7 +192,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 		if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
 
-			RefactoringAction action = new RefactoringAction(new Date(), javaFile);
+			RefactoringAction action = new RefactoringAction(new Date(), javaFile.getName());
 			action.setOperator("MOVE");
 			action.setSubjectName(fromName + " => " + toName);
 

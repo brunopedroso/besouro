@@ -78,7 +78,7 @@ public class ZorroEpisodeClassification {
 				CompilationAction ca = (CompilationAction) action;
 				f = new Fact("CompilationAction", engine);
 				f.setSlotValue("index", new Value(index, RU.INTEGER));
-				f.setSlotValue("file",  new Value(ca.getResource().getName(), RU.STRING));
+				f.setSlotValue("file",  new Value(ca.getResource(), RU.STRING));
 				f.setSlotValue("message", new Value(ca.getErrorMessage(), RU.STRING));
 				f = engine.assertFact(f);
 				
@@ -100,7 +100,7 @@ public class ZorroEpisodeClassification {
 					}
 					
 					f.setSlotValue("index", new Value(index, RU.INTEGER));
-					f.setSlotValue("file", new Value(ca.getResource().getName(), RU.STRING));
+					f.setSlotValue("file", new Value(ca.getResource(), RU.STRING));
 					f.setSlotValue("byteChange", new Value(ca.getFileSizeIncrease(), RU.INTEGER));
 					
 					f = engine.assertFact(f);
@@ -113,7 +113,7 @@ public class ZorroEpisodeClassification {
 				f = new Fact("UnaryRefactorAction", engine);
 				
 				f.setSlotValue("index", new Value(index, RU.INTEGER));
-				f.setSlotValue("file",  new Value(ca.getResource().getName(), RU.STRING));
+				f.setSlotValue("file",  new Value(ca.getResource(), RU.STRING));
 				
 				f.setSlotValue("operation", new Value(ca.getOperator(),RU.STRING));
 				f.setSlotValue("type", new Value(ca.getSubjectType(),RU.STRING));
@@ -127,7 +127,7 @@ public class ZorroEpisodeClassification {
 				
 				f = new Fact("UnitTestAction", engine);
 				f.setSlotValue("index", new Value(index, RU.INTEGER));
-				f.setSlotValue("file",new Value(ca.getResource().getName(), RU.STRING));
+				f.setSlotValue("file",new Value(ca.getResource(), RU.STRING));
 				
 				if (!ca.isSuccessful()) {
 					f.setSlotValue("errmsg", new Value(ca.isSuccessful() ? "true" : "failure", RU.STRING));

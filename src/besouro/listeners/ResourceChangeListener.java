@@ -79,7 +79,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 			if (resource.getLocation().toString().endsWith(".java")) {
 
 				IFile changedFile = (IFile) resource;
-				EditAction action = new EditAction(new Date(), changedFile);
+				EditAction action = new EditAction(new Date(), changedFile.getName());
 				
 				JavaStatementMeter meter = this.measurer.measureJavaFile(changedFile);
 				

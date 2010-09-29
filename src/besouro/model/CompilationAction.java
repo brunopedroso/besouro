@@ -13,7 +13,7 @@ public class CompilationAction extends ResourceAction {
 
 	private String errMsg;
 
-	public CompilationAction(Date clock, IResource workspaceFile) {
+	public CompilationAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
 	}
 

@@ -22,7 +22,7 @@ import besouro.model.FileOpenedAction;
 
 public class JavaActionsLinkerTest {
 	
-	private IResource file;
+	private String file;
 	private JavaActionsLinker stream;
 	private EditAction action1;
 	private EditAction action2;
@@ -34,13 +34,7 @@ public class JavaActionsLinkerTest {
 
 		stream = new JavaActionsLinker();
 
-		file = mock(IFile.class);
-		IPath path = mock(IPath.class);
-		File aFile = mock(File.class);
-		when(file.getName()).thenReturn("afile.any");
-		when(file.getLocation()).thenReturn(path);
-		when(path.toFile()).thenReturn(aFile);
-		when(aFile.length()).thenReturn(33l);
+		file = "afile.any";
 		
 		clock = new Date();
 		action1 = new EditAction(clock, file);
@@ -70,7 +64,7 @@ public class JavaActionsLinkerTest {
 	@Test
 	public void shouldLinkActionsPerFile() throws Exception {
 		
-		IResource anotherFile = ResourceChangeEventFactory.createMockResource("anotherfile.any", 33);
+		String anotherFile = "anotherfile.any";
 //		when(anotherFile.getName()).thenReturn("anotherfile.any");
 		
 		action1 = new EditAction(clock, file);
@@ -147,7 +141,7 @@ public class JavaActionsLinkerTest {
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
 		
-		IResource anotherFile = ResourceChangeEventFactory.createMockResource("anotherfile.any", 33);
+		String anotherFile = "anotherfile.any";
 //		when(anotherFile.getName()).thenReturn("anotherfile.any");
 
 		

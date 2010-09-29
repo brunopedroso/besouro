@@ -116,7 +116,7 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 				
 				IFileEditorInput fileInput = (IFileEditorInput) input;
 				IFile file = fileInput.getFile();
-				FileOpenedAction action = new FileOpenedAction(new Date(), file);
+				FileOpenedAction action = new FileOpenedAction(new Date(), file.getName());
 				
 				JavaStatementMeter meter = this.measurer.measureJavaFile(file);
 				
