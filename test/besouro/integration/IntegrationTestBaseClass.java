@@ -47,7 +47,8 @@ public class IntegrationTestBaseClass {
 		measurer = mock(JavaStatementMeter.class);
 		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(meter);
 		
-		stream.getJavaActionsMeasurer().setJavaFileMeasurer(measurer);
+		resourceListener.setMeasurer(measurer);
+		winListener.setMeasurer(measurer);
 		
 		// Open file (calculates the first file metrics)
 		when(meter.getNumOfMethods()).thenReturn(3);

@@ -16,7 +16,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private ZorroEpisodeClassification classifier;
 	private ZorroTDDMeasure measure;
-	private JavaActionsMeasurer javaActionsMeasurer;
+	private JavaActionsLinker javaActionsLinker;
 	
 	List<Action> actions = new ArrayList<Action>();
 	List<Episode> episodes = new ArrayList<Episode>();
@@ -26,7 +26,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	public EpisodeClassifierStream() throws Exception {
 		classifier = new ZorroEpisodeClassification();
 		measure = new ZorroTDDMeasure();
-		javaActionsMeasurer = new JavaActionsMeasurer();
+		javaActionsLinker = new JavaActionsLinker();
 	}
 
 	public void addAction(Action action) {
@@ -34,7 +34,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		System.out.println("[action] " + action);
 		
 		if (action instanceof JavaFileAction) {
-			javaActionsMeasurer.measureJavaActions((JavaFileAction) action);
+			javaActionsLinker.linkActions((JavaFileAction) action);
 		}
 		
 		Episode episode = recognizeEpisode(action);
@@ -85,8 +85,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	/**
 	 * for testing purposes
 	 */
-	public JavaActionsMeasurer getJavaActionsMeasurer() {
-		return javaActionsMeasurer;
+	public JavaActionsLinker getJavaActionsMeasurer() {
+		return javaActionsLinker;
 	}
 
 	public void addEpisodeListener(EpisodeListener listener) {

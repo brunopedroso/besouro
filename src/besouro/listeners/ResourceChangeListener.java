@@ -27,6 +27,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 	private ActionOutputStream sensor;
 	private BuildErrorSensor buildErrorSensor;
+	private JavaStatementMeter measurer = new JavaStatementMeter();
 
 	public ResourceChangeListener(ActionOutputStream s) {
 		this.sensor = s;
@@ -79,6 +80,16 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 				IFile changedFile = (IFile) resource;
 				EditAction action = new EditAction(new Date(), changedFile);
+				
+				JavaStatementMeter meter = this.measurer.measureJavaFile(changedFile);
+				
+				action.setFileSize((int) changedFile.getLocation().toFile().length());
+				action.setIsTestEdit(meter.isTest());
+				action.setMethodsCount(meter.getNumOfMethods());
+				action.setStatementsCount(meter.getNumOfStatements());
+				action.setTestMethodsCount(meter.getNumOfTestMethods());
+				action.setTestAssertionsCount(meter.getNumOfTestAssertions());
+				
 				sensor.addAction(action);
 
 			}
@@ -88,6 +99,13 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 		// visit the children
 		return true;
 
+	}
+	
+	/**
+	 * for testing purposes
+	 */
+	public void setMeasurer(JavaStatementMeter meter) {
+		this.measurer = meter;
 	}
 
 }

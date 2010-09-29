@@ -33,25 +33,17 @@ import besouro.model.FileOpenedAction;
 public class JavaActionsMeasurerTest {
 	
 	private IResource file;
-	private JavaActionsMeasurer stream;
+	private JavaActionsLinker stream;
 	private EditAction action1;
 	private EditAction action2;
 	private Date clock;
 	
-	private JavaStatementMeter metric;
-
+	
 	@Before
 	public void setup() throws Exception {
 
-		stream = new JavaActionsMeasurer();
+		stream = new JavaActionsLinker();
 
-		// strange, i know
-		JavaStatementMeter measurer = mock(JavaStatementMeter.class);
-		metric = mock(JavaStatementMeter.class);
-		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(metric);
-		stream.setJavaFileMeasurer(measurer);
-
-		
 		file = mock(IFile.class);
 		IPath path = mock(IPath.class);
 		File aFile = mock(File.class);
@@ -77,8 +69,8 @@ public class JavaActionsMeasurerTest {
 		action1 = new EditAction(clock, file);
 		action2 = new EditAction(clock, file);
 		
-		stream.measureJavaActions(action1);
-		stream.measureJavaActions(action2);
+		stream.linkActions(action1);
+		stream.linkActions(action2);
 		
 		Assert.assertEquals(action1, action2.getPreviousAction());
 		
@@ -96,10 +88,10 @@ public class JavaActionsMeasurerTest {
 		EditAction action3 = new EditAction(clock, anotherFile);
 		EditAction action4 = new EditAction(clock, anotherFile);
 
-		stream.measureJavaActions(action1);
-		stream.measureJavaActions(action3);
-		stream.measureJavaActions(action2);
-		stream.measureJavaActions(action4);
+		stream.linkActions(action1);
+		stream.linkActions(action3);
+		stream.linkActions(action2);
+		stream.linkActions(action4);
 		
 		// should link action1 -> action2
 		Assert.assertEquals(action1, action2.getPreviousAction());
@@ -171,10 +163,10 @@ public class JavaActionsMeasurerTest {
 		
 		EditAction action3 = new EditAction(clock, anotherFile);
 
-		stream.measureJavaActions(open);
-		stream.measureJavaActions(action1);
-		stream.measureJavaActions(action3); // should not be linked
-		stream.measureJavaActions(action2);
+		stream.linkActions(open);
+		stream.linkActions(action1);
+		stream.linkActions(action3); // should not be linked
+		stream.linkActions(action2);
 		
 		Assert.assertEquals(open, action1.getPreviousAction());
 		Assert.assertEquals(action1, action2.getPreviousAction());
@@ -198,72 +190,6 @@ public class JavaActionsMeasurerTest {
 	}
 
 
-	@Test
-	public void shouldRecognizeTestEditsByNumberOfTestsAndAsserts() throws Exception {
-		
-		// its how test edits are identified 
-		when(metric .isTest()).thenReturn(Boolean.TRUE);
-		when(metric.getNumOfMethods()       ).thenReturn(1);
-		when(metric.getNumOfStatements()    ).thenReturn(2);
-		when(metric.getNumOfTestAssertions()).thenReturn(3);
-		when(metric.getNumOfTestMethods()   ).thenReturn(4);
-		
-		stream.measureJavaActions(action1);
-		
-		Assert.assertEquals("afile.any", action1.getResource().getName());
-		
-		Assert.assertEquals(true, action1.isTestEdit());
-		Assert.assertEquals(1, action1.getMethodsCount());
-		Assert.assertEquals(2, action1.getStatementsCount());
-		Assert.assertEquals(3, action1.getTestAssertionsCount());
-		Assert.assertEquals(4, action1.getTestMethodsCount());
-		
-		Assert.assertEquals(33, action1.getFileSize());
-		
-	}
-
-	@Test
-	public void shouldRecognizeProductionEdits() throws Exception {
-		
-		// it depends on the implementation of JavaStatementMeter (is not being testet yet)
-		when(metric.isTest()).thenReturn(Boolean.FALSE);
-		
-		stream.measureJavaActions(action1);
-
-		Assert.assertEquals(false, action1.isTestEdit());
-
-	}
-
 	
-	@Test
-	public void shouldRecognizeProductionEditsWhenNoTestWordIsFoundInTheNameOfTheClass() throws Exception {
-		metric = new JavaStatementMeter();
-		metric.visit(ResourceChangeEventFactory.createClassDeclaration("ProductionClassName"));
-		Assert.assertFalse(metric.isTest());
-	}
-
-	@Test
-	public void shouldRecognizeTestEditsByTesInTheNameOfTheClass() throws Exception {
-		metric = new JavaStatementMeter();
-		metric.visit(ResourceChangeEventFactory.createClassDeclaration("TestClassName"));
-		Assert.assertTrue(metric.isTest());		
-	}
-	
-
-	@Test
-	public void shouldRecognizeTestClassByPackageName() throws Exception {
-		metric = new JavaStatementMeter();
-		metric.visit(ResourceChangeEventFactory.createClassDeclaration("AnOrdinaryClassName"));
-		metric.visit(ResourceChangeEventFactory.createPackageDeclaration("package.with.test.word"));
-		Assert.assertTrue(metric.isTest());
-	}
-	
-	@Test
-	public void shouldRecognizeWithPackageNameNull() throws Exception {
-		metric = new JavaStatementMeter();
-		metric.visit(ResourceChangeEventFactory.createClassDeclaration("TestClassName"));
-		metric.visit(ResourceChangeEventFactory.createPackageDeclaration(null));
-		Assert.assertTrue(metric.isTest());
-	}
 
 }

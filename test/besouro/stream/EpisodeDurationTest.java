@@ -47,8 +47,8 @@ public class EpisodeDurationTest {
 		JavaStatementMeter measurer = mock(JavaStatementMeter.class);
 		JavaStatementMeter metric = mock(JavaStatementMeter.class);
 		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(metric);
-		stream.getJavaActionsMeasurer().setJavaFileMeasurer(measurer);
-
+		
+		
 		Date referenceDate = new Date();
 		
 		file1 = ResourceChangeEventFactory.createMockResource("afile.java", 33);

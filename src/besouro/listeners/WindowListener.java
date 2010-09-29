@@ -2,6 +2,7 @@ package besouro.listeners;
 
 import java.util.Date;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -25,6 +26,8 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	private ActionOutputStream stream;
 	private IWorkbench workbench;
 
+	private JavaStatementMeter measurer = new JavaStatementMeter();
+	
 	public WindowListener(ActionOutputStream stream) {
 		this.stream = stream;
 	}
@@ -112,12 +115,29 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 			if (input instanceof IFileEditorInput) {
 				
 				IFileEditorInput fileInput = (IFileEditorInput) input;
-				FileOpenedAction action = new FileOpenedAction(new Date(), fileInput.getFile());
+				IFile file = fileInput.getFile();
+				FileOpenedAction action = new FileOpenedAction(new Date(), file);
+				
+				JavaStatementMeter meter = this.measurer.measureJavaFile(file);
+				
+				action.setFileSize((int) file.getLocation().toFile().length());
+				action.setIsTestEdit(meter.isTest());
+				action.setMethodsCount(meter.getNumOfMethods());
+				action.setStatementsCount(meter.getNumOfStatements());
+				action.setTestMethodsCount(meter.getNumOfTestMethods());
+				action.setTestAssertionsCount(meter.getNumOfTestAssertions());
+				
 				stream.addAction(action);
 				
 			}
 
 		}
 	}
-
+	
+	/**
+	 * for testing purposes
+	 */
+	public void setMeasurer(JavaStatementMeter meter) {
+		this.measurer = meter;
+	}
 }

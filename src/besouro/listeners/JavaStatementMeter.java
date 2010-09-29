@@ -20,6 +20,8 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import besouro.model.JavaFileAction;
+
 /**
  * Implements a meter to measure several aspects such as number of methods,
  * statements, test methods, assertion statements if applicable. Number of test
@@ -176,4 +178,6 @@ public class JavaStatementMeter extends ASTVisitor {
 		root.accept(meter);
 		return meter;
 	}
+	
+
 }
