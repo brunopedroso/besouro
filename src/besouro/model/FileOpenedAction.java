@@ -7,12 +7,6 @@ public class FileOpenedAction extends JavaFileAction {
 
 	public FileOpenedAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
-
-		
-		//TODO   should calculate java metrics here?
-//		setFileSize((int) workspaceFile.getLocation().toFile().length());
-
-
 	}
 
 	@Override
