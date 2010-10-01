@@ -2,6 +2,7 @@ package besouro.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IResource;
 
@@ -26,6 +27,10 @@ public class JavaFileAction extends ResourceAction {
 
 	public JavaFileAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
+	}
+	
+	public JavaFileAction(StringTokenizer tok) {
+		super(tok);
 	}
 
 

@@ -2,6 +2,7 @@ package besouro.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 
 /**
@@ -34,6 +35,10 @@ public class RefactoringAction extends ResourceAction {
 
 	public RefactoringAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
+	}
+
+	public RefactoringAction(StringTokenizer tok) {
+		super(tok);
 	}
 
 	public void setSubjectName(String subjectName) {

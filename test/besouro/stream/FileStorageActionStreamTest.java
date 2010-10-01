@@ -77,7 +77,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldReadNothingFromEmptyFile() throws Exception {
 		Action[] readActions = FileStorageActionStream.loadFromFile(file);
-		Assert.assertEquals(0, readActions.length);
+		Assert.assertNull(readActions);
 	}
 
 	@Test

@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 public class UnitTestCaseAction extends UnitTestAction {
 
@@ -9,6 +10,10 @@ public class UnitTestCaseAction extends UnitTestAction {
 	
 	public UnitTestCaseAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
+	}
+
+	public UnitTestCaseAction(StringTokenizer tok) {
+		super(tok);
 	}
 
 	public void setTestCase(String testcase) {

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Implements abstract command for build data or cli data.
@@ -35,6 +36,27 @@ public abstract class Action implements Comparable<Action> {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add(new SimpleDateFormat("HH:mm:ss").format(clock));
 		return list;
+	}
+
+	public static Action fromString(String line) {
+		Action action = null;
+		
+		StringTokenizer tok = new StringTokenizer(line," ");
+		String className = tok.nextToken();
+		
+		if (className.equals("EditAction")) {
+			action = new EditAction(tok);
+		
+		} else if (className.equals("UnitTestCaseAction")) {
+			action = new UnitTestCaseAction(tok);
+		
+		} else if (className.equals("UnitTestSessionAction")) {
+			action = new UnitTestSessionAction(tok);
+			
+		} else if (className.equals("RefactoringAction")) {
+			action = new RefactoringAction(tok);
+		}
+		return action;
 	}
 
 }

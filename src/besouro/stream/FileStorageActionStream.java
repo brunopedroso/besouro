@@ -53,44 +53,21 @@ public class FileStorageActionStream implements ActionOutputStream {
 	public static Action[] loadFromFile(File file) {
 		
 		if (!file.exists()) {
-			return new Action[0];
+			return null;
 		}
 		
 		try {
 			
 			List<Action> list = new ArrayList<Action>();
-			
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			
-			for (int i=0 ; i<file.length() ; i++) {
+			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 				
-				String a = reader.readLine();
-				
-				if (a != null) {
-					
-					StringTokenizer tok = new StringTokenizer(a," ");
-					String token1 = tok.nextToken();
-					
-					String token2 = tok.nextToken();
-					Date clock = new Date(Long.parseLong(token2));
-					
-					String resourceName = tok.nextToken();
-					
-					if (token1.equals("EditAction")) {
-						list.add(new EditAction(clock, resourceName));
-					
-					} else if (token1.equals("UnitTestCaseAction")) {
-						list.add(new UnitTestCaseAction(clock, resourceName));
-					
-					} else if (token1.equals("UnitTestSessionAction")) {
-						list.add(new UnitTestSessionAction(clock, resourceName));
-						
-					} else if (token1.equals("RefactoringAction")) {
-						list.add(new RefactoringAction(clock, resourceName));
-					}
+				if (line != null) {
+					list.add(Action.fromString(line));
 				}
 				
-			}
+			};
 			
 			return list.toArray(new Action[list.size()]);
 			

@@ -1,6 +1,7 @@
 package besouro.model;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IResource;
 
@@ -20,6 +21,10 @@ public abstract class ResourceAction extends Action {
 		this.resource = resourceName;
 	}
 
+	public ResourceAction(StringTokenizer tok) {
+		this(new Date(Long.parseLong(tok.nextToken())), tok.nextToken());
+	}
+	
 	public String getResource() {
 		return this.resource;
 	}
