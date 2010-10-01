@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFile;
 import besouro.model.Action;
 import besouro.model.EditAction;
 import besouro.model.RefactoringAction;
+import besouro.model.ResourceAction;
 import besouro.model.UnitTestCaseAction;
 
 public class FileStorageActionStream implements ActionOutputStream {
@@ -52,6 +53,7 @@ public class FileStorageActionStream implements ActionOutputStream {
 			}
 			
 			writer.write(" "+ action.getClock().getTime());
+			writer.write(" "+ ((ResourceAction)action).getResource());
 			
 			writer.write("\n");
 			writer.flush();
@@ -85,14 +87,16 @@ public class FileStorageActionStream implements ActionOutputStream {
 					String token2 = tok.nextToken();
 					Date clock = new Date(Long.parseLong(token2));
 					
+					String resourceName = tok.nextToken();
+					
 					if (token1.equals("EditAction")) {
-						list.add(new EditAction(clock, null));
+						list.add(new EditAction(clock, resourceName));
 					
 					} else if (token1.equals("UnitTestCaseAction")) {
-						list.add(new UnitTestCaseAction(clock, null));
+						list.add(new UnitTestCaseAction(clock, resourceName));
 					
 					} else if (token1.equals("RefactoringAction")) {
-						list.add(new RefactoringAction(clock, null));
+						list.add(new RefactoringAction(clock, resourceName));
 					}
 				}
 				
