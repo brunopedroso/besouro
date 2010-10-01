@@ -55,7 +55,15 @@ public abstract class Action implements Comparable<Action> {
 			
 		} else if (className.equals("RefactoringAction")) {
 			action = new RefactoringAction(tok);
+			
+		} else if (className.equals("FileOpenedAction")) {
+			action = new FileOpenedAction(tok);
+			
+		} else if (className.equals("CompilationAction")) {
+			action = new CompilationAction(tok);
+			
 		}
+		
 		return action;
 	}
 

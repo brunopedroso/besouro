@@ -31,9 +31,21 @@ public class JavaFileAction extends ResourceAction {
 	
 	public JavaFileAction(StringTokenizer tok) {
 		super(tok);
+		setFileSize(Integer.parseInt(tok.nextToken()));
+		setMethodsCount(Integer.parseInt(tok.nextToken()));
+		setStatementsCount(Integer.parseInt(tok.nextToken()));
+		setTestAssertionsCount(Integer.parseInt(tok.nextToken()));
 	}
 
-
+	public String toString() {
+		return super.toString() + " " 
+				+ getFileSize() + " " 
+				+ getMethodsCount() + " "
+				+ getStatementsCount() + " "
+				+ getTestAssertionsCount();
+	}
+	
+	
 	public void setFileSize(int fileSize) {
 		this.fileSize = fileSize;
 	}

@@ -2,6 +2,7 @@ package besouro.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.resources.IResource;
 
@@ -17,6 +18,10 @@ public class CompilationAction extends ResourceAction {
 		super(clock, workspaceFile);
 	}
 
+	public CompilationAction(StringTokenizer tok) {
+		super(tok);
+	}
+
 	public void setErrorMessage(String errMsg) {
 		this.errMsg = errMsg;
 	}
@@ -26,7 +31,7 @@ public class CompilationAction extends ResourceAction {
 	}
 
 	public String toString() {
-		return "COMPILE FAIL in " + getResource();
+		return super.toString();
 	}
 	
 	@Override

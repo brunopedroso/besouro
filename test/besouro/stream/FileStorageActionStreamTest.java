@@ -16,7 +16,10 @@ import org.junit.Test;
 import besouro.integration.TestFirstRecognition;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.Action;
+import besouro.model.CompilationAction;
 import besouro.model.EditAction;
+import besouro.model.FileOpenedAction;
+import besouro.model.JavaFileAction;
 import besouro.model.RefactoringAction;
 import besouro.model.ResourceAction;
 import besouro.model.UnitTestCaseAction;
@@ -104,12 +107,17 @@ public class FileStorageActionStreamTest {
 		stream.addAction(new UnitTestCaseAction(new Date(),resource));
 		stream.addAction(new UnitTestSessionAction(new Date(),resource));
 		stream.addAction(new RefactoringAction(new Date(),resource));
+		stream.addAction(new FileOpenedAction(new Date(),resource));
+		stream.addAction(new CompilationAction(new Date(),resource));
 		
 		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		
 		Assert.assertTrue("should be an EditAction", readActions[0] instanceof EditAction);
 		Assert.assertTrue("should be an UnitTestCaseAction", readActions[1] instanceof UnitTestCaseAction);
 		Assert.assertTrue("should be an UnitSessionCaseAction but was a " + readActions[2].getClass().getSimpleName(), readActions[2] instanceof UnitTestSessionAction);
 		Assert.assertTrue("should be a RefactoringAction", readActions[3] instanceof RefactoringAction);
+		Assert.assertTrue("should be a FileOpenAction", readActions[4] instanceof FileOpenedAction);
+		Assert.assertTrue("should be a CompilationAction", readActions[5] instanceof CompilationAction);
 		
 	}
 	
@@ -151,7 +159,34 @@ public class FileStorageActionStreamTest {
 		
 	}
 	
-//	@Test
+	@Test
+	public void shouldStoreJavaActionDetails() throws Exception {
+		
+		int filesize = 33;
+		int methods = 34;
+		int statements = 35;
+		int testAssertions = 36;
+		
+		EditAction action = new EditAction(new Date(),"anyFileName");
+		action.setFileSize(filesize);
+		action.setMethodsCount(methods);
+		action.setStatementsCount(statements);
+		action.setTestAssertionsCount(testAssertions);
+		
+		stream = new FileStorageActionStream(file);
+		stream.addAction(action);
+		
+		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		
+		Assert.assertEquals("should load one action", 1, readActions.length);
+		Assert.assertEquals("should preserve the date", filesize, ((JavaFileAction)readActions[0]).getFileSize());
+		Assert.assertEquals("should preserve methods count", methods, ((JavaFileAction)readActions[0]).getMethodsCount());
+		Assert.assertEquals("should preserve statements count", statements, ((JavaFileAction)readActions[0]).getStatementsCount());
+		Assert.assertEquals("should preserve test statements count", testAssertions, ((JavaFileAction)readActions[0]).getTestAssertionsCount());
+		
+	}
+	
+	@Test
 	public void shouldStoreSufficientActionsForTestFirtOneRecognition() throws Exception {
 		
 		EpisodeClassifierStream stream = new EpisodeClassifierStream(){

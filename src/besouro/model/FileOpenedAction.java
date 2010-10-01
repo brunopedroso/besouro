@@ -2,6 +2,7 @@ package besouro.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class FileOpenedAction extends JavaFileAction {
 
@@ -9,9 +10,13 @@ public class FileOpenedAction extends JavaFileAction {
 		super(clock, workspaceFile);
 	}
 
+	public FileOpenedAction(StringTokenizer tok) {
+		super(tok);
+	}
+
 	@Override
 	public String toString() {
-		return  "OPEN " + getResource();
+		return  super.toString();
 	}
 	
 	@Override
