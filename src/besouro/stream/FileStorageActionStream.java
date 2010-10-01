@@ -10,13 +10,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.resources.IFile;
-
 import besouro.model.Action;
 import besouro.model.EditAction;
 import besouro.model.RefactoringAction;
 import besouro.model.ResourceAction;
 import besouro.model.UnitTestCaseAction;
+import besouro.model.UnitTestSessionAction;
 
 public class FileStorageActionStream implements ActionOutputStream {
 
@@ -42,19 +41,7 @@ public class FileStorageActionStream implements ActionOutputStream {
 	public void addAction(Action action) {
 		try {
 			
-			if (action instanceof EditAction) {
-				writer.write("EditAction");
-			
-			}else if (action instanceof UnitTestCaseAction) {
-				writer.write("UnitTestCaseAction");
-			
-			} else {
-				writer.write("RefactoringAction");
-			}
-			
-			writer.write(" "+ action.getClock().getTime());
-			writer.write(" "+ ((ResourceAction)action).getResource());
-			
+			writer.write(action.toString());
 			writer.write("\n");
 			writer.flush();
 			
@@ -95,6 +82,9 @@ public class FileStorageActionStream implements ActionOutputStream {
 					} else if (token1.equals("UnitTestCaseAction")) {
 						list.add(new UnitTestCaseAction(clock, resourceName));
 					
+					} else if (token1.equals("UnitTestSessionAction")) {
+						list.add(new UnitTestSessionAction(clock, resourceName));
+						
 					} else if (token1.equals("RefactoringAction")) {
 						list.add(new RefactoringAction(clock, resourceName));
 					}

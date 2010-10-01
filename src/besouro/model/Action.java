@@ -28,7 +28,7 @@ public abstract class Action implements Comparable<Action> {
 	}
 
 	public String toString() {
-		return "action";
+		return getClass().getSimpleName() + " " + getClock().getTime();
 	}
 	
 	public List<String> getActionDetails() {

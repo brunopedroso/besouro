@@ -45,7 +45,7 @@ public class RefactoringAction extends ResourceAction {
 	}
 
 	public String toString() {
-		return " REFACTORNG " + getActionType() + " in " + getResource();
+		return super.toString() + " " + getActionType(); 
 	}
 
 	@Override

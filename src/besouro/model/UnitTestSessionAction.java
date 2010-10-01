@@ -10,7 +10,7 @@ public class UnitTestSessionAction extends UnitTestAction {
 
 	@Override
 	public String toString() {
-		return "TEST SESSION - " + (this.isSuccessful()?"OK":"FAIL");
+		return super.toString() + (this.isSuccessful()?"OK":"FAIL");
 	}
 	
 }

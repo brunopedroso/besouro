@@ -29,11 +29,7 @@ public class UnitTestCaseAction extends UnitTestAction {
 	}
 
 	public String toString() {
-		if (this.isSuccessful()) {
-			return "TEST CASE - OK " + getResource();
-		} else {
-			return "TEST CASE - FAILED " + getResource();
-		}
+		return super.toString() + " " + (isSuccessful() ? "OK" : "FAILED");
 	}
 	
 }

@@ -13,18 +13,21 @@ public class EditAction extends JavaFileAction {
 	}
 
 	public String toString() {
-		StringBuffer buf = new StringBuffer();
-
-		if (this.isTestEdit()) {
-			buf.append("SAVE TEST ");
-
-		} else {
-			buf.append("SAVE PRODUCTION ");
-		}
-
-		buf.append(getResource());
 		
-		return buf.toString();
+		return super.toString();
+		
+//		StringBuffer buf = new StringBuffer();
+//
+//		if (this.isTestEdit()) {
+//			buf.append("SAVE TEST ");
+//
+//		} else {
+//			buf.append("SAVE PRODUCTION ");
+//		}
+//
+//		buf.append(getResource());
+//		
+//		return buf.toString();
 	}
 	
 }

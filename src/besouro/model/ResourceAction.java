@@ -25,7 +25,7 @@ public abstract class ResourceAction extends Action {
 	}
 
 	public String toString() {
-		return this.resource;
+		return super.toString() + " " + this.resource;
 	}
 
 	public String getActionValue() {
