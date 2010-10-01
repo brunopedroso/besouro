@@ -1,3 +1,0 @@
-EditAction 1262352153000 anyFileName
-UnitTestCaseAction 1262352153000 anyFileName
-RefactoringAction 1262352153000 anyFileName

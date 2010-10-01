@@ -9,9 +9,11 @@ import junit.framework.Assert;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.views.navigator.RefactorActionGroup;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.integration.TestFirstRecognition;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.Action;
 import besouro.model.EditAction;
@@ -27,6 +29,10 @@ public class FileStorageActionStreamTest {
 	@Before
 	public void setup() {
 		file = new File("test/testActions.txt");
+	}
+	
+	@After
+	public void destroy() {
 		file.delete();
 	}
 	
@@ -107,16 +113,14 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreActionDate() throws Exception {
 		
-		String resource = "anyFileName";
-		
 		stream = new FileStorageActionStream(file);
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		
 		Date clock = format.parse("01/01/2010 11:22:33");
-		stream.addAction(new EditAction(clock,resource));
-		stream.addAction(new UnitTestCaseAction(clock,resource));
-		stream.addAction(new RefactoringAction(clock,resource));
+		
+		stream.addAction(new EditAction(clock,null));
+		stream.addAction(new UnitTestCaseAction(clock,null));
+		stream.addAction(new RefactoringAction(clock,null));
 		
 		Action[] readActions = FileStorageActionStream.loadFromFile(file);
 		
@@ -129,14 +133,11 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreActionResourceName() throws Exception {
 		
-		
 		stream = new FileStorageActionStream(file);
-		
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date clock = format.parse("01/01/2010 11:22:33");
 		
 		String resource = "anyFileName";
 		
+		Date clock = new Date();
 		stream.addAction(new EditAction(clock,resource));
 		stream.addAction(new UnitTestCaseAction(clock,resource));
 		stream.addAction(new RefactoringAction(clock,resource));
@@ -145,5 +146,30 @@ public class FileStorageActionStreamTest {
 		
 		Assert.assertEquals("should preserve the date", resource, ((ResourceAction)readActions[0]).getResource());
 		
+	}
+	
+	@Test
+	public void shouldStoreSufficientActionsForTestFirtOneRecognition() throws Exception {
+		
+		EpisodeClassifierStream stream = new EpisodeClassifierStream(){
+			@Override
+			public void addAction(Action action) {
+				
+				file.delete();
+				FileStorageActionStream fileStream = new FileStorageActionStream(file);
+				
+				// store and load back the action
+				fileStream.addAction(action);
+				action = FileStorageActionStream.loadFromFile(file)[0];
+				
+				// then make the usual work
+				super.addAction(action);
+			}
+		};
+		
+		TestFirstRecognition integrationTest = new TestFirstRecognition();
+		integrationTest.setup(stream);
+		
+		integrationTest.testFirstCategory1();
 	}
 }

@@ -21,6 +21,7 @@ import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.listeners.mock.WindowEventsFactory;
 import besouro.stream.EpisodeClassifierStream;
+import besouro.stream.FileStorageActionStream;
 
 
 public class IntegrationTestBaseClass {
@@ -35,7 +36,12 @@ public class IntegrationTestBaseClass {
 
 	@Before
 	public void setup() throws Exception {
-		stream = new EpisodeClassifierStream();
+		setup(new EpisodeClassifierStream());
+	}
+	
+	public void setup(EpisodeClassifierStream stream) throws Exception {
+		
+		this.stream = stream;
 		
 		javaListener = new JavaStructureChangeListener(stream);
 		resourceListener = new ResourceChangeListener(stream);
@@ -57,7 +63,10 @@ public class IntegrationTestBaseClass {
 
 	}
 	
-	
+	public void setStreamUnderTest(EpisodeClassifierStream stream) {
+		this.stream = stream;
+	}
+
 	// SHARED FACTORIES
 	
 	protected void addTestFirst1Actions() throws Exception {
