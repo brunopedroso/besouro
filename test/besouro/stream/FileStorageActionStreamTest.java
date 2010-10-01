@@ -187,6 +187,31 @@ public class FileStorageActionStreamTest {
 	}
 	
 	@Test
+	public void shouldStoreRefactoringDetails() throws Exception {
+		
+		String name = "abc=>def";
+		String op = "RENAME";
+		String type = "AnyClass";
+		
+		RefactoringAction action = new RefactoringAction(new Date(),"anyFileName");
+		action.setOperator(op);
+		action.setSubjectName(name);
+		action.setSubjectType(type);
+		
+		file.delete();
+		stream = new FileStorageActionStream(file);
+		stream.addAction(action);
+		
+		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		
+		Assert.assertEquals("should load one action", 1, readActions.length);
+		Assert.assertEquals("should preserve operator", op, ((RefactoringAction)readActions[0]).getOperator());
+		Assert.assertEquals("should preserve SubjectName", name, ((RefactoringAction)readActions[0]).getSubjectName());
+		Assert.assertEquals("should preserve the SubjectType", type, ((RefactoringAction)readActions[0]).getSubjectType());
+		
+	}
+	
+	@Test
 	public void shouldStoreSufficientActionsForTestFirtOneRecognition() throws Exception {
 		
 		EpisodeClassifierStream stream = new EpisodeClassifierStream(){

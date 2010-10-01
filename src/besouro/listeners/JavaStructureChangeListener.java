@@ -167,7 +167,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			RefactoringAction action = new RefactoringAction(new Date(), javaFile.getName());
 			action.setOperator("RENAME");
-			action.setSubjectName(fromName + " => " + toName);
+			action.setSubjectName(fromName + "=>" + toName);
 
 			action.setSubjectType(type);
 
@@ -194,7 +194,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 
 			RefactoringAction action = new RefactoringAction(new Date(), javaFile.getName());
 			action.setOperator("MOVE");
-			action.setSubjectName(fromName + " => " + toName);
+			action.setSubjectName(fromName + "=>" + toName);
 
 			action.setSubjectType(retrieveType(toDelta.getElement()));
 

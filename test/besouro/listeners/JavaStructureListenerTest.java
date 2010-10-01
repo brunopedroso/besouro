@@ -92,7 +92,7 @@ public class JavaStructureListenerTest {
 		Action action = generatedActions.get(0);
 		Assert.assertTrue(action instanceof RefactoringAction);
 		Assert.assertEquals("RENAME", ((RefactoringAction)action).getOperator());
-		Assert.assertEquals("AnyClass/aMethod => AnyClass/anotherMethod", ((RefactoringAction)action).getSubjectName());
+		Assert.assertEquals("AnyClass/aMethod=>AnyClass/anotherMethod", ((RefactoringAction)action).getSubjectName());
 		Assert.assertEquals("FIELD", ((RefactoringAction)action).getSubjectType());
 		
 	}

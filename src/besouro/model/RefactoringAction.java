@@ -14,6 +14,7 @@ public class RefactoringAction extends ResourceAction {
 
 	private String op;
 	private String subjectType;
+	private String subjectName;
 	
 	public String getOperator() {
 		return op;
@@ -31,7 +32,13 @@ public class RefactoringAction extends ResourceAction {
 		this.subjectType = subjectType;
 	}
 
-	private String subjectName;
+	public void setSubjectName(String subjectName) {
+		this.subjectName = subjectName;
+	}
+	
+	public String getSubjectName() {
+		return this.subjectName;
+	}
 
 	public RefactoringAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
@@ -39,18 +46,14 @@ public class RefactoringAction extends ResourceAction {
 
 	public RefactoringAction(StringTokenizer tok) {
 		super(tok);
+		setOperator(tok.nextToken());
+		setSubjectName(tok.nextToken());
+		setSubjectType(tok.nextToken());
 	}
 
-	public void setSubjectName(String subjectName) {
-		this.subjectName = subjectName;
-	}
-
-	public String getSubjectName() {
-		return this.subjectName;
-	}
 
 	public String toString() {
-		return super.toString() + " " + getActionType(); 
+		return super.toString() + " " + getOperator() + " " + getSubjectName() + " " + getSubjectType(); 
 	}
 
 	@Override
