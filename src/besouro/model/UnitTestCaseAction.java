@@ -32,9 +32,5 @@ public class UnitTestCaseAction extends UnitTestAction {
 	public String getFailureMessage() {
 		return this.failureMessage;
 	}
-
-	public String toString() {
-		return super.toString() + " " + (isSuccessful() ? "OK" : "FAILED");
-	}
 	
 }

@@ -13,6 +13,7 @@ public abstract class UnitTestAction extends ResourceAction {
 
 	public UnitTestAction(StringTokenizer tok) {
 		super(tok);
+		setSuccessValue("OK".equals(tok.nextToken()));
 	}
 	
 	
@@ -23,6 +24,11 @@ public abstract class UnitTestAction extends ResourceAction {
 
 	public boolean isSuccessful() {
 		return this.success;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " " + (this.isSuccessful()?"OK":"FAIL");
 	}
 
 }

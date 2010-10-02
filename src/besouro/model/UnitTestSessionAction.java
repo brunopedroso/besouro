@@ -13,9 +13,5 @@ public class UnitTestSessionAction extends UnitTestAction {
 		super(tok);
 	}
 
-	@Override
-	public String toString() {
-		return super.toString() + " " + (this.isSuccessful()?"OK":"FAIL");
-	}
 	
 }

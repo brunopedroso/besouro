@@ -22,6 +22,7 @@ import besouro.model.FileOpenedAction;
 import besouro.model.JavaFileAction;
 import besouro.model.RefactoringAction;
 import besouro.model.ResourceAction;
+import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 
@@ -212,6 +213,28 @@ public class FileStorageActionStreamTest {
 	}
 	
 	@Test
+	public void shouldStoreUnitTestResult() throws Exception {
+		
+		UnitTestCaseAction testCase = new UnitTestCaseAction(new Date(),"anyFileName");
+		testCase.setSuccessValue(false);
+		
+		UnitTestSessionAction testSession = new UnitTestSessionAction(new Date(),"anyFileName");
+		testSession.setSuccessValue(false);
+		
+		file.delete();
+		stream = new FileStorageActionStream(file);
+		stream.addAction(testCase);
+		stream.addAction(testSession);
+		
+		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		
+		Assert.assertEquals("should load one action", 2, readActions.length);
+		Assert.assertFalse("should preserve test result", ((UnitTestAction)readActions[0]).isSuccessful());
+		Assert.assertFalse("should preserve test result", ((UnitTestAction)readActions[1]).isSuccessful());
+		
+	}
+	
+	@Test
 	public void shouldStoreSufficientActionsForTestFirtOneRecognition() throws Exception {
 		
 		EpisodeClassifierStream stream = new EpisodeClassifierStream(){
@@ -223,7 +246,8 @@ public class FileStorageActionStreamTest {
 				
 				// store and load back the action
 				fileStream.addAction(action);
-				action = FileStorageActionStream.loadFromFile(file)[0];
+				Action[] actionsLoaded = FileStorageActionStream.loadFromFile(file);
+				action = actionsLoaded[actionsLoaded.length-1];
 				
 				// then make the usual work
 				super.addAction(action);
