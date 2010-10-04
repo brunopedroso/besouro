@@ -2,6 +2,9 @@ package besouro.stream;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -9,7 +12,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.model.Action;
+import besouro.model.EditAction;
 import besouro.model.Episode;
+import besouro.model.UnitTestCaseAction;
 
 public class EpisodeFileStorageTest {
 
@@ -115,7 +121,30 @@ public class EpisodeFileStorageTest {
 		
 		
 	}
-
+	
+	/**
+	 * once actions and episodes will be in separate files, timestamps will be used to link them.
+	 */
+	@Test
+	public void shouldStoreTheTimestampOfTheLastAction() {
+		
+		storage = new EpisodeFileStorage(file);
+		
+		Episode e = new Episode();
+		
+		EditAction firstAction = new EditAction(new Date(), "afile");
+		UnitTestCaseAction lastAction = new UnitTestCaseAction(new Date(), "afile");
+		List<Action> actions = new ArrayList<Action>();
+		actions.add(firstAction);
+		actions.add(lastAction);
+		e.addActions(actions);
+		
+		storage.storeEpisode(e);
+		
+		Episode e1 = EpisodeFileStorage.loadEpisodes(file)[0];
+		
+		Assert.assertEquals("should persist timestamp", lastAction.getClock().getTime(), e1.getTimestamp());
+	}
 	
 	
 }

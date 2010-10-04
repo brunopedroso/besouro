@@ -13,6 +13,7 @@ public class Episode {
 	
 
 	private Episode previousEpisode;
+	private long timestamp;
 
 	public void setPreviousEpisode(Episode previousEpisode) {
 		this.previousEpisode = previousEpisode;
@@ -94,6 +95,15 @@ public class Episode {
 
 	public void addActions(List<Action> actions) {
 		this.actions.addAll(actions);
+		
+	}
+
+	public long getTimestamp() {
+		return this.timestamp;
+	}
+
+	public void setTimestamp(long time) {
+		this.timestamp = time;
 		
 	}
 	

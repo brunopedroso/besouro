@@ -36,7 +36,20 @@ public class EpisodeFileStorage implements EpisodeListener {
 	public void storeEpisode(Episode e) {
 		try {
 			
-			writer.append(e.getCategory());
+			
+			long time = -1;
+			
+			if (e.getLastAction() != null) {
+				time = e.getLastAction().getClock().getTime();
+				
+			} else {
+				time = e.getTimestamp();
+				
+			}
+			
+			writer.append("" + time);
+			
+			writer.append(" " + e.getCategory());
 			writer.append(" " + e.getSubtype());
 			writer.append(" " + e.getDuration());
 			writer.append(" " + e.isTDD());
@@ -64,6 +77,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 				StringTokenizer tok = new StringTokenizer(line, " ");
 				
 				Episode e = new Episode();
+				e.setTimestamp(Long.parseLong(tok.nextToken()));
 				e.setClassification(tok.nextToken(), tok.nextToken());
 				e.setDuration(Integer.parseInt(tok.nextToken()));
 				e.setIsTDD(Boolean.parseBoolean(tok.nextToken()));
