@@ -2,7 +2,6 @@ package besouro.stream;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import junit.framework.Assert;
 
@@ -20,7 +19,7 @@ public class EpisodeFileStorageTest {
 
 	@Before
 	public void setup() {
-		file = new File("testFile.txt");
+		file = new File("test/testEpisodes.txt");
 		Assert.assertFalse(file.exists());
 	}
 
@@ -65,11 +64,14 @@ public class EpisodeFileStorageTest {
 		e.setDuration(11);
 		e.setIsTDD(true);
 		
-		storage.episodeRecognized(e);
+		storage.storeEpisode(e);
 		
 		Episode e1 = EpisodeFileStorage.loadEpisodes(file)[0];
 		
 		Assert.assertEquals("should persist category", e.getCategory(), e1.getCategory());
+		Assert.assertEquals("should persist subtype", e.getSubtype(), e1.getSubtype());
+		Assert.assertEquals("should persist duration", e.getDuration(), e1.getDuration());
+		Assert.assertEquals("should persist test result", e.isTDD(), e1.isTDD());
 	}
 
 	
