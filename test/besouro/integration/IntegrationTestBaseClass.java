@@ -3,11 +3,15 @@ package besouro.integration;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.io.File;
+
 import junit.framework.Assert;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,10 +37,23 @@ public class IntegrationTestBaseClass {
 	protected WindowListener winListener;
 	protected JavaStatementMeter meter;
 	protected JavaStatementMeter measurer;
+	
+	protected File actionsFile;
+	protected File episodesFile;
 
 	@Before
 	public void setup() throws Exception {
-		setup(new EpisodeClassifierStream());
+		
+		actionsFile = new File("test/actions.txt");
+		episodesFile = new File("test/episodes.txt");
+		
+		setup(new EpisodeClassifierStream(actionsFile, episodesFile));
+	}
+	
+	@After
+	public void tearDown() {
+		actionsFile.delete();
+		episodesFile.delete();
 	}
 	
 	public void setup(EpisodeClassifierStream stream) throws Exception {
@@ -70,6 +87,7 @@ public class IntegrationTestBaseClass {
 	// SHARED FACTORIES
 	
 	protected void addTestFirst1Actions() throws Exception {
+
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 

@@ -1,5 +1,6 @@
 package besouro.stream;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +22,23 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	List<Action> actions = new ArrayList<Action>();
 	List<Episode> episodes = new ArrayList<Episode>();
 	
+	private FileStorageActionStream actionsStorage;
+	
 	private EpisodeListener listener;
 
 	public EpisodeClassifierStream() throws Exception {
+		this(null, null);
+	}
+
+	public EpisodeClassifierStream(File actionsFile, File episodesFile) throws Exception {
 		classifier = new ZorroEpisodeClassification();
 		measure = new ZorroTDDMeasure();
 		javaActionsLinker = new JavaActionsLinker();
+		
+		if (actionsFile!=null) {
+			actionsStorage = new FileStorageActionStream(actionsFile);
+		}
+		
 	}
 
 	public void addAction(Action action) {
@@ -35,6 +47,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		
 		if (action instanceof JavaFileAction) {
 			javaActionsLinker.linkActions((JavaFileAction) action);
+		}
+
+		if (actionsStorage != null) {
+			actionsStorage.addAction(action);
 		}
 		
 		Episode episode = recognizeEpisode(action);
