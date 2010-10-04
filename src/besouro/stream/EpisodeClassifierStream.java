@@ -23,6 +23,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	List<Episode> episodes = new ArrayList<Episode>();
 	
 	private FileStorageActionStream actionsStorage;
+	private EpisodeFileStorage episodeStorage;
 	
 	private EpisodeListener listener;
 
@@ -39,6 +40,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			actionsStorage = new FileStorageActionStream(actionsFile);
 		}
 		
+		if (episodesFile != null) {
+			episodeStorage = new EpisodeFileStorage(episodesFile);
+		}
+		
 	}
 
 	public void addAction(Action action) {
@@ -53,6 +58,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			actionsStorage.addAction(action);
 		}
 		
+		
 		Episode episode = recognizeEpisode(action);
 
 		if (episode != null) {
@@ -60,6 +66,10 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			classifier.classifyEpisode(episode);
 			measure.addEpisode(episode);
 			episodes.add(episode);
+			
+			if (episodeStorage != null) {
+				episodeStorage.storeEpisode(episode);
+			}
 			
 			if (listener!=null)
 				listener.episodeRecognized(episode);
