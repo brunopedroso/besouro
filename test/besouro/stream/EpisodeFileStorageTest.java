@@ -130,13 +130,14 @@ public class EpisodeFileStorageTest {
 		
 		storage = new EpisodeFileStorage(file);
 		
-		Episode e = new Episode();
-		
 		EditAction firstAction = new EditAction(new Date(), "afile");
 		UnitTestCaseAction lastAction = new UnitTestCaseAction(new Date(), "afile");
+		
 		List<Action> actions = new ArrayList<Action>();
 		actions.add(firstAction);
 		actions.add(lastAction);
+		
+		Episode e = new Episode();
 		e.addActions(actions);
 		
 		storage.storeEpisode(e);
