@@ -2,10 +2,11 @@ package besouro.stream;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import besouro.model.Episode;
@@ -14,12 +15,14 @@ import besouro.plugin.EpisodeListener;
 public class EpisodeFileStorage implements EpisodeListener {
 
 	private File file;
+	private FileWriter writer;
 
 	public EpisodeFileStorage(File file) {
 		try {
 			
 			this.file = file;
 			this.file.createNewFile();
+			writer = new FileWriter(this.file, true);
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -33,12 +36,12 @@ public class EpisodeFileStorage implements EpisodeListener {
 	public void storeEpisode(Episode e) {
 		try {
 			
-			FileWriter writer = new FileWriter(this.file);
 			writer.append(e.getCategory());
-			writer.append(" ");
-			writer.append(e.getSubtype());
+			writer.append(" " + e.getSubtype());
 			writer.append(" " + e.getDuration());
 			writer.append(" " + e.isTDD());
+			writer.append("\n");
+			
 			writer.flush();
 			
 		} catch (IOException exc) {
@@ -53,16 +56,24 @@ public class EpisodeFileStorage implements EpisodeListener {
 			BufferedReader reader;
 			reader = new BufferedReader(new FileReader(file));
 		
-			Episode[] episodes = new Episode[1];
+			List<Episode> list = new ArrayList<Episode>();
 			String line = reader.readLine();
-			StringTokenizer tok = new StringTokenizer(line, " ");
 			
-			episodes[0] = new Episode();
-			episodes[0].setClassification(tok.nextToken(), tok.nextToken());
-			episodes[0].setDuration(Integer.parseInt(tok.nextToken()));
-			episodes[0].setIsTDD(Boolean.parseBoolean(tok.nextToken()));
+			while (line != null){
+				
+				StringTokenizer tok = new StringTokenizer(line, " ");
+				
+				Episode e = new Episode();
+				e.setClassification(tok.nextToken(), tok.nextToken());
+				e.setDuration(Integer.parseInt(tok.nextToken()));
+				e.setIsTDD(Boolean.parseBoolean(tok.nextToken()));
+				
+				list.add(e);
+				
+				line = reader.readLine();
+			}
 			
-			return episodes;
+			return list.toArray(new Episode[list.size()]);
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

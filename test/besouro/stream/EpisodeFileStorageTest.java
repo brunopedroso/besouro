@@ -73,6 +73,48 @@ public class EpisodeFileStorageTest {
 		Assert.assertEquals("should persist duration", e.getDuration(), e1.getDuration());
 		Assert.assertEquals("should persist test result", e.isTDD(), e1.isTDD());
 	}
+	
+	@Test
+	public void shouldStoreThreeEpisodes() {
+		storage = new EpisodeFileStorage(file);
+		
+		Episode e1 = new Episode();
+		e1.setClassification("test-first", "1");
+		e1.setDuration(11);
+		e1.setIsTDD(true);
+		storage.storeEpisode(e1);
+		
+		Episode e2 = new Episode();
+		e2.setClassification("refactoring", "1A");
+		e2.setDuration(22);
+		e2.setIsTDD(true);
+		storage.storeEpisode(e2);
+		
+		Episode e3 = new Episode();
+		e3.setClassification("production", "2");
+		e3.setDuration(33);
+		e3.setIsTDD(false);
+		storage.storeEpisode(e3);
+		
+		Episode[] es = EpisodeFileStorage.loadEpisodes(file);
+		
+		Assert.assertEquals("should persist category", e1.getCategory(), es[0].getCategory());
+		Assert.assertEquals("should persist subtype", e1.getSubtype(), es[0].getSubtype());
+		Assert.assertEquals("should persist duration", e1.getDuration(), es[0].getDuration());
+		Assert.assertEquals("should persist test result", e1.isTDD(), es[0].isTDD());
+		
+		Assert.assertEquals("should persist category", e2.getCategory(), es[1].getCategory());
+		Assert.assertEquals("should persist subtype", e2.getSubtype(), es[1].getSubtype());
+		Assert.assertEquals("should persist duration", e2.getDuration(), es[1].getDuration());
+		Assert.assertEquals("should persist test result", e2.isTDD(), es[1].isTDD());
+		
+		Assert.assertEquals("should persist category", e3.getCategory(), es[2].getCategory());
+		Assert.assertEquals("should persist subtype", e3.getSubtype(), es[2].getSubtype());
+		Assert.assertEquals("should persist duration", e3.getDuration(), es[2].getDuration());
+		Assert.assertEquals("should persist test result", e3.isTDD(), es[2].isTDD());
+		
+		
+	}
 
 	
 	
