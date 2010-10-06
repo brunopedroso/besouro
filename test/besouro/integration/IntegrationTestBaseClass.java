@@ -47,7 +47,10 @@ public class IntegrationTestBaseClass {
 		actionsFile = new File("test/actions.txt");
 		episodesFile = new File("test/episodes.txt");
 		
-		setup(new EpisodeClassifierStream(actionsFile, episodesFile));
+		EpisodeClassifierStream stream = new EpisodeClassifierStream();
+		stream.setActionsFile(actionsFile);
+		stream.setEpisodesFile(episodesFile);
+		setup(stream);
 	}
 	
 	@After

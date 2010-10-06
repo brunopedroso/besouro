@@ -1,5 +1,7 @@
 package besouro.plugin;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.JavaCore;
@@ -19,24 +21,28 @@ public class ListenersSet {
 	public static ListenersSet getSingleton() {
 		if (singleton==null) {
 			singleton = new ListenersSet();
-			singleton.registerEclipseListeners();
 		}
 		return singleton;
 	}
 
+	private ListenersSet(){
+	}
 	
 	private EpisodeClassifierStream episodeClassifier;
 	
-	private ListenersSet() {
-		try {
-			episodeClassifier = new EpisodeClassifierStream();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-
+	public void start() {
+		start(null, null);
 	}
 	
-	private void registerEclipseListeners() {
+	public void start(File actionsFile, File episodesFile) {
+		
+		episodeClassifier = new EpisodeClassifierStream();
+		
+		if (actionsFile != null && episodesFile != null) {
+			episodeClassifier.setActionsFile(actionsFile);
+			episodeClassifier.setEpisodesFile(episodesFile);
+			
+		}
 
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(episodeClassifier), IResourceChangeEvent.POST_CHANGE);
 		JavaCore.addElementChangedListener(new JavaStructureChangeListener(episodeClassifier));
@@ -48,18 +54,19 @@ public class ListenersSet {
 
 		IWorkbench workbench = Activator.getDefault().getWorkbench();
 		workbench.addWindowListener(windowListener);
-
+		
 		// registers open events for the already opened files
 		windowListener.windowOpened(null);
 
 	}
 	
-	public void addEpisodeListener(EpisodeListener listener) {
-		episodeClassifier.addEpisodeListener(listener);
+	public void stop() {
+		episodeClassifier.close();
+		episodeClassifier = null;
 	}
 
-	public Object[] getEpisodes() {
-		return episodeClassifier.getEpisodes();
+	public EpisodeClassifierStream getEpisodeClassifier() {
+		return episodeClassifier;
 	}
 	
 }

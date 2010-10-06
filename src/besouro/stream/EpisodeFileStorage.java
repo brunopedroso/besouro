@@ -62,6 +62,15 @@ public class EpisodeFileStorage implements EpisodeListener {
 		}
 		
 	}
+	
+	public void close() {
+		try {
+			writer.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 	public static Episode[] loadEpisodes(File file) {
 		try {
@@ -93,6 +102,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 			throw new RuntimeException(e);
 		}
 	}
+
 
 
 }

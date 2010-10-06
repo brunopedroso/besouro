@@ -32,10 +32,14 @@ public class ZorroTDDMeasure {
 	private boolean executed;
 
 
-	public ZorroTDDMeasure() throws Exception {
+	public ZorroTDDMeasure() {
 		this.engine = new Rete();
-	    Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
-	    Batch.batch("besouro/zorro/TwoWayTDDHeuristicAlgorithm.clp", this.engine);
+	    try {
+			Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
+			Batch.batch("besouro/zorro/TwoWayTDDHeuristicAlgorithm.clp", this.engine);
+		} catch (JessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public void measure(Episode[] eps) {

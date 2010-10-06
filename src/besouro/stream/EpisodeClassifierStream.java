@@ -27,23 +27,34 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	
 	private EpisodeListener listener;
 
-	public EpisodeClassifierStream() throws Exception {
-		this(null, null);
-	}
-
-	public EpisodeClassifierStream(File actionsFile, File episodesFile) throws Exception {
+	public EpisodeClassifierStream() {
 		classifier = new ZorroEpisodeClassification();
 		measure = new ZorroTDDMeasure();
 		javaActionsLinker = new JavaActionsLinker();
+	}
+	
+	public void setActionsFile(File actionsFile) {
+		actionsStorage = new FileStorageActionStream(actionsFile);
 		
-		if (actionsFile!=null) {
-			actionsStorage = new FileStorageActionStream(actionsFile);
+	}
+
+	public void setEpisodesFile(File episodesFile) {
+		episodeStorage = new EpisodeFileStorage(episodesFile);
+		
+	}
+
+	public void close(){
+		
+		if (actionsStorage!=null) {
+			actionsStorage.close();
+			actionsStorage = null;
 		}
 		
-		if (episodesFile != null) {
-			episodeStorage = new EpisodeFileStorage(episodesFile);
+		if (episodeStorage!=null) {
+			episodeStorage.close();
+			episodeStorage = null;
+			
 		}
-		
 	}
 
 	public void addAction(Action action) {
@@ -120,6 +131,11 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		
 	}
 
+	public void removeEpisodeListener(EpisodeListener listener2) {
+		this.listener = null;
+		
+	}
+	
 	public Episode[] getEpisodes() {
 		return episodes.toArray(new Episode[episodes.size()]);
 	}
