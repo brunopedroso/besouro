@@ -43,9 +43,11 @@ public class JUnitListener extends TestRunListener {
 		}
 		
 		IResource res = findTestResource(session.getLaunchedProject(), session.getTestRunName());
+
+		String name = res!=null?res.getName():session.getTestRunName();
 		
-		// registers the session action. It breake the episode, but doesnt count on the classification
-		UnitTestSessionAction action = new UnitTestSessionAction(new Date(), res.getName());
+		// registers the session action. It brakes the episode, but doesnt count on the classification
+		UnitTestSessionAction action = new UnitTestSessionAction(new Date(), name);
 		action.setSuccessValue(isSuccessfull);
 		stream.addAction(action);
 		
