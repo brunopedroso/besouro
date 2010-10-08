@@ -42,8 +42,10 @@ public class ProgrammingSessionTest {
 		episodesFile = new File(basedir, "episodes.txt");
 		episodesFile.delete();
 		Assert.assertFalse("episodeFile should not exist upfront", episodesFile.exists());
-
+		
 		listeners = mock(ListenersSet.class);
+		session = ProgrammingSession.newSession(basedir, listeners);
+		
 	}
 	
 	@After
@@ -55,7 +57,6 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldStoreActions() {
-		session = ProgrammingSession.newSession(basedir, listeners);
 		Assert.assertTrue("should create the file", actionsFile.exists());
 
 		session.addAction(new FileOpenedAction(new Date(), "afile"));
@@ -65,7 +66,6 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldStoreEpisodes() {
-		session = ProgrammingSession.newSession(basedir, listeners);
 		Assert.assertTrue("should create the file", episodesFile.exists());
 
 		addRegressionActions();
@@ -80,8 +80,6 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldNotifyEpisodeListeners() {
-		session = ProgrammingSession.newSession(basedir, listeners);
-
 		notified = false;
 		EpisodeListener listener = new EpisodeListener() {
 			public void episodeRecognized(Episode e) {
@@ -95,30 +93,30 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldRegisterEclipseListeners() {
-		session = ProgrammingSession.newSession(basedir, listeners);
 		verify(listeners).setOutputStream(session);
 	}
 	
 	@Test
 	public void shouldRegisterItselfInTheListenerSet() {
-		session = ProgrammingSession.newSession(basedir, listeners);
 		verify(listeners).registerListenersInEclipse();
 	}
 	
 	@Test
 	public void shouldUnregisterListenersFromEclipse() {
-		session = ProgrammingSession.newSession(basedir, listeners);
 		session.close();
 		verify(listeners).unregisterListenersInEclipse();
 	}
 	
 	@Test
 	public void shouldUnregisterListenersFromEclipseOnNewSession() {
-		session = ProgrammingSession.newSession(basedir, listeners);
+		// another session has already been created in setup...
 		session = ProgrammingSession.newSession(basedir, listeners);
 		verify(listeners, times(1)).unregisterListenersInEclipse();
 		verify(listeners, times(2)).registerListenersInEclipse();
-		
 	}
+
+	//TODO   should save files containing timestamp
+	//TODO   should begin new files for each session
+	
 	
 }
