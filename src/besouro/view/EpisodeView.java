@@ -2,6 +2,9 @@ package besouro.view;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jface.action.IToolBarManager;
@@ -18,6 +21,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
@@ -68,26 +73,51 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		}
 		
 		public void run() {
-			IViewPart part = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.jdt.ui.PackageExplorer");
-			PackageExplorerPart explorer = (PackageExplorerPart) part;
 			
-		    StructuredSelection sel = (StructuredSelection)explorer.getTreeViewer().getSelection();
-		    
-		    if (sel.isEmpty()) {
-		    	MessageDialog.openInformation(viewer.getControl().getShell(),
-		    			"Warning", "Please, select a project or a resource in package explorer");
-		    	
-		    } else {
-		    	JavaElement resource = (JavaElement)sel.getFirstElement();
-		    	File projectRootDir = resource.getJavaProject().getResource().getLocation().toFile();
-		    	
-		    	File besouroDir = new File(projectRootDir, ".besouro");
-		    	besouroDir.mkdir();
-		    	
-		    	session = ProgrammingSession.newSession(besouroDir);
-		    	session.addEpisodeListeners(EpisodeView.this);
-		    	viewer.setInput(session.getEpisodes());
-		    }
+			File projectRootDir = null;
+			
+			IEditorPart editorPart = getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
+			
+			// try to get the project of the current editor, if it exists
+			if(editorPart  != null) {
+			    IFileEditorInput input = (IFileEditorInput)editorPart.getEditorInput();
+			    IFile file = input.getFile();
+			    IProject activeProject = file.getProject();
+			    projectRootDir = activeProject.getLocation().toFile();
+			    
+ 
+		    // else try to get it from the selected resource on package explorer
+			} else {
+				IViewPart part = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.jdt.ui.PackageExplorer");
+				PackageExplorerPart explorer = (PackageExplorerPart) part;
+				
+				StructuredSelection sel = (StructuredSelection)explorer.getTreeViewer().getSelection();
+				
+				if (!sel.isEmpty()) {
+					JavaElement resource = (JavaElement)sel.getFirstElement();
+					IJavaProject activeProject= resource.getJavaProject();
+					projectRootDir = activeProject.getResource().getLocation().toFile();
+				}
+				
+			}
+			
+			if (projectRootDir != null) {
+				
+				File besouroDir = new File(projectRootDir, ".besouro");
+				besouroDir.mkdir();
+				
+				session = ProgrammingSession.newSession(besouroDir);
+				session.addEpisodeListeners(EpisodeView.this);
+				viewer.setInput(session.getEpisodes());
+				
+			} else {
+				
+				MessageDialog.openInformation(viewer.getControl().getShell(),
+						"Warning", "Please, select a project or a resource in package explorer");
+
+			}
+			 
+			
 		}
 	}
 
