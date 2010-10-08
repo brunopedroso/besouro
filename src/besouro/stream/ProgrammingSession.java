@@ -1,7 +1,9 @@
 package besouro.stream;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import besouro.model.Action;
@@ -19,8 +21,12 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	private EpisodeFileStorage episodesStorage;
 	
 	private List<EpisodeListener> listeners = new ArrayList<EpisodeListener>();
+
+	private File actionsFile;
 	
 	private static ProgrammingSession currentSession;
+
+	private File episodesFile;
 	public static ProgrammingSession newSession(File basedir) {
 		return newSession(basedir, ListenersSet.getSingleton());
 	}
@@ -36,9 +42,13 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 
 	private ProgrammingSession(File basedir, ListenersSet listeners) {
 		
-		actionStorage = new FileStorageActionStream(new File(basedir, "actions.txt"));
+		String timestamp = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date());
 		
-		episodesStorage = new EpisodeFileStorage(new File(basedir, "episodes.txt"));
+		actionsFile = new File(basedir, "actions_" + timestamp + ".txt");
+		actionStorage = new FileStorageActionStream(actionsFile);
+		
+		episodesFile = new File(basedir, "episodes_" + timestamp + ".txt");
+		episodesStorage = new EpisodeFileStorage(episodesFile);
 		this.addEpisodeListeners(episodesStorage);
 		
 		classifier = new EpisodeClassifierStream();
@@ -72,6 +82,14 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 
 	public Episode[] getEpisodes() {
 		return classifier.getEpisodes();
+	}
+
+	public File getActionsFile() {
+		return actionsFile;
+	}
+
+	public File getEpisodesFile() {
+		return episodesFile;
 	}
 
 }

@@ -23,8 +23,6 @@ import besouro.plugin.ListenersSet;
 public class ProgrammingSessionTest {
 
 	private File basedir;
-	private File actionsFile;
-	private File episodesFile;
 	private ProgrammingSession session;
 
 	private boolean notified;
@@ -35,41 +33,33 @@ public class ProgrammingSessionTest {
 		basedir = new File("testDir");
 		basedir.mkdir();
 		
-		actionsFile = new File(basedir, "actions.txt");
-		actionsFile.delete();
-		Assert.assertFalse("actionsFile should not exist upfront", actionsFile.exists());
-		
-		episodesFile = new File(basedir, "episodes.txt");
-		episodesFile.delete();
-		Assert.assertFalse("episodeFile should not exist upfront", episodesFile.exists());
-		
 		listeners = mock(ListenersSet.class);
 		session = ProgrammingSession.newSession(basedir, listeners);
-		
 	}
 	
 	@After
 	public void teardown() {
-		actionsFile.delete();
-		episodesFile.delete();
+		for(File f: basedir.listFiles()) {
+			f.delete();
+		}
 		basedir.delete();
 	}
 	
 	@Test
 	public void shouldStoreActions() {
-		Assert.assertTrue("should create the file", actionsFile.exists());
+		Assert.assertTrue("should create the file", session.getActionsFile().exists());
 
 		session.addAction(new FileOpenedAction(new Date(), "afile"));
-		Assert.assertEquals("should persist the action", 1, FileStorageActionStream.loadFromFile(actionsFile).length);
+		Assert.assertEquals("should persist the action", 1, FileStorageActionStream.loadFromFile(session.getActionsFile()).length);
 	}
 
 	
 	@Test
 	public void shouldStoreEpisodes() {
-		Assert.assertTrue("should create the file", episodesFile.exists());
+		Assert.assertTrue("should create the file", session.getEpisodesFile().exists());
 
 		addRegressionActions();
-		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(episodesFile).length);
+		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(session.getEpisodesFile()).length);
 	}
 
 	private void addRegressionActions() {
@@ -115,8 +105,12 @@ public class ProgrammingSessionTest {
 		verify(listeners, times(2)).registerListenersInEclipse();
 	}
 
-	//TODO   should save files containing timestamp
-	//TODO   should begin new files for each session
-	
+	@Test
+	public void shouldStartAFileforEachSession() {
+		Assert.assertEquals("should have created files", 2, basedir.list().length);
+		session = ProgrammingSession.newSession(basedir, listeners);
+		Assert.assertEquals("should create other files", 4, basedir.list().length);
+		//its supposed that it will write to the newly created file... but its not being tested...
+	}
 	
 }
