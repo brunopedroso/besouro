@@ -1,22 +1,12 @@
 package besouro.view;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.internal.core.JavaElement;
-import org.eclipse.jdt.internal.core.Openable;
-import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -24,35 +14,27 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IPageLayout;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.navigator.CommonNavigator;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.views.navigator.ResourceNavigator;
 
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.plugin.Activator;
 import besouro.plugin.EpisodeListener;
-import besouro.plugin.ListenersSet;
-import besouro.stream.EpisodeClassifierStream;
+import besouro.stream.ProgrammingSession;
 
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
 	public static final String ID = "besouro.view.EpisodeView";
 	
 	private TreeViewer viewer;
+	private ProgrammingSession session;
 	
 	public static EpisodeView sharedInstance;
 
@@ -65,15 +47,58 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		EpisodeView.sharedInstance = this;
 	}
 
+	private final class StopAction extends org.eclipse.jface.action.Action {
+		
+		public StopAction(){
+			setText("Stop");
+		}
+
+		public void run() {
+			if (session!=null) {
+				session.close();
+			}
+			viewer.setInput(null);
+		}
+	}
+
+	private final class StartAction extends org.eclipse.jface.action.Action {
+		
+		public StartAction(){
+			setText("Start");
+		}
+		
+		public void run() {
+			IViewPart part = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.jdt.ui.PackageExplorer");
+			PackageExplorerPart explorer = (PackageExplorerPart) part;
+			
+		    StructuredSelection sel = (StructuredSelection)explorer.getTreeViewer().getSelection();
+		    
+		    if (sel.isEmpty()) {
+		    	MessageDialog.openInformation(viewer.getControl().getShell(),
+		    			"Warning", "Please, select a project or a resource in package explorer");
+		    	
+		    } else {
+		    	JavaElement resource = (JavaElement)sel.getFirstElement();
+		    	File projectRootDir = resource.getJavaProject().getResource().getLocation().toFile();
+		    	
+		    	File besouroDir = new File(projectRootDir, ".besouro");
+		    	besouroDir.mkdir();
+		    	
+		    	session = ProgrammingSession.newSession(besouroDir);
+		    	session.addEpisodeListeners(EpisodeView.this);
+		    	viewer.setInput(session.getEpisodes());
+		    }
+		}
+	}
+
 	class ViewContentProvider implements ITreeContentProvider {
 		
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
 		public void dispose() {}
 		
 		public Object[] getElements(Object parent) {
-			EpisodeClassifierStream episodeClassifier = ListenersSet.getSingleton().getEpisodeClassifier();
-			if (episodeClassifier!=null) {
-				return episodeClassifier.getEpisodes();
+			if (session!=null) {
+				return session.getEpisodes();
 			} else {
 				return null;
 			}
@@ -161,56 +186,11 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		
 		IActionBars bars = getViewSite().getActionBars();
 		IToolBarManager manager = bars.getToolBarManager();
-		org.eclipse.jface.action.Action startAction = new org.eclipse.jface.action.Action() {
-			public void run() {
-				IViewPart part = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.jdt.ui.PackageExplorer");
-				PackageExplorerPart explorer = (PackageExplorerPart) part;
-				
-	            StructuredSelection sel = (StructuredSelection)explorer.getTreeViewer().getSelection();
-	            
-	            if (sel.isEmpty()) {
-	            	MessageDialog.openInformation(viewer.getControl().getShell(),
-	            			"Warning", "Please, select a project or a resource in package explorer");
-	            	
-	            } else {
-	            	JavaElement resource = (JavaElement)sel.getFirstElement();
-	            	File projectRootDir = resource.getJavaProject().getResource().getLocation().toFile();
-	            	
-	            	File besouroDir = new File(projectRootDir, ".besouro");
-	            	besouroDir.mkdir();
-	            	
-	            	File actionsFile = new File(besouroDir, "actions.txt");
-	            	File episodesFile = new File(besouroDir, "episodes.txt");
-	            	
-//	            	ListenersSet.getSingleton().setActionsFile(actionsFile);
-//	            	ListenersSet.getSingleton().setEpisodesFile(episodesFile);
-	            	ListenersSet.getSingleton().start();
-	            	ListenersSet.getSingleton().getEpisodeClassifier().addEpisodeListener(EpisodeView.this);
-	            	viewer.setInput(ListenersSet.getSingleton().getEpisodeClassifier().getEpisodes());
-	            }
-			}
-		};
-		
-		startAction.setText("Start");
-		manager.add(startAction);
-		
-		org.eclipse.jface.action.Action stopAction = new org.eclipse.jface.action.Action() {
-			public void run() {
-				EpisodeClassifierStream episodeClassifier = ListenersSet.getSingleton().getEpisodeClassifier();
-				if (episodeClassifier!=null) {
-					episodeClassifier.removeEpisodeListener(EpisodeView.this);
-				}
-				viewer.setInput(null);
-			}
-		};
-		
-		stopAction.setText("Stop");
-		manager.add(stopAction);
-		
-		
+		manager.add(new StartAction());
+		manager.add(new StopAction());
 		
 	}
-
+	
 	@Override
 	public void setFocus() {
 	}

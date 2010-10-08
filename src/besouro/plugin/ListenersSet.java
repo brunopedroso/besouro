@@ -12,9 +12,11 @@ import besouro.listeners.JUnitListener;
 import besouro.listeners.JavaStructureChangeListener;
 import besouro.listeners.ResourceChangeListener;
 import besouro.listeners.WindowListener;
+import besouro.model.Action;
+import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeClassifierStream;
 
-public class ListenersSet {
+public class ListenersSet implements ActionOutputStream {
 
 	private static ListenersSet singleton;
 	
@@ -25,48 +27,51 @@ public class ListenersSet {
 		return singleton;
 	}
 
+	private WindowListener windowListener;
+	private ActionOutputStream output;
+	private ResourceChangeListener resourceListener;
+	private JavaStructureChangeListener javaListener;
+	private JUnitListener junitListener;
+	
 	private ListenersSet(){
+		windowListener = new WindowListener(this);
+		resourceListener = new ResourceChangeListener(this);
+		javaListener = new JavaStructureChangeListener(this);
+		junitListener = new JUnitListener(this);
 	}
 	
-	private EpisodeClassifierStream episodeClassifier;
-	
-	public void start() {
-		start(null, null);
+	public WindowListener getWindowListener() {
+		return windowListener;
 	}
-	
-	public void start(File actionsFile, File episodesFile) {
-		
-		episodeClassifier = new EpisodeClassifierStream();
-		
-		if (actionsFile != null && episodesFile != null) {
-			episodeClassifier.setActionsFile(actionsFile);
-			episodeClassifier.setEpisodesFile(episodesFile);
-			
-		}
 
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(episodeClassifier), IResourceChangeEvent.POST_CHANGE);
-		JavaCore.addElementChangedListener(new JavaStructureChangeListener(episodeClassifier));
-		
-		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(new LaunchListener(stream));
-		JUnitCore.addTestRunListener(new JUnitListener(episodeClassifier));
-
-		WindowListener windowListener = new WindowListener(episodeClassifier);
-
-		IWorkbench workbench = Activator.getDefault().getWorkbench();
-		workbench.addWindowListener(windowListener);
+	public void registerListenersInEclipse() {
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceListener, IResourceChangeEvent.POST_CHANGE);
+		JavaCore.addElementChangedListener(javaListener);
+		JUnitCore.addTestRunListener(junitListener);
+		Activator.getDefault().getWorkbench().addWindowListener(windowListener);
 		
 		// registers open events for the already opened files
 		windowListener.windowOpened(null);
 
 	}
 	
-	public void stop() {
-		episodeClassifier.close();
-		episodeClassifier = null;
+	public void unregisterListenersInEclipse() {
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceListener);
+		JavaCore.removeElementChangedListener(javaListener);
+		JUnitCore.removeTestRunListener(junitListener);
+		Activator.getDefault().getWorkbench().removeWindowListener(windowListener);
 	}
 
-	public EpisodeClassifierStream getEpisodeClassifier() {
-		return episodeClassifier;
+	
+	public void setOutputStream(ActionOutputStream actionOutputStream) {
+		this.output = actionOutputStream;
+	}
+
+	public void addAction(Action action) {
+		if (output!=null) {
+			output.addAction(action);
+		}
+		
 	}
 	
 }
