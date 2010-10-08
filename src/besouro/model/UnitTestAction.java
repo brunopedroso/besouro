@@ -16,7 +16,10 @@ public abstract class UnitTestAction extends ResourceAction {
 		setSuccessValue("OK".equals(tok.nextToken()));
 	}
 	
-	
+	public UnitTestAction(Date date, String string, boolean result) {
+		this(date, string);
+		setSuccessValue(result);
+	}
 
 	public void setSuccessValue(boolean success) {
 		this.success = success;

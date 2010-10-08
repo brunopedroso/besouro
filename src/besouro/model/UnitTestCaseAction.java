@@ -16,6 +16,10 @@ public class UnitTestCaseAction extends UnitTestAction {
 		super(tok);
 	}
 
+	public UnitTestCaseAction(Date date, String string, boolean b) {
+		super(date, string, b);
+	}
+
 	public void setTestCase(String testcase) {
 		this.testcase = testcase;
 	}

@@ -13,5 +13,9 @@ public class UnitTestSessionAction extends UnitTestAction {
 		super(tok);
 	}
 
+	public UnitTestSessionAction(Date date, String string, boolean b) {
+		super(date, string, b);
+	}
+
 	
 }
