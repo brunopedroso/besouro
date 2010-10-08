@@ -23,7 +23,7 @@ public abstract class Action implements Comparable<Action> {
 		return this.clock;
 	}
 	
-	//TODO  clean up unecessary methods from classes.
+	//TODO clean up unecessary methods from classes.
 	public int compareTo(Action o) {
 		return this.clock.compareTo(o.clock);
 	}
