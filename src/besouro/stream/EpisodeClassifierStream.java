@@ -1,6 +1,5 @@
 package besouro.stream;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	List<Action> actions = new ArrayList<Action>();
 	List<Episode> episodes = new ArrayList<Episode>();
 	
-	private ActionFileStorage actionsStorage;
-	private EpisodeFileStorage episodeStorage;
-	
 	private EpisodeListener listener;
 
 	public EpisodeClassifierStream() {
@@ -33,30 +29,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 		javaActionsLinker = new JavaActionsLinker();
 	}
 	
-	public void setActionsFile(File actionsFile) {
-		actionsStorage = new ActionFileStorage(actionsFile);
-		
-	}
-
-	public void setEpisodesFile(File episodesFile) {
-		episodeStorage = new EpisodeFileStorage(episodesFile);
-		
-	}
-
-	public void close(){
-		
-		if (actionsStorage!=null) {
-			actionsStorage.close();
-			actionsStorage = null;
-		}
-		
-		if (episodeStorage!=null) {
-			episodeStorage.close();
-			episodeStorage = null;
-			
-		}
-	}
-
 	public void addAction(Action action) {
 
 		System.out.println("[action] " + action);
@@ -65,11 +37,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			javaActionsLinker.linkActions((JavaFileAction) action);
 		}
 
-		if (actionsStorage != null) {
-			actionsStorage.addAction(action);
-		}
-		
-		
 		Episode episode = recognizeEpisode(action);
 
 		if (episode != null) {
@@ -77,10 +44,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			classifier.classifyEpisode(episode);
 			measure.addEpisode(episode);
 			episodes.add(episode);
-			
-			if (episodeStorage != null) {
-				episodeStorage.storeEpisode(episode);
-			}
 			
 			if (listener!=null)
 				listener.episodeRecognized(episode);
