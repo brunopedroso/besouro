@@ -13,17 +13,18 @@ import org.eclipse.core.resources.IResource;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.listeners.JavaStatementMeter;
 import besouro.listeners.mock.ResourceChangeEventFactory;
+import besouro.measure.JavaStatementMeter;
 import besouro.model.EditAction;
 import besouro.model.Episode;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
+import besouro.zorro.ZorroEpisodeClassifierStream;
 
 
 public class EpisodeDurationTest {
 	
-	private EpisodeClassifierStream stream;
+	private ZorroEpisodeClassifierStream stream;
 	
 	private String file1;
 	private String file2;
@@ -41,7 +42,7 @@ public class EpisodeDurationTest {
 	@Before
 	public void setup() throws Exception {
 
-		stream = new EpisodeClassifierStream();
+		stream = new ZorroEpisodeClassifierStream();
 		
 		// strange, i know
 		JavaStatementMeter measurer = mock(JavaStatementMeter.class);

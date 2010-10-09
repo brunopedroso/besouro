@@ -6,16 +6,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import besouro.model.Action;
-import besouro.model.EditAction;
-import besouro.model.RefactoringAction;
-import besouro.model.ResourceAction;
-import besouro.model.UnitTestCaseAction;
-import besouro.model.UnitTestSessionAction;
 import besouro.stream.ActionOutputStream;
 
 public class ActionFileStorage implements ActionOutputStream {

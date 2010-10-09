@@ -11,6 +11,7 @@ import static org.mockito.Mockito.*;
 
 import besouro.listeners.mock.FakeActionStream;
 import besouro.listeners.mock.WindowEventsFactory;
+import besouro.measure.JavaStatementMeter;
 import besouro.model.Action;
 import besouro.model.FileOpenedAction;
 import besouro.stream.ActionOutputStream;

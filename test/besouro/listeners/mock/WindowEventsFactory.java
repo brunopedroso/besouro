@@ -16,7 +16,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import besouro.listeners.JavaStatementMeter;
+import besouro.measure.JavaStatementMeter;
 
 
 public class WindowEventsFactory {

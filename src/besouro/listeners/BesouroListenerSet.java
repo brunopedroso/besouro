@@ -1,25 +1,21 @@
 package besouro.listeners;
 
-import java.io.File;
-
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.junit.JUnitCore;
-import org.eclipse.ui.IWorkbench;
 
-import besouro.model.Action;
 import besouro.plugin.Activator;
+import besouro.model.Action;
 import besouro.stream.ActionOutputStream;
-import besouro.stream.EpisodeClassifierStream;
 
-public class ListenersSet implements ActionOutputStream {
+public class BesouroListenerSet implements ActionOutputStream {
 
-	private static ListenersSet singleton;
+	private static BesouroListenerSet singleton;
 	
-	public static ListenersSet getSingleton() {
+	public static BesouroListenerSet getSingleton() {
 		if (singleton==null) {
-			singleton = new ListenersSet();
+			singleton = new BesouroListenerSet();
 		}
 		return singleton;
 	}
@@ -30,7 +26,7 @@ public class ListenersSet implements ActionOutputStream {
 	private JavaStructureChangeListener javaListener;
 	private JUnitListener junitListener;
 	
-	private ListenersSet(){
+	private BesouroListenerSet(){
 		windowListener = new WindowListener(this);
 		resourceListener = new ResourceChangeListener(this);
 		javaListener = new JavaStructureChangeListener(this);

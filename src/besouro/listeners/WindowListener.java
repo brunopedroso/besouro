@@ -16,6 +16,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import besouro.measure.JavaStatementMeter;
 import besouro.model.FileOpenedAction;
 import besouro.plugin.Activator;
 import besouro.stream.ActionOutputStream;

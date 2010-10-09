@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.plugin;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -6,17 +6,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import besouro.listeners.ListenersSet;
+import besouro.listeners.BesouroListenerSet;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
+import besouro.stream.ActionOutputStream;
+import besouro.stream.EpisodeListener;
+import besouro.zorro.ZorroEpisodeClassifierStream;
 
 public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 
-	private ListenersSet eclipseListenerSet;
+	private BesouroListenerSet eclipseListenerSet;
 	
-	private EpisodeClassifierStream classifier;
+	private ZorroEpisodeClassifierStream classifier;
 	
 	private ActionFileStorage actionStorage;
 	private EpisodeFileStorage episodesStorage;
@@ -29,10 +32,10 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	private static ProgrammingSession currentSession;
 
 	public static ProgrammingSession newSession(File basedir) {
-		return newSession(basedir, ListenersSet.getSingleton());
+		return newSession(basedir, BesouroListenerSet.getSingleton());
 	}
 	
-	public static ProgrammingSession newSession(File basedir, ListenersSet listeners) {
+	public static ProgrammingSession newSession(File basedir, BesouroListenerSet listeners) {
 		if(currentSession!=null){
 			currentSession.close();
 		}
@@ -41,7 +44,7 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	}
 	
 
-	private ProgrammingSession(File basedir, ListenersSet listeners) {
+	private ProgrammingSession(File basedir, BesouroListenerSet listeners) {
 		
 		String timestamp = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date());
 		
@@ -52,7 +55,7 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		episodesStorage = new EpisodeFileStorage(episodesFile);
 		this.addEpisodeListeners(episodesStorage);
 		
-		classifier = new EpisodeClassifierStream();
+		classifier = new ZorroEpisodeClassifierStream();
 		classifier.addEpisodeListener(this);
 		
 		eclipseListenerSet = listeners;

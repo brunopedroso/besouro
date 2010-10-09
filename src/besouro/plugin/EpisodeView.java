@@ -31,7 +31,6 @@ import org.eclipse.ui.part.ViewPart;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.stream.EpisodeListener;
-import besouro.stream.ProgrammingSession;
 
 public class EpisodeView extends ViewPart implements EpisodeListener {
 

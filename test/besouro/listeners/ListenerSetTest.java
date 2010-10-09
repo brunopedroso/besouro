@@ -1,4 +1,4 @@
-package besouro.listeners.plugin;
+package besouro.listeners;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,19 @@ import static org.mockito.Mockito.*;
 
 import junit.framework.Assert;
 
-import besouro.listeners.JavaStatementMeter;
-import besouro.listeners.ListenersSet;
+import besouro.listeners.BesouroListenerSet;
 import besouro.listeners.mock.WindowEventsFactory;
+import besouro.measure.JavaStatementMeter;
 import besouro.model.Action;
 import besouro.stream.ActionOutputStream;
 
 public class ListenerSetTest {
 	
-	private ListenersSet listenerSet;
+	private BesouroListenerSet listenerSet;
 
 	@Before
 	public void setup() {
-		listenerSet = ListenersSet.getSingleton();
+		listenerSet = BesouroListenerSet.getSingleton();
 		
 		JavaStatementMeter meter = mock(JavaStatementMeter.class);
 		when(meter.measureJavaFile(any(IFile.class))).thenReturn(meter);

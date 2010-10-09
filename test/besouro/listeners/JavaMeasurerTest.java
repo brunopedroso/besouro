@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import besouro.listeners.mock.ResourceChangeEventFactory;
+import besouro.measure.JavaStatementMeter;
 import besouro.model.EditAction;
 
 public class JavaMeasurerTest {

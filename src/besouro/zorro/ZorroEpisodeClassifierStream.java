@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.zorro;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,11 @@ import besouro.model.Episode;
 import besouro.model.JavaFileAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestSessionAction;
-import besouro.zorro.ZorroEpisodeClassification;
-import besouro.zorro.ZorroTDDMeasure;
+import besouro.stream.ActionOutputStream;
+import besouro.stream.EpisodeListener;
+import besouro.stream.JavaActionsLinker;
 
-public class EpisodeClassifierStream implements ActionOutputStream {
+public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 
 	private ZorroEpisodeClassification classifier;
 	private ZorroTDDMeasure measure;
@@ -22,7 +23,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	
 	private EpisodeListener listener;
 
-	public EpisodeClassifierStream() {
+	public ZorroEpisodeClassifierStream() {
 		classifier = new ZorroEpisodeClassification();
 		measure = new ZorroTDDMeasure();
 		javaActionsLinker = new JavaActionsLinker();

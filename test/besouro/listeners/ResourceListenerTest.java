@@ -12,10 +12,10 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.listeners.JavaStatementMeter;
 import besouro.listeners.ResourceChangeListener;
 import besouro.listeners.mock.FakeActionStream;
 import besouro.listeners.mock.ResourceChangeEventFactory;
+import besouro.measure.JavaStatementMeter;
 import besouro.model.Action;
 import besouro.model.CompilationAction;
 import besouro.model.EditAction;

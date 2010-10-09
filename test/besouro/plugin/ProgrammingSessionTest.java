@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.plugin;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -13,13 +13,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.listeners.ListenersSet;
+import besouro.listeners.BesouroListenerSet;
 import besouro.model.Episode;
 import besouro.model.FileOpenedAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
+import besouro.plugin.ProgrammingSession;
+import besouro.stream.EpisodeListener;
 
 public class ProgrammingSessionTest {
 
@@ -27,14 +29,14 @@ public class ProgrammingSessionTest {
 	private ProgrammingSession session;
 
 	private boolean notified;
-	private ListenersSet listeners;
+	private BesouroListenerSet listeners;
 
 	@Before
 	public void setup() {
 		basedir = new File("testDir");
 		basedir.mkdir();
 		
-		listeners = mock(ListenersSet.class);
+		listeners = mock(BesouroListenerSet.class);
 		session = ProgrammingSession.newSession(basedir, listeners);
 	}
 	

@@ -11,6 +11,8 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 
+import besouro.measure.BuildErrorSensor;
+import besouro.measure.JavaStatementMeter;
 import besouro.model.EditAction;
 import besouro.stream.ActionOutputStream;
 

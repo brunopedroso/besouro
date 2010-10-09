@@ -26,7 +26,7 @@ import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.persistence.ActionFileStorage;
-import besouro.stream.EpisodeClassifierStream;
+import besouro.zorro.ZorroEpisodeClassifierStream;
 
 public class ActionFileStorageTest {
 	
@@ -239,7 +239,7 @@ public class ActionFileStorageTest {
 	@Test
 	public void shouldStoreSufficientActionsForTestFirtOneRecognition() throws Exception {
 		
-		EpisodeClassifierStream stream = new EpisodeClassifierStream(){
+		ZorroEpisodeClassifierStream stream = new ZorroEpisodeClassifierStream(){
 			@Override
 			public void addAction(Action action) {
 				
