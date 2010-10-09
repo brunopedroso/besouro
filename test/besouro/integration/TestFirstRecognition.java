@@ -10,7 +10,7 @@ import org.junit.Test;
 import besouro.listeners.mock.JUnitEventFactory;
 import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.listeners.mock.ResourceChangeEventFactory;
-import besouro.stream.FileStorageActionStream;
+import besouro.stream.ActionFileStorage;
 
 
 public class TestFirstRecognition extends IntegrationTestBaseClass {

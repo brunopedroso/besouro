@@ -17,12 +17,12 @@ import besouro.model.ResourceAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 
-public class FileStorageActionStream implements ActionOutputStream {
+public class ActionFileStorage implements ActionOutputStream {
 
 	private File file;
 	private FileWriter writer;
 
-	public FileStorageActionStream(File f) {
+	public ActionFileStorage(File f) {
 		try {
 			
 			this.file = f;

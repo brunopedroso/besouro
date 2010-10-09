@@ -25,7 +25,7 @@ import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.listeners.mock.WindowEventsFactory;
 import besouro.stream.EpisodeClassifierStream;
-import besouro.stream.FileStorageActionStream;
+import besouro.stream.ActionFileStorage;
 
 
 public class IntegrationTestBaseClass {
@@ -38,27 +38,13 @@ public class IntegrationTestBaseClass {
 	protected JavaStatementMeter meter;
 	protected JavaStatementMeter measurer;
 	
-	protected File actionsFile;
-	protected File episodesFile;
-
 	@Before
 	public void setup() throws Exception {
 		
-		actionsFile = new File("test/actions.txt");
-		episodesFile = new File("test/episodes.txt");
-		
 		EpisodeClassifierStream stream = new EpisodeClassifierStream();
-		stream.setActionsFile(actionsFile);
-		stream.setEpisodesFile(episodesFile);
 		setup(stream);
 	}
-	
-	@After
-	public void tearDown() {
-		actionsFile.delete();
-		episodesFile.delete();
-	}
-	
+		
 	public void setup(EpisodeClassifierStream stream) throws Exception {
 		
 		this.stream = stream;

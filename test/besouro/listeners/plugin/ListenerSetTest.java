@@ -11,9 +11,9 @@ import static org.mockito.Mockito.*;
 import junit.framework.Assert;
 
 import besouro.listeners.JavaStatementMeter;
+import besouro.listeners.ListenersSet;
 import besouro.listeners.mock.WindowEventsFactory;
 import besouro.model.Action;
-import besouro.plugin.ListenersSet;
 import besouro.stream.ActionOutputStream;
 
 public class ListenerSetTest {

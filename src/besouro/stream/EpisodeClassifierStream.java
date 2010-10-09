@@ -22,7 +22,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	List<Action> actions = new ArrayList<Action>();
 	List<Episode> episodes = new ArrayList<Episode>();
 	
-	private FileStorageActionStream actionsStorage;
+	private ActionFileStorage actionsStorage;
 	private EpisodeFileStorage episodeStorage;
 	
 	private EpisodeListener listener;
@@ -34,7 +34,7 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 	}
 	
 	public void setActionsFile(File actionsFile) {
-		actionsStorage = new FileStorageActionStream(actionsFile);
+		actionsStorage = new ActionFileStorage(actionsFile);
 		
 	}
 

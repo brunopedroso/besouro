@@ -13,12 +13,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.listeners.ListenersSet;
 import besouro.model.Episode;
 import besouro.model.FileOpenedAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.plugin.EpisodeListener;
-import besouro.plugin.ListenersSet;
 
 public class ProgrammingSessionTest {
 
@@ -50,7 +50,7 @@ public class ProgrammingSessionTest {
 		Assert.assertTrue("should create the file", session.getActionsFile().exists());
 
 		session.addAction(new FileOpenedAction(new Date(), "afile"));
-		Assert.assertEquals("should persist the action", 1, FileStorageActionStream.loadFromFile(session.getActionsFile()).length);
+		Assert.assertEquals("should persist the action", 1, ActionFileStorage.loadFromFile(session.getActionsFile()).length);
 	}
 
 	

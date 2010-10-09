@@ -1,4 +1,4 @@
-package besouro.plugin;
+package besouro.listeners;
 
 import java.io.File;
 
@@ -8,11 +8,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.ui.IWorkbench;
 
-import besouro.listeners.JUnitListener;
-import besouro.listeners.JavaStructureChangeListener;
-import besouro.listeners.ResourceChangeListener;
-import besouro.listeners.WindowListener;
 import besouro.model.Action;
+import besouro.plugin.Activator;
 import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeClassifierStream;
 

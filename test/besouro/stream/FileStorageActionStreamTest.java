@@ -29,7 +29,7 @@ import besouro.model.UnitTestSessionAction;
 public class FileStorageActionStreamTest {
 	
 	private File file;
-	private FileStorageActionStream stream;
+	private ActionFileStorage stream;
 
 	@Before
 	public void setup() {
@@ -43,7 +43,7 @@ public class FileStorageActionStreamTest {
 	
 	@Test
 	public void shouldCreateAFileIfNeeded() throws Exception {
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		Assert.assertTrue("file should have been created", file.exists());
 	}
 	
@@ -57,7 +57,7 @@ public class FileStorageActionStreamTest {
 		
 		Assert.assertEquals("file should have been initialized", 5, file.length());
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		
 		Assert.assertEquals("file should remain untouched", 5, file.length());
 		
@@ -68,19 +68,19 @@ public class FileStorageActionStreamTest {
 		
 		Action a = new EditAction(new Date(), "anyFileName");
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		stream.addAction(a);
 		
 		Assert.assertTrue("file should have been writen", file.length() > 0);
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		Assert.assertEquals("length should be one", 1, readActions.length);
 		
 	}
 	
 	@Test
 	public void shouldReadNothingFromEmptyFile() throws Exception {
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		Assert.assertNull(readActions);
 	}
 
@@ -89,11 +89,11 @@ public class FileStorageActionStreamTest {
 		
 		String resource = "anyFileName";
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		stream.addAction(new EditAction(new Date(),resource));
 		stream.addAction(new EditAction(new Date(),resource));
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		Assert.assertEquals("should recover two action", 2, readActions.length);
 		
 	}
@@ -103,7 +103,7 @@ public class FileStorageActionStreamTest {
 		
 		String resource = "anyFileName";
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		stream.addAction(new EditAction(new Date(),resource));
 		stream.addAction(new UnitTestCaseAction(new Date(),resource));
 		stream.addAction(new UnitTestSessionAction(new Date(),resource));
@@ -111,7 +111,7 @@ public class FileStorageActionStreamTest {
 		stream.addAction(new FileOpenedAction(new Date(),resource));
 		stream.addAction(new CompilationAction(new Date(),resource));
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		
 		Assert.assertTrue("should be an EditAction", readActions[0] instanceof EditAction);
 		Assert.assertTrue("should be an UnitTestCaseAction", readActions[1] instanceof UnitTestCaseAction);
@@ -125,7 +125,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreActionDate() throws Exception {
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date clock = format.parse("01/01/2010 11:22:33");
@@ -134,7 +134,7 @@ public class FileStorageActionStreamTest {
 		stream.addAction(new UnitTestCaseAction(clock,null));
 		stream.addAction(new RefactoringAction(clock,null));
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		
 		Assert.assertEquals("should preserve the date", clock, readActions[0].getClock());
 		Assert.assertEquals("should preserve the date", clock, readActions[1].getClock());
@@ -145,7 +145,7 @@ public class FileStorageActionStreamTest {
 	@Test
 	public void shouldStoreActionResourceName() throws Exception {
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		
 		String resource = "anyFileName";
 		
@@ -154,7 +154,7 @@ public class FileStorageActionStreamTest {
 		stream.addAction(new UnitTestCaseAction(clock,resource));
 		stream.addAction(new RefactoringAction(clock,resource));
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		
 		Assert.assertEquals("should preserve the date", resource, ((ResourceAction)readActions[0]).getResource());
 		
@@ -174,10 +174,10 @@ public class FileStorageActionStreamTest {
 		action.setStatementsCount(statements);
 		action.setTestAssertionsCount(testAssertions);
 		
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		stream.addAction(action);
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		
 		Assert.assertEquals("should load one action", 1, readActions.length);
 		Assert.assertEquals("should preserve the date", filesize, ((JavaFileAction)readActions[0]).getFileSize());
@@ -200,10 +200,10 @@ public class FileStorageActionStreamTest {
 		action.setSubjectType(type);
 		
 		file.delete();
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		stream.addAction(action);
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		
 		Assert.assertEquals("should load one action", 1, readActions.length);
 		Assert.assertEquals("should preserve operator", op, ((RefactoringAction)readActions[0]).getOperator());
@@ -222,11 +222,11 @@ public class FileStorageActionStreamTest {
 		testSession.setSuccessValue(false);
 		
 		file.delete();
-		stream = new FileStorageActionStream(file);
+		stream = new ActionFileStorage(file);
 		stream.addAction(testCase);
 		stream.addAction(testSession);
 		
-		Action[] readActions = FileStorageActionStream.loadFromFile(file);
+		Action[] readActions = ActionFileStorage.loadFromFile(file);
 		
 		Assert.assertEquals("should load one action", 2, readActions.length);
 		Assert.assertFalse("should preserve test result", ((UnitTestAction)readActions[0]).isSuccessful());
@@ -242,11 +242,11 @@ public class FileStorageActionStreamTest {
 			public void addAction(Action action) {
 				
 				file.delete();
-				FileStorageActionStream fileStream = new FileStorageActionStream(file);
+				ActionFileStorage fileStream = new ActionFileStorage(file);
 				
 				// store and load back the action
 				fileStream.addAction(action);
-				Action[] actionsLoaded = FileStorageActionStream.loadFromFile(file);
+				Action[] actionsLoaded = ActionFileStorage.loadFromFile(file);
 				action = actionsLoaded[actionsLoaded.length-1];
 				
 				// then make the usual work
