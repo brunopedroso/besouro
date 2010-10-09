@@ -1,4 +1,4 @@
-package besouro.view;
+package besouro.plugin;
 
 import java.io.File;
 
@@ -30,8 +30,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import besouro.model.Action;
 import besouro.model.Episode;
-import besouro.plugin.Activator;
-import besouro.plugin.EpisodeListener;
+import besouro.stream.EpisodeListener;
 import besouro.stream.ProgrammingSession;
 
 public class EpisodeView extends ViewPart implements EpisodeListener {

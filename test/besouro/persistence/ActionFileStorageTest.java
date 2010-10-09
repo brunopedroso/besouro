@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.persistence;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,8 +25,10 @@ import besouro.model.ResourceAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
+import besouro.persistence.ActionFileStorage;
+import besouro.stream.EpisodeClassifierStream;
 
-public class FileStorageActionStreamTest {
+public class ActionFileStorageTest {
 	
 	private File file;
 	private ActionFileStorage stream;

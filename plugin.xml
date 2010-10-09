@@ -2,13 +2,9 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-   <extension point="org.eclipse.ui.startup">
-      <startup class="besouro.plugin.BesouroPlugin">
-      </startup>
-   </extension>
    <extension point="org.eclipse.ui.views">
-      <view class="besouro.view.EpisodeView"
-            id="besouro.view.EpisodeView"
+      <view class="besouro.plugin.EpisodeView"
+            id="besouro.plugin.EpisodeView"
             name="episodeView"
             restorable="true">
       </view>

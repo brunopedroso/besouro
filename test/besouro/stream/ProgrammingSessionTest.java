@@ -18,7 +18,8 @@ import besouro.model.Episode;
 import besouro.model.FileOpenedAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
-import besouro.plugin.EpisodeListener;
+import besouro.persistence.ActionFileStorage;
+import besouro.persistence.EpisodeFileStorage;
 
 public class ProgrammingSessionTest {
 

@@ -9,7 +9,8 @@ import java.util.List;
 import besouro.listeners.ListenersSet;
 import besouro.model.Action;
 import besouro.model.Episode;
-import besouro.plugin.EpisodeListener;
+import besouro.persistence.ActionFileStorage;
+import besouro.persistence.EpisodeFileStorage;
 
 public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 

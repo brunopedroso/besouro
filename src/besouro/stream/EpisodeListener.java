@@ -1,4 +1,4 @@
-package besouro.plugin;
+package besouro.stream;
 
 import besouro.model.Episode;
 

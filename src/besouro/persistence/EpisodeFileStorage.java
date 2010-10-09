@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import besouro.model.Episode;
-import besouro.plugin.EpisodeListener;
+import besouro.stream.EpisodeListener;
 
 public class EpisodeFileStorage implements EpisodeListener {
 

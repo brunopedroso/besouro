@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.persistence;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,6 +16,7 @@ import besouro.model.Action;
 import besouro.model.EditAction;
 import besouro.model.Episode;
 import besouro.model.UnitTestCaseAction;
+import besouro.persistence.EpisodeFileStorage;
 
 public class EpisodeFileStorageTest {
 

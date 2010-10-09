@@ -24,8 +24,8 @@ import besouro.listeners.mock.JUnitEventFactory;
 import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.listeners.mock.WindowEventsFactory;
+import besouro.persistence.ActionFileStorage;
 import besouro.stream.EpisodeClassifierStream;
-import besouro.stream.ActionFileStorage;
 
 
 public class IntegrationTestBaseClass {

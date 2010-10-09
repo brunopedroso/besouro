@@ -1,4 +1,4 @@
-package besouro.stream;
+package besouro.persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +16,7 @@ import besouro.model.RefactoringAction;
 import besouro.model.ResourceAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
+import besouro.stream.ActionOutputStream;
 
 public class ActionFileStorage implements ActionOutputStream {
 

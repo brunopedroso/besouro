@@ -8,7 +8,6 @@ import besouro.model.Episode;
 import besouro.model.JavaFileAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestSessionAction;
-import besouro.plugin.EpisodeListener;
 import besouro.zorro.ZorroEpisodeClassification;
 import besouro.zorro.ZorroTDDMeasure;
 
@@ -37,6 +36,8 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 			javaActionsLinker.linkActions((JavaFileAction) action);
 		}
 
+		actions.add(action);
+		
 		Episode episode = recognizeEpisode(action);
 
 		if (episode != null) {
@@ -61,7 +62,6 @@ public class EpisodeClassifierStream implements ActionOutputStream {
 
 	private Episode recognizeEpisode(Action action) {
 		
-		actions.add(action);
 		if (action instanceof UnitTestSessionAction) {
 
 			if (((UnitTestAction) action).isSuccessful()) {
