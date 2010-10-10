@@ -3,7 +3,9 @@
 <plugin>
 
    <extension point="org.eclipse.ui.views">
-      <view class="besouro.plugin.EpisodeView"
+      <view
+            class="besouro.plugin.EpisodeView"
+            icon="icons/episode_roxo.gif"
             id="besouro.plugin.EpisodeView"
             name="episodeView"
             restorable="true">

@@ -17,9 +17,18 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -27,6 +36,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.tasklist.TaskList;
 
 import besouro.model.Action;
 import besouro.model.Episode;
@@ -41,6 +51,11 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	
 	public static EpisodeView sharedInstance;
 
+	private StartAction startAction;
+	private StopAction stopAction;
+
+	private Label statusLabel;
+
 	public static EpisodeView getInstance() {
 		return sharedInstance;
 	}
@@ -50,10 +65,12 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		EpisodeView.sharedInstance = this;
 	}
 
+	
 	private final class StopAction extends org.eclipse.jface.action.Action {
 		
 		public StopAction(){
 			setText("Stop");
+			setImageDescriptor(Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/nav_stop.gif"));
 		}
 
 		public void run() {
@@ -61,6 +78,14 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				session.close();
 			}
 			viewer.setInput(null);
+			
+			stopAction.setEnabled(false);
+			startAction.setEnabled(true);
+			
+			statusLabel.setText("stopped");
+			statusLabel.getParent().layout();
+
+			
 		}
 	}
 
@@ -68,11 +93,13 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		
 		public StartAction(){
 			setText("Start");
+			setImageDescriptor(Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/start_task.gif"));
 		}
 		
 		public void run() {
 			
 			File projectRootDir = null;
+			String projectName = null;
 			
 			IEditorPart editorPart = getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
 			
@@ -82,6 +109,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			    IFile file = input.getFile();
 			    IProject activeProject = file.getProject();
 			    projectRootDir = activeProject.getLocation().toFile();
+			    projectName = activeProject.getName();
 			    
  
 		    // else try to get it from the selected resource on package explorer
@@ -95,6 +123,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 					JavaElement resource = (JavaElement)sel.getFirstElement();
 					IJavaProject activeProject= resource.getJavaProject();
 					projectRootDir = activeProject.getResource().getLocation().toFile();
+					projectName = activeProject.getProject().getName();
 				}
 				
 			}
@@ -108,13 +137,21 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				session.addEpisodeListeners(EpisodeView.this);
 				viewer.setInput(session.getEpisodes());
 				
+				stopAction.setEnabled(true);
+				startAction.setEnabled(false);
+				
+				statusLabel.setText("recording " + projectName);
+				statusLabel.getParent().layout();
+				
+				
 			} else {
 				
 				MessageDialog.openInformation(viewer.getControl().getShell(),
 						"Warning", "Please, select a project or a resource in package explorer");
 
 			}
-			 
+			
+			
 			
 		}
 	}
@@ -175,7 +212,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				Episode episode = (Episode)obj;
 				if (episode.isTDD()==null) {
 					// unclassified
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode.gif");
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_azul.gif");
 					
 				} else if (episode.isTDD()) {
 					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.gif");
@@ -205,17 +242,40 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	
 	@Override
 	public void createPartControl(Composite parent) {
+
+		GridLayout layout = new GridLayout();
+		parent.setLayout(layout);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
 		
+		GridData labelGridData = new GridData();
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		
+		statusLabel = new Label(parent, SWT.NONE);
+		statusLabel.setText("stopped              ");
+		statusLabel.setLayoutData(labelGridData);
+
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
-//		viewer.setSorter(new ViewerSorter());
-//		viewer.setInput(ListenersSet.getSingleton().getEpisodeClassifier().getEpisodes());
+		viewer.getControl().setLayoutData(gridData);
 		
 		IActionBars bars = getViewSite().getActionBars();
 		IToolBarManager manager = bars.getToolBarManager();
-		manager.add(new StartAction());
-		manager.add(new StopAction());
+		
+		startAction = new StartAction();
+		stopAction = new StopAction();
+		
+		stopAction.setEnabled(false);
+		startAction.setEnabled(true);
+		
+		manager.add(startAction);
+		manager.add(stopAction);
 		
 	}
 	
