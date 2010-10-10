@@ -42,10 +42,16 @@ public class ProgrammingSessionTest {
 	
 	@After
 	public void teardown() {
-		for(File f: basedir.listFiles()) {
-			f.delete();
+		deleteFileTree(basedir);
+	}
+
+	private void deleteFileTree(File file) {
+		if (file.isDirectory()) {
+			for(File f: file.listFiles()) {
+				deleteFileTree(f);
+			}
 		}
-		basedir.delete();
+		file.delete();
 	}
 	
 	@Test
@@ -109,11 +115,18 @@ public class ProgrammingSessionTest {
 	}
 
 	@Test
-	public void shouldStartAFileforEachSession() {
-		Assert.assertEquals("should have created files", 2, basedir.list().length);
+	public void shouldStartANewDirforEachSession() {
+		Assert.assertEquals("should have created one dir", 1, basedir.list().length);
+		Assert.assertTrue("should be a dir", basedir.listFiles()[0].isDirectory());
+		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[0].listFiles().length);
+		
 		session = ProgrammingSession.newSession(basedir, listeners);
-		Assert.assertEquals("should create other files", 4, basedir.list().length);
-		//its supposed that it will write to the newly created file... but its not being tested...
+		Assert.assertEquals("should have created another dir", 2, basedir.list().length);
+		Assert.assertTrue("should be a dir", basedir.listFiles()[0].isDirectory());
+		Assert.assertTrue("should be a dir", basedir.listFiles()[1].isDirectory());
+		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[1].listFiles().length);
+		
 	}
 	
 }

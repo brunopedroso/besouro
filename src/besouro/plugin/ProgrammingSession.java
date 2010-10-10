@@ -48,10 +48,13 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		
 		String timestamp = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date());
 		
-		actionsFile = new File(basedir, "actions_" + timestamp + ".txt");
+		File sessionDir = new File(basedir, timestamp);
+		sessionDir.mkdir();
+		
+		actionsFile = new File(sessionDir, "actions.txt");
 		actionStorage = new ActionFileStorage(actionsFile);
 		
-		episodesFile = new File(basedir, "episodes_" + timestamp + ".txt");
+		episodesFile = new File(sessionDir, "episodes.txt");
 		episodesStorage = new EpisodeFileStorage(episodesFile);
 		this.addEpisodeListeners(episodesStorage);
 		
