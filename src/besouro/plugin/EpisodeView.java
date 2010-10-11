@@ -137,6 +137,8 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				session.addEpisodeListeners(EpisodeView.this);
 				viewer.setInput(session.getEpisodes());
 				
+				session.start();
+				
 				stopAction.setEnabled(true);
 				startAction.setEnabled(false);
 				

@@ -62,10 +62,14 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		classifier.addEpisodeListener(this);
 		
 		eclipseListenerSet = listeners;
-		eclipseListenerSet.registerListenersInEclipse();
 		eclipseListenerSet.setOutputStream(this);
 		
 	}
+	
+	public void start() {
+		eclipseListenerSet.registerListenersInEclipse();
+	}
+
 
 	public void addAction(Action action) {
 		actionStorage.addAction(action);
@@ -98,5 +102,6 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	public File getEpisodesFile() {
 		return episodesFile;
 	}
+
 
 }

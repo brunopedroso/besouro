@@ -89,14 +89,15 @@ public class ProgrammingSessionTest {
 		addRegressionActions();
 		Assert.assertTrue("should call the listener", notified);
 	}
-	
+		
 	@Test
-	public void shouldRegisterEclipseListeners() {
+	public void shouldRegisterItselfInTheListenerSet() {
 		verify(listeners).setOutputStream(session);
 	}
 	
 	@Test
-	public void shouldRegisterItselfInTheListenerSet() {
+	public void shouldRegisterEclipseListeners() {
+		session.start();
 		verify(listeners).registerListenersInEclipse();
 	}
 	
@@ -108,8 +109,12 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldUnregisterListenersFromEclipseOnNewSession() {
+		
 		// another session has already been created in setup...
+		session.start();
+		
 		session = ProgrammingSession.newSession(basedir, listeners);
+		session.start();
 		verify(listeners, times(1)).unregisterListenersInEclipse();
 		verify(listeners, times(2)).registerListenersInEclipse();
 	}
