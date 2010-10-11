@@ -212,13 +212,13 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				Episode episode = (Episode)obj;
 				if (episode.isTDD()==null) {
 					// unclassified
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_azul.gif");
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode.png");
 					
 				} else if (episode.isTDD()) {
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.gif");
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.png");
 					
 				} else { // classified as non-conformant
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_nonconformant.gif");
+					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_nonconformant.png");
 					
 				}
 				
