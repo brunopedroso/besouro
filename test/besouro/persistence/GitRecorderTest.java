@@ -1,117 +1,78 @@
 package besouro.persistence;
 
-import java.io.File;
-import java.io.IOException;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
-import junit.framework.Assert;
+import java.io.File;
+import java.util.Date;
 
 import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.NoFilepatternException;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.lib.RepositoryBuilder;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevWalk;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.exceptions.verification.NeverWantedButInvoked;
+import org.mockito.verification.VerificationMode;
+
+import besouro.model.EditAction;
+import besouro.model.UnitTestAction;
+import besouro.model.UnitTestCaseAction;
 
 public class GitRecorderTest {
+	
+	private GitRecorder gitRec;
+	private Git git;
+	private AddCommand add;
+	private CommitCommand commit;
 
-	private File basedir;
-	private GitRecorder git;
-	private Repository repo;
 
 	@Before
 	public void setup() {
+		File basedir = new File("");
+		gitRec = new GitRecorder(basedir);
 		
-		basedir = new File("test/basedir");
-		Assert.assertFalse(basedir.exists());
+		git = mock(Git.class);
+		add = mock(AddCommand.class);
 		
-		basedir.mkdir();
+		gitRec.setGit(git);
 		
-		git = new GitRecorder(basedir);
-		this.repo = git.createNewRepo();
+		when(git.add()).thenReturn(add);
+		when(add.addFilepattern(anyString())).thenReturn(add);
 		
+		commit = mock(CommitCommand.class);
+		when(git.commit()).thenReturn(commit);
+		when(commit.setAll(true)).thenReturn(commit);
+		when(commit.setCommitter(anyString(), anyString())).thenReturn(commit);
+		when(commit.setMessage(anyString())).thenReturn(commit);
 	}
 	
-	@After
-	public void teardown() {
-		deleteFileTree(basedir);
-	}
-
-	private static void deleteFileTree(File file) {
-		if (file.isDirectory()) {
-			for(File f: file.listFiles()) {
-				deleteFileTree(f);
-			}
-		}
-		file.delete();
-	}
-
-	@Test
-	public void shouldCreateAGitRepository() {
-		
-		File[] fileListing = basedir.listFiles();
-		Assert.assertEquals(1, fileListing.length);
-		Assert.assertEquals(".git", fileListing[0].getName());
-		
-	}
-
 	
 	@Test
-	public void shouldNotCreateAGitRepositoryIfAlreadyExists() {
+	public void shouldAddAllAndCommitOnEachEditAction() throws Exception {
+
+		EditAction action = new EditAction(new Date(), "anyFile");
+		gitRec.addAction(action);
 		
-		git.createNewRepo();
+		verify(git).add();
+		verify(add).addFilepattern(".");
+		verify(add).call();
 		
-		File[] fileListing = basedir.listFiles();
-		Assert.assertEquals(1, fileListing.length);
-		Assert.assertEquals(".git", fileListing[0].getName());
+		verify(git).commit();
+		verify(commit).setAll(true);
+		verify(commit).setCommitter(anyString(), anyString());
+		verify(commit).setMessage(anyString());
+		verify(commit).call();
 		
 	}
 	
 	@Test
-	public void shouldAddAllFiles() throws Exception {
+	public void shouldDoNothingForOtherActionTypes() throws Exception {
 
-		new File(basedir, "aa").createNewFile();
-		new File(basedir, "bb").createNewFile();
-		new File(basedir, "cc").createNewFile();
+		UnitTestCaseAction action = new UnitTestCaseAction(new Date(), "anyFile");
+		gitRec.addAction(action);
 		
-		git.addAllFiles();
-		
-		Assert.assertEquals(3, repo.getIndex().getMembers().length);
-		Assert.assertEquals("aa", repo.getIndex().getMembers()[0].getName());
-		Assert.assertEquals("bb", repo.getIndex().getMembers()[1].getName());
-		Assert.assertEquals("cc", repo.getIndex().getMembers()[2].getName());
-	}
-
-
-	@Test
-	public void shouldCommit() throws Exception {
-		
-		ObjectId head = repo.resolve("HEAD");
-		System.out.println(head);
-		
-		new File(basedir, "aa").createNewFile();
-		
-		git.addAllFiles();
-		git.commit();
-		
-		head = repo.resolve("HEAD");
-		String firstCommit = head.getName();
-		
-		new File(basedir, "bb").createNewFile();
-		
-		git.addAllFiles();
-		git.commit();
-		
-		head = repo.resolve("HEAD");
-		
-		RevWalk walk = new RevWalk(repo);
-		RevCommit commit = walk.parseCommit(head);
-		
-		Assert.assertEquals(firstCommit, commit.getParent(0).getName());
+		verify(git,never()).add();
+		verify(git, never()).commit();
 		
 	}
 	

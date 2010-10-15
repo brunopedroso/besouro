@@ -7,8 +7,12 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryBuilder;
 
+import besouro.model.Action;
+import besouro.model.EditAction;
+import besouro.stream.ActionOutputStream;
 
-public class GitRecorder {
+
+public class GitRecorder implements ActionOutputStream {
 
 	private File baseDir;
 	private File gitDir;
@@ -32,43 +36,26 @@ public class GitRecorder {
 		}
 	}
 
-	public Repository createNewRepo() {
-		
+	public void addAction(Action action) {
 		try {
 			
-			if (!gitDir.exists()){
-				repo.create();
+			if (action instanceof EditAction) {
+				git.add().addFilepattern(".").call();
+				git.commit()
+					.setAll(true)
+					.setCommitter("somename", "someemail")
+					.setMessage("besouro automatic message")
+					.call();
 			}
 			
-			return repo;
-			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public void addAllFiles() {
-		try {
-			
-			git.add().addFilepattern(".").call();
-			
-		} catch (NoFilepatternException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void commit() {
-		try {
-			
-			git.commit()
-				.setAll(true)
-				.setMessage("besouro automatic message")
-				.setCommitter("somename", "someemail")
-				.call();
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	/** Only for testing purposes  */
+	public void setGit(Git git) {
+		this.git = git;
 	}
 
 

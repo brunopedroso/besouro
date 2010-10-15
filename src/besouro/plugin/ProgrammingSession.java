@@ -11,6 +11,7 @@ import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
+import besouro.persistence.GitRecorder;
 import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeListener;
 import besouro.zorro.ZorroEpisodeClassifierStream;
@@ -28,6 +29,8 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 
 	private File actionsFile;
 	private File episodesFile;
+
+	private GitRecorder git;
 	
 	private static ProgrammingSession currentSession;
 
@@ -63,6 +66,8 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
+		
+		git = new GitRecorder(basedir);
 		
 	}
 	
@@ -101,6 +106,12 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 
 	public File getEpisodesFile() {
 		return episodesFile;
+	}
+
+	/** for testing purposes only */
+	public void setGitRecorder(GitRecorder git) {
+		this.git = git;
+		
 	}
 
 

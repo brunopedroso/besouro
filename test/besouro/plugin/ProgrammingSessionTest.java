@@ -20,6 +20,7 @@ import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
+import besouro.persistence.GitRecorder;
 import besouro.plugin.ProgrammingSession;
 import besouro.stream.EpisodeListener;
 
@@ -38,6 +39,10 @@ public class ProgrammingSessionTest {
 		
 		listeners = mock(BesouroListenerSet.class);
 		session = ProgrammingSession.newSession(basedir, listeners);
+		
+		GitRecorder git = mock(GitRecorder.class);
+		session.setGitRecorder(git);
+		
 	}
 	
 	@After
