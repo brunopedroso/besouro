@@ -15,15 +15,13 @@ import besouro.stream.ActionOutputStream;
 
 public class GitRecorder implements ActionOutputStream {
 
-	private File baseDir;
 	private File gitDir;
 	private Git git;
 
 	public GitRecorder(File basedir) {
 		try {
 			
-			this.baseDir = basedir;
-			gitDir = new File(this.baseDir, ".git");
+			gitDir = new File(basedir, ".git");
 			
 			RepositoryBuilder builder = new RepositoryBuilder();
 			builder.setGitDir(gitDir);
