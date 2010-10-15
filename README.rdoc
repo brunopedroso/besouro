@@ -14,8 +14,6 @@ Besouro was created as a plain eclipse plugin. Please refer to its documentation
 
 In order to compile/execute it, you will need to download by yourself the JESSEngine[http://www.jessrules.com/].
 
-Some automated tests relies on Mockito[http://mockito.org/], that is not distributed with this code as well.
-
 
 = License
 
