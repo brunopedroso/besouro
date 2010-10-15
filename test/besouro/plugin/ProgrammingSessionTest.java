@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import besouro.listeners.BesouroListenerSet;
+import besouro.model.Action;
+import besouro.model.EditAction;
 import besouro.model.Episode;
 import besouro.model.FileOpenedAction;
 import besouro.model.UnitTestCaseAction;
@@ -137,6 +139,25 @@ public class ProgrammingSessionTest {
 		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[0].listFiles().length);
 		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[1].listFiles().length);
 		
+	}
+	
+	@Test
+	public void shouldAddActionsToGitRecorderStream() {
+		GitRecorder git = mock(GitRecorder.class);
+		session.setGitRecorder(git);
+		
+		Action action = new EditAction(new Date(), "afile");
+		session.addAction(action);
+		
+		verify(git).addAction(action);
+	}
+	
+	@Test
+	public void shouldCreateNewGitRepoIfItDoesnotExist() {
+		GitRecorder git = mock(GitRecorder.class);
+		session.setGitRecorder(git);
+		session.start();
+		verify(git).createRepoIfNeeded();
 	}
 	
 }

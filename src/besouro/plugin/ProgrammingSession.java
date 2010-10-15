@@ -73,12 +73,14 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	
 	public void start() {
 		eclipseListenerSet.registerListenersInEclipse();
+		git.createRepoIfNeeded();
 	}
 
 
 	public void addAction(Action action) {
 		actionStorage.addAction(action);
 		classifier.addAction(action);
+		git.addAction(action);
 	}
 
 	public void addEpisodeListeners(EpisodeListener episodeListener) {

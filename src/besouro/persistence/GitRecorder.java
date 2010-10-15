@@ -1,6 +1,7 @@
 package besouro.persistence;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.NoFilepatternException;
@@ -16,7 +17,6 @@ public class GitRecorder implements ActionOutputStream {
 
 	private File baseDir;
 	private File gitDir;
-	private Repository repo;
 	private Git git;
 
 	public GitRecorder(File basedir) {
@@ -28,7 +28,7 @@ public class GitRecorder implements ActionOutputStream {
 			RepositoryBuilder builder = new RepositoryBuilder();
 			builder.setGitDir(gitDir);
 			
-			repo = builder.build();
+			Repository repo = builder.build();
 			git = new Git(repo);
 			
 		} catch (Exception e) {
@@ -56,6 +56,16 @@ public class GitRecorder implements ActionOutputStream {
 	/** Only for testing purposes  */
 	public void setGit(Git git) {
 		this.git = git;
+	}
+
+	public void createRepoIfNeeded() {
+		try {
+			if (!gitDir.exists()) {
+				git.getRepository().create();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 

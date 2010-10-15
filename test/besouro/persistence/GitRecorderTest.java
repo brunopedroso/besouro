@@ -9,6 +9,9 @@ import java.util.Date;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.util.Base64;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.exceptions.verification.NeverWantedButInvoked;
@@ -24,11 +27,13 @@ public class GitRecorderTest {
 	private Git git;
 	private AddCommand add;
 	private CommitCommand commit;
+	private File basedir;
 
 
 	@Before
 	public void setup() {
-		File basedir = new File("");
+		basedir = new File("test/basedir");
+		
 		gitRec = new GitRecorder(basedir);
 		
 		git = mock(Git.class);
@@ -44,6 +49,20 @@ public class GitRecorderTest {
 		when(commit.setAll(true)).thenReturn(commit);
 		when(commit.setCommitter(anyString(), anyString())).thenReturn(commit);
 		when(commit.setMessage(anyString())).thenReturn(commit);
+	}
+	
+	private static void deleteFileTree(File file) {
+		if (file.isDirectory()) {
+			for(File f: file.listFiles()) {
+				deleteFileTree(f);
+			}
+		}
+		file.delete();
+	}
+
+	@After
+	public void teardown() {
+		deleteFileTree(basedir);
 	}
 	
 	
@@ -73,6 +92,33 @@ public class GitRecorderTest {
 		
 		verify(git,never()).add();
 		verify(git, never()).commit();
+		
+	}
+	
+	@Test
+	public void shouldCreateRepoIfItDoesntExist() throws Exception {
+		
+		Repository repo = mock(Repository.class);
+		when(git.getRepository()).thenReturn(repo);
+		
+		gitRec.createRepoIfNeeded();
+		
+		verify(repo).create();
+		
+	}
+	
+	@Test
+	public void shouldNotCreateRepoIfItExist() throws Exception {
+		
+		Repository repo = mock(Repository.class);
+		when(git.getRepository()).thenReturn(repo);
+		
+		this.basedir.mkdir();
+		new File(this.basedir, ".git").mkdir();
+		
+		gitRec.createRepoIfNeeded();
+		
+		verify(repo, never()).create();
 		
 	}
 	
