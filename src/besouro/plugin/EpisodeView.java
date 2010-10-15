@@ -130,10 +130,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			
 			if (projectRootDir != null) {
 				
-				File besouroDir = new File(projectRootDir, ".besouro");
-				besouroDir.mkdir();
-				
-				session = ProgrammingSession.newSession(besouroDir);
+				session = ProgrammingSession.newSession(projectRootDir);
 				session.addEpisodeListeners(EpisodeView.this);
 				viewer.setInput(session.getEpisodes());
 				

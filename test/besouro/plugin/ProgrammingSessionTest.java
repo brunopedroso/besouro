@@ -33,6 +33,7 @@ public class ProgrammingSessionTest {
 
 	private boolean notified;
 	private BesouroListenerSet listeners;
+	private GitRecorder git;
 
 	@Before
 	public void setup() {
@@ -40,9 +41,10 @@ public class ProgrammingSessionTest {
 		basedir.mkdir();
 		
 		listeners = mock(BesouroListenerSet.class);
+		
 		session = ProgrammingSession.newSession(basedir, listeners);
 		
-		GitRecorder git = mock(GitRecorder.class);
+		git = mock(GitRecorder.class);
 		session.setGitRecorder(git);
 		
 	}
@@ -50,6 +52,7 @@ public class ProgrammingSessionTest {
 	@After
 	public void teardown() {
 		deleteFileTree(basedir);
+		session.close();
 	}
 
 	private void deleteFileTree(File file) {
@@ -121,6 +124,8 @@ public class ProgrammingSessionTest {
 		session.start();
 		
 		session = ProgrammingSession.newSession(basedir, listeners);
+		session.setGitRecorder(git);
+		
 		session.start();
 		verify(listeners, times(1)).unregisterListenersInEclipse();
 		verify(listeners, times(2)).registerListenersInEclipse();
@@ -128,16 +133,19 @@ public class ProgrammingSessionTest {
 
 	@Test
 	public void shouldStartANewDirforEachSession() {
-		Assert.assertEquals("should have created one dir", 1, basedir.list().length);
-		Assert.assertTrue("should be a dir", basedir.listFiles()[0].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[0].listFiles().length);
+		File besouroDir = new File(basedir, ".besouro");
+		Assert.assertEquals("should have created one dir", 1, besouroDir.list().length);
+		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
+		Assert.assertEquals("should have created the files inside dir", 2, besouroDir.listFiles()[0].listFiles().length);
 		
 		session = ProgrammingSession.newSession(basedir, listeners);
-		Assert.assertEquals("should have created another dir", 2, basedir.list().length);
-		Assert.assertTrue("should be a dir", basedir.listFiles()[0].isDirectory());
-		Assert.assertTrue("should be a dir", basedir.listFiles()[1].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[0].listFiles().length);
-		Assert.assertEquals("should have created the files inside dir", 2, basedir.listFiles()[1].listFiles().length);
+		session.setGitRecorder(git);
+		
+		Assert.assertEquals("should have created another dir", 2, besouroDir.list().length);
+		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
+		Assert.assertTrue("should be a dir", besouroDir.listFiles()[1].isDirectory());
+		Assert.assertEquals("should have created the files inside dir", 2, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 2, besouroDir.listFiles()[1].listFiles().length);
 		
 	}
 	
@@ -153,11 +161,21 @@ public class ProgrammingSessionTest {
 	}
 	
 	@Test
+	public void shouldCloseGitRecorderOnSessionCloseToo() {
+		GitRecorder git = mock(GitRecorder.class);
+		session.setGitRecorder(git);
+		session.close();
+		verify(git).close();
+	}
+
+	
+	@Test
 	public void shouldCreateNewGitRepoIfItDoesnotExist() {
 		GitRecorder git = mock(GitRecorder.class);
 		session.setGitRecorder(git);
 		session.start();
 		verify(git).createRepoIfNeeded();
 	}
+
 	
 }

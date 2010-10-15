@@ -51,7 +51,10 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		
 		String timestamp = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date());
 		
-		File sessionDir = new File(basedir, timestamp);
+		File besouroDir = new File(basedir, ".besouro");
+		besouroDir.mkdir();
+		
+		File sessionDir = new File(besouroDir, timestamp);
 		sessionDir.mkdir();
 		
 		actionsFile = new File(sessionDir, "actions.txt");
@@ -96,6 +99,7 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 
 	public void close() {
 		eclipseListenerSet.unregisterListenersInEclipse();
+		git.close();
 	}
 
 	public Episode[] getEpisodes() {
@@ -115,6 +119,7 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		this.git = git;
 		
 	}
+
 
 
 }

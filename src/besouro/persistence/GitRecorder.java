@@ -4,7 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.NoFilepatternException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.api.errors.NoMessageException;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+import org.eclipse.jgit.errors.UnmergedPathException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryBuilder;
 
@@ -35,20 +40,29 @@ public class GitRecorder implements ActionOutputStream {
 	}
 
 	public void addAction(Action action) {
+		if (action instanceof EditAction) {
+			addAllAndCommit();
+		}
+	}
+	
+	public void close() {
+		addAllAndCommit();
+	}
+
+	private void addAllAndCommit() {
 		try {
 			
-			if (action instanceof EditAction) {
-				git.add().addFilepattern(".").call();
-				git.commit()
-					.setAll(true)
-					.setCommitter("somename", "someemail")
-					.setMessage("besouro automatic message")
-					.call();
-			}
-			
+			git.add().addFilepattern(".").call();
+			git.commit()
+				.setAll(true)
+				.setCommitter("somename", "someemail")
+				.setMessage("besouro automatic message")
+				.call();
+				
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
 	}
 
 	/** Only for testing purposes  */
@@ -65,6 +79,5 @@ public class GitRecorder implements ActionOutputStream {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 }

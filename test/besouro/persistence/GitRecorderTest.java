@@ -85,6 +85,23 @@ public class GitRecorderTest {
 	}
 	
 	@Test
+	public void shouldAddAllAndCommitOnClose() throws Exception {
+		
+		gitRec.close();
+		
+		verify(git).add();
+		verify(add).addFilepattern(".");
+		verify(add).call();
+		
+		verify(git).commit();
+		verify(commit).setAll(true);
+		verify(commit).setCommitter(anyString(), anyString());
+		verify(commit).setMessage(anyString());
+		verify(commit).call();
+		
+	}
+	
+	@Test
 	public void shouldDoNothingForOtherActionTypes() throws Exception {
 
 		UnitTestCaseAction action = new UnitTestCaseAction(new Date(), "anyFile");
