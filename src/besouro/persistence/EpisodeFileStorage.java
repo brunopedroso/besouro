@@ -32,6 +32,11 @@ public class EpisodeFileStorage implements EpisodeListener {
 	public void episodeRecognized(Episode e) {
 		
 		episodes.add(e);
+		save();
+		
+	}
+	
+	public void save() {
 		
 		try {
 			
@@ -47,9 +52,9 @@ public class EpisodeFileStorage implements EpisodeListener {
 			throw new RuntimeException(e1);
 		}
 	}
-	
 
 	private void saveEpisodeToFile(Episode e) throws IOException {
+		
 		long time = -1;
 		
 		if (e.getLastAction() != null) {
@@ -102,7 +107,5 @@ public class EpisodeFileStorage implements EpisodeListener {
 			throw new RuntimeException(e);
 		}
 	}
-
-
 
 }

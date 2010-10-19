@@ -168,4 +168,42 @@ public class EpisodeFileStorageTest {
 		
 	}
 	
+	@Test
+	public void shouldStoreOldModifiedEpisodeOnSave() {
+		
+		storage = new EpisodeFileStorage(file);
+		
+		Episode e1 = new Episode();
+		e1.setClassification("test-first", "1");
+		e1.setDuration(11);
+		e1.setIsTDD(true);
+		storage.episodeRecognized(e1);
+		
+		Episode[] es = EpisodeFileStorage.loadEpisodes(file);
+		
+		Assert.assertEquals("should persist category", e1.getCategory(), es[0].getCategory());
+		Assert.assertEquals("should persist subtype", e1.getSubtype(), es[0].getSubtype());
+		Assert.assertEquals("should persist duration", e1.getDuration(), es[0].getDuration());
+		Assert.assertEquals("should persist test result", e1.isTDD(), es[0].isTDD());
+		
+		// Now we change the old episode
+		e1.setClassification("regression", "1");
+		e1.setIsTDD(false);
+		
+		// just call save
+		storage.save();
+		
+		// reload
+		es = EpisodeFileStorage.loadEpisodes(file);
+		
+		Assert.assertEquals("should have 1 episodes", 1, es.length);
+		
+		// the firt episode should have been modified in the file
+		Assert.assertEquals("should update category", e1.getCategory(), es[0].getCategory());
+		Assert.assertEquals("should update subtype", e1.getSubtype(), es[0].getSubtype());
+		Assert.assertEquals("should update duration", e1.getDuration(), es[0].getDuration());
+		Assert.assertEquals("should update test result", e1.isTDD(), es[0].isTDD());
+		
+	}
+	
 }
