@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import besouro.model.Episode;
 import besouro.stream.EpisodeListener;
@@ -16,7 +17,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 
 	private File file;
 	private FileWriter writer;
-	private List<Episode> episodes = new ArrayList<Episode>();
+	private TreeMap<Long, Episode> episodes = new TreeMap<Long, Episode>();
 
 	public EpisodeFileStorage(File file) {
 		try {
@@ -31,7 +32,8 @@ public class EpisodeFileStorage implements EpisodeListener {
 
 	public void episodeRecognized(Episode e) {
 		
-		episodes.add(e);
+		episodes.put(e.getTimestamp(), e);
+		
 		save();
 		
 	}
@@ -43,7 +45,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 			// restarts the file
 			writer = new FileWriter(this.file);
 			
-			for (Episode ep: episodes)
+			for (Episode ep: episodes.values())
 				saveEpisodeToFile(ep);
 			
 			writer.close();

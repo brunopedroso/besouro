@@ -24,9 +24,11 @@ public class ProgrammingSession implements ActionOutputStream {
 	
 	private ActionFileStorage actionStorage;
 	private EpisodeFileStorage episodesStorage;
+	private EpisodeFileStorage disagreementsStorage;
 	
 	private File actionsFile;
 	private File episodesFile;
+	private File disagreementsFile;
 
 	private GitRecorder git;
 	
@@ -61,6 +63,9 @@ public class ProgrammingSession implements ActionOutputStream {
 		episodesFile = new File(sessionDir, "episodes.txt");
 		episodesStorage = new EpisodeFileStorage(episodesFile);
 		
+		disagreementsFile = new File(sessionDir, "disagreements.txt");
+		disagreementsStorage = new EpisodeFileStorage(disagreementsFile);
+		
 		classifier = new ZorroEpisodeClassifierStream();
 		classifier.addEpisodeListener(episodesStorage);
 		
@@ -83,6 +88,15 @@ public class ProgrammingSession implements ActionOutputStream {
 		git.addAction(action);
 	}
 
+	/**
+	 * Used by EpisodeView to allow the user to disagree from a n Episode classification
+	 * @param episode
+	 */
+	public void disagreeFromEpisode(Episode episode) {
+		disagreementsStorage.episodeRecognized(episode);
+	}
+
+
 	public void addEpisodeListeners(EpisodeListener episodeListener) {
 		classifier.addEpisodeListener(episodeListener);
 	}
@@ -104,12 +118,15 @@ public class ProgrammingSession implements ActionOutputStream {
 		return episodesFile;
 	}
 
+	public File getDisagreementsFile() {
+		return disagreementsFile;
+	}
+
+	
 	/** for testing purposes only */
 	public void setGitRecorder(GitRecorder git) {
 		this.git = git;
 		
 	}
-
-
 
 }
