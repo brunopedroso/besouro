@@ -16,7 +16,7 @@ import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeListener;
 import besouro.zorro.ZorroEpisodeClassifierStream;
 
-public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
+public class ProgrammingSession implements ActionOutputStream {
 
 	private BesouroListenerSet eclipseListenerSet;
 	
@@ -25,8 +25,6 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	private ActionFileStorage actionStorage;
 	private EpisodeFileStorage episodesStorage;
 	
-	private List<EpisodeListener> listeners = new ArrayList<EpisodeListener>();
-
 	private File actionsFile;
 	private File episodesFile;
 
@@ -62,10 +60,9 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 		
 		episodesFile = new File(sessionDir, "episodes.txt");
 		episodesStorage = new EpisodeFileStorage(episodesFile);
-		this.addEpisodeListeners(episodesStorage);
 		
 		classifier = new ZorroEpisodeClassifierStream();
-		classifier.addEpisodeListener(this);
+		classifier.addEpisodeListener(episodesStorage);
 		
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
@@ -87,14 +84,7 @@ public class ProgrammingSession implements ActionOutputStream, EpisodeListener {
 	}
 
 	public void addEpisodeListeners(EpisodeListener episodeListener) {
-		listeners.add(episodeListener);
-	}
-
-	public void episodeRecognized(Episode e) {
-		for(EpisodeListener lis: listeners){
-			lis.episodeRecognized(e);
-		}
-		
+		classifier.addEpisodeListener(episodeListener);
 	}
 
 	public void close() {

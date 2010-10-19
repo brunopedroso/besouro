@@ -21,7 +21,7 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 	List<Action> actions = new ArrayList<Action>();
 	List<Episode> episodes = new ArrayList<Episode>();
 	
-	private EpisodeListener listener;
+	private List<EpisodeListener> listeners = new ArrayList<EpisodeListener>();
 
 	public ZorroEpisodeClassifierStream() {
 		classifier = new ZorroEpisodeClassification();
@@ -47,8 +47,8 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 			measure.addEpisode(episode);
 			episodes.add(episode);
 			
-			if (listener!=null)
-				listener.episodeRecognized(episode);
+			for (EpisodeListener lis: listeners)
+				lis.episodeRecognized(episode);
 			
 			System.out.println(episode);
 			System.out.println("-----------------");
@@ -91,12 +91,12 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 	}
 
 	public void addEpisodeListener(EpisodeListener listener) {
-		this.listener = listener;
+		this.listeners.add(listener);
 		
 	}
 
 	public void removeEpisodeListener(EpisodeListener listener2) {
-		this.listener = null;
+		this.listeners = null;
 		
 	}
 	
