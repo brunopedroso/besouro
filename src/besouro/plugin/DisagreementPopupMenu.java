@@ -89,7 +89,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setIsTDD(false);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 			}
 		};
 		nonConformAction.setText("non-conformant");
@@ -99,7 +101,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setIsTDD(true);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 			}
 
 		};
@@ -110,7 +114,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setClassification("test-first", null);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 			}
 		};
 		testFirstAction.setText("test-first");
@@ -119,7 +125,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setClassification("test-last", null);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 			}
 		};
 		testLastAction.setText("test-last");
@@ -128,7 +136,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setClassification("test-addition", null);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 
 			}
 		};
@@ -139,6 +149,8 @@ public class DisagreementPopupMenu {
 				Episode e = getSelectedEpisode();
 				e.setClassification("refactoring", null);
 				session.disagreeFromEpisode(e);
+				e.setDisagree(true);
+				viewer.refresh();
 
 			}
 		};
@@ -148,7 +160,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setClassification("production", null);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 
 			}
 		};
@@ -158,7 +172,9 @@ public class DisagreementPopupMenu {
 			public void run() {
 				Episode e = getSelectedEpisode();
 				e.setClassification("regression", null);
+				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
+				viewer.refresh();
 
 			}
 		};

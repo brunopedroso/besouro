@@ -1,5 +1,6 @@
 package besouro.plugin;
 
+import java.awt.Color;
 import java.io.File;
 
 import org.eclipse.core.resources.IFile;
@@ -203,18 +204,30 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			ImageDescriptor descriptor = null;
 			
 			if (obj instanceof Episode) {
+			
 				Episode episode = (Episode)obj;
+				
+				String imgFileName = "icons/";
+				
 				if (episode.isTDD()==null) {
 					// unclassified
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode.png");
+					imgFileName += "episode";
 					
 				} else if (episode.isTDD()) {
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.png");
+					imgFileName += "episode_conformant";
 					
 				} else { // classified as non-conformant
-					descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_nonconformant.png");
+					imgFileName += "episode_nonconformant";
 					
 				}
+				
+				if (episode.isDisagree()) {
+					imgFileName += "_disagree";
+				}
+				
+				imgFileName += ".png";
+				
+				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", imgFileName);
 				
 			} else if (obj instanceof Action) {
 				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/action.gif");
@@ -229,6 +242,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 
 		   //obtain the cached image corresponding to the descriptor
 		   Image image = descriptor.createImage();
+		   
 		   return image;
 
 		}

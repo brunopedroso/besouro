@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.47 r22583"
    sodipodi:docname="icone.svg"
-   inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/icone.png"
+   inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/episode_nonconformant_disagree.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -127,6 +127,13 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2874"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -135,9 +142,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="6.288553"
-     inkscape:cy="-0.92153533"
+     inkscape:zoom="11.313709"
+     inkscape:cx="7.0498061"
+     inkscape:cy="8.0061342"
      inkscape:current-layer="g6421"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -146,7 +153,7 @@
      inkscape:window-height="852"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      inkscape:snap-grids="false"
      inkscape:snap-to-guides="false">
     <inkscape:grid
@@ -194,7 +201,10 @@
        sodipodi:rx="6.3970299"
        sodipodi:ry="6.3519802"
        d="m 14.100495,6.359406 a 6.3970299,6.3519802 0 1 1 -12.7940594,0 6.3970299,6.3519802 0 1 1 12.7940594,0 z"
-       transform="matrix(-0.06767845,1.0718092,-1.0546372,-0.06659414,14.66073,-0.16863202)" />
+       transform="matrix(-0.06767845,1.0718092,-1.0546372,-0.06659414,14.66073,-0.16863202)"
+       inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/episode_disagree.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
@@ -217,7 +227,10 @@
        x="2.7420609"
        y="11.521989"
        id="text3838"
-       transform="matrix(0.85275761,0,0,0.9398196,1.7367297,0.92378951)"><tspan
+       transform="matrix(0.85275761,0,0,0.9398196,1.7367297,0.92378951)"
+       inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/episode_disagree.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3840"
          x="2.7420609"
@@ -232,18 +245,21 @@
        id="g6421"
        transform="translate(-22.240012,3.2864538)">
       <g
-         id="g3624"
-         transform="translate(4.375,-3.375)">
+         id="g3666"
+         transform="translate(3.5355336,-0.35355335)"
+         inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/episode_conformant_disagree.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
         <rect
            style="fill:none;stroke:#e7f6d9;stroke-width:1.09780192;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
            id="rect6227"
            width="6.9456453"
            height="8.0272989"
-           x="40.766312"
-           y="4.1279387" />
+           x="45.141312"
+           y="0.75293875" />
         <rect
-           y="5.1717072"
-           x="41.828121"
+           y="1.7967072"
+           x="46.203121"
            height="6.8880482"
            width="6.0779676"
            id="rect6419"
@@ -251,24 +267,60 @@
         <text
            xml:space="preserve"
            style="font-size:5.70129919px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.00532711;stroke-opacity:1;font-family:Bitstream Vera Sans"
-           x="39.127415"
-           y="11.771161"
+           x="43.131256"
+           y="8.0832949"
            id="text6229"
            transform="scale(1.092701,0.91516344)"><tspan
              sodipodi:role="line"
              id="tspan6231"
-             x="39.127415"
-             y="11.771161"
+             x="43.131256"
+             y="8.0832949"
              style="font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.00532711;stroke-opacity:1">√</tspan></text>
       </g>
-      <image
-         sodipodi:absref="/Applications/Inkscape.app/inkscape_pasted_image_20101011_140612.png"
-         y="11.338546"
-         x="42.052513"
-         id="image3657"
-         height="10"
-         width="9"
-         xlink:href="/Applications/Inkscape.app/inkscape_pasted_image_20101011_140612.png" />
+      <g
+         id="g3682"
+         transform="translate(-3.5355342,-3.0052038)"
+         inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/episode_disagree.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90">
+        <rect
+           y="13.392472"
+           x="45.141312"
+           height="8.0272989"
+           width="6.9456453"
+           id="rect2880"
+           style="fill:#ff0000;stroke:#f6ddd9;stroke-width:1.09780192;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+        <rect
+           style="fill:#ff6363;fill-opacity:1;stroke:#d43a3a;stroke-width:1.03294528;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="rect2882"
+           width="6.0779676"
+           height="6.8880482"
+           x="46.203121"
+           y="14.436241" />
+        <text
+           transform="scale(0.93883509,1.0651498)"
+           id="text2884"
+           y="18.312176"
+           x="50.965458"
+           style="font-size:4.31563425px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.76098847;stroke-opacity:1;font-family:Bitstream Vera Sans"
+           xml:space="preserve"><tspan
+             style="font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.76098847;stroke-opacity:1"
+             y="18.312176"
+             x="50.965458"
+             id="tspan2886"
+             sodipodi:role="line">X</tspan></text>
+      </g>
+      <rect
+         style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-opacity:1"
+         id="rect3702"
+         width="0.44194174"
+         height="17.854446"
+         x="30.477798"
+         y="-48.441135"
+         transform="matrix(0.7216287,0.69228031,-0.69228031,0.7216287,0,0)"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         inkscape:export-filename="/Users/Bruno/workspace2/besouro/icons/episode_disagree.png" />
     </g>
   </g>
 </svg>

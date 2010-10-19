@@ -14,6 +14,9 @@ public class Episode {
 
 	private Episode previousEpisode;
 	private long timestamp;
+	
+	/**	indicates, only visually in episode view, that user have disagred with the classification */
+	private boolean disagree;
 
 	public void setPreviousEpisode(Episode previousEpisode) {
 		this.previousEpisode = previousEpisode;
@@ -105,6 +108,14 @@ public class Episode {
 	public void setTimestamp(long time) {
 		this.timestamp = time;
 		
+	}
+
+	public void setDisagree(boolean b) {
+		this.disagree = b;
+	}
+	
+	public boolean isDisagree() {
+		return disagree;
 	}
 	
 }
