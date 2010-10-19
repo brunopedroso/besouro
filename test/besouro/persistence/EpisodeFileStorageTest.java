@@ -20,7 +20,6 @@ import besouro.persistence.EpisodeFileStorage;
 
 public class EpisodeFileStorageTest {
 
-	
 	private File file;
 	private EpisodeFileStorage storage;
 
@@ -42,27 +41,6 @@ public class EpisodeFileStorageTest {
 	}
 	
 	@Test
-	public void shouldNotEraseThePreviousContentOfTheFile() {
-		
-		FileWriter writer;
-		try {
-			
-			writer = new FileWriter(file);
-			writer.write("some previous content");
-			writer.close();
-			
-			long length = file.length();
-			
-			storage = new EpisodeFileStorage(file);
-			
-			Assert.assertEquals("should preserve the length of file", length ,file.length());
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	@Test
 	public void shouldStoreOneEpisode() {
 		storage = new EpisodeFileStorage(file);
 		
@@ -71,7 +49,7 @@ public class EpisodeFileStorageTest {
 		e.setDuration(11);
 		e.setIsTDD(true);
 		
-		storage.storeEpisode(e);
+		storage.episodeRecognized(e);
 		
 		Episode e1 = EpisodeFileStorage.loadEpisodes(file)[0];
 		
@@ -89,19 +67,19 @@ public class EpisodeFileStorageTest {
 		e1.setClassification("test-first", "1");
 		e1.setDuration(11);
 		e1.setIsTDD(true);
-		storage.storeEpisode(e1);
+		storage.episodeRecognized(e1);
 		
 		Episode e2 = new Episode();
 		e2.setClassification("refactoring", "1A");
 		e2.setDuration(22);
 		e2.setIsTDD(true);
-		storage.storeEpisode(e2);
+		storage.episodeRecognized(e2);
 		
 		Episode e3 = new Episode();
 		e3.setClassification("production", "2");
 		e3.setDuration(33);
 		e3.setIsTDD(false);
-		storage.storeEpisode(e3);
+		storage.episodeRecognized(e3);
 		
 		Episode[] es = EpisodeFileStorage.loadEpisodes(file);
 		
@@ -141,12 +119,53 @@ public class EpisodeFileStorageTest {
 		Episode e = new Episode();
 		e.addActions(actions);
 		
-		storage.storeEpisode(e);
+		storage.episodeRecognized(e);
 		
 		Episode e1 = EpisodeFileStorage.loadEpisodes(file)[0];
 		
 		Assert.assertEquals("should persist timestamp", lastAction.getClock().getTime(), e1.getTimestamp());
 	}
 	
+	
+	@Test
+	public void shouldStoreOldModifiedEpisodeAgain() {
+		storage = new EpisodeFileStorage(file);
+		
+		Episode e1 = new Episode();
+		e1.setClassification("test-first", "1");
+		e1.setDuration(11);
+		e1.setIsTDD(true);
+		storage.episodeRecognized(e1);
+		
+		Episode[] es = EpisodeFileStorage.loadEpisodes(file);
+		
+		Assert.assertEquals("should persist category", e1.getCategory(), es[0].getCategory());
+		Assert.assertEquals("should persist subtype", e1.getSubtype(), es[0].getSubtype());
+		Assert.assertEquals("should persist duration", e1.getDuration(), es[0].getDuration());
+		Assert.assertEquals("should persist test result", e1.isTDD(), es[0].isTDD());
+		
+		
+		// Now we change the old episode
+		e1.setClassification("regression", "1");
+		e1.setIsTDD(false);
+		
+		Episode e2 = new Episode();
+		e2.setClassification("refactoring", "1A");
+		e2.setDuration(22);
+		e2.setIsTDD(true);
+		storage.episodeRecognized(e2);
+		
+		// we save the new episode
+		es = EpisodeFileStorage.loadEpisodes(file);
+		
+		Assert.assertEquals("should have 2 episodes", 2, es.length);
+		
+		// the firt episode should have been modified in the file
+		Assert.assertEquals("should update category", e1.getCategory(), es[0].getCategory());
+		Assert.assertEquals("should update subtype", e1.getSubtype(), es[0].getSubtype());
+		Assert.assertEquals("should update duration", e1.getDuration(), es[0].getDuration());
+		Assert.assertEquals("should update test result", e1.isTDD(), es[0].isTDD());
+		
+	}
 	
 }

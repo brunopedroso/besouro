@@ -16,13 +16,13 @@ public class EpisodeFileStorage implements EpisodeListener {
 
 	private File file;
 	private FileWriter writer;
+	private List<Episode> episodes = new ArrayList<Episode>();
 
 	public EpisodeFileStorage(File file) {
 		try {
 			
 			this.file = file;
 			this.file.createNewFile();
-			writer = new FileWriter(this.file, true);
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -30,48 +30,48 @@ public class EpisodeFileStorage implements EpisodeListener {
 	}
 
 	public void episodeRecognized(Episode e) {
-		storeEpisode(e);
-	}
-	
-	public void storeEpisode(Episode e) {
+		
+		episodes.add(e);
+		
 		try {
 			
+			// restarts the file
+			writer = new FileWriter(this.file);
 			
-			long time = -1;
+			for (Episode ep: episodes)
+				saveEpisodeToFile(ep);
 			
-			if (e.getLastAction() != null) {
-				time = e.getLastAction().getClock().getTime();
-				
-			} else {
-				time = e.getTimestamp();
-				
-			}
+			writer.close();
 			
-			writer.append("" + time);
-			
-			writer.append(" " + e.getCategory());
-			writer.append(" " + e.getSubtype());
-			writer.append(" " + e.getDuration());
-			writer.append(" " + e.isTDD());
-			writer.append("\n");
-			
-			writer.flush();
-			
-		} catch (IOException exc) {
-			throw new RuntimeException(exc);
+		} catch (IOException e1) {
+			throw new RuntimeException(e1);
 		}
+	}
+	
+
+	private void saveEpisodeToFile(Episode e) throws IOException {
+		long time = -1;
+		
+		if (e.getLastAction() != null) {
+			time = e.getLastAction().getClock().getTime();
+			
+		} else {
+			time = e.getTimestamp();
+			
+		}
+		
+		writer.append("" + time);
+		
+		writer.append(" " + e.getCategory());
+		writer.append(" " + e.getSubtype());
+		writer.append(" " + e.getDuration());
+		writer.append(" " + e.isTDD());
+		writer.append("\n");
+		
+		writer.flush();
 		
 	}
 	
-	public void close() {
-		try {
-			writer.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-
 	public static Episode[] loadEpisodes(File file) {
 		try {
 		
