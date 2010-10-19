@@ -5,6 +5,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Menu;
 
@@ -13,6 +14,8 @@ import besouro.model.Episode;
 public class DisagreementPopupMenu {
 
 	private TreeViewer viewer;
+	private ProgrammingSession session;
+	
 	private MenuManager mngr;
 	
 	private Action nonConformAction;
@@ -24,8 +27,9 @@ public class DisagreementPopupMenu {
 	private Action productionAction;
 	private Action regressionAction;
 
-	public DisagreementPopupMenu(TreeViewer view) {
+	public DisagreementPopupMenu(TreeViewer view, ProgrammingSession session) {
 		this.viewer = view;
+		this.session = session;
 		
 		mngr = new MenuManager();
 		mngr.setRemoveAllWhenShown(true);
@@ -75,10 +79,17 @@ public class DisagreementPopupMenu {
 		
 	}
 	
+	private Episode getSelectedEpisode() {
+		Episode e = (Episode) ((TreeSelection)viewer.getSelection()).getFirstElement();
+		return e;
+	}
+	
 	private void createActions() {
 		nonConformAction = new Action(){
 			public void run() {
-				System.out.println("non confrmant: " + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setIsTDD(false);
+				session.disagreeFromEpisode(e);
 			}
 		};
 		nonConformAction.setText("non-conformant");
@@ -86,50 +97,69 @@ public class DisagreementPopupMenu {
 		
 		conformAction = new Action(){
 			public void run() {
-				System.out.println("confrmant: " + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setIsTDD(true);
+				session.disagreeFromEpisode(e);
 			}
+
 		};
 		conformAction.setText("conformant");
 		conformAction.setImageDescriptor(Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.png"));
 		
 		testFirstAction  = new Action(){
 			public void run() {
-				System.out.println("test-fisrt: " + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setClassification("test-first", null);
+				session.disagreeFromEpisode(e);
 			}
 		};
 		testFirstAction.setText("test-first");
 		
 		testLastAction = new Action(){
 			public void run() {
-				System.out.println("test-last: " + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setClassification("test-last", null);
+				session.disagreeFromEpisode(e);
 			}
 		};
 		testLastAction.setText("test-last");
 		
 		testAdditionAction = new Action(){
 			public void run() {
-				System.out.println("test-addition: " + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setClassification("test-addition", null);
+				session.disagreeFromEpisode(e);
+
 			}
 		};
 		testAdditionAction.setText("test-addition");
 		
 		refactoringAction = new Action(){
 			public void run() {
-				System.out.println("refactoring: " + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setClassification("refactoring", null);
+				session.disagreeFromEpisode(e);
+
 			}
 		};
 		refactoringAction.setText("refactoring");
 		
 		productionAction = new Action(){
 			public void run() {
-				System.out.println("production" + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setClassification("production", null);
+				session.disagreeFromEpisode(e);
+
 			}
 		};
 		productionAction.setText("production");
 
 		regressionAction = new Action(){
 			public void run() {
-				System.out.println("regression" + viewer.getSelection());
+				Episode e = getSelectedEpisode();
+				e.setClassification("regression", null);
+				session.disagreeFromEpisode(e);
+
 			}
 		};
 		regressionAction.setText("regression");

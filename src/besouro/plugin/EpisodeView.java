@@ -127,6 +127,8 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				session.addEpisodeListeners(EpisodeView.this);
 				viewer.setInput(session.getEpisodes());
 				
+				viewer.getControl().setMenu(new DisagreementPopupMenu(viewer, session).getMenu());
+				
 				session.start();
 				
 				stopAction.setEnabled(true);
@@ -256,8 +258,6 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		viewer.getControl().setLayoutData(gridData);
-		
-		viewer.getControl().setMenu(new DisagreementPopupMenu(viewer).getMenu());
 		
 		IActionBars bars = getViewSite().getActionBars();
 		IToolBarManager manager = bars.getToolBarManager();
