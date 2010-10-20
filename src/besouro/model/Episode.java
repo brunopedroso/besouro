@@ -83,7 +83,6 @@ public class Episode {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		
 		sb.append(getCategory());
 		sb.append(" ");
 		sb.append(getSubtype());
@@ -102,7 +101,11 @@ public class Episode {
 	}
 
 	public long getTimestamp() {
-		return this.timestamp;
+		if (getLastAction() != null) {
+			return getLastAction().getClock().getTime();
+		} else {
+			return this.timestamp;
+		}
 	}
 
 	public void setTimestamp(long time) {

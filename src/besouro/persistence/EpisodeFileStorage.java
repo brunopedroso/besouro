@@ -31,11 +31,8 @@ public class EpisodeFileStorage implements EpisodeListener {
 	}
 
 	public void episodeRecognized(Episode e) {
-		
 		episodes.put(e.getTimestamp(), e);
-		
 		save();
-		
 	}
 	
 	public void save() {
@@ -57,17 +54,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 
 	private void saveEpisodeToFile(Episode e) throws IOException {
 		
-		long time = -1;
-		
-		if (e.getLastAction() != null) {
-			time = e.getLastAction().getClock().getTime();
-			
-		} else {
-			time = e.getTimestamp();
-			
-		}
-		
-		writer.append("" + time);
+		writer.append("" + e.getTimestamp());
 		
 		writer.append(" " + e.getCategory());
 		writer.append(" " + e.getSubtype());
