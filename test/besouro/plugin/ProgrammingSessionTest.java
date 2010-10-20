@@ -5,9 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import junit.framework.Assert;
 
@@ -25,7 +23,6 @@ import besouro.model.UnitTestSessionAction;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
 import besouro.persistence.GitRecorder;
-import besouro.plugin.ProgrammingSession;
 import besouro.stream.EpisodeListener;
 
 public class ProgrammingSessionTest {
@@ -66,10 +63,10 @@ public class ProgrammingSessionTest {
 		file.delete();
 	}
 	
-	private void addRegressionActions() {
-		session.addAction(new FileOpenedAction(new Date(), "afile"));
-		session.addAction(new UnitTestCaseAction(new Date(), "afile", true));
-		session.addAction(new UnitTestSessionAction(new Date(), "afile", true));
+	private void addRegressionActions(long timestamp) {
+		session.addAction(new FileOpenedAction(new Date(timestamp), "afile"));
+		session.addAction(new UnitTestCaseAction(new Date(timestamp), "afile", true));
+		session.addAction(new UnitTestSessionAction(new Date(timestamp), "afile", true));
 	}
 	
 	@Test
@@ -82,11 +79,41 @@ public class ProgrammingSessionTest {
 
 	
 	@Test
-	public void shouldStoreEpisodes() {
-		Assert.assertTrue("should create the file", session.getEpisodesFile().exists());
+	public void shouldStoreZorroEpisodes() {
+		Assert.assertTrue("should create the file", session.getZorroEpisodesFile().exists());
 
-		addRegressionActions();
-		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(session.getEpisodesFile()).length);
+		for (int i = 0; i < 10; i++) {
+			addRegressionActions(i*1000);
+		}
+		
+		session.close();
+		
+		Assert.assertEquals("should persist the episode", 10, EpisodeFileStorage.loadEpisodes(session.getZorroEpisodesFile()).length);
+	}
+	
+	@Test
+	public void shouldStoreRandomHeuristicEpisodes() {
+		Assert.assertTrue("should create the file", session.getZorroEpisodesFile().exists());
+		
+		for (int i = 0; i < 10; i++) {
+			addRegressionActions(i*1000);
+		}
+		
+		Episode[] episodes = EpisodeFileStorage.loadEpisodes(session.getRandomheuristicEpisodesFile());
+		Assert.assertEquals("should persist the episode", 10, episodes.length);
+		
+		int conf = 0;
+		int nonconf = 0;
+		
+		for (int i = 0; i < 10; i++) {
+			if (episodes[i].isTDD())
+				conf++;
+			else
+				nonconf++;
+		}
+		
+		Assert.assertTrue(conf > 0);
+		Assert.assertTrue(nonconf > 0);
 	}
 
 	@Test
@@ -98,7 +125,7 @@ public class ProgrammingSessionTest {
 			}
 		};
 		session.addEpisodeListeners(listener);
-		addRegressionActions();
+		addRegressionActions(System.currentTimeMillis());
 		Assert.assertTrue("should call the listener", notified);
 	}
 		
@@ -138,7 +165,7 @@ public class ProgrammingSessionTest {
 		File besouroDir = new File(basedir, ".besouro");
 		Assert.assertEquals("should have created one dir", 1, besouroDir.list().length);
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 3, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 4, besouroDir.listFiles()[0].listFiles().length);
 		
 		session = ProgrammingSession.newSession(basedir, listeners);
 		session.setGitRecorder(git);
@@ -146,8 +173,8 @@ public class ProgrammingSessionTest {
 		Assert.assertEquals("should have created another dir", 2, besouroDir.list().length);
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[1].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 3, besouroDir.listFiles()[0].listFiles().length);
-		Assert.assertEquals("should have created the files inside dir", 3, besouroDir.listFiles()[1].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 4, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 4, besouroDir.listFiles()[1].listFiles().length);
 		
 	}
 	
@@ -186,25 +213,25 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldNotRegisterDisagreementAlone() {
-		addRegressionActions();
-		Assert.assertEquals("should have recognized the episode", 1, session.getEpisodes().length);
+		addRegressionActions(System.currentTimeMillis());
+		Assert.assertEquals("should have recognized the episode", 1, session.getZorroEpisodes().length);
 		Assert.assertEquals("should not have persisted the episode yet", 0, EpisodeFileStorage.loadEpisodes(session.getDisagreementsFile()).length);
 	}
 	
 	@Test
 	public void shouldRegisterDisagreementWhenWeCall() {
-		addRegressionActions();
-		session.disagreeFromEpisode(session.getEpisodes()[0]);
+		addRegressionActions(System.currentTimeMillis());
+		session.disagreeFromEpisode(session.getZorroEpisodes()[0]);
 		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(session.getDisagreementsFile()).length);
 	}
 	
 	@Test
 	public void shouldRegisterDisagreementOnlyOnce() {
 		
-		addRegressionActions();
+		addRegressionActions(System.currentTimeMillis());
 		
-		session.disagreeFromEpisode(session.getEpisodes()[0]);
-		session.disagreeFromEpisode(session.getEpisodes()[0]);
+		session.disagreeFromEpisode(session.getZorroEpisodes()[0]);
+		session.disagreeFromEpisode(session.getZorroEpisodes()[0]);
 		
 		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(session.getDisagreementsFile()).length);
 		

@@ -1,10 +1,11 @@
 package besouro.classification.randomHeuristic;
 
 import besouro.model.Episode;
+import besouro.stream.EpisodeListener;
 
-public class RandomHeuristicTDDConformance {
+public class RandomHeuristicTDDConformance implements EpisodeListener {
 
-	public void addEpisode(Episode e1) {
+	public void episodeRecognized(Episode e1) {
 		if ("test-first".equals(e1.getCategory())) {
 			e1.setIsTDD(true);
 			

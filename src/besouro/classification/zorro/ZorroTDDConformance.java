@@ -14,8 +14,9 @@ import jess.Rete;
 import jess.Value;
 import jess.ValueVector;
 import besouro.model.Episode;
+import besouro.stream.EpisodeListener;
 
-public class ZorroTDDConformance {
+public class ZorroTDDConformance implements EpisodeListener {
 
 	private Rete engine;
 	
@@ -34,7 +35,7 @@ public class ZorroTDDConformance {
 		}
 	}
 	
-	public void addEpisode(Episode e) {
+	public void episodeRecognized(Episode e) {
 		
 		linkEpisodes(e);
 		this.episodes.add(e);

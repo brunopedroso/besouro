@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import besouro.classification.randomHeuristic.RandomHeuristicTDDConformance;
 import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.BesouroListenerSet;
 import besouro.model.Action;
@@ -20,17 +21,21 @@ public class ProgrammingSession implements ActionOutputStream {
 
 	private BesouroListenerSet eclipseListenerSet;
 	
-	private ZorroEpisodeClassifierStream classifier;
+	private ZorroEpisodeClassifierStream zorroClassifier;
+	private ZorroEpisodeClassifierStream randomHeuristicClassifier;
 	
 	private ActionFileStorage actionStorage;
-	private EpisodeFileStorage episodesStorage;
+	private EpisodeFileStorage zorroEpisodesStorage;
+	private EpisodeFileStorage randomHeuristicEpisodesStorage;
 	private EpisodeFileStorage disagreementsStorage;
 	
 	private File actionsFile;
-	private File episodesFile;
+	private File zorroEpisodesFile;
+	private File randomHeuristicEpisodesFile;
 	private File disagreementsFile;
 
 	private GitRecorder git;
+
 	
 	private static ProgrammingSession currentSession;
 
@@ -60,14 +65,19 @@ public class ProgrammingSession implements ActionOutputStream {
 		actionsFile = new File(sessionDir, "actions.txt");
 		actionStorage = new ActionFileStorage(actionsFile);
 		
-		episodesFile = new File(sessionDir, "episodes.txt");
-		episodesStorage = new EpisodeFileStorage(episodesFile);
+		zorroEpisodesFile = new File(sessionDir, "zorroEpisodes.txt");
+		zorroEpisodesStorage = new EpisodeFileStorage(zorroEpisodesFile);
+		zorroClassifier = new ZorroEpisodeClassifierStream();
+		zorroClassifier.addEpisodeListener(zorroEpisodesStorage);
+		
+		randomHeuristicEpisodesFile = new File(sessionDir, "randomHeuristicEpisodes.txt");
+		randomHeuristicEpisodesStorage = new EpisodeFileStorage(randomHeuristicEpisodesFile);
+		randomHeuristicClassifier = new ZorroEpisodeClassifierStream();
+		randomHeuristicClassifier.setConformanceCriterion(new RandomHeuristicTDDConformance());
+		randomHeuristicClassifier.addEpisodeListener(randomHeuristicEpisodesStorage);
 		
 		disagreementsFile = new File(sessionDir, "disagreements.txt");
 		disagreementsStorage = new EpisodeFileStorage(disagreementsFile);
-		
-		classifier = new ZorroEpisodeClassifierStream();
-		classifier.addEpisodeListener(episodesStorage);
 		
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
@@ -84,7 +94,8 @@ public class ProgrammingSession implements ActionOutputStream {
 
 	public void addAction(Action action) {
 		actionStorage.addAction(action);
-		classifier.addAction(action);
+		zorroClassifier.addAction(action);
+		randomHeuristicClassifier.addAction(action);
 		git.addAction(action);
 	}
 
@@ -98,7 +109,8 @@ public class ProgrammingSession implements ActionOutputStream {
 
 
 	public void addEpisodeListeners(EpisodeListener episodeListener) {
-		classifier.addEpisodeListener(episodeListener);
+		// its the classification that will show in the interface
+		randomHeuristicClassifier.addEpisodeListener(episodeListener);
 	}
 
 	public void close() {
@@ -106,18 +118,22 @@ public class ProgrammingSession implements ActionOutputStream {
 		git.close();
 	}
 
-	public Episode[] getEpisodes() {
-		return classifier.getEpisodes();
+	public Episode[] getZorroEpisodes() {
+		return zorroClassifier.getEpisodes();
 	}
 
 	public File getActionsFile() {
 		return actionsFile;
 	}
 
-	public File getEpisodesFile() {
-		return episodesFile;
+	public File getZorroEpisodesFile() {
+		return zorroEpisodesFile;
 	}
 
+	public File getRandomheuristicEpisodesFile() {
+		return randomHeuristicEpisodesFile;
+	}
+	
 	public File getDisagreementsFile() {
 		return disagreementsFile;
 	}
@@ -128,5 +144,6 @@ public class ProgrammingSession implements ActionOutputStream {
 		this.git = git;
 		
 	}
+
 
 }

@@ -18,7 +18,8 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 	private ZorroEpisodeClassification classifier;
 	private JavaActionsLinker javaActionsLinker;
 	
-	private ZorroTDDConformance conformance;
+	private EpisodeListener conformance;
+	
 	private TDDMeasure measure;
 	
 	List<Action> actions = new ArrayList<Action>();
@@ -33,6 +34,10 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 		javaActionsLinker = new JavaActionsLinker();
 	}
 	
+	public void setConformanceCriterion(EpisodeListener conformance) {
+		this.conformance = conformance;
+	}
+
 	public void addAction(Action action) {
 
 		System.out.println("[action] " + action);
@@ -48,7 +53,7 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 		if (episode != null) {
 			
 			classifier.classifyEpisode(episode);
-			conformance.addEpisode(episode);
+			conformance.episodeRecognized(episode);
 			measure.addEpisode(episode);
 			episodes.add(episode);
 			

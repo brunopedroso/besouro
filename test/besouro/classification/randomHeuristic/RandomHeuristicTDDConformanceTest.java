@@ -17,7 +17,7 @@ public class RandomHeuristicTDDConformanceTest {
 		
 		Episode e1 = new Episode();
 		e1.setClassification("test-first", "1");
-		conformance.addEpisode(e1);
+		conformance.episodeRecognized(e1);
 		
 		Assert.assertTrue(e1.isTDD());
 		
@@ -30,7 +30,7 @@ public class RandomHeuristicTDDConformanceTest {
 		
 		Episode e3 = new Episode();
 		e3.setClassification("test-last", "1");
-		conformance.addEpisode(e3);
+		conformance.episodeRecognized(e3);
 		
 		Assert.assertFalse(e3.isTDD());
 		
@@ -55,7 +55,7 @@ public class RandomHeuristicTDDConformanceTest {
 		int nonconformantCount = 0;
 		
 		for (int i = 0; i < 10; i++) {
-			conformance.addEpisode(e3);
+			conformance.episodeRecognized(e3);
 			if (e3.isTDD())
 				conformantCount++;
 			else

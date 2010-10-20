@@ -125,7 +125,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				
 				currentSession = ProgrammingSession.newSession(projectRootDir);
 				currentSession.addEpisodeListeners(EpisodeView.this);
-				viewer.setInput(currentSession.getEpisodes());
+				viewer.setInput(currentSession.getZorroEpisodes());
 				
 				viewer.getControl().setMenu(new DisagreementPopupMenu(viewer, currentSession).getMenu());
 				
@@ -157,7 +157,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		
 		public Object[] getElements(Object parent) {
 			if (currentSession!=null) {
-				return currentSession.getEpisodes();
+				return currentSession.getZorroEpisodes();
 			} else {
 				return null;
 			}
