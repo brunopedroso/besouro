@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import besouro.classification.TDDMeasure;
 import besouro.classification.zorro.ZorroTDDConformance;
 import besouro.model.Episode;
 

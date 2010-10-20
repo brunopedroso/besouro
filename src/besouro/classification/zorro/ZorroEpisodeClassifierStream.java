@@ -3,6 +3,7 @@ package besouro.classification.zorro;
 import java.util.ArrayList;
 import java.util.List;
 
+import besouro.classification.TDDMeasure;
 import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.model.JavaFileAction;

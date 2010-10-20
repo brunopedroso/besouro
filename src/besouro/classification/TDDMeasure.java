@@ -1,4 +1,4 @@
-package besouro.classification.zorro;
+package besouro.classification;
 
 import java.util.ArrayList;
 import java.util.List;
