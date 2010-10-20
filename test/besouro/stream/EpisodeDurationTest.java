@@ -13,13 +13,13 @@ import org.eclipse.core.resources.IResource;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.measure.JavaStatementMeter;
 import besouro.model.EditAction;
 import besouro.model.Episode;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
-import besouro.zorro.ZorroEpisodeClassifierStream;
 
 
 public class EpisodeDurationTest {

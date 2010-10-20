@@ -4,7 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import besouro.zorro.ZorroTDDMeasure;
+import besouro.classification.zorro.ZorroTDDMeasure;
 
 public class TDDMeasureTest extends IntegrationTestBaseClass {
 

@@ -1,4 +1,4 @@
-package besouro.zorro;
+package besouro.classification.zorro;
 
 
 import java.text.SimpleDateFormat;
@@ -13,7 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.zorro.ZorroEpisodeClassification;
+import besouro.classification.zorro.ZorroEpisodeClassification;
 
 
 /**

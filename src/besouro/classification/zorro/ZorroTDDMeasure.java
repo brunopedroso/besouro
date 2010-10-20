@@ -1,4 +1,4 @@
-package besouro.zorro;
+package besouro.classification.zorro;
 
 // TODO [rule] a single regression is not TDD?
 

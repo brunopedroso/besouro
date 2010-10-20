@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.integration.TestFirstRecognition;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.Action;
@@ -26,7 +27,6 @@ import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.persistence.ActionFileStorage;
-import besouro.zorro.ZorroEpisodeClassifierStream;
 
 public class ActionFileStorageTest {
 	

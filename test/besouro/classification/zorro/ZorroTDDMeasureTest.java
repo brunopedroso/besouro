@@ -1,11 +1,11 @@
-package besouro.zorro;
+package besouro.classification.zorro;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import besouro.classification.zorro.ZorroTDDMeasure;
 import besouro.model.Episode;
-import besouro.zorro.ZorroTDDMeasure;
 
 
 public class ZorroTDDMeasureTest {

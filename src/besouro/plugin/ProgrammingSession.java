@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.BesouroListenerSet;
 import besouro.model.Action;
 import besouro.model.Episode;
@@ -14,7 +15,6 @@ import besouro.persistence.EpisodeFileStorage;
 import besouro.persistence.GitRecorder;
 import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeListener;
-import besouro.zorro.ZorroEpisodeClassifierStream;
 
 public class ProgrammingSession implements ActionOutputStream {
 

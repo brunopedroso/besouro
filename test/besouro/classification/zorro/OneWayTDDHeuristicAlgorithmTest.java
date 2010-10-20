@@ -1,4 +1,4 @@
-package besouro.zorro;
+package besouro.classification.zorro;
 
 import jess.Batch;
 import jess.Fact;

@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.JUnitListener;
 import besouro.listeners.JavaStructureChangeListener;
 import besouro.listeners.ResourceChangeListener;
@@ -25,7 +26,6 @@ import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.listeners.mock.WindowEventsFactory;
 import besouro.measure.JavaStatementMeter;
 import besouro.persistence.ActionFileStorage;
-import besouro.zorro.ZorroEpisodeClassifierStream;
 
 
 public class IntegrationTestBaseClass {
