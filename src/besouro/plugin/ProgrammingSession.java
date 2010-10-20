@@ -113,13 +113,14 @@ public class ProgrammingSession implements ActionOutputStream {
 		randomHeuristicClassifier.addEpisodeListener(episodeListener);
 	}
 
+	public Episode[] getEpisodes() {
+		// its the classification that will show in the interface
+		return randomHeuristicClassifier.getEpisodes();
+	}
+	
 	public void close() {
 		eclipseListenerSet.unregisterListenersInEclipse();
 		git.close();
-	}
-
-	public Episode[] getZorroEpisodes() {
-		return zorroClassifier.getEpisodes();
 	}
 
 	public File getActionsFile() {

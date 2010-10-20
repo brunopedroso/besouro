@@ -214,14 +214,14 @@ public class ProgrammingSessionTest {
 	@Test
 	public void shouldNotRegisterDisagreementAlone() {
 		addRegressionActions(System.currentTimeMillis());
-		Assert.assertEquals("should have recognized the episode", 1, session.getZorroEpisodes().length);
+		Assert.assertEquals("should have recognized the episode", 1, session.getEpisodes().length);
 		Assert.assertEquals("should not have persisted the episode yet", 0, EpisodeFileStorage.loadEpisodes(session.getDisagreementsFile()).length);
 	}
 	
 	@Test
 	public void shouldRegisterDisagreementWhenWeCall() {
 		addRegressionActions(System.currentTimeMillis());
-		session.disagreeFromEpisode(session.getZorroEpisodes()[0]);
+		session.disagreeFromEpisode(session.getEpisodes()[0]);
 		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(session.getDisagreementsFile()).length);
 	}
 	
@@ -230,8 +230,8 @@ public class ProgrammingSessionTest {
 		
 		addRegressionActions(System.currentTimeMillis());
 		
-		session.disagreeFromEpisode(session.getZorroEpisodes()[0]);
-		session.disagreeFromEpisode(session.getZorroEpisodes()[0]);
+		session.disagreeFromEpisode(session.getEpisodes()[0]);
+		session.disagreeFromEpisode(session.getEpisodes()[0]);
 		
 		Assert.assertEquals("should persist the episode", 1, EpisodeFileStorage.loadEpisodes(session.getDisagreementsFile()).length);
 		
