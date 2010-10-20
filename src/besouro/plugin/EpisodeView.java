@@ -1,6 +1,5 @@
 package besouro.plugin;
 
-import java.awt.Color;
 import java.io.File;
 
 import org.eclipse.core.resources.IFile;
@@ -36,20 +35,20 @@ import besouro.model.Action;
 import besouro.model.Episode;
 import besouro.stream.EpisodeListener;
 
+//TODO   separate classes in files
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
 	public static final String ID = "besouro.view.EpisodeView";
 	
-	private TreeViewer viewer;
-	private ProgrammingSession session;
+	private ProgrammingSession currentSession;
 	
-	public static EpisodeView sharedInstance;
-
 	private StartAction startAction;
 	private StopAction stopAction;
 
 	private Label statusLabel;
+	private TreeViewer viewer;
 
+	public static EpisodeView sharedInstance;
 	public static EpisodeView getInstance() {
 		return sharedInstance;
 	}
@@ -68,8 +67,8 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		}
 
 		public void run() {
-			if (session!=null) {
-				session.close();
+			if (currentSession!=null) {
+				currentSession.close();
 			}
 			viewer.setInput(null);
 			
@@ -124,13 +123,13 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			
 			if (projectRootDir != null) {
 				
-				session = ProgrammingSession.newSession(projectRootDir);
-				session.addEpisodeListeners(EpisodeView.this);
-				viewer.setInput(session.getEpisodes());
+				currentSession = ProgrammingSession.newSession(projectRootDir);
+				currentSession.addEpisodeListeners(EpisodeView.this);
+				viewer.setInput(currentSession.getEpisodes());
 				
-				viewer.getControl().setMenu(new DisagreementPopupMenu(viewer, session).getMenu());
+				viewer.getControl().setMenu(new DisagreementPopupMenu(viewer, currentSession).getMenu());
 				
-				session.start();
+				currentSession.start();
 				
 				stopAction.setEnabled(true);
 				startAction.setEnabled(false);
@@ -157,8 +156,8 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		public void dispose() {}
 		
 		public Object[] getElements(Object parent) {
-			if (session!=null) {
-				return session.getEpisodes();
+			if (currentSession!=null) {
+				return currentSession.getEpisodes();
 			} else {
 				return null;
 			}
