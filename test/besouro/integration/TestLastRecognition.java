@@ -18,9 +18,9 @@ public class TestLastRecognition extends IntegrationTestBaseClass {
 		
 		addTestLast1Actions();
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("test-last", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("test-last", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
 	}
 	
@@ -48,9 +48,9 @@ public class TestLastRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("test-last", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("test-last", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
 	}
 	

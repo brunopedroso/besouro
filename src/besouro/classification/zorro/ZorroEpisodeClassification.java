@@ -24,9 +24,9 @@ public class ZorroEpisodeClassification {
 	public ZorroEpisodeClassification() {
 		this.engine = new Rete();
 		try {
-			Batch.batch("besouro/zorro/Actions.clp", this.engine);
-			Batch.batch("besouro/zorro/Episode.clp", this.engine);
-			Batch.batch("besouro/zorro/EpisodeClassifier.clp", this.engine);
+			Batch.batch("besouro/classification/zorro/Actions.clp", this.engine);
+			Batch.batch("besouro/classification/zorro/Episode.clp", this.engine);
+			Batch.batch("besouro/classification/zorro/EpisodeClassifier.clp", this.engine);
 			
 		} catch (JessException e) {
 			throw new RuntimeException(e);

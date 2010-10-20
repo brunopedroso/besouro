@@ -23,9 +23,9 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("test-addition", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
 	}
 	
@@ -49,9 +49,9 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("test-addition", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
 		// TODO [rule] this second one was not considered by hongbings test
 //		Assert.assertEquals("test-addition", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());

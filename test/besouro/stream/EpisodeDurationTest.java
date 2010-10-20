@@ -91,9 +91,9 @@ public class EpisodeDurationTest {
 		stream.addAction(action3);
 		stream.addAction(action4);
 		
-		List<Episode> recognizedEpisodes = stream.getTDDMeasure().getRecognizedEpisodes();
-		Assert.assertEquals(1, recognizedEpisodes.size());
-		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
+		Episode[] recognizedEpisodes = stream.getEpisodes();
+		Assert.assertEquals(1, recognizedEpisodes.length);
+		Assert.assertEquals(25, recognizedEpisodes[0].getDuration());
 		
 	}
 	
@@ -109,12 +109,12 @@ public class EpisodeDurationTest {
 		stream.addAction(action6);
 		stream.addAction(action7);
 		
-		List<Episode> recognizedEpisodes = stream.getTDDMeasure().getRecognizedEpisodes();
-		Assert.assertEquals(2, recognizedEpisodes.size());
-		Assert.assertEquals(25, recognizedEpisodes.get(0).getDuration());
+		Episode[] recognizedEpisodes = stream.getEpisodes();
+		Assert.assertEquals(2, recognizedEpisodes.length);
+		Assert.assertEquals(25, recognizedEpisodes[0].getDuration());
 		
 		// here! should consider the 5s between episodes 4 and 5
-		Assert.assertEquals(11, recognizedEpisodes.get(1).getDuration());
+		Assert.assertEquals(11, recognizedEpisodes[1].getDuration());
 		
 	}
 	

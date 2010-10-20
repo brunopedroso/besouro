@@ -41,7 +41,7 @@ public class ZorroEpisodeClassifierTest {
   
   @Test 
   public void testPassEpisodeClassifierTest() throws Exception {
-	  Batch.batch("besouro/zorro/EpisodeClassifierTest.clp", this.engine);
+	  Batch.batch("besouro/classification/zorro/EpisodeClassifierTest.clp", this.engine);
 	  this.engine.run();
   }
 

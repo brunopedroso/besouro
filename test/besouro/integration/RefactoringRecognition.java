@@ -19,9 +19,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		
 		addRefactoring1A_Actions();
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1A", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1A", stream.getEpisodes()[0].getSubtype());
 	}
 
 	
@@ -45,10 +45,10 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
+		Assert.assertEquals(1, stream.getEpisodes().length);
 		// two refactorings - one on each edit (because they precede test-pass)
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1A", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1A", stream.getEpisodes()[0].getSubtype());
 		
 //		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("1A", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
@@ -63,9 +63,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1B", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1B", stream.getEpisodes()[0].getSubtype());
 		
 		//TODO [rule] why are it recognizing these 3 extra episodes?
 		//			  does it influence the metric?
@@ -98,9 +98,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 	    // Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("2A", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("2A", stream.getEpisodes()[0].getSubtype());
 	    
 	}
 	
@@ -119,9 +119,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("2B", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("2B", stream.getEpisodes()[0].getSubtype());
 
 		//TODO [rule] why are it recognizing these 2 extra episodes?
 		//			  does it influence the metric?
@@ -145,9 +145,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		
 		addRefactoring1A_Actions();
 		
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("3", stream.getEpisodes()[0].getSubtype());
 		
 	}
 	
@@ -167,9 +167,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		addRefactoring1A_Actions();
 		
 		//TODO [rule] we have 2 refactorings here... hongbing considered just one...
-		Assert.assertEquals(1, stream.getTDDMeasure().getRecognizedEpisodes().size());
-		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("3", stream.getEpisodes()[0].getSubtype());
 		
 //		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());

@@ -15,39 +15,25 @@ import jess.Value;
 import jess.ValueVector;
 import besouro.model.Episode;
 
-public class ZorroTDDMeasure {
+public class ZorroTDDConformance {
 
 	private Rete engine;
 	
 	private Episode previsousEpisode;
 	
-	private float numberOfTDDEpisodes;
-	private float numberOfNonTDDEpisodes;
-
-	private float durationOfTDDEpisodes;
-	private float durationOfNonTDDEpisodes;
-
 	private List<Episode> episodes = new ArrayList<Episode>();
 
-	private boolean executed;
 
-
-	public ZorroTDDMeasure() {
+	public ZorroTDDConformance() {
 		this.engine = new Rete();
 	    try {
-			Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
-			Batch.batch("besouro/zorro/TwoWayTDDHeuristicAlgorithm.clp", this.engine);
+			Batch.batch("besouro/classification/zorro/EpisodeTDDConformance.clp", this.engine);
+			Batch.batch("besouro/classification/zorro/TwoWayTDDHeuristicAlgorithm.clp", this.engine);
 		} catch (JessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public void measure(Episode[] eps) {
-		for (Episode e : eps) {
-			addEpisode(e);
-		}
-	}
-
 	public void addEpisode(Episode e) {
 		
 		linkEpisodes(e);
@@ -59,7 +45,8 @@ public class ZorroTDDMeasure {
 	}
 
 	private void linkEpisodes(Episode episode) {
-		if (previsousEpisode!=null) episode.setPreviousEpisode(previsousEpisode);
+		if (previsousEpisode!=null) 
+			episode.setPreviousEpisode(previsousEpisode);
 		previsousEpisode = episode;
 	}
 
@@ -74,11 +61,6 @@ public class ZorroTDDMeasure {
 	}
 
 	private void execute() {
-		
-		numberOfNonTDDEpisodes = 0;
-		numberOfTDDEpisodes = 0;
-		durationOfNonTDDEpisodes = 0;
-		durationOfTDDEpisodes = 0;
 		
 		try {
 			
@@ -106,15 +88,6 @@ public class ZorroTDDMeasure {
 						// unclassified remains isTdd? == null
 					}
 					
-					
-					if (episodes.get(i).isTDD()) {
-						numberOfTDDEpisodes += 1;
-						durationOfTDDEpisodes += episodes.get(i).getDuration();
-						
-					} else {
-						numberOfNonTDDEpisodes += 1;
-						durationOfNonTDDEpisodes += episodes.get(i).getDuration();
-					}
 				}
 				
 			}
@@ -122,26 +95,7 @@ public class ZorroTDDMeasure {
 		} catch (JessException e) {
 			throw new RuntimeException(e);
 		}
-		
 			
-	}
-
-	public float getTDDPercentageByNumber() {
-		execute();
-		float totalEpisodes = numberOfNonTDDEpisodes + numberOfTDDEpisodes;
-		if (totalEpisodes == 0) return 0;
-		else return numberOfTDDEpisodes / totalEpisodes;
-	}
-
-	public float getTDDPercentageByDuration() {
-		execute();
-		float totalDuration = durationOfNonTDDEpisodes + durationOfTDDEpisodes;
-		if (totalDuration == 0) return 0;
-		else return durationOfTDDEpisodes / totalDuration;
-	}
-
-	public int countEpisodes() {
-		return episodes.size();
 	}
 
 	public List<Episode> getRecognizedEpisodes() {

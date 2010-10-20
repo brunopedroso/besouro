@@ -15,8 +15,10 @@ import besouro.stream.JavaActionsLinker;
 public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 
 	private ZorroEpisodeClassification classifier;
-	private ZorroTDDMeasure measure;
 	private JavaActionsLinker javaActionsLinker;
+	
+	private ZorroTDDConformance conformance;
+	private TDDMeasure measure;
 	
 	List<Action> actions = new ArrayList<Action>();
 	List<Episode> episodes = new ArrayList<Episode>();
@@ -25,7 +27,8 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 
 	public ZorroEpisodeClassifierStream() {
 		classifier = new ZorroEpisodeClassification();
-		measure = new ZorroTDDMeasure();
+		conformance = new ZorroTDDConformance();
+		measure = new TDDMeasure();
 		javaActionsLinker = new JavaActionsLinker();
 	}
 	
@@ -44,6 +47,7 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 		if (episode != null) {
 			
 			classifier.classifyEpisode(episode);
+			conformance.addEpisode(episode);
 			measure.addEpisode(episode);
 			episodes.add(episode);
 			
@@ -79,7 +83,7 @@ public class ZorroEpisodeClassifierStream implements ActionOutputStream {
 	}
 
 
-	public ZorroTDDMeasure getTDDMeasure() {
+	public TDDMeasure getTDDMeasure() {
 		return measure;
 	}
 

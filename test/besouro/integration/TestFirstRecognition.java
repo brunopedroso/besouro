@@ -20,10 +20,10 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 	
 		addTestFirst1Actions();
 		
-		int size = stream.getTDDMeasure().getRecognizedEpisodes().size();
+		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("test-first", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getCategory());
-		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getSubtype());
+		Assert.assertEquals("test-first", stream.getEpisodes()[size-1].getCategory());
+		Assert.assertEquals("1", stream.getEpisodes()[size-1].getSubtype());
 		
 	  }
 
@@ -55,10 +55,10 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		int size = stream.getTDDMeasure().getRecognizedEpisodes().size();
+		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("test-first", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getCategory());
-		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getSubtype());
+		Assert.assertEquals("test-first", stream.getEpisodes()[size-1].getCategory());
+		Assert.assertEquals("2", stream.getEpisodes()[size-1].getSubtype());
 
 	}
 	
@@ -90,10 +90,10 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		int size = stream.getTDDMeasure().getRecognizedEpisodes().size();
+		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("test-first", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getCategory());
-		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getSubtype());
+		Assert.assertEquals("test-first", stream.getEpisodes()[size-1].getCategory());
+		Assert.assertEquals("3", stream.getEpisodes()[size-1].getSubtype());
 
 	}
 	
@@ -120,10 +120,10 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
     
-		int size = stream.getTDDMeasure().getRecognizedEpisodes().size();
+		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size>0);
-		Assert.assertEquals("test-first", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getCategory());
-		Assert.assertEquals("4", stream.getTDDMeasure().getRecognizedEpisodes().get(size-1).getSubtype());
+		Assert.assertEquals("test-first", stream.getEpisodes()[size-1].getCategory());
+		Assert.assertEquals("4", stream.getEpisodes()[size-1].getSubtype());
 
 	}
 
@@ -178,11 +178,11 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 		
-		int size = stream.getTDDMeasure().getRecognizedEpisodes().size();
+		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size==1);
 		// TODO [rule] THIS SHOULD BE A TEST-FIRST! its that problem of recognizing various episodes... 
-		Assert.assertEquals("test-last", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getCategory());
-		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(0).getSubtype());
+		Assert.assertEquals("test-last", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
 		//TODO [rule] we have 7 actions here!
 		

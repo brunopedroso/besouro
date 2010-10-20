@@ -21,8 +21,8 @@ public class TwoWayTDDHeuristicAlgorithmTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		this.engine = new Rete();
-		Batch.batch("besouro/zorro/EpisodeTDDConformance.clp", this.engine);
-		Batch.batch("besouro/zorro/TwoWayTDDHeuristicAlgorithm.clp",this.engine);
+		Batch.batch("besouro/classification/zorro/EpisodeTDDConformance.clp", this.engine);
+		Batch.batch("besouro/classification/zorro/TwoWayTDDHeuristicAlgorithm.clp",this.engine);
 	}
 
 	public Fact assertConformanceEpisode(int index, String category,String subtype) throws JessException {
