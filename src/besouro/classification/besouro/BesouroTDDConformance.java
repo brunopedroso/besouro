@@ -29,7 +29,7 @@ public class BesouroTDDConformance implements EpisodeListener {
 		this.engine = new Rete();
 	    try {
 			Batch.batch("besouro/classification/besouro/EpisodeTDDConformance.clp", this.engine);
-			Batch.batch("besouro/classification/besouro/TwoWayTDDHeuristicAlgorithm.clp", this.engine);
+			Batch.batch("besouro/classification/besouro/BesouroTDDConformance.clp", this.engine);
 		} catch (JessException e) {
 			throw new RuntimeException(e);
 		}
