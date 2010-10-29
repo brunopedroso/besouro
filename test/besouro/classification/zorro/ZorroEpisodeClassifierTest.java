@@ -22,11 +22,11 @@ import besouro.classification.zorro.ZorroEpisodeClassification;
  */
 public class ZorroEpisodeClassifierTest {
 
-  private Rete engine;
-  private ZorroEpisodeClassification zorro;
-  private Date clock;
+  protected Rete engine;
+  protected ZorroEpisodeClassification zorro;
+  protected Date clock;
   
-  private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+  protected SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
   
   @Before
   public void setUp() throws Exception {

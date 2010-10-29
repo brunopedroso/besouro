@@ -19,7 +19,7 @@ import besouro.model.UnitTestCaseAction;
 
 public class ZorroEpisodeClassification {
 
-	private Rete engine;
+	protected Rete engine;
 	
 	public ZorroEpisodeClassification() {
 		this.engine = new Rete();

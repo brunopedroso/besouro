@@ -1,12 +1,6 @@
 package besouro.classification.zorro;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.Date;
 
-import org.eclipse.core.resources.IResource;
-
-import besouro.classification.zorro.ZorroEpisodeClassification;
 import besouro.model.CompilationAction;
 import besouro.model.EditAction;
 import besouro.model.RefactoringAction;
