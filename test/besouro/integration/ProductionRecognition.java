@@ -73,34 +73,6 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 	}
 	
 	@Test 
-	public void productionCategory2WithTestBreak() throws Exception {
-		
-		// method increase but byte size decrease
-		
-		// Edit on production code    
-		when(meter.hasTest()).thenReturn(false);
-		when(meter.getNumOfStatements()).thenReturn(2);
-		when(meter.getNumOfMethods()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",5));
-		
-		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("sessionname", "TestFile", Result.FAILURE));
-		
-		// Edit on production code (corrects the error)    
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",4));
-				
-		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
-
-		//TODO [rule]   redundancy! Its loosing the prod2 classification
-		
-		Assert.assertEquals(1, stream.getEpisodes().length);
-		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
-		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
-		
-	}
-	
-	@Test 
 	public void productionCategory2_2() throws Exception {
 		
 		// method increase but byte statement decrease

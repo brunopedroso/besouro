@@ -11,8 +11,8 @@ import besouro.model.UnitTestCaseAction;
 
 public class TestEpisodesFactory {
 	
-	  private static String productionFile;  
-	  private static String testFile;
+	  public static String productionFile;  
+	  public static String testFile;
 	  
 	  static {
 		  productionFile = "C:\\cvs\\work\\example\\Triangle.java";  
