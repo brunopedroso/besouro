@@ -18,10 +18,10 @@ import org.junit.Test;
  * Tests test-pass episode classification.
  * @author Hongbing Kou
  */
-public class ZorroEpisodeClassifierTest {
+public class BesouroEpisodeClassifierTest {
 
   private Rete engine;
-  private BesouroEpisodeClassification zorro;
+  private BesouroEpisodeClassification besouro;
   private Date clock;
   
   private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
@@ -29,8 +29,8 @@ public class ZorroEpisodeClassifierTest {
   @Before
   public void setUp() throws Exception {
 	
-	this.zorro = new BesouroEpisodeClassification();
-    this.engine = zorro.getEngine();
+	this.besouro = new BesouroEpisodeClassification();
+    this.engine = besouro.getEngine();
 
     this.clock = dateFormat.parse("01/01/2005 08:30:45");
 
@@ -39,13 +39,13 @@ public class ZorroEpisodeClassifierTest {
   
   @Test 
   public void testPassEpisodeClassifierTest() throws Exception {
-	  Batch.batch("besouro/classification/zorro/EpisodeClassifierTest.clp", this.engine);
+	  Batch.batch("besouro/classification/besouro/EpisodeClassifierTest.clp", this.engine);
 	  this.engine.run();
   }
 
   @Test 
   public void testTDDEpisodeCategory1() throws Exception {
-    TestEpisodesFactory.addTDDType1Facts(zorro, clock);
+    TestEpisodesFactory.addTDDType1Facts(besouro, clock);
     engine.run();
     
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
@@ -58,7 +58,7 @@ public class ZorroEpisodeClassifierTest {
 
   @Test 
   public void testTDDEpisodeCategory2() throws Exception {
-  	TestEpisodesFactory.addTDDType2Facts(zorro, clock);
+  	TestEpisodesFactory.addTDDType2Facts(besouro, clock);
   	engine.run();
       
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
@@ -70,7 +70,7 @@ public class ZorroEpisodeClassifierTest {
   
   @Test 
   public void testTDDEpisodeCategory3() throws Exception {
-  	TestEpisodesFactory.addTDDType3Facts(zorro, clock);
+  	TestEpisodesFactory.addTDDType3Facts(besouro, clock);
     engine.run();
       
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
@@ -82,7 +82,7 @@ public class ZorroEpisodeClassifierTest {
 
   @Test 
   public void testTestCodeRefact() throws Exception {
-  	TestEpisodesFactory.addTestCodeRefactoFacts(zorro, clock);
+  	TestEpisodesFactory.addTestCodeRefactoFacts(besouro, clock);
     engine.run();
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
     
@@ -94,7 +94,7 @@ public class ZorroEpisodeClassifierTest {
 
   @Test 
   public void testProductionCodeRefact() throws Exception {
-  	TestEpisodesFactory.addProductionCodeRefactoFacts(zorro, clock);
+  	TestEpisodesFactory.addProductionCodeRefactoFacts(besouro, clock);
     engine.run();
     
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
