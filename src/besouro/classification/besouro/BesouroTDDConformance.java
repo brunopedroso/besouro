@@ -1,7 +1,5 @@
 package besouro.classification.besouro;
 
-// TODO [rule] a single regression is not TDD?
-
 import java.util.ArrayList;
 import java.util.List;
 

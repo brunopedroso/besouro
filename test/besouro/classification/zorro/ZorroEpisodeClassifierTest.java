@@ -83,8 +83,8 @@ public class ZorroEpisodeClassifierTest {
   }
 
   @Test 
-  public void testTestCodeRefact() throws Exception {
-  	TestEpisodesFactory.addTestCodeRefactoFacts(zorro, clock);
+  public void shouldRecognizeTestCodeRefactoringWithTestFailureDuringChange() throws Exception {
+  	TestEpisodesFactory.addFactsForTestCodeRefactoringWithTestFailureDuringChange(zorro, clock);
     engine.run();
     QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
     
@@ -94,6 +94,18 @@ public class ZorroEpisodeClassifierTest {
     
   }
 
+  @Test 
+  public void shouldRecognizeTestSimpleCodeRefactoring() throws Exception {
+	  TestEpisodesFactory.addFactsForTestSimpleCodeRefactoring(zorro, clock);
+	  engine.run();
+	  QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
+	  
+	  Assert.assertTrue("Type 1 refactor episode can be classified", result.next());
+	  Assert.assertEquals("Test refactoring type 2 episode category name", "refactoring", result.getString("cat"));
+	  Assert.assertEquals("Test refactoring type 2 episode categoty type", "1A", result.getString("tp"));  
+	  
+  }
+  
   @Test 
   public void testProductionCodeRefact() throws Exception {
   	TestEpisodesFactory.addProductionCodeRefactoFacts(zorro, clock);

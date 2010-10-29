@@ -175,7 +175,7 @@ public class TestEpisodesFactory {
 	    engine.assertJessFact(7, unitTestAction);
 	  }
 	  
-	  public static void addTestCodeRefactoFacts(ZorroEpisodeClassification engine, Date clock) throws Exception {
+	  public static void addFactsForTestCodeRefactoringWithTestFailureDuringChange(ZorroEpisodeClassification engine, Date clock) throws Exception {
 
 		// Edit on test code    
 	    EditAction action = new EditAction(clock, testFile);
@@ -198,15 +198,30 @@ public class TestEpisodesFactory {
 	    engine.assertJessFact(3, unitTestAction);
 
 	    // Edit on test code
-//	    action = new EditAction(clock, testFile);
-//	    action.setIsTestEdit(true);
-//	    action.setFileSizeIncrease(13);
-//	    action.assertJessFact(2, engine); //TODO [rule] index 2 again ??!!
+	    action = new EditAction(clock, testFile);
+	    action.setIsTestEdit(true);
+	    action.setFileSizeIncrease(13);
+	    engine.assertJessFact(4, action);
 
 	    // Unit test pass
 	    unitTestAction = new UnitTestCaseAction(clock, testFile);
-	    engine.assertJessFact(4, unitTestAction);
+	    engine.assertJessFact(5, unitTestAction);
 	    
+	  }
+	  
+	  public static void addFactsForTestSimpleCodeRefactoring(ZorroEpisodeClassification engine, Date clock) throws Exception {
+		  
+		  // Edit on test code    
+		  EditAction action = new EditAction(clock, testFile);
+		  action.setIsTestEdit(true);
+		  action.setFileSizeIncrease(27);
+		  action.setMethodIncrease(2);
+		  engine.assertJessFact(1, action);
+		  
+		  // Unit test pass
+		  UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile);
+		  engine.assertJessFact(5, unitTestAction);
+		  
 	  }
 	  
 	  public static void addProductionCodeRefactoFacts(ZorroEpisodeClassification engine, Date clock) throws Exception {
