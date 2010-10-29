@@ -20,11 +20,29 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		when(meter.getNumOfStatements()).thenReturn(14);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
 		
-		// TODO [rule] its a strange case without an edit after the test failure :-/
-		// we do not need this failure
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
+		
+	}
+	
+	@Test 
+	public void productionCategory1WithTestBreak() throws Exception {
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		when(meter.getNumOfStatements()).thenReturn(14);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		
 		// Unit test failue
-//		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
-
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("sesionname", "TestFile.java", Result.FAILURE));
+		
+		// Edit on production code (corrects the error)    
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		
@@ -45,14 +63,36 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		when(meter.getNumOfMethods()).thenReturn(5);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",5));
 		
-		// TODO [rule] its a strange case without an edit after the test failure :-/
-		// we do not need this failure
-		// Unit test failue
-//		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
-		
-
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
+		
+		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
+		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
+		
+	}
+	
+	@Test 
+	public void productionCategory2WithTestBreak() throws Exception {
+		
+		// method increase but byte size decrease
+		
+		// Edit on production code    
+		when(meter.hasTest()).thenReturn(false);
+		when(meter.getNumOfStatements()).thenReturn(2);
+		when(meter.getNumOfMethods()).thenReturn(5);
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",5));
+		
+		// Unit test failue
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("sessionname", "TestFile", Result.FAILURE));
+		
+		// Edit on production code (corrects the error)    
+		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",4));
+				
+		// Unit test pass
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
+
+		//TODO [rule]   redundancy! Its loosing the prod2 classification
 		
 		Assert.assertEquals(1, stream.getEpisodes().length);
 		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());

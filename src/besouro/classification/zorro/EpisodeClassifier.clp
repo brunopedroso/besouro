@@ -412,6 +412,7 @@
 
 ;;
 ;; Production code edit with method increase, and statement increase, and file size increase
+;;	(FIXME: Or should it be #m increase and big size increase?)
 ;; 
 (defrule Production-3-Classifier
     (declare (salience -100))

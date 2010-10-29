@@ -55,6 +55,10 @@ public class ZorroEpisodeClassification {
 			if (result.next()) {
 				episode.setClassification(result.getString("cat"), result.getString("tp"));
 			}
+			
+			while (result.next()) {
+				System.out.println("loosing classification " + result.getString("cat") + result.getString("tp"));
+			}
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
