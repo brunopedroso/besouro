@@ -83,9 +83,12 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",15));
 		
 		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
-		// TODO [rule] its a strange case without an edit after the test failure :-/
+		// TODO [rule]  redundancy between prod/refact 
+//		its a strange case without an edit after the test failure :-/
+//		we only need this to luckly disambigue prod x refact
+		
+		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest.java", Result.ERROR));
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
@@ -94,7 +97,8 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
-		//TODO [rule] this one was not considered by hingbings test
+		//TODO [rule]  redundancy between prod/refact  
+//		this one was not considered by hingbings test
 //		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("2A", stream.getRecognizedEpisodes().get(1).getSubtype());
 		
@@ -111,12 +115,6 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		when(meter.getNumOfStatements()).thenReturn(5);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",133));
 
-		
-		// TODO [rule] its a strange case without an edit after the test failure :-/
-		// we do not need this failure
-		// Unit test failue
-//		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
-		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
 		

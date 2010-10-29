@@ -17,7 +17,7 @@ import org.osgi.framework.BundleContext;
 //TODO [rule] its recognizing test-first many times
 
 
-//TODO [rule] if i write a test, fail, comment the test out to refactor and test pass, it recognizes as tstAdd2, tstAdd1, tstAdd2, tstAdd1 
+//TODO [rule]  if i write a test, fail, comment the test out to refactor and test pass, it recognizes as tstAdd2, tstAdd1, tstAdd2, tstAdd1 
 
 
 //TODO [rule] one more case where test-first was recognized as prod1
