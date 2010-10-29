@@ -127,24 +127,6 @@ public class IntegrationTestBaseClass {
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(1);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-//		//TODO [rule] its a little strange... I dont count test methods change in test-edits, but i consider it to be substancial
-
-		
-//		// Edit on test
-//		when(meter.hasTest()).thenReturn(true);
-//		when(meter.getNumOfTestMethods()).thenReturn(2);
-//		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",35));
-//		// Unit test failue
-//		junitListener.sessionFinished(JUnitEventFactory.createFailingSession("TestFile.java"));
-		// Edit on test
-//		when(meter.hasTest()).thenReturn(true);
-//		when(meter.getNumOfTestAssertions()).thenReturn(3);
-//		when(meter.getNumOfTestMethods()).thenReturn(5);
-//		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",37));
-
-		//TODO [rule] hongbing's test is kinda strange...
-		//	more actions that was needed
-		//	a overwrite in the index 2 action
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));

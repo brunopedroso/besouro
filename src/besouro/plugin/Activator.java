@@ -4,7 +4,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-//TODO [rule] edits in document change -> agregate continuous changes (is it necessary?)
+//TODO [data] is it necessary to agregate continuous edits in documents?
 
 //TODO [rule] ive extracted a method and it didnt classify it as a refactoring.
 //		probably its because of the substantial thing that in my case registered the prod-edit action
