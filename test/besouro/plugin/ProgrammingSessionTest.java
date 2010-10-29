@@ -93,7 +93,7 @@ public class ProgrammingSessionTest {
 	
 	@Test
 	public void shouldStoreRandomHeuristicEpisodes() {
-		Assert.assertTrue("should create the file", session.getZorroEpisodesFile().exists());
+		Assert.assertTrue("should create the file", session.getRandomheuristicEpisodesFile().exists());
 		
 		for (int i = 0; i < 10; i++) {
 			addRegressionActions(i*1000);
@@ -116,6 +116,21 @@ public class ProgrammingSessionTest {
 		Assert.assertTrue(nonconf > 0);
 	}
 
+	
+	@Test
+	public void shouldStoreBesouroClassificationEpisodes() {
+		
+		Assert.assertTrue("should create the file", session.getBesouroEpisodesFile().exists());
+
+		for (int i = 0; i < 10; i++) {
+			addRegressionActions(i*1000);
+		}
+		
+		session.close();
+		
+		Assert.assertEquals("should persist the episode", 10, EpisodeFileStorage.loadEpisodes(session.getBesouroEpisodesFile()).length);
+	}
+	
 	@Test
 	public void shouldNotifyEpisodeListeners() {
 		notified = false;
@@ -165,7 +180,7 @@ public class ProgrammingSessionTest {
 		File besouroDir = new File(basedir, ".besouro");
 		Assert.assertEquals("should have created one dir", 1, besouroDir.list().length);
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 4, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 5, besouroDir.listFiles()[0].listFiles().length);
 		
 		session = ProgrammingSession.newSession(basedir, listeners);
 		session.setGitRecorder(git);
@@ -173,8 +188,8 @@ public class ProgrammingSessionTest {
 		Assert.assertEquals("should have created another dir", 2, besouroDir.list().length);
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[1].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 4, besouroDir.listFiles()[0].listFiles().length);
-		Assert.assertEquals("should have created the files inside dir", 4, besouroDir.listFiles()[1].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 5, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 5, besouroDir.listFiles()[1].listFiles().length);
 		
 	}
 	

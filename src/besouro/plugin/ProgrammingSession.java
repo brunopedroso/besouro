@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import besouro.classification.besouro.BesouroEpisodeClassifierStream;
 import besouro.classification.randomHeuristic.RandomHeuristicTDDConformance;
 import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.BesouroListenerSet;
@@ -23,18 +24,22 @@ public class ProgrammingSession implements ActionOutputStream {
 	
 	private ZorroEpisodeClassifierStream zorroClassifier;
 	private ZorroEpisodeClassifierStream randomHeuristicClassifier;
+	private BesouroEpisodeClassifierStream besouroClassifier;
 	
 	private ActionFileStorage actionStorage;
 	private EpisodeFileStorage zorroEpisodesStorage;
 	private EpisodeFileStorage randomHeuristicEpisodesStorage;
 	private EpisodeFileStorage disagreementsStorage;
+	private EpisodeFileStorage besouroEpisodesStorage;
 	
 	private File actionsFile;
 	private File zorroEpisodesFile;
 	private File randomHeuristicEpisodesFile;
 	private File disagreementsFile;
+	private File besouroEpisodeFile;
 
 	private GitRecorder git;
+
 
 	
 	private static ProgrammingSession currentSession;
@@ -79,6 +84,11 @@ public class ProgrammingSession implements ActionOutputStream {
 		disagreementsFile = new File(sessionDir, "disagreements.txt");
 		disagreementsStorage = new EpisodeFileStorage(disagreementsFile);
 		
+		besouroEpisodeFile = new File(sessionDir, "besouroEpisodes.txt");
+		besouroEpisodesStorage = new EpisodeFileStorage(besouroEpisodeFile);
+		besouroClassifier = new BesouroEpisodeClassifierStream();
+		besouroClassifier.addEpisodeListener(besouroEpisodesStorage);
+		
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
 		
@@ -96,6 +106,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		actionStorage.addAction(action);
 		zorroClassifier.addAction(action);
 		randomHeuristicClassifier.addAction(action);
+		besouroClassifier.addAction(action);
 		git.addAction(action);
 	}
 
@@ -135,6 +146,11 @@ public class ProgrammingSession implements ActionOutputStream {
 		return randomHeuristicEpisodesFile;
 	}
 	
+	public File getBesouroEpisodesFile() {
+		return besouroEpisodeFile;
+	}
+
+	
 	public File getDisagreementsFile() {
 		return disagreementsFile;
 	}
@@ -145,6 +161,5 @@ public class ProgrammingSession implements ActionOutputStream {
 		this.git = git;
 		
 	}
-
 
 }
