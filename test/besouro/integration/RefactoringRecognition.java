@@ -67,7 +67,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1B", stream.getEpisodes()[0].getSubtype());
 		
-		//TODO [rule] why are it recognizing these 3 extra episodes?
+		//TODO [rule]  redundancy: refactoring and regression
 		//			  does it influence the metric?
 //		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
@@ -123,7 +123,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2B", stream.getEpisodes()[0].getSubtype());
 
-		//TODO [rule] why are it recognizing these 2 extra episodes?
+		//TODO [rule]  redundancy: refactoring and regression
 		//			  does it influence the metric?
 //		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
@@ -166,7 +166,7 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		
 		addRefactoring1A_Actions();
 		
-		//TODO [rule] we have 2 refactorings here... hongbing considered just one...
+		//TODO [rule]  redundancy: 2 refactorings
 		Assert.assertEquals(1, stream.getEpisodes().length);
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("3", stream.getEpisodes()[0].getSubtype());

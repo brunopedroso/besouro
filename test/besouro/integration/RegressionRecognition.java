@@ -60,7 +60,7 @@ public class RegressionRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("regression", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
-		// TODO [rule] this second one was not considered by hongbings test
+		// TODO [rule]  redundancy: 2 regressions.
 //		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
 		

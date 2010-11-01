@@ -41,7 +41,7 @@ public class TestLastRecognition extends IntegrationTestBaseClass {
 
 		// Edit on test
 		when(meter.isTest()).thenReturn(true);
-		// TODO [rule] just to make it substantial :-/
+		//TODO [rule]   review substancial concept
 		when(meter.getNumOfTestMethods()).thenReturn(3);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		

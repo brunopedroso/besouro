@@ -71,7 +71,7 @@ public class BesouroEpisodeClassifierTest extends ZorroEpisodeClassifierTest {
 		
 		QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
-		// TODO [rule] redundancy! Its loosing the prod2 classification
+		// TODO [rule]  redundancy! Its loosing the prod2 classification
 		// need to apply integration tests to both classifications
 
 		
@@ -84,4 +84,16 @@ public class BesouroEpisodeClassifierTest extends ZorroEpisodeClassifierTest {
 		}
 	}
 
+	  @Test 
+	  public void testTDDEpisodeWithLittleChangeInTest() throws Exception {
+	    TestEpisodesFactory.addTDDType1Facts(zorro, clock);
+	    engine.run();
+	    
+	    QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
+	    
+	    Assert.assertTrue("Type 1 TDD episode can be classified", result.next());
+	    Assert.assertEquals("Test TDD type 1 episode category name", "test-first", result.getString("cat"));
+	    Assert.assertEquals("Test TDD type 1 episode cateory type", "1", result.getString("tp"));
+	    
+	  }
 }

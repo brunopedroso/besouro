@@ -51,7 +51,7 @@ public class ZorroEpisodeClassification {
 
 			QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 
-			// TODO [rule] recognizing various episodes. Shouldnt it be a while?
+			// TODO [rule]  redundancy. It should be a while
 			if (result.next()) {
 				episode.setClassification(result.getString("cat"), result.getString("tp"));
 			}

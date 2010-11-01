@@ -171,35 +171,31 @@ public class TestEpisodesFactory {
 	  
 	  public static void addFactsForTestCodeRefactoringWithTestFailureDuringChange(ZorroEpisodeClassification engine, Date clock) throws Exception {
 
-		// Edit on test code    
-	    EditAction action = new EditAction(clock, testFile);
-	    action.setIsTestEdit(true);
-	    action.setFileSizeIncrease(27);
-	    action.setMethodIncrease(2);
-	    engine.assertJessFact(1, action);
+		// various edits
+		for (int i = 1; i <= 10; i++) {
+			// Edit on test code    
+			EditAction action = new EditAction(clock, testFile);
+			action.setIsTestEdit(true);
+			action.setFileSizeIncrease(27);
+			action.setMethodIncrease(2);
+			engine.assertJessFact(i, action);
+			
+		}
 	    
-	    //TODO [rule] we dont need these two next acitons for the test to pass
-	    // Edit on test code
-	    action = new EditAction(clock, testFile);
-	    action.setIsTestEdit(true);
-	    action.setFileSizeIncrease(50);
-	    action.setMethodIncrease(2);
-	    engine.assertJessFact(2, action);
-
 	    // Unit test fail on test code
 	    UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, testFile); 
 	    unitTestAction.setFailureMessage("Cannot instantiate it");
-	    engine.assertJessFact(3, unitTestAction);
+	    engine.assertJessFact(11, unitTestAction);
 
 	    // Edit on test code
-	    action = new EditAction(clock, testFile);
+	    EditAction action = new EditAction(clock, testFile);
 	    action.setIsTestEdit(true);
 	    action.setFileSizeIncrease(13);
-	    engine.assertJessFact(4, action);
+	    engine.assertJessFact(12, action);
 
 	    // Unit test pass
 	    unitTestAction = new UnitTestCaseAction(clock, testFile);
-	    engine.assertJessFact(5, unitTestAction);
+	    engine.assertJessFact(13, unitTestAction);
 	    
 	  }
 	  

@@ -42,7 +42,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 
 		// Edit on test
 		when(meter.isTest()).thenReturn(true);
-		// TODO [rule] just to make it substantial :-/
+		//TODO [rule]   review substancial concept
 		when(meter.getNumOfTestMethods()).thenReturn(3);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
 		
@@ -53,7 +53,7 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
-		// TODO [rule] this second one was not considered by hongbings test
+		// TODO [rule]  redundancy: 2 test-addition
 //		Assert.assertEquals("test-addition", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
 		

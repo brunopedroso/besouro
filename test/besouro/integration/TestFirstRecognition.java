@@ -155,7 +155,7 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 
 		// Edit on test
 		when(meter.hasTest()).thenReturn(true);
-		//TODO [rule] just to be substancial :-/
+		//TODO [rule]   review substancial concept
 		when(meter.getNumOfMethods()).thenReturn(1);
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",135));
 		
@@ -180,11 +180,11 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		
 		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size==1);
-		// TODO [rule] THIS SHOULD BE A TEST-FIRST! its that problem of recognizing various episodes... 
+		// TODO [rule]  redundancy! Test-first and test-last!! 
 		Assert.assertEquals("test-last", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
-		//TODO [rule] we have 7 actions here!
+		//TODO [rule]  redundancy: 2 test-lasts
 		
 	}
 
