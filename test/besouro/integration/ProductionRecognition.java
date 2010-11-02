@@ -84,7 +84,7 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		
 		// Unit test failue
 		
-		// TODO [rule]  redundancy between prod/refact 
+		// TODO [rule]   redundancy between prod/refact 
 //		its a strange case without an edit after the test failure :-/
 //		we only need this to luckly disambigue prod x refact
 		
@@ -97,7 +97,6 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
-		//TODO [rule]  redundancy between prod/refact  
 //		this one was not considered by hingbings test
 //		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
 //		Assert.assertEquals("2A", stream.getRecognizedEpisodes().get(1).getSubtype());
