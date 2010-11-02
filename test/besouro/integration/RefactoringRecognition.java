@@ -36,8 +36,6 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1A", stream.getEpisodes()[0].getSubtype());
 		
-//		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("1A", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
 	}
 
 
@@ -51,16 +49,6 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1B", stream.getEpisodes()[0].getSubtype());
 		
-		//TODO [rule]  redundancy: refactoring and regression
-		//			  does it influence the metric?
-//		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
-//		
-//		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(2).getCategory());
-//		Assert.assertEquals("2B", stream.getTDDMeasure().getRecognizedEpisodes().get(2).getSubtype());
-//		
-//		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(3).getCategory());
-//		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(3).getSubtype());
 	}
 	
 	
@@ -87,14 +75,6 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2B", stream.getEpisodes()[0].getSubtype());
 
-		//TODO [rule]  redundancy: refactoring and regression
-		//			  does it influence the metric?
-//		Assert.assertEquals("regression", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("2", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
-//		
-//		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(2).getCategory());
-//		Assert.assertEquals("2B", stream.getTDDMeasure().getRecognizedEpisodes().get(2).getSubtype());
-		
 	}
 
 
@@ -117,13 +97,9 @@ public class RefactoringRecognition extends IntegrationTestBaseClass {
 		
 		addRefactoringCategory3_2_events();
 		
-		//TODO [rule]  redundancy: 2 refactorings
 		Assert.assertEquals(1, stream.getEpisodes().length);
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("3", stream.getEpisodes()[0].getSubtype());
-		
-//		Assert.assertEquals("refactoring", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("3", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
 		
 	}
 	

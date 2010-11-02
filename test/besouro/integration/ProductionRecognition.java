@@ -56,10 +56,6 @@ public class ProductionRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
-//		this one was not considered by hingbings test
-//		Assert.assertEquals("refactoring", stream.getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("2A", stream.getRecognizedEpisodes().get(1).getSubtype());
-		
 	}
 
 

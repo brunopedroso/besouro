@@ -34,10 +34,6 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
-		// TODO [rule]  redundancy: 2 test-addition
-//		Assert.assertEquals("test-addition", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getCategory());
-//		Assert.assertEquals("1", stream.getTDDMeasure().getRecognizedEpisodes().get(1).getSubtype());
-		
 	}
 
 }

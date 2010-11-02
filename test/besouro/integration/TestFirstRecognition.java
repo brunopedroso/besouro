@@ -75,11 +75,9 @@ public class TestFirstRecognition extends IntegrationTestBaseClass {
 		
 		int size = stream.getEpisodes().length;
 		Assert.assertTrue(size==1);
-		// TODO [rule]  redundancy! Test-first and test-last!! 
+
 		Assert.assertEquals("test-last", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
-		
-		//TODO [rule]  redundancy: 2 test-lasts
 		
 	}
 	
