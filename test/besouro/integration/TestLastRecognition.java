@@ -27,32 +27,12 @@ public class TestLastRecognition extends IntegrationTestBaseClass {
 	@Test 
 	public void testLastCategory2() throws Exception {
 		
-		// Edit on production code    
-		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
-		
-		// Edit on test
-		when(meter.isTest()).thenReturn(true);
-		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-		
-		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest", Result.ERROR));
-
-		// Edit on test
-		when(meter.isTest()).thenReturn(true);
-		//TODO [rule]   review substancial concept
-		when(meter.getNumOfTestMethods()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-		
-		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
+		addTestLast2Events();
 		
 		Assert.assertEquals(1, stream.getEpisodes().length);
 		Assert.assertEquals("test-last", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
 	}
-	
-	
+
 }

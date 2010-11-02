@@ -3,6 +3,7 @@ package besouro.integration;
 import static org.mockito.Mockito.when;
 import junit.framework.Assert;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.junit.Test;
 
@@ -15,39 +16,19 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 	@Test 
 	public void testAditionCategory1() throws Exception {
 		
-		// Edit on test
-		when(meter.isTest()).thenReturn(true);
-		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-		
-		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
+		addTestAddCategory1Events();
 		
 		Assert.assertEquals(1, stream.getEpisodes().length);
 		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1", stream.getEpisodes()[0].getSubtype());
 		
 	}
+
 	
 	@Test 
 	public void testAditionCategory2() throws Exception {
 		
-		// Edit on test
-		when(meter.isTest()).thenReturn(true);
-		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-		
-		// Unit test failue
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
-
-		// Edit on test
-		when(meter.isTest()).thenReturn(true);
-		//TODO [rule]   review substancial concept
-		when(meter.getNumOfTestMethods()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-		
-		// Unit test pass
-		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
+		addTestAddCategory2Events();
 		
 		Assert.assertEquals(1, stream.getEpisodes().length);
 		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
@@ -59,6 +40,4 @@ public class TestAditionRecognition extends IntegrationTestBaseClass {
 		
 	}
 
-	
-	
 }
