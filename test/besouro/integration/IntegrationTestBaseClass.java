@@ -26,11 +26,13 @@ import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.listeners.mock.WindowEventsFactory;
 import besouro.measure.JavaStatementMeter;
 import besouro.persistence.ActionFileStorage;
+import besouro.stream.ActionOutputStream;
+import besouro.stream.EpisodesRecognizerActionStream;
 
 
 public class IntegrationTestBaseClass {
 
-	protected ZorroEpisodeClassifierStream stream;
+	protected EpisodesRecognizerActionStream stream;
 	protected JavaStructureChangeListener javaListener;
 	protected ResourceChangeListener resourceListener;
 	protected JUnitListener junitListener;
@@ -45,7 +47,7 @@ public class IntegrationTestBaseClass {
 		setup(stream);
 	}
 		
-	public void setup(ZorroEpisodeClassifierStream stream) throws Exception {
+	public void setup(EpisodesRecognizerActionStream stream) throws Exception {
 		
 		this.stream = stream;
 		
@@ -69,7 +71,7 @@ public class IntegrationTestBaseClass {
 
 	}
 	
-	public void setStreamUnderTest(ZorroEpisodeClassifierStream stream) {
+	public void setStreamUnderTest(EpisodesRecognizerActionStream stream) {
 		this.stream = stream;
 	}
 

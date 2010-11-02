@@ -13,9 +13,10 @@ import besouro.model.UnitTestAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeListener;
+import besouro.stream.EpisodesRecognizerActionStream;
 import besouro.stream.JavaActionsLinker;
 
-public class BesouroEpisodeClassifierStream implements ActionOutputStream {
+public class BesouroEpisodeClassifierStream implements EpisodesRecognizerActionStream {
 
 	private BesouroEpisodeClassification classifier;
 	private JavaActionsLinker javaActionsLinker;
