@@ -9,13 +9,7 @@ import besouro.classification.besouro.BesouroEpisodeClassifierStream;
 import besouro.integration.IntegrationTestBaseClass;
 
 
-public class RegressionRecognition extends IntegrationTestBaseClass {
-	@Before 
-	@Override
-	public void setup() throws Exception {
-		BesouroEpisodeClassifierStream stream = new BesouroEpisodeClassifierStream();
-		setup(stream);
-	}
+public class RegressionRecognition extends BesouroBaseIntegrationTest {
 	
 	@Test 
 	public void regressionCategory1() throws Exception {

@@ -9,15 +9,8 @@ import besouro.classification.besouro.BesouroEpisodeClassifierStream;
 import besouro.integration.IntegrationTestBaseClass;
 
 
-public class TestLastRecognition extends IntegrationTestBaseClass {
+public class TestLastRecognition extends BesouroBaseIntegrationTest {
 
-	@Before 
-	@Override
-	public void setup() throws Exception {
-		BesouroEpisodeClassifierStream stream = new BesouroEpisodeClassifierStream();
-		setup(stream);
-	}
-	
 	@Test 
 	public void testLastCategory1() throws Exception {
 		

@@ -8,14 +8,8 @@ import org.junit.Test;
 import besouro.classification.besouro.BesouroEpisodeClassifierStream;
 import besouro.integration.IntegrationTestBaseClass;
 
-public class ProductionRecognition extends IntegrationTestBaseClass {
+public class ProductionRecognition extends BesouroBaseIntegrationTest {
 
-	@Before 
-	@Override
-	public void setup() throws Exception {
-		BesouroEpisodeClassifierStream stream = new BesouroEpisodeClassifierStream();
-		setup(stream);
-	}
 	
 	@Test 
 	public void productionCategory1() throws Exception {
