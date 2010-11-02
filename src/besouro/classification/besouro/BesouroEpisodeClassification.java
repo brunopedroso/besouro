@@ -1,6 +1,8 @@
 package besouro.classification.besouro;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import jess.Batch;
 import jess.Fact;
@@ -31,7 +33,36 @@ public class BesouroEpisodeClassification extends ZorroEpisodeClassification {
 		} catch (JessException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
+	
+	
+	/**
+	 * may classify various episodes, following rules resuts
+	 * @param episode
+	 * @return
+	 */
+	public List<Episode> classifyEpisodesWithRedundancy(Episode episode) {
+		
+		try {
+
+			QueryResult result = queryjessRules(episode);
+			
+			List<Episode> results = new ArrayList<Episode>();
+			int i=0;
+			while (result.next()) {
+				Episode e = new Episode();
+				e.setDuration(episode.getDuration());
+				e.setTimestamp(episode.getTimestamp() + (i++)); // i to diferentiate timestamps so they are persisted
+				e.setClassification(result.getString("cat"), result.getString("tp"));
+				results.add(e);
+			}
+
+			return results;
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	
 }

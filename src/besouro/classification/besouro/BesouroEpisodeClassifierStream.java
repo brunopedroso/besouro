@@ -55,15 +55,25 @@ public class BesouroEpisodeClassifierStream implements EpisodesRecognizerActionS
 
 		if (episode != null) {
 			
-			classifier.classifyEpisode(episode);
-			conformance.episodeRecognized(episode);
-			measure.addEpisode(episode);
-			episodes.add(episode);
+			List<Episode> recognizedEpisodes = classifier.classifyEpisodesWithRedundancy(episode);
 			
-			for (EpisodeListener lis: listeners)
-				lis.episodeRecognized(episode);
+			for(Episode e: recognizedEpisodes) {
+				conformance.episodeRecognized(e);
+				episodes.add(e);
+				
+				System.out.println(e);
+			}
 			
-			System.out.println(episode);
+			for(Episode e: recognizedEpisodes) {
+				for (EpisodeListener lis: listeners) {
+					lis.episodeRecognized(e);
+				}
+				
+			}
+			
+			// keeps same behaviour here: uses the first
+			measure.addEpisode(recognizedEpisodes.get(0));
+			
 			System.out.println("-----------------");
 			System.out.println("\t#episodes: " + measure.countEpisodes());
 			System.out.println("\t duration: " + measure.getTDDPercentageByDuration());

@@ -38,18 +38,7 @@ public class ZorroEpisodeClassification {
 		
 		try {
 
-			engine.reset();
-
-			int i = 1;
-			for (Action a : episode.getActions()) {
-				assertJessFact(i++, a);
-			}
-
-			engine.run();
-			
-			//debugFacts();
-
-			QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
+			QueryResult result = queryjessRules(episode);
 
 			//  redundancy. It should be a while!
 			if (result.next()) {
@@ -63,6 +52,31 @@ public class ZorroEpisodeClassification {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	protected QueryResult queryjessRules(Episode episode) {
+		
+		try {
+
+			engine.reset();
+			
+			int i = 1;
+			for (Action a : episode.getActions()) {
+				assertJessFact(i++, a);
+			}
+			
+			engine.run();
+			
+			//debugFacts();
+			
+			QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
+			return result;
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		
 	}
 
 	private void debugFacts() {
