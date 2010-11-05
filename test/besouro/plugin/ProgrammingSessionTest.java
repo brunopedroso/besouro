@@ -180,7 +180,7 @@ public class ProgrammingSessionTest {
 		File besouroDir = new File(basedir, ".besouro");
 		Assert.assertEquals("should have created one dir", 1, besouroDir.list().length);
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 5, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 6, besouroDir.listFiles()[0].listFiles().length);
 		
 		session = ProgrammingSession.newSession(basedir, listeners);
 		session.setGitRecorder(git);
@@ -188,8 +188,8 @@ public class ProgrammingSessionTest {
 		Assert.assertEquals("should have created another dir", 2, besouroDir.list().length);
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[0].isDirectory());
 		Assert.assertTrue("should be a dir", besouroDir.listFiles()[1].isDirectory());
-		Assert.assertEquals("should have created the files inside dir", 5, besouroDir.listFiles()[0].listFiles().length);
-		Assert.assertEquals("should have created the files inside dir", 5, besouroDir.listFiles()[1].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 6, besouroDir.listFiles()[0].listFiles().length);
+		Assert.assertEquals("should have created the files inside dir", 6, besouroDir.listFiles()[1].listFiles().length);
 		
 	}
 	

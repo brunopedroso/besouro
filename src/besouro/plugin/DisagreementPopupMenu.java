@@ -1,9 +1,11 @@
 package besouro.plugin;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -26,6 +28,9 @@ public class DisagreementPopupMenu {
 	private Action refactoringAction;
 	private Action productionAction;
 	private Action regressionAction;
+	private Action dontknowAction;
+	private Action spacingAction;
+	private Action commentAction;
 
 	public DisagreementPopupMenu(TreeViewer view, ProgrammingSession session) {
 		this.viewer = view;
@@ -50,6 +55,8 @@ public class DisagreementPopupMenu {
 						mngr.add(conformAction);
 					}
 					
+					mngr.add(spacingAction);
+					
 					if (!"test-first".equals(episode.getCategory())) {
 						mngr.add(testFirstAction);
 					}
@@ -73,6 +80,12 @@ public class DisagreementPopupMenu {
 					if (!"regression".equals(episode.getCategory())) {
 						mngr.add(regressionAction);
 					}
+					
+					mngr.add(dontknowAction);
+					
+					mngr.add(spacingAction);
+					
+					mngr.add(commentAction);
 				}
 			}
 		});
@@ -109,6 +122,14 @@ public class DisagreementPopupMenu {
 		};
 		conformAction.setText("conformant");
 		conformAction.setImageDescriptor(Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/episode_conformant.png"));
+		
+		
+		spacingAction = new Action(){
+			public void run() {				
+			}
+		};
+		spacingAction.setText("----------");
+
 		
 		testFirstAction  = new Action(){
 			public void run() {
@@ -179,6 +200,40 @@ public class DisagreementPopupMenu {
 			}
 		};
 		regressionAction.setText("regression");
+		
+		dontknowAction = new Action(){
+			public void run() {
+				Episode e = getSelectedEpisode();
+				e.setClassification("dont-know", null);
+				e.setDisagree(true);
+				session.disagreeFromEpisode(e);
+				viewer.refresh();
+				
+			}
+		};
+		dontknowAction.setText("I don't know");
+		
+		commentAction = new Action(){
+			public void run() {
+				
+				InputDialog dialog = new InputDialog(viewer.getControl().getShell(),"Comment", "Please enter your comment","",null);
+				
+				if( dialog.open() == IStatus.OK){ 
+					
+					String comment = dialog.getValue(); 
+					
+					Episode e = new Episode();
+					e.setTimestamp(getSelectedEpisode().getTimestamp());
+					e.setClassification("comment", comment);
+					e.setDisagree(true);
+					session.commentEpisode(e);
+					
+				}
+				
+			}
+		};
+		commentAction.setText("Make a comment");
+		
 		
 	}
 	

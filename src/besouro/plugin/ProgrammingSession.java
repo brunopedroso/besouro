@@ -32,14 +32,16 @@ public class ProgrammingSession implements ActionOutputStream {
 	private EpisodeFileStorage disagreementsStorage;
 	private EpisodeFileStorage besouroEpisodesStorage;
 	
+	private EpisodeFileStorage userCommentsEpisodesStorage;
+	
 	private File actionsFile;
 	private File zorroEpisodesFile;
 	private File randomHeuristicEpisodesFile;
 	private File disagreementsFile;
 	private File besouroEpisodeFile;
+	private File userCommentsFile;
 
 	private GitRecorder git;
-
 
 	
 	private static ProgrammingSession currentSession;
@@ -84,6 +86,9 @@ public class ProgrammingSession implements ActionOutputStream {
 		disagreementsFile = new File(sessionDir, "disagreements.txt");
 		disagreementsStorage = new EpisodeFileStorage(disagreementsFile);
 		
+		userCommentsFile = new File(sessionDir, "userComments.txt");
+		userCommentsEpisodesStorage = new EpisodeFileStorage(userCommentsFile);
+		
 		besouroEpisodeFile = new File(sessionDir, "besouroEpisodes.txt");
 		besouroEpisodesStorage = new EpisodeFileStorage(besouroEpisodeFile);
 		besouroClassifier = new BesouroEpisodeClassifierStream();
@@ -118,6 +123,14 @@ public class ProgrammingSession implements ActionOutputStream {
 		disagreementsStorage.episodeRecognized(episode);
 	}
 
+	/**
+	 * Used by EpisodeView to allow the user to make comments on episodes
+	 * @param episode
+	 */
+	public void commentEpisode(Episode episode) {
+		userCommentsEpisodesStorage.episodeRecognized(episode);
+	}
+	
 
 	public void addEpisodeListeners(EpisodeListener episodeListener) {
 		// its the classification that will show in the interface
