@@ -28,7 +28,7 @@ public class TestAdditionRecognition extends BesouroBaseIntegrationTest {
 		
 		addTestAddCategory2Events();
 		
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(2, stream.getEpisodes().length);
 		Assert.assertEquals("test-addition", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		

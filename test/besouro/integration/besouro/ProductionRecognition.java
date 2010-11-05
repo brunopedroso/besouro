@@ -50,7 +50,7 @@ public class ProductionRecognition extends BesouroBaseIntegrationTest {
 		
 		addProductionCategory2_2_events();
 		
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(2, stream.getEpisodes().length);
 		Assert.assertEquals("production", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		

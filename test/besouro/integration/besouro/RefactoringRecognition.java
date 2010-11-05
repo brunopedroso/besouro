@@ -28,7 +28,7 @@ public class RefactoringRecognition extends BesouroBaseIntegrationTest {
 		addRefactoringCategory1a_2_events();
 		
 		
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(2, stream.getEpisodes().length);
 		// two refactorings - one on each edit (because they precede test-pass)
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1A", stream.getEpisodes()[0].getSubtype());
@@ -44,7 +44,7 @@ public class RefactoringRecognition extends BesouroBaseIntegrationTest {
 		
 		addRefactoringCategory1B_events();
 		
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(4, stream.getEpisodes().length);
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("1B", stream.getEpisodes()[0].getSubtype());
 		
@@ -80,7 +80,7 @@ public class RefactoringRecognition extends BesouroBaseIntegrationTest {
 		
 		addRefactoringCategory2B_events();
 		
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(3, stream.getEpisodes().length);
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2B", stream.getEpisodes()[0].getSubtype());
 
@@ -115,7 +115,7 @@ public class RefactoringRecognition extends BesouroBaseIntegrationTest {
 		addRefactoringCategory3_2_events();
 		
 		//TODO [rule]  redundancy: 2 refactorings
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(2, stream.getEpisodes().length);
 		Assert.assertEquals("refactoring", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("3", stream.getEpisodes()[0].getSubtype());
 		

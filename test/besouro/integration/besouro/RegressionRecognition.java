@@ -42,7 +42,7 @@ public class RegressionRecognition extends BesouroBaseIntegrationTest {
 		
 		addRegressionCategory2Events();
 		
-		Assert.assertEquals(1, stream.getEpisodes().length);
+		Assert.assertEquals(2, stream.getEpisodes().length);
 		Assert.assertEquals("regression", stream.getEpisodes()[0].getCategory());
 		Assert.assertEquals("2", stream.getEpisodes()[0].getSubtype());
 		
