@@ -31,23 +31,50 @@ Launch the Eclipse SDK and open the three projects.
 
 The main Besouro project will present you an error because of a missing library.
 It is the Jess Rule engine, which, until the time of this writing could not be redistributed
-due to it's not open-source license. You should be able to download it from here[http://www.jessrules.com/].
+due to it's non-open-source license. You should be able to download it from here[http://www.jessrules.com/].
 
 (Besouro uses JESS because it is derived from Zorro[http://code.google.com/p/hackystat-ui-zorro/].
 It would be great to provide a binary distribution of besouro, ready for use. Or at least to
 provide all its dependencies with the source code. But now it is impossible due to Jess License.
-If someone wants to help replacing Jess from Besouro without breaking any test, please let me know!)
+If someone wants to help replacing Jess from Besouro, please let me know!)
 
-After you ask for permisson and get access to your copy of Jess library, you can simply put it
-into the 'lib' folder inside Besouro project, and it should compile successfully after a refresh
-in Eclipse.
+After you get your copy of Jess library, you can simply put it
+into the 'lib' folder inside Besouro project, and the project should compile successfully after a refresh.
 
-Now, if everything is correctly set up, you must just open the site.xml file inside the besouro_site project
-and press the 'build' button. Eclipse will compile everything and put the binaries inside the update site project.
-This now is a complete update site you can point your eclipse to (using help -> Install new Software, add the newly 
-generated site to the list and follow the wizzard.)
+Then open the site.xml file inside the besouro_site project and press the 'build' button. 
+Eclipse will compile everything and put the binaries inside the update site project.
+
+This project is now a complete update site you can point your eclipse to. You can also make this directory 
+available in a HTTP URL in order to make the plugin available for installing in other Eclipses instances.
 
 It should be enough. If you have any problem, don't hesitate to send me an email at bruno pedroso at gmail dot com.
+
+
+= Installing Besouro
+
+If you correctly followed the instructions for building Besouro above, you now have a directory (or a URL) with the
+update site. 
+
+Launch Eclipse. Select help -> Install new Software, and add the update site to the list of available sites. Follow the wizard 
+and you are done!
+
+(The original experiment's instructions for install are here[https://sites.google.com/site/besouroeval/installing-besouro]. 
+The only thing that is not working anymore is the update site URL provided. Replace it with the update site you created 
+with the above instructions.)
+ 
+ 
+= Using Besouro
+
+Please, refer to the original experiment's instructions that must still be available here[https://sites.google.com/site/besouroeval/code-your-kata].
+
+https://sites.google.com/site/besouroeval
+
+If you have any problem, don't hesitate to send me an email at bruno pedroso at gmail dot com.
+
+
+= Giving feedback
+
+Please let me know what do you think about Besouro. Email me an email at bruno pedroso at gmail dot com anytime!
 
 
 = License
