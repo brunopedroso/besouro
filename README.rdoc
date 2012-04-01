@@ -14,7 +14,7 @@ First of all, you need to download the Eclipse SDK, containing the Eclipse Plug-
 You can download it from here[http://www.eclipse.org/pde/]
 
 Download Besouro's source files from here[https://github.com/brunopedroso/besouro]. 
-You can simply download the files, you can perform a clone it with git, if you want to modify it, 
+You can simply download the files, you can clone it with git, if you want to modify it, 
 or you can fork it in github if you intend to contribute your changes back to Besouro.
 
 You will need to download/clone two more repositories. 
