@@ -14,12 +14,17 @@ First of all, you need to download the Eclipse SDK, containing the Eclipse Plug-
 You can download it from here[http://www.eclipse.org/pde/]
 
 Download Besouro's source files from here[https://github.com/brunopedroso/besouro]. 
-You can simply download the files, you can perform a 'git clone' if you want to modify it, 
-or you can form it in github if you intend to contribute your changes back to Besouro.
+You can simply download the files, you can perform a clone it with git, if you want to modify it, 
+or you can fork it in github if you intend to contribute your changes back to Besouro.
 
-You will need to download/clone two more repositories. The Eclipse Feature [https://github.com/brunopedroso/besouro_feature],
-and the Eclipse update site [https://github.com/brunopedroso/besouro_site]. These projects are not
-part of the plugin code itself. You can create them with eclipse wizzards if you prefer. They are being provided
+You will need to download/clone two more repositories. 
+The Eclipse Feature 
+	https://github.com/brunopedroso/besouro_feature,
+	
+and the Eclipse update site 
+	https://github.com/brunopedroso/besouro_site. 
+	
+These projects are not part of the plugin code itself. You can create them with eclipse wizzards if you prefer. They are being provided
 just for simplicity.
 
 Launch the Eclipse SDK and open the three projects.
@@ -28,7 +33,7 @@ The main Besouro project will present you an error because of a missing library.
 It is the Jess Rule engine, which, until the time of this writing could not be redistributed
 due to it's not open-source license. You should be able to download it from here[http://www.jessrules.com/].
 
-(Besouro uses JESS because it is derived from Zorro [http://code.google.com/p/hackystat-ui-zorro/].
+(Besouro uses JESS because it is derived from Zorro[http://code.google.com/p/hackystat-ui-zorro/].
 It would be great to provide a binary distribution of besouro, ready for use. Or at least to
 provide all its dependencies with the source code. But now it is impossible due to Jess License.
 If someone wants to help replacing Jess from Besouro without breaking any test, please let me know!)
