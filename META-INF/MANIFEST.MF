@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: besouro_plugin
 Bundle-SymbolicName: besouro_plugin;singleton:=true
-Bundle-Version: 1.0
+Bundle-Version: 1.0.1
 Bundle-Activator: besouro.plugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
