@@ -8,11 +8,41 @@ The main difference between them, so far, is that Zorro relies on Hackystat[http
 Besouro was initially built to make the Zorro's rule system available for a TDD empirical evaluation, once it became obsolete since Hackystat evolved to it's new architecture, on version 8.
 
 
-= Compiling and installing
+= How To Build Besouro
 
-Besouro was created as a plain eclipse plugin. Please refer to its documentation in order to build and install it.
+First of all, you need to download the Eclipse SDK, containing the Eclipse Plug-in Development Environment (PDE). 
+You can download it from here[http://www.eclipse.org/pde/]
 
-In order to compile/execute it, you will need to download by yourself the JESSEngine[http://www.jessrules.com/].
+Download Besouro's source files from here[https://github.com/brunopedroso/besouro]. 
+You can simply download the files, you can perform a 'git clone' if you want to modify it, 
+or you can form it in github if you intend to contribute your changes back to Besouro.
+
+You will need to download/clone two more repositories. The Eclipse Feature [https://github.com/brunopedroso/besouro_feature],
+and the Eclipse update site [https://github.com/brunopedroso/besouro_site]. These projects are not
+part of the plugin code itself. You can create them with eclipse wizzards if you prefer. They are being provided
+just for simplicity.
+
+Launch the Eclipse SDK and open the three projects.
+
+The main Besouro project will present you an error because of a missing library.
+It is the Jess Rule engine, which, until the time of this writing could not be redistributed
+due to it's not open-source license. You should be able to download it from here[http://www.jessrules.com/].
+
+(Besouro uses JESS because it is derived from Zorro [http://code.google.com/p/hackystat-ui-zorro/].
+It would be great to provide a binary distribution of besouro, ready for use. Or at least to
+provide all its dependencies with the source code. But now it is impossible due to Jess License.
+If someone wants to help replacing Jess from Besouro without breaking any test, please let me know!)
+
+After you ask for permisson and get access to your copy of Jess library, you can simply put it
+into the 'lib' folder inside Besouro project, and it should compile successfully after a refresh
+in Eclipse.
+
+Now, if everything is correctly set up, you must just open the site.xml file inside the besouro_site project
+and press the 'build' button. Eclipse will compile everything and put the binaries inside the update site project.
+This now is a complete update site you can point your eclipse to (using help -> Install new Software, add the newly 
+generated site to the list and follow the wizzard.)
+
+It should be enough. If you have any problem, don't hesitate to send me an email at bruno pedroso at gmail dot com.
 
 
 = License
