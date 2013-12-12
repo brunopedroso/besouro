@@ -2,3 +2,4 @@ bin
 lib/jess.jar
 .DS_Store
 lib/.DS_Store
+*.class
