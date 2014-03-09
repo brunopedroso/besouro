@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: besouro_plugin
 Bundle-SymbolicName: besouro_plugin;singleton:=true
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.2
 Bundle-Activator: besouro.plugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -20,6 +20,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: besouro.listeners,
  besouro.plugin,
  besouro.stream
-Bundle-ClassPath: lib/jess.jar,
- .,
- lib/org.eclipse.jgit-0.9.3.jar
+Bundle-ClassPath: .,
+ lib/org.eclipse.jgit-0.9.3.jar,
+ lib/jess.jar
