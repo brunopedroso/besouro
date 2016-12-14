@@ -13,7 +13,6 @@ public class JacocoFileStorage implements JacocoOutputStream {
 
 	public JacocoFileStorage(File f) {
 		try {
-
 			this.file = f;
 
 			if (!file.exists()) {
