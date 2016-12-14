@@ -60,6 +60,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 		writer.append(" " + e.getSubtype());
 		writer.append(" " + e.getDuration());
 		writer.append(" " + e.isTDD());
+		writer.append("the end");
 		writer.append("\n");
 		
 		writer.flush();
