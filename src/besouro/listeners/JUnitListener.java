@@ -3,6 +3,7 @@ package besouro.listeners;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -60,11 +61,19 @@ public class JUnitListener extends TestRunListener {
 		if (session instanceof ITestSuiteElement) {
 			
 			ITestSuiteElement testCase = (ITestSuiteElement) session;
-
+			ArrayList<String> testMethods = new ArrayList<String>();
+			for (ITestElement singleTestMethod : testCase.getChildren()) {
+				if(singleTestMethod instanceof ITestCaseElement){
+					ITestCaseElement testMethod = (ITestCaseElement) singleTestMethod;
+					String testMethodName = testMethod.getTestClassName()+"."+testMethod.getTestMethodName(); 
+					testMethods.add(testMethodName);
+				}
+			}
 			IResource res = findTestResource(project, testCase.getSuiteTypeName());
 			
 			UnitTestCaseAction action = new UnitTestCaseAction(new Date(), res.getName());
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
+			action.setTestMethods(testMethods);
 			list.add(action);
 			
 		} else if (session instanceof ITestCaseElement) {
