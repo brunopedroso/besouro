@@ -65,7 +65,7 @@ public class JUnitListener extends TestRunListener {
 			for (ITestElement singleTestMethod : testCase.getChildren()) {
 				if(singleTestMethod instanceof ITestCaseElement){
 					ITestCaseElement testMethod = (ITestCaseElement) singleTestMethod;
-					String testMethodName = testMethod.getTestClassName()+"."+testMethod.getTestMethodName(); 
+					String testMethodName = this.testMethodToString(testMethod);
 					testMethods.add(testMethodName);
 				}
 			}
@@ -98,6 +98,15 @@ public class JUnitListener extends TestRunListener {
 		
 		return list;
 		
+	}
+
+	private String testMethodToString(ITestCaseElement testMethod) {
+		String testMethodClassName = testMethod.getTestClassName();
+		String testMethodName = testMethod.getTestMethodName();
+		String testMethodResult = testMethod.getTestResult(true).toString();
+		String failure = (testMethod.getFailureTrace() == null)? "" : testMethod.getFailureTrace().toString();
+		String testMethodStr = testMethodClassName + "." + testMethodName + " " + testMethodResult + failure;
+		return testMethodStr;
 	}
 
 	private IResource findTestResource(IJavaProject project, String className) {

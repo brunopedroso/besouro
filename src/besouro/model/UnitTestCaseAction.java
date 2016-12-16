@@ -47,4 +47,8 @@ public class UnitTestCaseAction extends UnitTestAction {
 		return this.failureMessage;
 	}
 	
+	public String toString(){
+		return super.toString() + " " + getTestMethods().toString();
+	}
+	
 }
