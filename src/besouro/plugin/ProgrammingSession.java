@@ -123,6 +123,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		Jacoco jacocoAction = new Jacoco();
 		jacocoStorage.addAction(jacocoAction);
 		git.addAction(action);
+		
 	}
 
 	/**
