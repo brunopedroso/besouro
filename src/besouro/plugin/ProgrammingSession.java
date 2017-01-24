@@ -12,9 +12,11 @@ import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.BesouroListenerSet;
 import besouro.model.Action;
 import besouro.model.Episode;
+import besouro.model.Jacoco;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
 import besouro.persistence.GitRecorder;
+import besouro.persistence.JacocoFileStorage;
 import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodeListener;
 
@@ -27,6 +29,7 @@ public class ProgrammingSession implements ActionOutputStream {
 	private BesouroEpisodeClassifierStream besouroClassifier;
 	
 	private ActionFileStorage actionStorage;
+	private JacocoFileStorage jacocoStorage;
 	private EpisodeFileStorage zorroEpisodesStorage;
 	private EpisodeFileStorage randomHeuristicEpisodesStorage;
 	private EpisodeFileStorage disagreementsStorage;
@@ -35,6 +38,7 @@ public class ProgrammingSession implements ActionOutputStream {
 	private EpisodeFileStorage userCommentsEpisodesStorage;
 	
 	private File actionsFile;
+	private File jacocoFile;
 	private File zorroEpisodesFile;
 	private File randomHeuristicEpisodesFile;
 	private File disagreementsFile;
@@ -71,6 +75,10 @@ public class ProgrammingSession implements ActionOutputStream {
 		
 		actionsFile = new File(sessionDir, "actions.txt");
 		actionStorage = new ActionFileStorage(actionsFile);
+		
+		jacocoFile = new File(sessionDir, "jacoco.txt");
+		jacocoStorage = new JacocoFileStorage(jacocoFile);
+		
 		
 		zorroEpisodesFile = new File(sessionDir, "zorroEpisodes.txt");
 		zorroEpisodesStorage = new EpisodeFileStorage(zorroEpisodesFile);
@@ -112,7 +120,10 @@ public class ProgrammingSession implements ActionOutputStream {
 		zorroClassifier.addAction(action);
 		randomHeuristicClassifier.addAction(action);
 		besouroClassifier.addAction(action);
+		Jacoco jacocoAction = new Jacoco();
+		jacocoStorage.addAction(jacocoAction);
 		git.addAction(action);
+		
 	}
 
 	/**

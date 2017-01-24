@@ -1,0 +1,302 @@
+<xsd:schema targetNamespace="http://www.jessrules.com/JessML/1.0"
+	xmlns="http://www.jessrules.com/JessML/1.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xsd:element name="rulebase">
+		<xsd:complexType>
+			<xsd:sequence maxOccurs="unbounded" minOccurs="1">
+				<xsd:choice>
+					<xsd:element name="template" type="templateType" />
+					<xsd:element name="function" type="functionType" />
+                    <xsd:element name="rule" type="ruleType" />
+                    <xsd:element name="query" type="queryType" />
+                    <xsd:element name="facts" type="factsType" />
+                    <xsd:element name="funcall" type="funcallType" />
+                    <xsd:element name="global" type="globalType" />
+                    <xsd:element name="module" type="moduleType"/>
+                </xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="funcall" type="funcallType" />
+    <xsd:element name="name" type="xsd:string" />
+    <xsd:element name="comment" type="xsd:string" />
+    <xsd:element name="fact" type="factType"/>
+    <xsd:element name="list" type="listType"/>
+    <xsd:element name="value">
+        <xsd:complexType mixed="true">
+            <xsd:attribute name="type" type="valueAttributeType" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="valueAttributeType">
+        <xsd:annotation>
+            <xsd:documentation>
+                These represent the types with the same names as the contants in the class jess.RU.
+                Many of these are merely reserved for possible future expansion since (as with JAVA_OBJECT,
+                for example) they can't currently be used in JessML.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction  base="xsd:string">
+            <xsd:enumeration value="SYMBOL"/>
+            <xsd:enumeration value="STRING"/>
+            <xsd:enumeration value="INTEGER"/>
+            <xsd:enumeration value="VARIABLE"/>
+            <xsd:enumeration value="FACT"/>
+            <xsd:enumeration value="FLOAT"/>
+            <xsd:enumeration value="FUNCALL"/>
+            <xsd:enumeration value="LIST"/>
+            <xsd:enumeration value="JAVA_OBJECT"/>
+            <xsd:enumeration value="BINDING"/>
+            <xsd:enumeration value="MULTIVARIABLE"/>
+            <xsd:enumeration value="LONG"/>
+            <xsd:enumeration value="LAMBDA"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="moduleType">
+        <xsd:sequence>
+            <xsd:element ref="name"/>
+            <xsd:element name="comment" type="xsd:string"  minOccurs="0"/>
+            <xsd:element ref="properties" minOccurs="0" maxOccurs="1"/>            
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="templateType">
+		<xsd:sequence>
+            <xsd:element ref="name"/>
+            <xsd:element name="extends" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="comment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="properties" minOccurs="0" maxOccurs="1"/>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="slot" type="slotType"/>
+                <xsd:element name="multislot" type="slotType"/>
+            </xsd:choice>
+        </xsd:sequence>
+	</xsd:complexType>
+
+    <!-- Need separate slot types for facts, funcalls and templates -->
+    <!-- value minOccurs different for slot and multislot -->
+    <!-- separate type for empty list! -->
+
+    <xsd:complexType name="listType">
+        <xsd:sequence>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="value"/>
+                <xsd:element ref="funcall"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="slotType">
+        <xsd:sequence>
+            <xsd:choice minOccurs="1" maxOccurs="1">
+                <!-- EJFH Actually variable-only-->
+                <xsd:element ref="value"/>
+                <xsd:element name="name" type="xsd:string"/>
+            </xsd:choice>
+            <xsd:element name="type" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="value"/>
+                <xsd:element ref="funcall"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+
+	<xsd:complexType name="patternSlotType">
+	    <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="test" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- EJFH type enum -->
+                        <xsd:element name="type" type="xsd:string"/>
+                        <!-- EJFH and/or enum -->
+                        <xsd:element name="conjunction" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+                        <xsd:choice>
+                            <xsd:element ref="value"/>
+                            <xsd:element ref="funcall"/>
+                        </xsd:choice>
+                    </xsd:sequence>
+				</xsd:complexType>
+	    	</xsd:element>
+	    </xsd:sequence>
+	</xsd:complexType>
+
+    <xsd:complexType name="valueType">
+    </xsd:complexType>
+
+    <xsd:complexType name="factType">
+		<xsd:sequence>
+			<xsd:element ref="name"/>
+			<xsd:element name="slot" type="slotType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="functionType">
+		<xsd:sequence>
+			<xsd:element ref="name"/>
+			<xsd:element ref="comment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="arguments"/>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="funcall"/>
+				<xsd:element ref="value"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+    <xsd:element name="arguments">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="argument" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="name"/>
+                            <xsd:element name="type" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="queryType">
+        <xsd:sequence>
+            <xsd:element ref="name"/>
+            <xsd:element ref="comment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="arguments"/>
+            <xsd:element ref="properties" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="lhs" type="lhsType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ruleType">
+        <xsd:sequence>
+            <xsd:element ref="name"/>
+            <xsd:element ref="comment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="properties" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="lhs" type="lhsType"/>
+            <xsd:element name="rhs" type="rhsType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- EJFH Check actual allowed types -->
+    <xsd:element name="accumulate">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="binding" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+                <xsd:element name="accum-init">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="funcall"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="accum-body">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element ref="funcall"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="accum-return">
+                    <xsd:complexType>
+                        <xsd:choice minOccurs="1" maxOccurs="1">
+                            <xsd:element ref="value"/>
+                            <xsd:element ref="funcall"/>
+		        </xsd:choice>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element ref="pattern"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="properties">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="property" minOccurs="1" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <!-- EJFH Allowed value enums -->
+                            <xsd:element ref="name" minOccurs="1" maxOccurs="unbounded"/>
+                            <xsd:choice>
+                                <xsd:element ref="value"/>
+                                <xsd:element ref="funcall"/>
+                                                            </xsd:choice>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="lhsType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="pattern"/>
+            <xsd:element ref="accumulate"/>
+            <xsd:element ref="group"/>
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:complexType name="rhsType">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element ref="funcall"/>
+			<xsd:element ref="value"/> <!-- EJFH Can this be? -->
+		</xsd:choice>
+	</xsd:complexType>
+
+	<xsd:element name="pattern">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="name"/>
+				<xsd:element name="binding" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				<xsd:element name="slot" type="patternSlotType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="group">
+		<xsd:complexType>
+			<xsd:sequence>
+			<xsd:element ref="name"/>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element ref="group"/>
+                <xsd:element ref="pattern"/>
+                <xsd:element ref="accumulate"/>
+            </xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+    <xsd:complexType name="factsType">
+        <xsd:sequence>
+            <xsd:element ref="name"/>
+            <xsd:element ref="comment" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="fact" type="factType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="globalType">
+        <xsd:sequence>
+            <xsd:element ref="name"/>
+            <xsd:choice>
+                <xsd:element ref="value"/>
+                <xsd:element ref="funcall"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="funcallType">
+		<xsd:sequence>
+			<xsd:element ref="name"/>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="value"/>
+                <xsd:element ref="funcall"/>
+                <xsd:element ref="fact"/>
+                <xsd:element ref="list"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

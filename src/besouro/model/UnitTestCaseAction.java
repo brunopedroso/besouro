@@ -1,11 +1,21 @@
 package besouro.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
 public class UnitTestCaseAction extends UnitTestAction {
 
 	private String testcase;
+	private ArrayList<String> testMethods;
+	public ArrayList<String> getTestMethods() {
+		return testMethods;
+	}
+
+	public void setTestMethods(ArrayList<String> testMethods) {
+		this.testMethods = testMethods;
+	}
+
 	protected String failureMessage;
 	
 	public UnitTestCaseAction(Date clock, String workspaceFile) {
@@ -35,6 +45,10 @@ public class UnitTestCaseAction extends UnitTestAction {
 
 	public String getFailureMessage() {
 		return this.failureMessage;
+	}
+	
+	public String toString(){
+		return super.toString() + " " + getTestMethods().toString();
 	}
 	
 }
