@@ -2,9 +2,8 @@ package besouro.listeners;
 
 import java.util.ArrayList;
 
-import junit.framework.Assert;
-
 import org.eclipse.core.resources.IFile;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;

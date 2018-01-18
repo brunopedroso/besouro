@@ -1,7 +1,6 @@
 package besouro.classification.randomHeuristic;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import besouro.model.Episode;

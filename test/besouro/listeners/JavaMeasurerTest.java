@@ -4,8 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Date;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

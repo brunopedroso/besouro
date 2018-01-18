@@ -5,13 +5,21 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
+import besouro.measure.JavaStatementMeter;
+import besouro.model.EditAction;
 import besouro.model.RefactoringAction;
 import besouro.stream.ActionOutputStream;
 
@@ -37,12 +45,16 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	protected static final String PROP_CURRENT_TEST_ASSERTIONS = "Current-Test-Assertions";
 
 	private ActionOutputStream stream;
+	private JavaStatementMeter measurer = new JavaStatementMeter();
 
 	public JavaStructureChangeListener(ActionOutputStream stream) {
 		this.stream = stream;
 	}
 
 	public void elementChanged(ElementChangedEvent event) {
+		
+		addToEditedFiles(event.getDelta());
+		
 		// IJavaElementDelta jed = event.getDelta().getAffectedChildren()[0];
 		IJavaElementDelta[] childrenChanges = event.getDelta().getAffectedChildren();
 
@@ -260,5 +272,64 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		for (int i = 0; i < children.length; i++) {
 			traverse(children[i], additions, deletions);
 		}
+	}
+	
+	private void addToEditedFiles(IJavaElementDelta delta) {
+		IResource resource = delta.getElement().getResource();
+		int flag = delta.getFlags();
+		int kind = delta.getKind();
+		
+		// :RESOLVED: 28 Mar 2017
+		// Author: Adonis Figueroa
+		// Note that the 540673 and 540680 enumeration types are not listed in the IJavaElementDelta static filed.
+		// However, these numbers are generated when a File is edited so that it is checked in the logical condition.
+		int EDITED_FLAG = 540673;
+		int METHOD_UPDATED_FLAG = 540680; //Method Name Updated | Added | Deleted
+		
+		if ((kind == IJavaElementDelta.CHANGED) && resource instanceof IFile && 
+			(flag == EDITED_FLAG || flag == METHOD_UPDATED_FLAG)) {
+			if (JAVA.equals(resource.getFileExtension())) {
+				String fullPath = resource.getFullPath().toString();
+				
+				BesouroListenerSet listeners = BesouroListenerSet.getSingleton();
+				String previousEditedFile = listeners.getActualEditedFile();
+				
+				// If edited file is different --> add Action
+				if (!previousEditedFile.isEmpty() && !previousEditedFile.equals(fullPath)) {
+					Date previousEditedDate = listeners.getActualEditedDate();
+					Path path = new Path(previousEditedFile);
+					
+					IFile changedFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+					EditAction action = new EditAction(previousEditedDate, changedFile.getName());
+					
+					JavaStatementMeter meter = this.measurer.measureJavaFile(changedFile);
+					
+					action.setFileSize((int) changedFile.getLocation().toFile().length());
+					action.setIsTestEdit(meter.isTest());
+					action.setMethodsCount(meter.getNumOfMethods());
+					action.setStatementsCount(meter.getNumOfStatements());
+					action.setTestMethodsCount(meter.getNumOfTestMethods());
+					action.setTestAssertionsCount(meter.getNumOfTestAssertions());
+					
+					stream.addAction(action);
+				}
+				
+				listeners.setActualEditedFile(fullPath);
+				listeners.setActualEditedDate(new Date());
+			}
+		}
+		
+		// Recursively look for changes on children elements.
+		IJavaElementDelta[] children = delta.getAffectedChildren();
+		for (int i = 0; i < children.length; i++) {
+			addToEditedFiles(children[i]);
+		}
+	}
+	
+	/**
+	 * for testing purposes
+	 */
+	public void setMeasurer(JavaStatementMeter meter) {
+		this.measurer = meter;
 	}
 }

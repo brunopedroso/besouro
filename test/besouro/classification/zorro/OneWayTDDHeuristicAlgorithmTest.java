@@ -1,5 +1,7 @@
 package besouro.classification.zorro;
 
+import org.junit.Assert;
+
 import jess.Batch;
 import jess.Fact;
 import jess.JessException;
@@ -45,19 +47,19 @@ public class OneWayTDDHeuristicAlgorithmTest extends TestCase {
 		engine.run();
 
 		QueryResult result = engine.runQueryStar("episode-tdd-conformance-query-by-index",(new ValueVector()).add(new Value(1, RU.INTEGER)));
-		assertTrue("Result to episode 1", result.next());
-		assertEquals("Test episode 1", "True", result.getString("isTDD"));
+		Assert.assertTrue("Result to episode 1", result.next());
+		Assert.assertEquals("Test episode 1", "True", result.getString("isTDD"));
 
 		result = engine.runQueryStar("episode-tdd-conformance-query-by-index",(new ValueVector()).add(new Value(2, RU.INTEGER)));
-		assertTrue("Result to episode 2", result.next());
-		assertEquals("Test episode 2", "True", result.getString("isTDD"));
+		Assert.assertTrue("Result to episode 2", result.next());
+		Assert.assertEquals("Test episode 2", "True", result.getString("isTDD"));
 
 		result = engine.runQueryStar("episode-tdd-conformance-query-by-index",(new ValueVector()).add(new Value(3, RU.INTEGER)));
-		assertTrue("Result to episode 3", result.next());
-		assertEquals("Test episode 3", "True", result.getString("isTDD"));
+		Assert.assertTrue("Result to episode 3", result.next());
+		Assert.assertEquals("Test episode 3", "True", result.getString("isTDD"));
 
 		result = engine.runQueryStar("episode-tdd-conformance-query-by-index",(new ValueVector()).add(new Value(4, RU.INTEGER)));
-		assertTrue("Result to episode 4", result.next());
-		assertEquals("Test episode 4", "True", result.getString("isTDD"));
+		Assert.assertTrue("Result to episode 4", result.next());
+		Assert.assertEquals("Test episode 4", "True", result.getString("isTDD"));
 	}
 }

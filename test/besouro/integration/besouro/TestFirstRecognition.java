@@ -1,14 +1,15 @@
 package besouro.integration.besouro;
 
-import junit.framework.Assert;
-
-import org.junit.Before;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import besouro.classification.besouro.BesouroEpisodeClassifierStream;
-import besouro.integration.IntegrationTestBaseClass;
 
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ResourcesPlugin.class)
 public class TestFirstRecognition extends BesouroBaseIntegrationTest {
 	
 	@Test 

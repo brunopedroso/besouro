@@ -4,17 +4,13 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
-import java.util.List;
-
-import junit.framework.Assert;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import besouro.classification.zorro.ZorroEpisodeClassifierStream;
-import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.measure.JavaStatementMeter;
 import besouro.model.EditAction;
 import besouro.model.Episode;

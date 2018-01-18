@@ -1,18 +1,14 @@
 package besouro.integration;
 
-import static org.mockito.Mockito.when;
-import junit.framework.Assert;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import besouro.listeners.mock.JUnitEventFactory;
-import besouro.listeners.mock.JavaStructureChangeEventFactory;
-import besouro.listeners.mock.ResourceChangeEventFactory;
-import besouro.persistence.ActionFileStorage;
-
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ResourcesPlugin.class)
 public class TestFirstRecognition extends IntegrationTestBaseClass {
 
 	@Test 

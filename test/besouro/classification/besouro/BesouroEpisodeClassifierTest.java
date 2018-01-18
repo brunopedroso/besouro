@@ -1,23 +1,17 @@
 package besouro.classification.besouro;
 
-import static org.mockito.Mockito.when;
-
 import java.util.Iterator;
 
 import jess.QueryResult;
 import jess.ValueVector;
-import junit.framework.Assert;
 
-import org.eclipse.jdt.junit.model.ITestElement.Result;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import besouro.classification.zorro.TestEpisodesFactory;
 import besouro.classification.zorro.ZorroEpisodeClassifierTest;
-import besouro.listeners.mock.JUnitEventFactory;
-import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.EditAction;
-import besouro.model.RefactoringAction;
 import besouro.model.UnitTestCaseAction;
 
 /**
@@ -54,10 +48,8 @@ public class BesouroEpisodeClassifierTest extends ZorroEpisodeClassifierTest {
 		
 		zorro.assertJessFact(1, editAction);
 		
-		// Unit test failue
+		// Unit test failure
 		UnitTestCaseAction unitTestAction = new UnitTestCaseAction(clock, TestEpisodesFactory.testFile);
-		unitTestAction.setFailureMessage("Failed to import");
-		zorro.assertJessFact(2, unitTestAction);
 
 		// Edit on production code (corrects the error)
 		editAction = new EditAction(clock, TestEpisodesFactory.productionFile);

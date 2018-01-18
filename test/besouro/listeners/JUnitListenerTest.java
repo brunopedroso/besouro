@@ -2,10 +2,9 @@ package besouro.listeners;
 
 import java.util.ArrayList;
 
-import junit.framework.Assert;
-
 import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestRunSession;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
-
-import junit.framework.Assert;
 
 import besouro.listeners.BesouroListenerSet;
 import besouro.listeners.mock.WindowEventsFactory;

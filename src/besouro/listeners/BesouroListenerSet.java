@@ -8,10 +8,13 @@ import org.eclipse.jdt.junit.JUnitCore;
 import besouro.plugin.Activator;
 import besouro.model.Action;
 import besouro.stream.ActionOutputStream;
+import java.util.Date;
 
 public class BesouroListenerSet implements ActionOutputStream {
 
 	private static BesouroListenerSet singleton;
+	private String actualEditedFile = "";
+	private Date actualEditedDate;
 	
 	public static BesouroListenerSet getSingleton() {
 		if (singleton==null) {
@@ -67,4 +70,19 @@ public class BesouroListenerSet implements ActionOutputStream {
 		
 	}
 	
+	public String getActualEditedFile() {
+		return this.actualEditedFile;
+	}
+	
+	public void setActualEditedFile(String actualEditedFile) {
+		this.actualEditedFile = actualEditedFile;
+	}
+	
+	public Date getActualEditedDate() {
+		return this.actualEditedDate;
+	}
+	
+	public void setActualEditedDate(Date actualEditedDate) {
+		this.actualEditedDate = actualEditedDate;
+	}
 }
