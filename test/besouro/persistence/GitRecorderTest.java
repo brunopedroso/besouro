@@ -10,15 +10,11 @@ import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.util.Base64;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.exceptions.verification.NeverWantedButInvoked;
-import org.mockito.verification.VerificationMode;
 
 import besouro.model.EditAction;
-import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 
 public class GitRecorderTest {

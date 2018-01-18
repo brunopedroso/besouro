@@ -7,9 +7,8 @@ import static org.mockito.Mockito.verify;
 import java.io.File;
 import java.util.Date;
 
-import junit.framework.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

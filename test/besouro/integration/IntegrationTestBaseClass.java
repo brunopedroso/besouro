@@ -4,16 +4,10 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-
-import junit.framework.Assert;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.junit.model.ITestElement.Result;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.listeners.JUnitListener;
@@ -25,8 +19,6 @@ import besouro.listeners.mock.JavaStructureChangeEventFactory;
 import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.listeners.mock.WindowEventsFactory;
 import besouro.measure.JavaStatementMeter;
-import besouro.persistence.ActionFileStorage;
-import besouro.stream.ActionOutputStream;
 import besouro.stream.EpisodesRecognizerActionStream;
 
 
@@ -55,14 +47,17 @@ public class IntegrationTestBaseClass {
 		resourceListener = new ResourceChangeListener(stream);
 		junitListener = new JUnitListener(stream);
 		winListener = new WindowListener(stream);
+		junitListener = new JUnitListener(stream);
 		
 		// its strange yet, i know
 		meter = mock(JavaStatementMeter.class);
 		measurer = mock(JavaStatementMeter.class);
 		when(measurer.measureJavaFile(any(IFile.class))).thenReturn(meter);
 		
-		resourceListener.setMeasurer(measurer);
+		//resourceListener.setMeasurer(measurer);
+		javaListener.setMeasurer(measurer);
 		winListener.setMeasurer(measurer);
+		junitListener.setMeasurer(measurer);
 		
 		// Open file (calculates the first file metrics)
 		when(meter.getNumOfMethods()).thenReturn(3);
@@ -86,28 +81,37 @@ public class IntegrationTestBaseClass {
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		when(meter.getNumOfTestMethods()).thenReturn(10);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Compile error on test
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent("TestFile.java", "error message"));
 		
 		// Work on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 35));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfStatements()).thenReturn(0);
 		when(meter.getNumOfMethods()).thenReturn(0);
 		when(meter.getNumOfTestAssertions()).thenReturn(0);
 		when(meter.getNumOfTestMethods()).thenReturn(0);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 35);
 		
-	    // Unit test failue
+	    // Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.ERROR));
 		
-		// Edit on prodction code
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java", 37));
+		// Edit on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 37));
 
+		//To get previous edited file, used in next "sessionFinished"
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 37);
+		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 	}
@@ -116,23 +120,28 @@ public class IntegrationTestBaseClass {
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 		
-		
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		when(meter.getNumOfTestMethods()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Compile error on test
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent("TestFile.java", "error message"));
 		
 		// Work on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 35));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfStatements()).thenReturn(0);
 		when(meter.getNumOfMethods()).thenReturn(0);
 		when(meter.getNumOfTestAssertions()).thenReturn(0);
 		when(meter.getNumOfTestMethods()).thenReturn(0);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 35);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -143,23 +152,32 @@ public class IntegrationTestBaseClass {
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 		
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		when(meter.getNumOfTestMethods()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Work on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 35));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfTestAssertions()).thenReturn(0);
 		when(meter.getNumOfTestMethods()).thenReturn(0);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 35);
 		
-	    // Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Work on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 37));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",37));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 37);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -170,18 +188,27 @@ public class IntegrationTestBaseClass {
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));
 		
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
 		when(meter.getNumOfTestMethods()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
    
 		// Work on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 37));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",37));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 37);
 
 		// Work on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 39));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",39));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 39);
 
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -189,49 +216,67 @@ public class IntegrationTestBaseClass {
 
 	protected void addTestFirstRealCase() throws CoreException, Exception {
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(1);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 
-		// Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Edit on production code    
-		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",33));
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 33));
 
+		//To get previous edited file, used in next "elementChanged"
+		when(meter.hasTest()).thenReturn(false);
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 33);
+		
 		// Add test method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createAddMethodAction("TestFile.java", "TestFile", "aTestMethod"));		
 		
 		// Edit on test
-		when(meter.hasTest()).thenReturn(true);
-		when(meter.getNumOfTestMethods()).thenReturn(1);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",133));
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 133));
 
 		// Compile error on test
 		resourceListener.resourceChanged(ResourceChangeEventFactory.createBuildErrorEvent("TestFile.java", "error message"));
+		
+		//To get previous edited file, used in next "elementChanged"
+		when(meter.hasTest()).thenReturn(true);
+		when(meter.getNumOfTestMethods()).thenReturn(1);
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 133);
 
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 135));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(true);
 		//TODO [rule]   review substancial concept
 		when(meter.getNumOfMethods()).thenReturn(1);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",135));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 135);
 		
 		// Add prod method
 		// in the original test, it was an ADD CLASS
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
 
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 35));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 35);
 
 		// Add prod method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
 
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 38));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfMethods()).thenReturn(1);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",38));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 38);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -239,36 +284,51 @@ public class IntegrationTestBaseClass {
 	
 	protected void addTestLast1Actions() throws Exception {
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34)); 
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.isTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
 		
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
 	}
 	
 	protected void addTestLast2Events() throws CoreException, Exception {
-		// Edit on production code    
+		// Edit on production code
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34));
+		
+		//To get previous edited file, used in next "elementChanged"
 		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
 		
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
-		// Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest", Result.ERROR));
 
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		//TODO [rule]   review substancial concept
 		when(meter.getNumOfTestMethods()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -276,9 +336,12 @@ public class IntegrationTestBaseClass {
 	
 	protected void addRefactoring1A_Actions() throws Exception {
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(1);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -286,17 +349,23 @@ public class IntegrationTestBaseClass {
 	
 	protected void addRefactoringCategory1a_2_events() throws Exception {
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(1);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
-		// Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "MyTest", Result.ERROR));
 		
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 37));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(true);
 		when(meter.getNumOfTestMethods()).thenReturn(2);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",37));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 37);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -313,16 +382,21 @@ public class IntegrationTestBaseClass {
 
 	protected void addRefactoringCategory2A_events() throws Exception {
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
 	    
-	    // Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile", "MyTest", Result.ERROR));
 
 	    // Edit on production code
-		when(meter.hasTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",35));
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 35));
 
+		//To get previous edited file, used in next "sessionFinished"
+		when(meter.hasTest()).thenReturn(false);
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 35);
 	    
 	    // Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -332,7 +406,7 @@ public class IntegrationTestBaseClass {
 		// Add prod method
 		javaListener.elementChanged(JavaStructureChangeEventFactory.createRemoveMethodAction("ProductionFile.java", "ProductionFile", "aMethod"));
 		
-		// Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile", "MyTest", Result.ERROR));
 		
 		// rename prod method
@@ -344,10 +418,13 @@ public class IntegrationTestBaseClass {
 
 	protected void addRefactoringCategory3_1_events() throws CoreException, Exception {
 		// Edit on production code    
-		when(meter.isTest()).thenReturn(false);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34));
 		
-		// Unit test failue
+		//To get previous edited file, used in next "sessionFinished"
+		when(meter.isTest()).thenReturn(false);
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
+		
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile", "MyTest", Result.ERROR));
 		
 		addRefactoring1A_Actions();
@@ -364,9 +441,12 @@ public class IntegrationTestBaseClass {
 	
 	protected void addProductionCategory1Events() throws CoreException, Exception {
 		// Edit on production code  
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfStatements()).thenReturn(14);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
@@ -375,15 +455,21 @@ public class IntegrationTestBaseClass {
 
 	protected void addProductionCategory1WithTestBreakEvents() throws Exception {
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfStatements()).thenReturn(14);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
 		
-		// Unit test failue
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("sesionname", "TestFile.java", Result.FAILURE));
 		
 		// Edit on production code (corrects the error)    
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",34));
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 34));
+		
+		//To get previous edited file, used in next "sessionFinished"
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 34);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
@@ -394,10 +480,13 @@ public class IntegrationTestBaseClass {
 		// method increase but byte size decrease
 		
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 5));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfStatements()).thenReturn(2);
 		when(meter.getNumOfMethods()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",5));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 5);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
@@ -407,11 +496,14 @@ public class IntegrationTestBaseClass {
 		// method increase but byte statement decrease
 		
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 15));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfMethods()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",15));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 15);
 		
-		// Unit test failue
+		// Unit test failure
 		
 		// TODO [rule]   redundancy between prod/refact 
 //		its a strange case without an edit after the test failure :-/
@@ -428,10 +520,13 @@ public class IntegrationTestBaseClass {
 		// method increase, and size increase and LARGE byte increase
 		
 		// Edit on production code    
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("ProductionFile.java", 133));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.hasTest()).thenReturn(false);
 		when(meter.getNumOfMethods()).thenReturn(5);
 		when(meter.getNumOfStatements()).thenReturn(5);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("ProductionFile.java",133));
+		JavaStructureChangeEventFactory.eclipseMock("ProductionFile.java", 133);
 
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile.java", Result.OK));
@@ -463,9 +558,12 @@ public class IntegrationTestBaseClass {
 	
 	protected void addTestAddCategory1Events() throws CoreException, Exception {
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));
@@ -473,18 +571,24 @@ public class IntegrationTestBaseClass {
 	
 	protected void addTestAddCategory2Events() throws CoreException, Exception {
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		when(meter.getNumOfTestAssertions()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
-		
-		// Unit test failue
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
+				
+		// Unit test failure
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("TestFile.java", "TestFile", Result.ERROR));
 
 		// Edit on test
+		javaListener.elementChanged(JavaStructureChangeEventFactory.createEditMethodAction("TestFile.java", 33));
+		
+		//To get previous edited file, used in next "sessionFinished"
 		when(meter.isTest()).thenReturn(true);
 		//TODO [rule]   review substancial concept
 		when(meter.getNumOfTestMethods()).thenReturn(3);
-		resourceListener.resourceChanged(ResourceChangeEventFactory.createEditAction("TestFile.java",33));
+		JavaStructureChangeEventFactory.eclipseMock("TestFile.java", 33);
 		
 		// Unit test pass
 		junitListener.sessionFinished(JUnitEventFactory.createJunitSession("testSessionName", "TestFile", Result.OK));

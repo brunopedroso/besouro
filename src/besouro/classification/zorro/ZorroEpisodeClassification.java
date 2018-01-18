@@ -67,7 +67,7 @@ public class ZorroEpisodeClassification {
 			
 			engine.run();
 			
-			//debugFacts();
+			debugFacts();
 			
 			QueryResult result = engine.runQueryStar("episode-classification-query", new ValueVector());
 			return result;
@@ -81,9 +81,11 @@ public class ZorroEpisodeClassification {
 
 	private void debugFacts() {
 		Iterator it = engine.listFacts();
-		while (it.hasNext()) {
-			System.out.println(it.next());
-		}
+		try {
+			while (it.hasNext()) {
+				System.out.println(it.next());
+			}
+		} catch(Exception e) {}
 	}
 	
 	public void assertJessFact(int index, Action action){

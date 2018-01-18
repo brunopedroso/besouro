@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
@@ -19,6 +21,8 @@ import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
+import besouro.measure.JavaStatementMeter;
+import besouro.model.EditAction;
 import besouro.model.UnitTestAction;
 import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
@@ -28,6 +32,7 @@ import besouro.stream.ActionOutputStream;
 public class JUnitListener extends TestRunListener {
 
 	private ActionOutputStream stream;
+	private JavaStatementMeter measurer = new JavaStatementMeter();
 
 	public JUnitListener(ActionOutputStream stream) {
 		this.stream = stream;
@@ -35,6 +40,35 @@ public class JUnitListener extends TestRunListener {
 
 	@Override
 	public void sessionFinished(ITestRunSession session) {
+		
+		// Get Last edited file
+		BesouroListenerSet listeners = BesouroListenerSet.getSingleton();
+		String actualEditedFile = listeners.getActualEditedFile();
+		
+		// Add last edited file
+		if (!actualEditedFile.isEmpty()) {
+			Date actualEditedDate = listeners.getActualEditedDate();
+			
+			Path path = new Path(actualEditedFile);
+			IFile changedFile = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+			
+			EditAction action = new EditAction(actualEditedDate, changedFile.getName());
+			
+			JavaStatementMeter meter = this.measurer.measureJavaFile(changedFile);
+			
+			action.setFileSize((int) changedFile.getLocation().toFile().length());
+			action.setIsTestEdit(meter.isTest());
+			action.setMethodsCount(meter.getNumOfMethods());
+			action.setStatementsCount(meter.getNumOfStatements());
+			action.setTestMethodsCount(meter.getNumOfTestMethods());
+			action.setTestAssertionsCount(meter.getNumOfTestAssertions());
+			
+			stream.addAction(action);
+		}
+		
+		listeners.setActualEditedFile("");
+		// END - Get Last edited file
+		
 		
 		boolean isSuccessfull = true;
 		for (UnitTestAction action: getTestFileActions(session, session.getLaunchedProject())) {
@@ -104,6 +138,13 @@ public class JUnitListener extends TestRunListener {
 		} catch (JavaModelException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * for testing purposes
+	 */
+	public void setMeasurer(JavaStatementMeter meter) {
+		this.measurer = meter;
 	}
 
 

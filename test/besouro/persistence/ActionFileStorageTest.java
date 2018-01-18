@@ -5,17 +5,17 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import junit.framework.Assert;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.ui.views.navigator.RefactorActionGroup;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import besouro.classification.zorro.ZorroEpisodeClassifierStream;
 import besouro.integration.TestFirstRecognition;
-import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.Action;
 import besouro.model.CompilationAction;
 import besouro.model.EditAction;
@@ -28,6 +28,8 @@ import besouro.model.UnitTestCaseAction;
 import besouro.model.UnitTestSessionAction;
 import besouro.persistence.ActionFileStorage;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ResourcesPlugin.class)
 public class ActionFileStorageTest {
 	
 	private File file;

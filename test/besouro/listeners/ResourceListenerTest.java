@@ -5,10 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
-import junit.framework.Assert;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResourceChangeEvent;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +16,6 @@ import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.measure.JavaStatementMeter;
 import besouro.model.Action;
 import besouro.model.CompilationAction;
-import besouro.model.EditAction;
 import besouro.stream.ActionOutputStream;
 
 

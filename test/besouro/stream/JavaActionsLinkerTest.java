@@ -1,20 +1,11 @@
 package besouro.stream;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
 import java.util.Date;
 
-import junit.framework.Assert;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import besouro.listeners.mock.ResourceChangeEventFactory;
 import besouro.model.EditAction;
 import besouro.model.FileOpenedAction;
 

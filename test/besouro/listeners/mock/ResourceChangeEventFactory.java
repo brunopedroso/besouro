@@ -18,8 +18,6 @@ import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 
 public class ResourceChangeEventFactory {

@@ -1,6 +1,4 @@
 package besouro.classification.zorro;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
@@ -12,7 +10,6 @@ import jess.Rete;
 import jess.Value;
 import jess.ValueVector;
 
-import org.eclipse.core.resources.IResource;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

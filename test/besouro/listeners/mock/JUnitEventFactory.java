@@ -14,9 +14,6 @@ import org.eclipse.jdt.junit.model.ITestElement.Result;
 import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
-import org.mockito.ArgumentCaptor;
-import org.mockito.internal.matchers.Any;
-import org.mockito.internal.matchers.Equals;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 

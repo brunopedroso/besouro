@@ -1,12 +1,17 @@
 package besouro.integration;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
-import besouro.classification.zorro.ZorroEpisodeClassifierStream;
-import besouro.classification.zorro.ZorroTDDConformance;
+import org.junit.runner.RunWith;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import besouro.classification.zorro.ZorroEpisodeClassifierStream;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ResourcesPlugin.class)
 public class TDDMeasureTest extends IntegrationTestBaseClass {
 
 	@Test

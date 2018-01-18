@@ -56,7 +56,7 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 		IResource resource = delta.getResource();
 		int flag = delta.getFlags();
-		int kind = delta.getKind();
+		//int kind = delta.getKind();
 
 		// If there is compilation problem with the current java file then send out the activity data.
 		// do not catch errors in other files
@@ -75,26 +75,6 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 
 			// do not visit the children
 			return false;
-
-		} else if ((kind == IResourceDelta.CHANGED) && resource instanceof IFile && flag == IResourceDelta.CONTENT) {
-
-			if (resource.getLocation().toString().endsWith(".java")) {
-
-				IFile changedFile = (IFile) resource;
-				EditAction action = new EditAction(new Date(), changedFile.getName());
-				
-				JavaStatementMeter meter = this.measurer.measureJavaFile(changedFile);
-				
-				action.setFileSize((int) changedFile.getLocation().toFile().length());
-				action.setIsTestEdit(meter.isTest());
-				action.setMethodsCount(meter.getNumOfMethods());
-				action.setStatementsCount(meter.getNumOfStatements());
-				action.setTestMethodsCount(meter.getNumOfTestMethods());
-				action.setTestAssertionsCount(meter.getNumOfTestAssertions());
-				
-				sensor.addAction(action);
-
-			}
 
 		}
 
